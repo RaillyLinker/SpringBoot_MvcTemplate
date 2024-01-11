@@ -1,0 +1,4 @@
+[TODO]
+- 웹소켓 샘플(stomp)
+- kafka, rabbit mq, ELK( Elasticsearch / Logstatsh / Kibana )스택
+- avif 변환, 비디오 변환

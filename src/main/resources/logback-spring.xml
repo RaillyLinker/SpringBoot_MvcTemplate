@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--로그 파일 저장 위치-->
+    <property name="LOGS_PATH" value="./logs"/>
+
+    <!--local 프로필 환경-->
+    <springProfile name="local">
+        <!-- File 에 로그 출력 세팅 -->
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- 출력패턴 설정-->
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <charset>UTF-8</charset>
+                <pattern>[%23d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5level] [%msg]%n
+                </pattern>
+            </encoder>
+
+            <!-- 파일 경로 설정 -->
+            <file>${LOGS_PATH}/currentLog_local.log</file>
+
+            <!-- Rolling 정책 : 로그 보관 정책 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 로그 백업 파일 경로 설정 -->
+                <!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 -->
+                <fileNamePattern>${LOGS_PATH}/%d{yyyy-MM-dd}/oldLog_local_%i.log</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- 파일당 최고 용량 KB, MB, GB -->
+                    <!-- 아래 용량을 넘으면 파일 분할-->
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <!-- 일자별 로그파일 최대 보관주기(~일), 해당 설정일 이상된 파일은 자동으로 제거-->
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+        </appender>
+
+        <!-- CONSOLE 에 로그 출력 세팅 -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>[%23d{yyyy-MM-dd HH:mm:ss:SSS}] [%highlight(%-5level)] [%msg]%n
+                </pattern>
+            </layout>
+        </appender>
+
+        <!-- appender 별 세팅 -->
+        <!-- 로그 전역 세팅 -->
+        <!-- 로그 레벨 -->
+        <!--
+            1) ERROR : 오류 메시지 표시
+            2) WARN  : 경고성 메시지 표시
+            3) INFO  : 정보성 메시지 표시
+            4) DEBUG : 디버깅하기 위한 메시지 표시
+            5) TRACE :  Debug보다 훨씬 상세한 메시지 표시
+
+            예를들어 info 로 설정시, INFO 보다 위에 있는 DEBUG 와 TRACE 는 표시하지 않는다.
+        -->
+        <root level="DEBUG">
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+    </springProfile>
+
+    <!--dev 프로필 환경-->
+    <springProfile name="dev">
+        <!-- File 에 로그 출력 세팅 -->
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- 출력패턴 설정-->
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <charset>UTF-8</charset>
+                <pattern>[%23d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5level] [%msg]%n
+                </pattern>
+            </encoder>
+
+            <!-- 파일 경로 설정 -->
+            <file>${LOGS_PATH}/currentLog_dev.log</file>
+
+            <!-- Rolling 정책 : 로그 보관 정책 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 로그 백업 파일 경로 설정 -->
+                <!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 -->
+                <fileNamePattern>${LOGS_PATH}/%d{yyyy-MM-dd}/oldLog_dev_%i.log</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- 파일당 최고 용량 KB, MB, GB -->
+                    <!-- 아래 용량을 넘으면 파일 분할-->
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <!-- 일자별 로그파일 최대 보관주기(~일), 해당 설정일 이상된 파일은 자동으로 제거-->
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+        </appender>
+
+
+        <!-- appender 별 세팅 -->
+        <!-- 로그 전역 세팅 -->
+        <!-- 로그 레벨 -->
+        <!--
+            1) ERROR : 오류 메시지 표시
+            2) WARN  : 경고성 메시지 표시
+            3) INFO  : 정보성 메시지 표시
+            4) DEBUG : 디버깅하기 위한 메시지 표시
+            5) TRACE :  Debug보다 훨씬 상세한 메시지 표시
+
+            예를들어 info 로 설정시, INFO 보다 위에 있는 DEBUG 와 TRACE 는 표시하지 않는다.
+        -->
+        <root level="DEBUG">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+
+    <!--prod 프로필 환경-->
+    <springProfile name="prod">
+        <!-- File 에 로그 출력 세팅 -->
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- 출력패턴 설정-->
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <charset>UTF-8</charset>
+                <pattern>[%23d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5level] [%msg]%n
+                </pattern>
+            </encoder>
+
+            <!-- 파일 경로 설정 -->
+            <file>${LOGS_PATH}/currentLog_prod.log</file>
+
+            <!-- Rolling 정책 : 로그 보관 정책 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 로그 백업 파일 경로 설정 -->
+                <!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 -->
+                <fileNamePattern>${LOGS_PATH}/%d{yyyy-MM-dd}/oldLog_prod_%i.log</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- 파일당 최고 용량 KB, MB, GB -->
+                    <!-- 아래 용량을 넘으면 파일 분할-->
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <!-- 일자별 로그파일 최대 보관주기(~일), 해당 설정일 이상된 파일은 자동으로 제거-->
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+        </appender>
+
+
+        <!-- appender 별 세팅 -->
+        <!-- 로그 전역 세팅 -->
+        <!-- 로그 레벨 -->
+        <!--
+            1) ERROR : 오류 메시지 표시
+            2) WARN  : 경고성 메시지 표시
+            3) INFO  : 정보성 메시지 표시
+            4) DEBUG : 디버깅하기 위한 메시지 표시
+            5) TRACE :  Debug보다 훨씬 상세한 메시지 표시
+
+            예를들어 info 로 설정시, INFO 보다 위에 있는 DEBUG 와 TRACE 는 표시하지 않는다.
+        -->
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+</configuration>

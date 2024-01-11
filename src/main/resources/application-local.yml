@@ -1,0 +1,85 @@
+# (실행 환경 local 설정)
+# : 로컬 환경 개발자를 위한 환경 설정 = 서버 개발자가 마음껏 사용 가능 (그냥 IDE 를 실행하면 적용)
+
+spring:
+  config:
+    activate: # 프로필명 설정
+      on-profile: local
+
+  servlet:
+    multipart:
+      # !!!multipart 데이터량 설정!!!
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
+
+  boot:
+    admin:
+      client:
+        # !!!Spring Admin 정보 설정!!!
+        url: http://127.0.0.1:8081 # spring admin server url
+        username: adminId # spring admin server Security Id
+        password: adminPw # spring admin server Security Pw
+        instance:
+          name: Springboot MVC Template (Local) # spring admin UI 에서 보여질 이름 설정
+          service-url: http://127.0.0.1:8080 # 현 프로젝트가 실행될 위치의 URL
+
+  jpa:
+    # JPA 데이터베이스 플랫폼 지정
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+      # ********* 주의 : DDL 은 그냥 DB 에서 만집시다!!!!!! *********
+      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+      # 데이터베이스 초기화 전략
+      # none - 엔티티가 변경되더라도 데이터베이스를 변경하지 않는다.
+      # update - 엔티티의 변경된 부분만 적용한다.
+      # validate - 변경사항이 있는지 검사만 한다.
+      # create - 스프링부트 서버가 시작될때 모두 drop 하고 다시 생성한다.
+      # create-drop - create 와 동일하다. 하지만 종료시에도 모두 drop 한다.
+      # 개발 환경에서는 보통 update 모드를 사용하고 운영환경에서는 none 또는 validate 모드를 사용
+      ddl-auto: validate
+      # 스키마, 테이블명 UpperCase 허용
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+# JPA DataSource 설정
+datasource:
+  # !!!접속하려는 DB 에 대한 정보를 아래와 같이 추가 할 것!!!
+  database1: # DB 추가
+    # 데이터베이스 접속 경로
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/template?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&autoReconnect=true
+    # 데이터베이스의 사용자명
+    username: test
+    # 데이터베이스의 패스워드
+    password: test1234!
+    # 데이터베이스 접속시 사용하는 드라이버
+    driverClassName: com.mysql.cj.jdbc.Driver
+    data: classpath:sql/data-h2.sql
+    initialization-mode: always
+
+# Redis DataSource 설정
+datasource-redis: # Redis 추가 (하위 요소를 추가하고 RedisConfig 에 객체 추가)
+  # !!!접속하려는 Redis 에 대한 정보를 아래와 같이 추가 할 것!!!
+  redis1:
+    host: 127.0.0.1
+    port: 6379
+
+logging:
+  file:
+    name: ./logs/currentLog_local.log # Spring Admin Server 에 전달할 로그 파일 경로
+  level:
+    org.springframework.r2dbc.core: debug # R2DBC 로깅 설정
+
+springdoc:
+  swagger-ui:
+    enabled: true # Swagger 문서 공개 여부
+
+customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
+  # Actuator 정보 접근 허용 IP 리스트 (Spring Admin IP를 추가하세요)
+  actuatorAllowIpList: 127.0.0.1, 127.0.0.3
+  # Logging Filter 의 로깅 대상에서 제외할 IP 리스트 (Spring Admin IP를 추가하세요)
+  loggingDenyIpList: 127.0.0.2
