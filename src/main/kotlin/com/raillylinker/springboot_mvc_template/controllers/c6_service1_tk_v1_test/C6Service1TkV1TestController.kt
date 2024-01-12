@@ -235,4 +235,39 @@ class C6Service1TkV1TestController(
     ) {
         service.api6(httpServletResponse)
     }
+
+
+    ////
+    @Operation(
+        summary = "N7 : Kafka 토픽 메세지 발행 테스트",
+        description = "Kafka 토픽 메세지를 발행합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @PostMapping(
+        path = ["/kafka-produce-test"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api7(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @RequestBody
+        inputVo: Api7InputVo
+    ) {
+        service.api7(
+            httpServletResponse,
+            inputVo
+        )
+    }
+
+    data class Api7InputVo(
+        @Schema(description = "토픽", required = true, example = "testTopic")
+        @JsonProperty("topic")
+        val topic: String,
+        @Schema(description = "메세지", required = true, example = "testMessage")
+        @JsonProperty("message")
+        val message: String
+    )
 }

@@ -96,6 +96,9 @@ dependencies {
     // (Spring Admin Client)
     // : Spring Actuator 포함
     implementation("de.codecentric:spring-boot-admin-starter-client:3.2.1")
+
+    // (Kafka)
+    implementation("org.springframework.kafka:spring-kafka:3.1.1")
 }
 
 tasks.withType<KotlinCompile> {
