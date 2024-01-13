@@ -68,11 +68,17 @@ datasource-redis: # Redis 추가 (하위 요소를 추가하고 RedisConfig 에 
     host: 127.0.0.1
     port: 6379
 
+# MongoDB DataSource 설정
+datasource-mongodb: # MongoDB 추가 (하위 요소를 추가하고 MongoDbConfig 에 객체 추가)
+  mongoDb1:
+    uri: mongodb://127.0.0.1:27017/testDatabase
+
 logging:
   file:
     name: ./logs/currentLog_local.log # Spring Admin Server 에 전달할 로그 파일 경로
   level:
-    org.springframework.r2dbc.core: debug # R2DBC 로깅 설정
+    org.springframework.r2dbc.core: DEBUG # R2DBC 로깅 설정
+    org.springframework.data.mongodb: DEBUG # mongoDB 로깅 설정
 
 springdoc:
   swagger-ui:

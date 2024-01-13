@@ -99,6 +99,9 @@ dependencies {
     // (Spring Admin Client)
     // : Spring Actuator 포함
     implementation("de.codecentric:spring-boot-admin-starter-client:3.2.1")
+
+    // (MongoDB)
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.1")
 }
 
 tasks.withType<KotlinCompile> {
