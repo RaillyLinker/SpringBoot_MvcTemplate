@@ -71,6 +71,9 @@ dependencies {
     // : HTML -> PDF 변환 라이브러리
     implementation("org.xhtmlrenderer:flying-saucer-pdf:9.3.1")
 
+    // (Kafka)
+    implementation("org.springframework.kafka:spring-kafka:3.1.1")
+
     // (JPA)
     // : DB ORM
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.0")
@@ -96,9 +99,6 @@ dependencies {
     // (Spring Admin Client)
     // : Spring Actuator 포함
     implementation("de.codecentric:spring-boot-admin-starter-client:3.2.1")
-
-    // (Kafka)
-    implementation("org.springframework.kafka:spring-kafka:3.1.1")
 }
 
 tasks.withType<KotlinCompile> {
