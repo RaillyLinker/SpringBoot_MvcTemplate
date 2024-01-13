@@ -247,7 +247,7 @@ class C6Service1TkV1TestController(
     @PostMapping(
         path = ["/kafka-produce-test"],
         consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
     fun api7(
