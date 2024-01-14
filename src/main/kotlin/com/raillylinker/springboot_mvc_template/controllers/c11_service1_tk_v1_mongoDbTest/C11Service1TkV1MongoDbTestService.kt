@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -47,6 +49,47 @@ class C11Service1TkV1MongoDbTestService(
             resultCollection.randomNum,
             resultCollection.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
             resultCollection.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+        )
+    }
+
+    ////
+    fun api2(httpServletResponse: HttpServletResponse) {
+        mongoDb1.remove(Query(), "testCollection")
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
+    }
+
+    ////
+    fun api3(httpServletResponse: HttpServletResponse, id: String) {
+        mongoDb1.remove(Query(Criteria.where("_id").`is`(id)), "testCollection")
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
+    }
+
+    ////
+    fun api4(httpServletResponse: HttpServletResponse): C11Service1TkV1MongoDbTestController.Api4OutputVo? {
+        val testCollectionList = mongoDb1.findAll(TestCollection::class.java, "testCollection")
+
+        val resultVoList: ArrayList<C11Service1TkV1MongoDbTestController.Api4OutputVo.TestEntityVo> = arrayListOf()
+
+        for (testCollection in testCollectionList) {
+            resultVoList.add(
+                C11Service1TkV1MongoDbTestController.Api4OutputVo.TestEntityVo(
+                    testCollection.uid!!.toString(),
+                    testCollection.content,
+                    testCollection.randomNum,
+                    testCollection.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    testCollection.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                )
+            )
+        }
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
+        return C11Service1TkV1MongoDbTestController.Api4OutputVo(
+            resultVoList
         )
     }
 }

@@ -67,97 +67,97 @@ class C11Service1TkV1MongoDbTestController(
     )
 
 
-//    ////
-//    @Operation(
-//        summary = "N2 : DB Rows 삭제 테스트 API",
-//        description = "테스트 테이블의 모든 Row 를 모두 삭제합니다.\n\n" +
-//                "(api-result-code)\n\n" +
-//                "0 : 정상 동작"
-//    )
-//    @DeleteMapping(
-//        path = ["/rows"],
-//        consumes = [MediaType.ALL_VALUE],
-//        produces = [MediaType.ALL_VALUE]
-//    )
-//    @ResponseBody
-//    fun api2(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse
-//    ) {
-//        service.api2(httpServletResponse)
-//    }
-//
-//
-//    ////
-//    @Operation(
-//        summary = "N3 : DB Row 삭제 테스트",
-//        description = "테스트 테이블의 Row 하나를 삭제합니다.\n\n" +
-//                "(api-result-code)\n\n" +
-//                "0 : 정상 동작"
-//    )
-//    @DeleteMapping(
-//        path = ["/row/{index}"],
-//        consumes = [MediaType.ALL_VALUE],
-//        produces = [MediaType.ALL_VALUE]
-//    )
-//    @ResponseBody
-//    fun api3(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse,
-//        @Parameter(name = "index", description = "글 인덱스", example = "1")
-//        @PathVariable("index")
-//        index: Long
-//    ) {
-//        service.api3(httpServletResponse, index)
-//    }
-//
-//
-//    ////
-//    @Operation(
-//        summary = "N4 : DB Rows 조회 테스트",
-//        description = "테스트 테이블의 모든 Rows 를 반환합니다.\n\n" +
-//                "(api-result-code)\n\n" +
-//                "0 : 정상 동작"
-//    )
-//    @GetMapping(
-//        path = ["/rows"],
-//        consumes = [MediaType.ALL_VALUE],
-//        produces = [MediaType.APPLICATION_JSON_VALUE]
-//    )
-//    @ResponseBody
-//    fun api4(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse
-//    ): Api4OutputVo? {
-//        return service.api4(httpServletResponse)
-//    }
-//
-//    data class Api4OutputVo(
-//        @Schema(description = "아이템 리스트", required = true)
-//        @JsonProperty("testEntityVoList")
-//        val testEntityVoList: List<TestEntityVo>
-//    ) {
-//        @Schema(description = "아이템")
-//        data class TestEntityVo(
-//            @Schema(description = "글 고유번호", required = true, example = "1234")
-//            @JsonProperty("uid")
-//            val uid: Long,
-//            @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
-//            @JsonProperty("content")
-//            val content: String,
-//            @Schema(description = "자동 생성 숫자", required = true, example = "21345")
-//            @JsonProperty("randomNum")
-//            val randomNum: Int,
-//            @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
-//            @JsonProperty("createDate")
-//            val createDate: String,
-//            @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
-//            @JsonProperty("updateDate")
-//            val updateDate: String
-//        )
-//    }
-//
-//
+    ////
+    @Operation(
+        summary = "N2 : DB Rows 삭제 테스트 API",
+        description = "테스트 테이블의 모든 Row 를 모두 삭제합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @DeleteMapping(
+        path = ["/test-document"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api2(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api2(httpServletResponse)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N3 : DB Row 삭제 테스트",
+        description = "테스트 테이블의 Row 하나를 삭제합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @DeleteMapping(
+        path = ["/test-document/{id}"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api3(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "id", description = "글 Id", example = "1")
+        @PathVariable("id")
+        id: String
+    ) {
+        service.api3(httpServletResponse, id)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N4 : DB Rows 조회 테스트",
+        description = "테스트 테이블의 모든 Rows 를 반환합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @GetMapping(
+        path = ["/test-document"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api4(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ): Api4OutputVo? {
+        return service.api4(httpServletResponse)
+    }
+
+    data class Api4OutputVo(
+        @Schema(description = "아이템 리스트", required = true)
+        @JsonProperty("testEntityVoList")
+        val testEntityVoList: List<TestEntityVo>
+    ) {
+        @Schema(description = "아이템")
+        data class TestEntityVo(
+            @Schema(description = "글 고유번호", required = true, example = "1234")
+            @JsonProperty("uid")
+            val uid: String,
+            @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
+            @JsonProperty("content")
+            val content: String,
+            @Schema(description = "자동 생성 숫자", required = true, example = "21345")
+            @JsonProperty("randomNum")
+            val randomNum: Int,
+            @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("createDate")
+            val createDate: String,
+            @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("updateDate")
+            val updateDate: String
+        )
+    }
+
+
 //    ////
 //    @Operation(
 //        summary = "N5 : DB 테이블의 random_num 컬럼 근사치 기준으로 정렬한 리스트 조회 API",
