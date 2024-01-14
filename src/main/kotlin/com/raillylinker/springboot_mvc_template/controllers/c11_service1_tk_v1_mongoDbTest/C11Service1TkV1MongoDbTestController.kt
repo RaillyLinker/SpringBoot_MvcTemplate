@@ -166,7 +166,7 @@ class C11Service1TkV1MongoDbTestController(
 //                "0 : 정상 동작"
 //    )
 //    @GetMapping(
-//        path = ["/rows/order-by-random-num-nearest"],
+//        path = ["/test-document/order-by-random-num-nearest"],
 //        consumes = [MediaType.ALL_VALUE],
 //        produces = [MediaType.APPLICATION_JSON_VALUE]
 //    )
@@ -190,7 +190,7 @@ class C11Service1TkV1MongoDbTestController(
 //        data class TestEntityVo(
 //            @Schema(description = "글 고유번호", required = true, example = "1234")
 //            @JsonProperty("uid")
-//            val uid: Long,
+//            val uid: String,
 //            @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
 //            @JsonProperty("content")
 //            val content: String,
@@ -209,7 +209,7 @@ class C11Service1TkV1MongoDbTestController(
 //        )
 //    }
 //
-//
+
 //    ////
 //    @Operation(
 //        summary = "N6 : DB 테이블의 row_create_date 컬럼 근사치 기준으로 정렬한 리스트 조회 API",
