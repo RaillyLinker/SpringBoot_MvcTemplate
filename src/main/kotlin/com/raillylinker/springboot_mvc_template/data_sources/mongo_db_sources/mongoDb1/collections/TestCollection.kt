@@ -1,4 +1,4 @@
-package com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongoDb1
+package com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongoDb1.collections
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
