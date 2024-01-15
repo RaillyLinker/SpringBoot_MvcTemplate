@@ -4,6 +4,7 @@ import com.raillylinker.springboot_mvc_template.ApplicationConstants
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.mongodb.MongoTransactionManager
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
@@ -26,10 +27,21 @@ class MongoDb1Config(
         // Database Repository 객체가 저장된 위치 (아래와 같이 위치 해야 함)
         const val REPOSITORY_PATH: String =
             "${ApplicationConstants.PACKAGE_NAME}.data_sources.mongo_db_sources.${DATASOURCE_NAME}.repositories"
+
+        // Database 트랜젝션을 사용할 때 사용하는 이름 변수
+        const val TRANSACTION_NAME: String =
+            "${DATASOURCE_NAME}_PlatformTransactionManager"
     }
+
+    private val mongoClientFactory = SimpleMongoClientDatabaseFactory(mongoDb1Uri)
 
     @Bean(name = [DATASOURCE_NAME])
     fun mongoTemplate(): MongoTemplate {
-        return MongoTemplate(SimpleMongoClientDatabaseFactory(mongoDb1Uri))
+        return MongoTemplate(mongoClientFactory)
+    }
+
+    @Bean(TRANSACTION_NAME)
+    fun customTransactionManager(): MongoTransactionManager {
+        return MongoTransactionManager(mongoClientFactory)
     }
 }
