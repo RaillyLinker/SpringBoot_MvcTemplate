@@ -1,13 +1,4 @@
 [TODO]
-- 웹소켓 샘플(stomp) 추가
 - ProcessBuilder 샘플 추가
-- 채팅 백엔드 구현
-    WebSocket STOMP 연결,
-    채팅방 분리 및 JPA 저장,
-    인증 / 인가,
-    채팅 로그 MongoDB 저장,
-    Kafka Pub-Sub 연결 통로 역할,
-    해야할 것은, 효율적인 코드 구조 정리, 트래픽 안정화, 성능 최적화에 신경쓸 것.
-    -> flutter 와 연결해보기
 - ELK( Elasticsearch / Logstatsh / Kibana )스택 연동
 - avif 변환, 비디오 변환

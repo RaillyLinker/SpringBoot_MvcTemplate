@@ -102,6 +102,10 @@ dependencies {
 
     // (MongoDB)
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.1")
+
+    // (ORM 관련 라이브러리)
+    // WebSocket STOMP Controller 에서 입력값 매핑시 사용됨
+    implementation("javax.persistence:persistence-api:1.0.2")
 }
 
 tasks.withType<KotlinCompile> {
