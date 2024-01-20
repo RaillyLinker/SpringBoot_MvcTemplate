@@ -11,6 +11,7 @@ import org.springframework.messaging.support.ChannelInterceptor
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration
 
 // [WebSocket STOMP 설정]
 @EnableWebSocketMessageBroker
@@ -72,5 +73,14 @@ class WebSocketStompConfig : WebSocketMessageBrokerConfigurer {
                 return message
             }
         })
+    }
+
+    override fun configureWebSocketTransport(registry: WebSocketTransportRegistration) {
+        // WebSocket으로 전송되는 메시지의 최대 크기를 설정
+        registry.setMessageSizeLimit(160 * 64 * 1024)
+        // 메시지 전송에 대한 시간 제한을 설정
+        registry.setSendTimeLimit(100 * 10000)
+        // 송신 버퍼의 크기 제한을 설정
+        registry.setSendBufferSizeLimit(3 * 512 * 1024)
     }
 }
