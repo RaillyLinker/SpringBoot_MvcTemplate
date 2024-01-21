@@ -270,4 +270,41 @@ class C6Service1TkV1TestController(
         @JsonProperty("message")
         val message: String
     )
+
+    ////
+    @Operation(
+        summary = "N8 : ProcessBuilder 샘플",
+        description = "ProcessBuilder 를 이용하여 준비된 jar 파일을 실행시킵니다.\n\n" +
+                "jar 파일은 3초간 while 문으로 int 변수에 ++ 를 한 후 그 결과를 반환합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @GetMapping(
+        path = ["/process-builder-test"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api8(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(
+            name = "java 실행 파일 경로",
+            description = "java 명령어 실행 파일의 경로를 넣어줍니다. 환경변수 등록시 null",
+            example = "C:\\Users\\raill\\.jdks\\openjdk-21.0.2\\bin"
+        )
+        @RequestParam("javaEnvironmentPath")
+        javaEnvironmentPath: String?
+    ): Api8OutputVo? {
+        return service.api8(
+            httpServletResponse,
+            javaEnvironmentPath
+        )
+    }
+
+    data class Api8OutputVo(
+        @Schema(description = "jar 실행 결과", required = true, example = "3333")
+        @JsonProperty("jarResult")
+        val jarResult: Long
+    )
 }

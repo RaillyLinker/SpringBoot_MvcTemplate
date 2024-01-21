@@ -10,11 +10,12 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.io.*
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.HashMap
+
 
 @Service
 class C6Service1TkV1TestService(
@@ -201,5 +202,41 @@ class C6Service1TkV1TestService(
 
         httpServletResponse.status = HttpStatus.OK.value()
         httpServletResponse.setHeader("api-result-code", "0")
+    }
+
+    ////
+    fun api8(
+        httpServletResponse: HttpServletResponse,
+        javaEnvironmentPath: String?
+    ): C6Service1TkV1TestController.Api8OutputVo? {
+        val javaEnv = javaEnvironmentPath ?: "java"
+
+        // JAR 파일 실행 명령어 설정
+        val javaJarPb = ProcessBuilder(javaEnv, "-jar", "./samples/JarExample/Counter.jar")
+        javaJarPb.directory(File(".")) // 현재 작업 디렉토리 설정
+
+        // 프로세스 시작
+        val javaJarProcess = javaJarPb.start()
+
+        // 프로세스의 출력 스트림 가져오기
+        val inputStream: InputStream = javaJarProcess.inputStream
+        val reader = BufferedReader(InputStreamReader(inputStream))
+
+        // Read the result from the JAR execution
+        val result = reader.readLine()?.toLong() ?: 0
+
+        // 프로세스 종료 대기
+        val exitCode = javaJarProcess.waitFor()
+        println("Exit Code: $exitCode")
+
+        // 자원 해제
+        reader.close()
+        inputStream.close()
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
+        return C6Service1TkV1TestController.Api8OutputVo(
+            result
+        )
     }
 }
