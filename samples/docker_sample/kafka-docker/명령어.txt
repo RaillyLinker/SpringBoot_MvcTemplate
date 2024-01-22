@@ -1,0 +1,1 @@
+docker-compose -f kafka-compose.yml up
