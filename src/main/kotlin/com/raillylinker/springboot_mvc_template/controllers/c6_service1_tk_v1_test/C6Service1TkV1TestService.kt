@@ -6,9 +6,11 @@ import com.raillylinker.springboot_mvc_template.custom_objects.*
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpStatus
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import java.io.*
 import java.nio.file.Files
@@ -26,7 +28,7 @@ class C6Service1TkV1TestService(
     private val emailSenderUtilDi: EmailSenderUtilDi,
     // 네이버 메시지 발송 유틸
     private val naverSmsUtilDi: NaverSmsUtilDi,
-//    @Qualifier("kafkaProducer1") private val kafkaProducer1: KafkaTemplate<String, Any>
+    @Qualifier("kafkaProducer0") private val kafkaProducer0: KafkaTemplate<String, Any>
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -198,7 +200,7 @@ class C6Service1TkV1TestService(
     ////
     fun api7(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api7InputVo) {
         // kafkaProducer1 에 토픽 메세지 발행
-//        kafkaProducer1.send(inputVo.topic, inputVo.message)
+        kafkaProducer0.send(inputVo.topic, inputVo.message)
 
         httpServletResponse.status = HttpStatus.OK.value()
         httpServletResponse.setHeader("api-result-code", "0")
