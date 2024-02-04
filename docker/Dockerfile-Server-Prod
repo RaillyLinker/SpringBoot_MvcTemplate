@@ -1,0 +1,39 @@
+# 베이스 이미지 설정
+FROM ubuntu:22.04
+
+# 필요 패키지 설치
+RUN apt-get update
+RUN apt-get upgrade
+RUN apt-get install -y wget
+RUN apt-get install -y tzdata
+
+# OpenJDK 설치 !!!필요한 JDK 버전에 맞는 설치!!!
+RUN wget https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_linux-x64_bin.tar.gz
+RUN tar -xvf openjdk-21.0.2_linux-x64_bin.tar.gz
+RUN mv jdk-21.0.2 /usr/local/
+ENV JAVA_HOME /usr/local/jdk-21.0.2
+ENV PATH $JAVA_HOME/bin:$PATH
+
+# RUN apt install -y openjdk-17-jdk
+
+# TimeZone 설정
+RUN ln -fs /usr/share/zoneinfo/Asia/Seoul /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
+
+# Git 설치
+RUN apt-get install -y git
+
+# 작업 디렉토리 생성 및 이동
+WORKDIR /docker_shared_server
+
+# Git Clone !!!clone 할 Git 경로 설정!!!
+RUN git clone https://github.com/RaillyLinker/SpringBoot_MvcTemplate.git ./server_project
+
+# 작업 디렉토리 생성 및 이동
+WORKDIR /docker_shared_server/server_project
+
+# Spring Boot 프로젝트 빌드
+RUN chmod +x ./gradlew
+RUN ./gradlew build -x test
+
+# Spring Boot 애플리케이션 실행 !!!자바 프로필 설정 및 jar 파일 경로 설정!!!
+CMD ["java", "-jar", "-Dspring.profiles.active=prod80", "/docker_shared_server/server_project/build/libs/springboot_mvc_template-0.0.1-SNAPSHOT.jar"]
