@@ -14,9 +14,9 @@ or
 > docker container rm SpringBoot_MvcTemplate
 
 (컨테이너 생성 및 실행)
-> docker container run -d -e TZ=Asia/Seoul -it --rm -p8083:8083 --name SpringBoot_MvcTemplate raillylinker/SpringBoot_MvcTemplate:latest
+> docker container run -d -e TZ=Asia/Seoul --rm -p8083:8083 --name SpringBoot_MvcTemplate raillylinker/SpringBoot_MvcTemplate:latest
 or
-> docker container run -d -e TZ=Asia/Seoul -it --rm -p80:80 --name SpringBoot_MvcTemplate raillylinker/SpringBoot_MvcTemplate:latest
+> docker container run -d -e TZ=Asia/Seoul --rm -p80:80 --name SpringBoot_MvcTemplate raillylinker/SpringBoot_MvcTemplate:latest
 
 (사용하지 않는 모든 이미지 삭제)
 > docker image prune -af
