@@ -51,7 +51,7 @@ datasource:
   # !!!접속하려는 DB 에 대한 정보를 아래와 같이 추가 할 것!!!
   database1: # DB 추가
     # 데이터베이스 접속 경로
-    jdbcUrl: jdbc:mysql://host.docker.internal:3306/template?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&autoReconnect=true
+    jdbcUrl: jdbc:mysql://localhost:3306/template?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&autoReconnect=true
     # 데이터베이스의 사용자명
     username: test
     # 데이터베이스의 패스워드
