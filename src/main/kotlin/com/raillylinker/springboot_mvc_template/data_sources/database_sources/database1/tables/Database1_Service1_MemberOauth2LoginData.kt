@@ -20,11 +20,7 @@ class Database1_Service1_MemberOauth2LoginData(
 
     @Column(name = "oauth2_id", nullable = false, columnDefinition = "VARCHAR(50)")
     @Comment("OAuth2 로그인으로 얻어온 고유값")
-    var oauth2Id: String,
-
-    @Column(name = "row_activate", nullable = false, columnDefinition = "BIT(1)")
-    @Comment("행 활성 여부")
-    var rowActivate: Boolean
+    var oauth2Id: String
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +37,10 @@ class Database1_Service1_MemberOauth2LoginData(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
+
+    @Column(name = "row_delete_date", nullable = true, columnDefinition = "DATETIME")
+    @Comment("행 삭제일")
+    var rowDeleteDate: LocalDateTime? = null
 
 
     // ---------------------------------------------------------------------------------------------

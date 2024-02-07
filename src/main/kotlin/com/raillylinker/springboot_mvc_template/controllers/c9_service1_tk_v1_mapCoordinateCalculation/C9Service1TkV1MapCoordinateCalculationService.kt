@@ -59,8 +59,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
             database1TemplateTestMapRepository.save(
                 Database1_Template_TestMap(
                     latLng.first,
-                    latLng.second,
-                    true
+                    latLng.second
                 )
             )
         }
@@ -123,8 +122,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         database1TemplateTestMapRepository.save(
             Database1_Template_TestMap(
                 inputVo.latitude,
-                inputVo.longitude,
-                true
+                inputVo.longitude
             )
         )
 

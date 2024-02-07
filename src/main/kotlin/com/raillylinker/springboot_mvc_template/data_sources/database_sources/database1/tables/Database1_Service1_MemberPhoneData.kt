@@ -16,11 +16,7 @@ class Database1_Service1_MemberPhoneData(
 
     @Column(name = "phone_number", nullable = false, columnDefinition = "VARCHAR(45)")
     @Comment("전화번호(국가번호 + 전화번호, 중복 비허용)")
-    var phoneNumber: String,
-
-    @Column(name = "row_activate", nullable = false, columnDefinition = "BIT(1)")
-    @Comment("행 활성 여부")
-    var rowActivate: Boolean
+    var phoneNumber: String
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +33,10 @@ class Database1_Service1_MemberPhoneData(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
+
+    @Column(name = "row_delete_date", nullable = true, columnDefinition = "DATETIME")
+    @Comment("행 삭제일")
+    var rowDeleteDate: LocalDateTime? = null
 
 
     // ---------------------------------------------------------------------------------------------

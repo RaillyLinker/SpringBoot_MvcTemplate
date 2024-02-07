@@ -36,7 +36,7 @@ class C7Service1TkV1DatabaseTestService(
         inputVo: C7Service1TkV1DatabaseTestController.Api1InputVo
     ): C7Service1TkV1DatabaseTestController.Api1OutputVo? {
         val result = database1TemplateTestRepository.save(
-            Database1_Template_TestData(inputVo.content, (0..99999999).random(), true)
+            Database1_Template_TestData(inputVo.content, (0..99999999).random())
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -165,8 +165,8 @@ class C7Service1TkV1DatabaseTestService(
         pageElementsCount: Int
     ): C7Service1TkV1DatabaseTestController.Api7OutputVo? {
         val pageable: Pageable = PageRequest.of(page - 1, pageElementsCount)
-        val entityList = database1TemplateTestRepository.findAllByRowActivateOrderByRowCreateDate(
-            true,
+        val entityList = database1TemplateTestRepository.findAllByRowDeleteDateOrderByRowCreateDate(
+            null,
             pageable
         )
 
@@ -237,7 +237,7 @@ class C7Service1TkV1DatabaseTestService(
     ): C7Service1TkV1DatabaseTestController.Api9OutputVo? {
         val oldEntity = database1TemplateTestRepository.findById(testTableUid)
 
-        if (oldEntity.isEmpty || !oldEntity.get().rowActivate) {
+        if (oldEntity.isEmpty || oldEntity.get().rowDeleteDate != null) {
             httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
@@ -274,7 +274,7 @@ class C7Service1TkV1DatabaseTestService(
         // 고로 수정문은 jpa 를 사용하길 권장합니다. !!
         val testEntity = database1TemplateTestRepository.findById(testTableUid)
 
-        if (testEntity.isEmpty || !testEntity.get().rowActivate) {
+        if (testEntity.isEmpty || testEntity.get().rowDeleteDate != null) {
             httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
             httpServletResponse.setHeader("api-result-code", "1")
             // 트랜젝션 커밋
@@ -329,7 +329,7 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse
     ) {
         database1TemplateTestRepository.save(
-            Database1_Template_TestData("error test", (0..99999999).random(), true)
+            Database1_Template_TestData("error test", (0..99999999).random())
         )
 
         throw Exception("Transaction Rollback Test!")
@@ -339,7 +339,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api13(httpServletResponse: HttpServletResponse) {
         database1TemplateTestRepository.save(
-            Database1_Template_TestData("error test", (0..99999999).random(), true)
+            Database1_Template_TestData("error test", (0..99999999).random())
         )
 
         throw Exception("No Transaction Exception Test!")
@@ -359,7 +359,7 @@ class C7Service1TkV1DatabaseTestService(
             num
         )
 
-        val count = database1TemplateTestRepository.countByRowActivate(true)
+        val count = database1TemplateTestRepository.countByRowDeleteDate(null)
 
         val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api14OutputVo.TestEntityVo>()
         for (vo in voList) {

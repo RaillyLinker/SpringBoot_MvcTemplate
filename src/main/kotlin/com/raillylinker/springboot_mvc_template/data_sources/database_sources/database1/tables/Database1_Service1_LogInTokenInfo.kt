@@ -36,11 +36,7 @@ class Database1_Service1_LogInTokenInfo(
 
     @Column(name = "refresh_token_expire_when", nullable = false, columnDefinition = "DATETIME")
     @Comment("리플레시 토큰 만료 일시")
-    var refreshTokenExpireWhen: LocalDateTime,
-
-    @Column(name = "row_activate", nullable = false, columnDefinition = "BIT(1)")
-    @Comment("행 활성 여부")
-    var rowActivate: Boolean
+    var refreshTokenExpireWhen: LocalDateTime
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,6 +53,10 @@ class Database1_Service1_LogInTokenInfo(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
+
+    @Column(name = "row_delete_date", nullable = true, columnDefinition = "DATETIME")
+    @Comment("행 삭제일")
+    var rowDeleteDate: LocalDateTime? = null
 
 
     // ---------------------------------------------------------------------------------------------

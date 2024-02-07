@@ -5,14 +5,15 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 interface Database1_Template_TestsRepository : JpaRepository<Database1_Template_TestData, Long> {
-    fun findAllByRowActivateOrderByRowCreateDate(
-        rowActivate: Boolean,
+    fun findAllByRowDeleteDateOrderByRowCreateDate(
+        rowDeleteDate : LocalDateTime?,
         pageable: Pageable
     ): Page<Database1_Template_TestData>
 
-    fun countByRowActivate(rowActivate: Boolean): Long
+    fun countByRowDeleteDate(rowDeleteDate : LocalDateTime?): Long
 
 }

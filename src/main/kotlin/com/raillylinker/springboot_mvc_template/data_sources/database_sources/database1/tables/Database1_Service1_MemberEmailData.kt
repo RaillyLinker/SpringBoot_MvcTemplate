@@ -16,11 +16,7 @@ class Database1_Service1_MemberEmailData(
 
     @Column(name = "email_address", nullable = false, columnDefinition = "VARCHAR(100)")
     @Comment("이메일 주소 (중복 비허용)")
-    var emailAddress: String,
-
-    @Column(name = "row_activate", nullable = false, columnDefinition = "BIT(1)")
-    @Comment("행 활성 여부")
-    var rowActivate: Boolean
+    var emailAddress: String
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +33,10 @@ class Database1_Service1_MemberEmailData(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
+
+    @Column(name = "row_delete_date", nullable = true, columnDefinition = "DATETIME")
+    @Comment("행 삭제일")
+    var rowDeleteDate: LocalDateTime? = null
 
 
     // ---------------------------------------------------------------------------------------------

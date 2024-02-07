@@ -28,11 +28,7 @@ class Database1_Service1_MemberData(
 
     @Column(name = "front_phone_uid", nullable = true, columnDefinition = "BIGINT UNSIGNED")
     @Comment("대표 프로필 Uid (service1.member_phone_data.uid)")
-    var frontPhoneUid: Long?,
-
-    @Column(name = "row_activate", nullable = false, columnDefinition = "BIT(1)")
-    @Comment("행 활성 여부")
-    var rowActivate: Boolean
+    var frontPhoneUid: Long?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +45,10 @@ class Database1_Service1_MemberData(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
+
+    @Column(name = "row_delete_date", nullable = true, columnDefinition = "DATETIME")
+    @Comment("행 삭제일")
+    var rowDeleteDate: LocalDateTime? = null
 
 
     // ---------------------------------------------------------------------------------------------

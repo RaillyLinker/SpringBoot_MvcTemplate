@@ -17,11 +17,7 @@ class Database1_Template_TestData(
 
     @Column(name = "random_num", nullable = false, columnDefinition = "INT")
     @Comment("테스트 랜덤 번호")
-    var randomNum: Int,
-
-    @Column(name = "row_activate", nullable = false, columnDefinition = "BIT(1)")
-    @Comment("행 활성 여부")
-    var rowActivate: Boolean
+    var randomNum: Int
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +34,10 @@ class Database1_Template_TestData(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
+
+    @Column(name = "row_delete_date", nullable = true, columnDefinition = "DATETIME")
+    @Comment("행 삭제일")
+    var rowDeleteDate: LocalDateTime? = null
 
 
     // ---------------------------------------------------------------------------------------------

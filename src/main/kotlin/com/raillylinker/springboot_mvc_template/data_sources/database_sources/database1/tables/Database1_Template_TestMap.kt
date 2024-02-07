@@ -16,11 +16,7 @@ class Database1_Template_TestMap(
 
     @Column(name = "longitude", nullable = false, columnDefinition = "DOUBLE")
     @Comment("지도 경도")
-    var longitude: Double,
-
-    @Column(name = "row_activate", nullable = false, columnDefinition = "BIT(1)")
-    @Comment("행 활성 여부")
-    var rowActivate: Boolean
+    var longitude: Double
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +33,10 @@ class Database1_Template_TestMap(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
+
+    @Column(name = "row_delete_date", nullable = true, columnDefinition = "DATETIME")
+    @Comment("행 삭제일")
+    var rowDeleteDate: LocalDateTime? = null
 
 
     // ---------------------------------------------------------------------------------------------
