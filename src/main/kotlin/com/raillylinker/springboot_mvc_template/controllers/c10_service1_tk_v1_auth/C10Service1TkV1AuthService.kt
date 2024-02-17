@@ -150,6 +150,7 @@ class C10Service1TkV1AuthService(
     }
 
     ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api5(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api5InputVo
@@ -488,6 +489,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api7(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api7InputVo
@@ -736,6 +738,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api7Dot1(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api7Dot1InputVo
@@ -935,6 +938,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     // 주의점 : 클라이언트 입장에선 강제종료 등의 이유로 항상 로그인과 로그아웃이 쌍을 이루는 것은 아니기에 이점을 유의
     fun api8(authorization: String, httpServletResponse: HttpServletResponse) {
         // 해당 멤버의 토큰 발행 정보 삭제
@@ -959,6 +963,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api9(
         authorization: String,
         inputVo: C10Service1TkV1AuthController.Api9InputVo,
@@ -1225,6 +1230,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api10(authorization: String, httpServletResponse: HttpServletResponse) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
