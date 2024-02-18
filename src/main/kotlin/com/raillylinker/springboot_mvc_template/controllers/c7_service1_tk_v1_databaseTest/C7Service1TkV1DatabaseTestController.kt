@@ -626,4 +626,55 @@ class C7Service1TkV1DatabaseTestController(
 
 
     ////
+    @Operation(
+        summary = "N15 : DB Rows 조회 테스트 (카운팅)",
+        description = "테스트 테이블의 Rows 를 카운팅하여 반환합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @GetMapping(
+        path = ["/rows/counting"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api15(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ): Api15OutputVo? {
+        return service.api15(httpServletResponse)
+    }
+
+    data class Api15OutputVo(
+        @Schema(description = "아이템 전체 개수", required = true, example = "100")
+        @JsonProperty("totalElements")
+        val totalElements: Long
+    )
+
+
+    ////
+    @Operation(
+        summary = "N16 : DB Rows 조회 테스트 (네이티브 카운팅)",
+        description = "테스트 테이블의 Rows 를 네이티브 쿼리로 카운팅하여 반환합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @GetMapping(
+        path = ["/rows/native-counting"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api16(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ): Api16OutputVo? {
+        return service.api16(httpServletResponse)
+    }
+
+    data class Api16OutputVo(
+        @Schema(description = "아이템 전체 개수", required = true, example = "100")
+        @JsonProperty("totalElements")
+        val totalElements: Long
+    )
 }

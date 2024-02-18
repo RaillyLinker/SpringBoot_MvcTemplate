@@ -101,7 +101,7 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse,
         num: Int
     ): C7Service1TkV1DatabaseTestController.Api5OutputVo? {
-        val foundEntityList = database1NativeRepository.selectListForC7N5(num)
+        val foundEntityList = database1NativeRepository.forC7N5(num)
 
         val testEntityVoList =
             ArrayList<C7Service1TkV1DatabaseTestController.Api5OutputVo.TestEntityVo>()
@@ -132,7 +132,7 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse,
         dateString: String
     ): C7Service1TkV1DatabaseTestController.Api6OutputVo? {
-        val foundEntityList = database1NativeRepository.selectListForC7N6(dateString)
+        val foundEntityList = database1NativeRepository.forC7N6(dateString)
 
         val testEntityVoList =
             ArrayList<C7Service1TkV1DatabaseTestController.Api6OutputVo.TestEntityVo>()
@@ -200,7 +200,7 @@ class C7Service1TkV1DatabaseTestService(
         num: Int
     ): C7Service1TkV1DatabaseTestController.Api8OutputVo? {
         val pageable: Pageable = PageRequest.of(page - 1, pageElementsCount)
-        val voList = database1NativeRepository.selectListForC7N8(
+        val voList = database1NativeRepository.forC7N8(
             num,
             pageable
         )
@@ -281,7 +281,7 @@ class C7Service1TkV1DatabaseTestService(
             return
         }
 
-        database1NativeRepository.updateForC7N10(testTableUid, inputVo.content)
+        database1NativeRepository.forC7N10(testTableUid, inputVo.content)
 
         httpServletResponse.status = HttpStatus.OK.value()
         httpServletResponse.setHeader("api-result-code", "0")
@@ -296,7 +296,7 @@ class C7Service1TkV1DatabaseTestService(
         searchKeyword: String
     ): C7Service1TkV1DatabaseTestController.Api11OutputVo? {
         val pageable: Pageable = PageRequest.of(page - 1, pageElementsCount)
-        val voList = database1NativeRepository.selectListForC7N11(
+        val voList = database1NativeRepository.forC7N11(
             searchKeyword,
             pageable
         )
@@ -353,7 +353,7 @@ class C7Service1TkV1DatabaseTestService(
         pageElementsCount: Int,
         num: Int
     ): C7Service1TkV1DatabaseTestController.Api14OutputVo? {
-        val voList = database1NativeRepository.selectListForC7N14(
+        val voList = database1NativeRepository.forC7N14(
             lastItemUid ?: -1,
             pageElementsCount,
             num
@@ -378,5 +378,25 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse.status = HttpStatus.OK.value()
         httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api14OutputVo(count, testEntityVoList)
+    }
+
+
+    ////
+    fun api15(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api15OutputVo? {
+        val count = database1TemplateTestRepository.countByRowDeleteDate(null)
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
+        return C7Service1TkV1DatabaseTestController.Api15OutputVo(count)
+    }
+
+
+    ////
+    fun api16(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api16OutputVo? {
+        val count = database1NativeRepository.forC7N16()
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
+        return C7Service1TkV1DatabaseTestController.Api16OutputVo(count)
     }
 }

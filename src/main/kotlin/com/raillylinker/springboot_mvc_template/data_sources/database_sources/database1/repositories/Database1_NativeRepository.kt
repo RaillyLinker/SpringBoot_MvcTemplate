@@ -32,11 +32,11 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             distance
             """
     )
-    fun selectListForC7N5(
+    fun forC7N5(
         @Param(value = "num") num: Int
-    ): List<SelectListForC7N5OutputVo>
+    ): List<ForC7N5OutputVo>
 
-    interface SelectListForC7N5OutputVo {
+    interface ForC7N5OutputVo {
         var uid: Long
         var rowCreateDate: LocalDateTime
         var rowUpdateDate: LocalDateTime
@@ -63,11 +63,11 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             timeDiffSec
             """
     )
-    fun selectListForC7N6(
+    fun forC7N6(
         @Param(value = "date") date: String
-    ): List<SelectListForC7N6OutputVo>
+    ): List<ForC7N6OutputVo>
 
-    interface SelectListForC7N6OutputVo {
+    interface ForC7N6OutputVo {
         var uid: Long
         var rowCreateDate: LocalDateTime
         var rowUpdateDate: LocalDateTime
@@ -102,12 +102,12 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             row_delete_date is NULL
             """
     )
-    fun selectListForC7N8(
+    fun forC7N8(
         @Param(value = "num") num: Int,
         pageable: Pageable
-    ): Page<SelectListForC7N8OutputVo>
+    ): Page<ForC7N8OutputVo>
 
-    interface SelectListForC7N8OutputVo {
+    interface ForC7N8OutputVo {
         var uid: Long
         var rowCreateDate: LocalDateTime
         var rowUpdateDate: LocalDateTime
@@ -129,7 +129,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             uid = :uid
             """
     )
-    fun updateForC7N10(
+    fun forC7N10(
         @Param(value = "uid") uid: Long,
         @Param(value = "content") content: String
     )
@@ -160,12 +160,12 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             and row_delete_date is NULL
             """
     )
-    fun selectListForC7N11(
+    fun forC7N11(
         @Param(value = "searchKeyword") searchKeyword: String,
         pageable: Pageable
-    ): Page<SelectPageForC7N11OutputVo>
+    ): Page<ForC7N11OutputVo>
 
-    interface SelectPageForC7N11OutputVo {
+    interface ForC7N11OutputVo {
         var uid: Long
         var rowCreateDate: LocalDateTime
         var rowUpdateDate: LocalDateTime
@@ -249,13 +249,13 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             limit :pageElementsCount
             """
     )
-    fun selectListForC7N14(
+    fun forC7N14(
         @Param(value = "lastItemUid") lastItemUid: Long,
         @Param(value = "pageElementsCount") pageElementsCount: Int,
         @Param(value = "num") num: Int
-    ): List<SelectListForC7N14OutputVo>
+    ): List<ForC7N14OutputVo>
 
-    interface SelectListForC7N14OutputVo {
+    interface ForC7N14OutputVo {
         var uid: Long
         var rowCreateDate: LocalDateTime
         var rowUpdateDate: LocalDateTime
@@ -263,6 +263,21 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var randomNum: Int
         var distance: Int
     }
+
+
+    ////
+    @Query(
+        nativeQuery = true,
+        value = """
+            select 
+            count(*) 
+            from 
+            template.test_data 
+            where 
+            row_delete_date is NULL
+            """
+    )
+    fun forC7N16(): Long
 
 
     //------------------------------------------------------------------------------------------------------------------
@@ -289,13 +304,13 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             distanceKiloMeter
             """
     )
-    fun selectListForApiC9N5(
+    fun forApiC9N5(
         @Param(value = "latitude") latitude: Double,
         @Param(value = "longitude") longitude: Double,
         @Param(value = "radiusKiloMeter") radiusKiloMeter: Double
-    ): List<SelectListForApiC9N5OutputVo>
+    ): List<ForApiC9N5OutputVo>
 
-    interface SelectListForApiC9N5OutputVo {
+    interface ForApiC9N5OutputVo {
         var uid: Long
         var latitude: Double
         var longitude: Double
@@ -327,14 +342,14 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             )
             """
     )
-    fun selectListForApiC9N6(
+    fun forApiC9N6(
         @Param(value = "northLatitude") northLatitude: Double,
         @Param(value = "eastLongitude") eastLongitude: Double,
         @Param(value = "southLatitude") southLatitude: Double,
         @Param(value = "westLongitude") westLongitude: Double
-    ): List<SelectListForApiC9N6OutputVo>
+    ): List<ForApiC9N6OutputVo>
 
-    interface SelectListForApiC9N6OutputVo {
+    interface ForApiC9N6OutputVo {
         var uid: Long
         var latitude: Double
         var longitude: Double

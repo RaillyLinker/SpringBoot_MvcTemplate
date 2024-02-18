@@ -175,7 +175,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         radiusKiloMeter: Double
     ): C9Service1TkV1MapCoordinateCalculationController.Api5OutputVo? {
         val entityList =
-            database1NativeRepository.selectListForApiC9N5(
+            database1NativeRepository.forApiC9N5(
                 anchorLatitude,
                 anchorLongitude,
                 radiusKiloMeter
@@ -211,7 +211,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         westLongitude: Double // 남경도 (ex : 126.587602)
     ): C9Service1TkV1MapCoordinateCalculationController.Api6OutputVo? {
         val entityList =
-            database1NativeRepository.selectListForApiC9N6(
+            database1NativeRepository.forApiC9N6(
                 northLatitude,
                 eastLongitude,
                 southLatitude,
