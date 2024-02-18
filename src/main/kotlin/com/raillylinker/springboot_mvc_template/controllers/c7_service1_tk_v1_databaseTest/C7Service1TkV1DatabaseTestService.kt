@@ -399,4 +399,29 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api16OutputVo(count)
     }
+
+
+    ////
+    fun api17(
+        httpServletResponse: HttpServletResponse,
+        testTableUid: Long
+    ): C7Service1TkV1DatabaseTestController.Api17OutputVo? {
+        val entity = database1NativeRepository.forC7N17(testTableUid)
+
+        if (entity == null) {
+            httpServletResponse.status = HttpStatus.OK.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return null
+        }
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
+        return C7Service1TkV1DatabaseTestController.Api17OutputVo(
+            entity.uid,
+            entity.content,
+            entity.randomNum,
+            entity.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+            entity.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+        )
+    }
 }

@@ -677,4 +677,47 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("totalElements")
         val totalElements: Long
     )
+
+
+    ////
+    @Operation(
+        summary = "N17 : DB Row 조회 테스트 (네이티브)",
+        description = "테스트 테이블의 Row 하나를 네이티브 쿼리로 반환합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작\n\n" +
+                "1 : 데이터가 없습니다."
+    )
+    @GetMapping(
+        path = ["/row/native/{testTableUid}"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api17(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "testTableUid", description = "test 테이블의 uid", example = "1")
+        @PathVariable("testTableUid")
+        testTableUid: Long
+    ): Api17OutputVo? {
+        return service.api17(httpServletResponse, testTableUid)
+    }
+
+    data class Api17OutputVo(
+        @Schema(description = "글 고유번호", required = true, example = "1234")
+        @JsonProperty("uid")
+        val uid: Long,
+        @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
+        @JsonProperty("content")
+        val content: String,
+        @Schema(description = "자동 생성 숫자", required = true, example = "21345")
+        @JsonProperty("randomNum")
+        val randomNum: Int,
+        @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+        @JsonProperty("createDate")
+        val createDate: String,
+        @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+        @JsonProperty("updateDate")
+        val updateDate: String
+    )
 }

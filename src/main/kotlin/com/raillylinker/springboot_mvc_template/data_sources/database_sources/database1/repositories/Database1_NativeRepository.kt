@@ -26,8 +26,10 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.content as content, 
             test_data.random_num as randomNum, 
             ABS(test_data.random_num-:num) as distance 
-            from template.test_data 
-            where row_delete_date is NULL 
+            from 
+            template.test_data 
+            where 
+            row_delete_date is NULL 
             order by 
             distance
             """
@@ -57,8 +59,10 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.row_create_date as rowCreateDate, 
             test_data.row_update_date as rowUpdateDate, 
             ABS(TIMESTAMPDIFF(SECOND, test_data.row_create_date, :date)) as timeDiffSec 
-            from template.test_data 
-            where row_delete_date is NULL 
+            from 
+            template.test_data 
+            where 
+            row_delete_date is NULL 
             order by 
             timeDiffSec
             """
@@ -90,7 +94,8 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             ABS(test_data.random_num-:num) as distance 
             from 
             template.test_data 
-            where row_delete_date is NULL 
+            where 
+            row_delete_date is NULL 
             order by distance
             """,
         countQuery = """
@@ -122,7 +127,8 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
     @Query(
         nativeQuery = true,
         value = """
-            UPDATE template.test_data 
+            UPDATE 
+            template.test_data 
             SET 
             content = :content 
             WHERE 
@@ -148,16 +154,16 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.random_num as randomNum 
             from template.test_data 
             where 
-            replace(content, ' ', '') like replace(concat('%',:searchKeyword,'%'), ' ', '') 
-            and row_delete_date is NULL
+            replace(content, ' ', '') like replace(concat('%',:searchKeyword,'%'), ' ', '') and 
+            row_delete_date is NULL
             """,
         countQuery = """
             select 
             count(*) 
             from template.test_data 
             where 
-            replace(content, ' ', '') like replace(concat('%',:searchKeyword,'%'), ' ', '') 
-            and row_delete_date is NULL
+            replace(content, ' ', '') like replace(concat('%',:searchKeyword,'%'), ' ', '') and 
+            row_delete_date is NULL
             """
     )
     fun forC7N11(
@@ -211,40 +217,39 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             where
             rowNum > 
             (
-            select if
-            (
-                :lastItemUid > 0,
+                select if
                 (
+                    :lastItemUid > 0,
                     (
-                        select rowNumCopy
-                        from
                         (
-                            select
-                            *,
-                            @rownumCopy \:= @rownumCopy + 1 AS rowNumCopy 
+                            select rowNumCopy
                             from
                             (
-                                SELECT 
-                                uid as uid, 
-                                row_create_date as rowCreateDate, 
-                                row_update_date as rowUpdateDate, 
-                                content as content, random_num as randomNum,
-                                ABS(test_data.random_num-:num) as distance,
-                                row_delete_date as rowDeleteDate
+                                select
+                                *,
+                                @rownumCopy \:= @rownumCopy + 1 AS rowNumCopy 
                                 from
-                                template.test_data
-                                order by
-                                distance asc
-                            ) as orderedCoreTableCopy,
-                            (SELECT @rownumCopy \:= 0) as rowNumStartCopy
-                        ) as rowNumTableCopy
-                        where uid = :lastItemUid
-                    )
-                ),
-                0
-            )
-            )
-            and
+                                (
+                                    SELECT 
+                                    uid as uid, 
+                                    row_create_date as rowCreateDate, 
+                                    row_update_date as rowUpdateDate, 
+                                    content as content, random_num as randomNum,
+                                    ABS(test_data.random_num-:num) as distance,
+                                    row_delete_date as rowDeleteDate
+                                    from
+                                    template.test_data
+                                    order by
+                                    distance asc
+                                ) as orderedCoreTableCopy,
+                                (SELECT @rownumCopy \:= 0) as rowNumStartCopy
+                            ) as rowNumTableCopy
+                            where uid = :lastItemUid
+                        )
+                    ),
+                    0
+                )
+            ) and
             rowActivate is NULL
             limit :pageElementsCount
             """
@@ -278,6 +283,36 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             """
     )
     fun forC7N16(): Long
+
+
+    ////
+    @Query(
+        nativeQuery = true,
+        value = """
+            select 
+            test_data.uid as uid, 
+            test_data.content as content, 
+            test_data.random_num as randomNum, 
+            test_data.row_create_date as rowCreateDate, 
+            test_data.row_update_date as rowUpdateDate 
+            from 
+            template.test_data 
+            where 
+            row_delete_date is NULL and 
+            uid = :testTableUid
+            """
+    )
+    fun forC7N17(
+        @Param(value = "testTableUid") testTableUid: Long
+    ): ForC7N17OutputVo?
+
+    interface ForC7N17OutputVo {
+        var uid: Long
+        var content: String
+        var randomNum: Int
+        var rowCreateDate: LocalDateTime
+        var rowUpdateDate: LocalDateTime
+    }
 
 
     //------------------------------------------------------------------------------------------------------------------
