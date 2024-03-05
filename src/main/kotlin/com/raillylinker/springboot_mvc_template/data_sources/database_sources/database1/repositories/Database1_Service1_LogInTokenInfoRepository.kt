@@ -10,14 +10,14 @@ import java.time.LocalDateTime
 @Repository
 interface Database1_Service1_LogInTokenInfoRepository :
     JpaRepository<Database1_Service1_LogInTokenInfo, Long> {
-    fun findByTokenTypeAndAccessTokenAndRowDeleteDate(
+    fun findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
         tokenType: String,
         accessToken: String,
-        rowDeleteDate : LocalDateTime?
+        rowDeleteDateStr :String
     ): Database1_Service1_LogInTokenInfo?
 
-    fun findAllByMemberUidAndRowDeleteDate(
+    fun findAllByMemberUidAndRowDeleteDateStr(
         memberUid: Long,
-        rowDeleteDate : LocalDateTime?
+        rowDeleteDateStr :String
     ): List<Database1_Service1_LogInTokenInfo>
 }

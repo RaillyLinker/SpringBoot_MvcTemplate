@@ -9,6 +9,6 @@ import java.time.LocalDateTime
 // : 함수 작성 명명법에 따라 데이터베이스 SQL 동작을 자동지원
 @Repository
 interface Database1_Service1_MemberRoleDataRepository : JpaRepository<Database1_Service1_MemberRoleData, Long> {
-    fun findAllByMemberUidAndRowDeleteDate(memberUid: Long, rowDeleteDate : LocalDateTime?): List<Database1_Service1_MemberRoleData>
+    fun findAllByMemberUidAndRowDeleteDateStr(memberUid: Long, rowDeleteDateStr :String): List<Database1_Service1_MemberRoleData>
 
 }

@@ -10,28 +10,28 @@ import java.time.LocalDateTime
 @Repository
 interface Database1_Service1_MemberOauth2LoginDataRepository :
     JpaRepository<Database1_Service1_MemberOauth2LoginData, Long> {
-    fun findByOauth2TypeCodeAndOauth2IdAndRowDeleteDate(
+    fun findByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
         oauth2TypeCode: Byte,
         snsId: String,
-        rowDeleteDate : LocalDateTime?
+        rowDeleteDateStr :String
     ): Database1_Service1_MemberOauth2LoginData?
 
-    fun existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDate(
+    fun existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
         oauth2TypeCode: Byte,
         snsId: String,
-        rowDeleteDate : LocalDateTime?
+        rowDeleteDateStr :String
     ): Boolean
 
-    fun findAllByMemberUidAndRowDeleteDate(
+    fun findAllByMemberUidAndRowDeleteDateStr(
         memberUid: Long,
-        rowDeleteDate : LocalDateTime?
+        rowDeleteDateStr :String
     ): List<Database1_Service1_MemberOauth2LoginData>
 
-    fun findByUidAndMemberUidAndRowDeleteDate(
+    fun findByUidAndMemberUidAndRowDeleteDateStr(
         uid : Long,
         memberUid: Long,
-        rowDeleteDate : LocalDateTime?
+        rowDeleteDateStr :String
     ): Database1_Service1_MemberOauth2LoginData?
 
-    fun existsByMemberUidAndRowDeleteDate(memberUid: Long, rowDeleteDate : LocalDateTime?): Boolean
+    fun existsByMemberUidAndRowDeleteDateStr(memberUid: Long, rowDeleteDateStr :String): Boolean
 }

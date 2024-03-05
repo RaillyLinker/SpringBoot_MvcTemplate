@@ -165,8 +165,8 @@ class C7Service1TkV1DatabaseTestService(
         pageElementsCount: Int
     ): C7Service1TkV1DatabaseTestController.Api7OutputVo? {
         val pageable: Pageable = PageRequest.of(page - 1, pageElementsCount)
-        val entityList = database1TemplateTestRepository.findAllByRowDeleteDateOrderByRowCreateDate(
-            null,
+        val entityList = database1TemplateTestRepository.findAllByRowDeleteDateStrOrderByRowCreateDate(
+            "-",
             pageable
         )
 
@@ -237,7 +237,7 @@ class C7Service1TkV1DatabaseTestService(
     ): C7Service1TkV1DatabaseTestController.Api9OutputVo? {
         val oldEntity = database1TemplateTestRepository.findById(testTableUid)
 
-        if (oldEntity.isEmpty || oldEntity.get().rowDeleteDate != null) {
+        if (oldEntity.isEmpty || oldEntity.get().rowDeleteDateStr != "-") {
             httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
@@ -274,7 +274,7 @@ class C7Service1TkV1DatabaseTestService(
         // 고로 수정문은 jpa 를 사용하길 권장합니다. !!
         val testEntity = database1TemplateTestRepository.findById(testTableUid)
 
-        if (testEntity.isEmpty || testEntity.get().rowDeleteDate != null) {
+        if (testEntity.isEmpty || testEntity.get().rowDeleteDateStr != "-") {
             httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
             httpServletResponse.setHeader("api-result-code", "1")
             // 트랜젝션 커밋
@@ -359,7 +359,7 @@ class C7Service1TkV1DatabaseTestService(
             num
         )
 
-        val count = database1TemplateTestRepository.countByRowDeleteDate(null)
+        val count = database1TemplateTestRepository.countByRowDeleteDateStr("-")
 
         val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api14OutputVo.TestEntityVo>()
         for (vo in voList) {
@@ -383,7 +383,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     fun api15(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api15OutputVo? {
-        val count = database1TemplateTestRepository.countByRowDeleteDate(null)
+        val count = database1TemplateTestRepository.countByRowDeleteDateStr("-")
 
         httpServletResponse.status = HttpStatus.OK.value()
         httpServletResponse.setHeader("api-result-code", "0")

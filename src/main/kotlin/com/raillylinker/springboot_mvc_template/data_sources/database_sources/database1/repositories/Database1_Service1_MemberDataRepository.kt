@@ -9,8 +9,8 @@ import java.time.LocalDateTime
 // : 함수 작성 명명법에 따라 데이터베이스 SQL 동작을 자동지원
 @Repository
 interface Database1_Service1_MemberDataRepository : JpaRepository<Database1_Service1_MemberData, Long> {
-    fun existsByNickNameAndRowDeleteDate(nickName: String, rowDeleteDate : LocalDateTime?): Boolean
-    fun findByUidAndRowDeleteDate(uid: Long, rowDeleteDate : LocalDateTime?): Database1_Service1_MemberData?
-    fun findByNickNameAndRowDeleteDate(nickName: String, rowDeleteDate : LocalDateTime?): Database1_Service1_MemberData?
+    fun existsByNickNameAndRowDeleteDateStr(nickName: String, rowDeleteDateStr :String): Boolean
+    fun findByUidAndRowDeleteDateStr(uid: Long, rowDeleteDateStr :String): Database1_Service1_MemberData?
+    fun findByNickNameAndRowDeleteDateStr(nickName: String, rowDeleteDateStr :String): Database1_Service1_MemberData?
 
 }

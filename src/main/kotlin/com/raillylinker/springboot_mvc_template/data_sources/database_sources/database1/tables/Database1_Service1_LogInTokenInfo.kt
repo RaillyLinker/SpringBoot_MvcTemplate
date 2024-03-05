@@ -7,7 +7,13 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "login_token_info", catalog = "service1")
+@Table(
+    name = "login_token_info",
+    catalog = "service1",
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["token_type", "access_token", "row_delete_date_str"])
+    ]
+)
 @Comment("토큰 발행 정보 테이블 : 로그인, 로그아웃 기록 역할도 겸함")
 class Database1_Service1_LogInTokenInfo(
     @Column(name = "member_uid", nullable = false, columnDefinition = "BIGINT UNSIGNED")
@@ -54,9 +60,9 @@ class Database1_Service1_LogInTokenInfo(
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
 
-    @Column(name = "row_delete_date", nullable = true, columnDefinition = "DATETIME")
-    @Comment("행 삭제일")
-    var rowDeleteDate: LocalDateTime? = null
+    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(20)")
+    @Comment("행 삭제일(yyyy-MM-dd HH:mm:ss.SSS, 삭제되지 않았다면 -)")
+    var rowDeleteDateStr: String = "-"
 
 
     // ---------------------------------------------------------------------------------------------

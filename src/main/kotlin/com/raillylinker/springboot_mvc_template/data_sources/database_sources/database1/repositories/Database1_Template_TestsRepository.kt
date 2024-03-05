@@ -9,11 +9,11 @@ import java.time.LocalDateTime
 
 @Repository
 interface Database1_Template_TestsRepository : JpaRepository<Database1_Template_TestData, Long> {
-    fun findAllByRowDeleteDateOrderByRowCreateDate(
-        rowDeleteDate : LocalDateTime?,
+    fun findAllByRowDeleteDateStrOrderByRowCreateDate(
+        rowDeleteDateStr :String,
         pageable: Pageable
     ): Page<Database1_Template_TestData>
 
-    fun countByRowDeleteDate(rowDeleteDate : LocalDateTime?): Long
+    fun countByRowDeleteDateStr(rowDeleteDateStr :String): Long
 
 }

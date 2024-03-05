@@ -29,7 +29,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             from 
             template.test_data 
             where 
-            row_delete_date is NULL 
+            row_delete_date_str = '-' 
             order by 
             distance
             """
@@ -62,7 +62,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             from 
             template.test_data 
             where 
-            row_delete_date is NULL 
+            row_delete_date_str = '-' 
             order by 
             timeDiffSec
             """
@@ -95,7 +95,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             from 
             template.test_data 
             where 
-            row_delete_date is NULL 
+            row_delete_date_str = '-' 
             order by distance
             """,
         countQuery = """
@@ -104,7 +104,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             from 
             template.test_data 
             where 
-            row_delete_date is NULL
+            row_delete_date_str = '-'
             """
     )
     fun forC7N8(
@@ -155,7 +155,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             from template.test_data 
             where 
             replace(content, ' ', '') like replace(concat('%',:searchKeyword,'%'), ' ', '') and 
-            row_delete_date is NULL
+            row_delete_date_str = '-'
             """,
         countQuery = """
             select 
@@ -163,7 +163,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             from template.test_data 
             where 
             replace(content, ' ', '') like replace(concat('%',:searchKeyword,'%'), ' ', '') and 
-            row_delete_date is NULL
+            row_delete_date_str = '-'
             """
     )
     fun forC7N11(
@@ -206,7 +206,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
                     row_update_date as rowUpdateDate, 
                     content as content, random_num as randomNum,
                     ABS(test_data.random_num-:num) as distance,
-                    row_delete_date as rowDeleteDate
+                    row_delete_date_str as rowDeleteDateStr
                     from
                     template.test_data
                     order by
@@ -236,7 +236,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
                                     row_update_date as rowUpdateDate, 
                                     content as content, random_num as randomNum,
                                     ABS(test_data.random_num-:num) as distance,
-                                    row_delete_date as rowDeleteDate
+                                    row_delete_date_str as rowDeleteDateStr
                                     from
                                     template.test_data
                                     order by
@@ -250,7 +250,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
                     0
                 )
             ) and
-            rowActivate is NULL
+            rowDeleteDateStr = '-' 
             limit :pageElementsCount
             """
     )
@@ -279,7 +279,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             from 
             template.test_data 
             where 
-            row_delete_date is NULL
+            row_delete_date_str = '-'
             """
     )
     fun forC7N16(): Long
@@ -298,7 +298,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             from 
             template.test_data 
             where 
-            row_delete_date is NULL and 
+            row_delete_date_str = '-' and 
             uid = :testTableUid
             """
     )
