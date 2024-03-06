@@ -38,7 +38,7 @@ class Database1_Service1_JoinTheMembershipWithPhoneNumberVerificationData(
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
 
-    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(20)")
+    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(30)")
     @Comment("행 삭제일(yyyy-MM-dd HH:mm:ss.SSS, 삭제되지 않았다면 -)")
     var rowDeleteDateStr: String = "-"
 
