@@ -7,7 +7,13 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "member_data", catalog = "service1")
+@Table(
+    name = "member_data",
+    catalog = "service1",
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["nick_name", "row_delete_date_str"])
+    ]
+)
 @Comment("회원 정보 테이블")
 class Database1_Service1_MemberData(
     @Column(name = "nick_name", nullable = false, columnDefinition = "VARCHAR(100)")

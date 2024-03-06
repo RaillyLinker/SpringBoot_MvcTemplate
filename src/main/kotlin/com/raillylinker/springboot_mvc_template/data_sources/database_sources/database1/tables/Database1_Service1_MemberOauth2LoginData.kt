@@ -7,7 +7,13 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "member_oauth2_login_data", catalog = "service1")
+@Table(
+    name = "member_oauth2_login_data",
+    catalog = "service1",
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["oauth2_type_code", "oauth2_id", "row_delete_date_str"])
+    ]
+)
 @Comment("회원의 OAuth2 로그인 정보 테이블")
 class Database1_Service1_MemberOauth2LoginData(
     @Column(name = "member_uid", nullable = false, columnDefinition = "BIGINT UNSIGNED")
