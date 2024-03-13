@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.core.io.Resource
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -235,6 +237,37 @@ class C6Service1TkV1TestController(
     ) {
         service.api6(httpServletResponse)
     }
+
+
+    ////
+    // todo : 폰트도 자유롭게 받아서 적용하도록 수정하기
+    @Operation(
+        summary = "N6.1 : 입력받은 HTML 을 기반으로 PDF 를 생성 후 반환",
+        description = "입력받은 HTML 1.0(strict), CSS 2.1 을 기반으로 PDF 를 생성 후 반환\n\n" +
+                "HTML 이 엄격한 규격을 요구받으므로 그것을 확인하며 변환하는 과정에 사용하라고 제공되는 api 입니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @PostMapping(
+        path = ["/multipart-html-to-pdf"],
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
+        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
+    )
+    @ResponseBody
+    fun api6Dot1(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @ModelAttribute
+        inputVo: Api6Dot1InputVo
+    ): ResponseEntity<Resource>? {
+        return service.api6Dot1(httpServletResponse, inputVo)
+    }
+
+    data class Api6Dot1InputVo(
+        @Schema(description = "업로드 HTML 파일", required = true)
+        @JsonProperty("htmlFile")
+        val htmlFile: MultipartFile
+    )
 
 
     ////

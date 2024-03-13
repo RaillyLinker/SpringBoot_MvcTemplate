@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import java.io.*
@@ -17,6 +19,11 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import org.springframework.core.io.Resource
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
+import org.springframework.web.multipart.MultipartFile
+import java.nio.charset.StandardCharsets
 
 
 @Service
@@ -194,6 +201,50 @@ class C6Service1TkV1TestService(
 
         httpServletResponse.status = HttpStatus.OK.value()
         httpServletResponse.setHeader("api-result-code", "0")
+    }
+
+
+    ////
+    fun api6Dot1(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api6Dot1InputVo
+    ): ResponseEntity<Resource>? {
+        val originalFileName = inputVo.htmlFile.originalFilename ?: "Unknown"
+        val newFileName = if (originalFileName.contains(".")) {
+            originalFileName.substringBeforeLast(".") + ".pdf"
+        } else {
+            "$originalFileName.pdf"
+        }
+
+        val htmlString = String(inputVo.htmlFile.bytes, Charsets.UTF_8)
+
+        // htmlString 을 PDF 로 변환하여 저장
+        // XHTML 1.0(strict), CSS 2.1 (@page 의 size 는 가능)
+        try {
+            val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
+                htmlString,
+                arrayListOf(
+                    "/static/resource_global/fonts/for_itext/NanumGothic.ttf",
+                    "/static/resource_global/fonts/for_itext/NanumMyeongjo.ttf"
+                )
+            )
+            httpServletResponse.status = HttpStatus.OK.value()
+            httpServletResponse.setHeader("api-result-code", "0")
+            return ResponseEntity<Resource>(
+                InputStreamResource(pdfByteArray.inputStream()),
+                HttpHeaders().apply {
+                    this.contentDisposition = ContentDisposition.builder("attachment")
+                        .filename(newFileName, StandardCharsets.UTF_8)
+                        .build()
+                    this.add(HttpHeaders.CONTENT_TYPE, "application/pdf")
+                },
+                HttpStatus.OK
+            )
+        } catch (e: Exception) {
+            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.setHeader("api-msg", e.message)
+            return null
+        }
     }
 
 
