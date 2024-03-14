@@ -18,6 +18,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 // [HTML String 을 기반으로 PDF 파일을 생성하는 유틸]
 // https://flyingsaucerproject.github.io/flyingsaucer/r8/guide/users-guide-R8.html
@@ -79,13 +80,13 @@ object PdfGenerator {
                     val srcPath =
                         element.getAttribute("src") // HTML 태그의 src 속성에 적힌 값(ex : "/images/c0_n5/html_to_pdf_sample.jpg")
 
-                    if (nodeName == "img" && srcPath.startsWith("/images")) { // img 태그에, /images 경로를 참고하는 경우
-                        // static/{srcPath} 의 이미지 파일 읽기
+                    if (nodeName == "img" && srcPath.startsWith("classpath:")) {
+                        // img 태그에, <img src="classpath:/static/resource_c6_n6/html_to_pdf_sample.jpg"/> 처럼 내부 파일 참고시
                         val fsImage = ITextFSImage(
                             Image.getInstance(
                                 Files.readAllBytes(
                                     Path.of(
-                                        ClassPathResource("static${srcPath}").uri
+                                        ClassPathResource(srcPath.replace("classpath:", "")).uri
                                     )
                                 )
                             )
@@ -140,7 +141,8 @@ object PdfGenerator {
         htmlString: String, // PDF 로 변환할 HTML String (ex : <!DOCTYPE html> <html> ....)
         // 주의사항 : HTML 내에서 폰트를 사용하고 싶다면 아래 리스트 변수에 resource 내의 폰트 파일 URI 를 추가하고 HTML 내에서 CSS 로 적용할것.
         // HTML 내부 태그의 CSS 명시를 안하거나 여기에 폰트 파일명을 명시하지 않으면 폰트 적용이 되지 않음.
-        resourceFontFilePathList: List<String>? // HTML 내에 적용할 resource 내 폰트 파일 경로 리스트 (ex : "/static/fonts/NanumGothic.ttf")
+        resourceFontFilePathList: List<String>?, // HTML 내에 적용할 resource 내 폰트 파일 경로 리스트 (ex : "/static/fonts/NanumGothic.ttf")
+        savedImgFilePathMap: HashMap<String, String>
     ): ByteArray {
         // PDF 변환 객체
         val renderer = ITextRenderer()
@@ -173,18 +175,31 @@ object PdfGenerator {
 
                     val nodeName = element.nodeName // HTML Tag 이름(ex : "img")
                     val srcPath =
-                        element.getAttribute("src") // HTML 태그의 src 속성에 적힌 값(ex : "/images/c0_n5/html_to_pdf_sample.jpg")
+                        element.getAttribute("src") // HTML 태그의 src 속성에 적힌 값(ex : "html_to_pdf_sample.jpg")
 
-                    if (nodeName == "img" && srcPath.startsWith("/images")) { // img 태그에, /images 경로를 참고하는 경우
-                        // static/{srcPath} 의 이미지 파일 읽기
+                    if (nodeName == "img" && srcPath.startsWith("classpath:")) {
+                        // img 태그에, <img src="classpath:/static/resource_c6_n6/html_to_pdf_sample.jpg"/> 처럼 내부 파일 참고시
                         val fsImage = ITextFSImage(
                             Image.getInstance(
                                 Files.readAllBytes(
                                     Path.of(
-                                        ClassPathResource("static${srcPath}").uri
+                                        ClassPathResource(srcPath.replace("classpath:", "")).uri
                                     )
                                 )
                             )
+                        )
+
+                        // css의 높이, 너비가 설정되어있으면 적용
+                        if ((cssWidth != -1) || (cssHeight != -1)) {
+                            fsImage.scale(cssWidth, cssHeight)
+                        }
+
+                        return ITextImageElement(fsImage)
+                    } else if (nodeName == "img" && !srcPath.startsWith("http") && !srcPath.startsWith("classpath:")) {
+                        // img 태그에,http 이미지, 혹은 classpath:/static/resource_c6_n6/html_to_pdf_sample.jpg 이렇게 서버 내 이미지 파일이 아닌 경우
+                        // 여기선 html_to_pdf_sample.jpg 같이 파일명을 가정
+                        val fsImage = ITextFSImage(
+                            Image.getInstance(File(savedImgFilePathMap[srcPath]!!).readBytes())
                         )
 
                         // css의 높이, 너비가 설정되어있으면 적용

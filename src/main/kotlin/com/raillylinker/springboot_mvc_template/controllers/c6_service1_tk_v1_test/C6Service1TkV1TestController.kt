@@ -240,7 +240,6 @@ class C6Service1TkV1TestController(
 
 
     ////
-    // todo : 폰트도 자유롭게 받아서 적용하도록 수정하기
     @Operation(
         summary = "N6.1 : 입력받은 HTML 을 기반으로 PDF 를 생성 후 반환",
         description = "입력받은 HTML 1.0(strict), CSS 2.1 을 기반으로 PDF 를 생성 후 반환\n\n" +
@@ -272,7 +271,13 @@ class C6Service1TkV1TestController(
             required = false
         )
         @JsonProperty("fontFiles")
-        val fontFiles: List<MultipartFile>?
+        val fontFiles: List<MultipartFile>?,
+        @Schema(
+            description = "이미지 파일 리스트 (위 HTML 에서 사용할 이미지 파일을 넣어주세요. HTML 내에서는 해당 폰트의 파일명(ex : test.jpg)을 사용하세요.)",
+            required = false
+        )
+        @JsonProperty("imgFiles")
+        val imgFiles: List<MultipartFile>?
     )
 
 

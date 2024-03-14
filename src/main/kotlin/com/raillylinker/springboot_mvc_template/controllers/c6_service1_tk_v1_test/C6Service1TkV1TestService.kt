@@ -22,7 +22,6 @@ import org.springframework.util.StringUtils
 import java.io.*
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -212,16 +211,17 @@ class C6Service1TkV1TestService(
         inputVo: C6Service1TkV1TestController.Api6Dot1InputVo
     ): ResponseEntity<Resource>? {
         // 폰트 파일 저장
-        val savedFileList: ArrayList<File> = arrayListOf()
-        val savedFilePathList: ArrayList<String> = arrayListOf()
+        val savedFontFileList: ArrayList<File> = arrayListOf()
+        val savedFontFilePathList: ArrayList<String> = arrayListOf()
+
+        val savedImgFileList: ArrayList<File> = arrayListOf()
+        val savedImgFilePathMap: HashMap<String, String> = hashMapOf()
 
         // htmlString 을 PDF 로 변환하여 저장
         // XHTML 1.0(strict), CSS 2.1 (@page 의 size 는 가능)
         try {
             if (inputVo.fontFiles != null) {
                 for (fontFile in inputVo.fontFiles) {
-                    val saveDirectoryPath: Path = Paths.get("./files/temp").toAbsolutePath().normalize()
-                    Files.createDirectories(saveDirectoryPath)
                     val multiPartFileNameString = StringUtils.cleanPath(fontFile.originalFilename!!)
                     val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
                     val fileExtension: String? =
@@ -233,14 +233,37 @@ class C6Service1TkV1TestService(
                     val tempFile: File = Files.createTempFile(null, ".$fileExtension").toFile()
                     fontFile.transferTo(tempFile)
 
-                    savedFileList.add(tempFile)
-                    savedFilePathList.add(tempFile.toString())
+                    savedFontFileList.add(tempFile)
+                    savedFontFilePathList.add(tempFile.toString())
+                }
+            }
+
+            if (inputVo.imgFiles != null) {
+                for (imgFile in inputVo.imgFiles) {
+                    val multiPartFileNameString = StringUtils.cleanPath(imgFile.originalFilename!!)
+                    val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
+                    // 확장자가 없는 파일명
+                    // 확장자
+                    val fileExtension: String
+
+                    if (fileExtensionSplitIdx == -1) {
+                        fileExtension = ""
+                    } else {
+                        fileExtension =
+                            multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
+                    }
+                    val tempFile: File = Files.createTempFile(null, ".$fileExtension").toFile()
+                    imgFile.transferTo(tempFile)
+
+                    savedImgFileList.add(tempFile)
+                    savedImgFilePathMap[multiPartFileNameString] = tempFile.toString()
                 }
             }
 
             val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
                 String(inputVo.htmlFile.bytes, Charsets.UTF_8),
-                savedFilePathList
+                savedFontFilePathList,
+                savedImgFilePathMap
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -267,9 +290,13 @@ class C6Service1TkV1TestService(
             e.printStackTrace()
             return null
         } finally {
-            for (fontAbs in savedFileList) {
-                val result = fontAbs.delete()
-                println("delete $fontAbs : $result")
+            for (fontFile in savedFontFileList) {
+                val result = fontFile.delete()
+                println("delete $fontFile : $result")
+            }
+            for (imgFile in savedImgFileList) {
+                val result = imgFile.delete()
+                println("delete $imgFile : $result")
             }
         }
     }
