@@ -266,7 +266,13 @@ class C6Service1TkV1TestController(
     data class Api6Dot1InputVo(
         @Schema(description = "업로드 HTML 파일", required = true)
         @JsonProperty("htmlFile")
-        val htmlFile: MultipartFile
+        val htmlFile: MultipartFile,
+        @Schema(
+            description = "폰트 파일 리스트 (위 HTML 에서 사용할 폰트 파일을 넣어주세요. HTML 내에서는 해당 폰트의 내부 폰트명을 사용하세요.)",
+            required = false
+        )
+        @JsonProperty("fontFiles")
+        val fontFiles: List<MultipartFile>?
     )
 
 

@@ -18,9 +18,11 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
+import org.springframework.util.StringUtils
 import java.io.*
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -194,8 +196,8 @@ class C6Service1TkV1TestService(
             }).pdf",
             htmlString,
             arrayListOf(
-                "/static/resource_global/fonts/for_itext/NanumGothic.ttf",
-                "/static/resource_global/fonts/for_itext/NanumMyeongjo.ttf"
+                ClassPathResource("/static/resource_global/fonts/for_itext/NanumGothic.ttf").url.toString(),
+                ClassPathResource("/static/resource_global/fonts/for_itext/NanumMyeongjo.ttf").url.toString()
             )
         )
 
@@ -209,32 +211,51 @@ class C6Service1TkV1TestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C6Service1TkV1TestController.Api6Dot1InputVo
     ): ResponseEntity<Resource>? {
-        val originalFileName = inputVo.htmlFile.originalFilename ?: "Unknown"
-        val newFileName = if (originalFileName.contains(".")) {
-            originalFileName.substringBeforeLast(".") + ".pdf"
-        } else {
-            "$originalFileName.pdf"
-        }
-
-        val htmlString = String(inputVo.htmlFile.bytes, Charsets.UTF_8)
+        // 폰트 파일 저장
+        val savedFileList: ArrayList<File> = arrayListOf()
+        val savedFilePathList: ArrayList<String> = arrayListOf()
 
         // htmlString 을 PDF 로 변환하여 저장
         // XHTML 1.0(strict), CSS 2.1 (@page 의 size 는 가능)
         try {
+            if (inputVo.fontFiles != null) {
+                for (fontFile in inputVo.fontFiles) {
+                    val saveDirectoryPath: Path = Paths.get("./files/temp").toAbsolutePath().normalize()
+                    Files.createDirectories(saveDirectoryPath)
+                    val multiPartFileNameString = StringUtils.cleanPath(fontFile.originalFilename!!)
+                    val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
+                    val fileExtension: String? =
+                        if (fileExtensionSplitIdx == -1) {
+                            null
+                        } else {
+                            multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
+                        }
+                    val tempFile: File = Files.createTempFile(null, ".$fileExtension").toFile()
+                    fontFile.transferTo(tempFile)
+
+                    savedFileList.add(tempFile)
+                    savedFilePathList.add(tempFile.toString())
+                }
+            }
+
             val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
-                htmlString,
-                arrayListOf(
-                    "/static/resource_global/fonts/for_itext/NanumGothic.ttf",
-                    "/static/resource_global/fonts/for_itext/NanumMyeongjo.ttf"
-                )
+                String(inputVo.htmlFile.bytes, Charsets.UTF_8),
+                savedFilePathList
             )
+
             httpServletResponse.status = HttpStatus.OK.value()
             httpServletResponse.setHeader("api-result-code", "0")
             return ResponseEntity<Resource>(
                 InputStreamResource(pdfByteArray.inputStream()),
                 HttpHeaders().apply {
                     this.contentDisposition = ContentDisposition.builder("attachment")
-                        .filename(newFileName, StandardCharsets.UTF_8)
+                        .filename(
+                            "result(${
+                                LocalDateTime.now().format(
+                                    DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
+                                )
+                            }).pdf", StandardCharsets.UTF_8
+                        )
                         .build()
                     this.add(HttpHeaders.CONTENT_TYPE, "application/pdf")
                 },
@@ -243,7 +264,13 @@ class C6Service1TkV1TestService(
         } catch (e: Exception) {
             httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
             httpServletResponse.setHeader("api-msg", e.message)
+            e.printStackTrace()
             return null
+        } finally {
+            for (fontAbs in savedFileList) {
+                val result = fontAbs.delete()
+                println("delete $fontAbs : $result")
+            }
         }
     }
 

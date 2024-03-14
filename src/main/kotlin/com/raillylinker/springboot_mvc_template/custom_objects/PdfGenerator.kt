@@ -54,7 +54,7 @@ object PdfGenerator {
             for (fontFilePath in resourceFontFilePathList) {
                 renderer.fontResolver.addFont(
                     // resources 아래에 있는 폰트 경로를 입력해준다
-                    ClassPathResource(fontFilePath).url.toString(),
+                    fontFilePath,
                     BaseFont.IDENTITY_H,
                     BaseFont.EMBEDDED
                 )
@@ -150,7 +150,7 @@ object PdfGenerator {
             for (fontFilePath in resourceFontFilePathList) {
                 renderer.fontResolver.addFont(
                     // resources 아래에 있는 폰트 경로를 입력해준다
-                    ClassPathResource(fontFilePath).url.toString(),
+                    fontFilePath,
                     BaseFont.IDENTITY_H,
                     BaseFont.EMBEDDED
                 )
