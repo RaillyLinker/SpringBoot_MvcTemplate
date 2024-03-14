@@ -195,7 +195,6 @@ class C6Service1TkV1TestService(
             }).pdf",
             htmlString,
             arrayListOf(
-                ClassPathResource("/static/resource_global/fonts/for_itext/NanumGothic.ttf").url.toString(),
                 ClassPathResource("/static/resource_global/fonts/for_itext/NanumMyeongjo.ttf").url.toString()
             )
         )
