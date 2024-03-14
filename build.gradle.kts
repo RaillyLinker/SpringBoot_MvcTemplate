@@ -106,6 +106,10 @@ dependencies {
     // (ORM 관련 라이브러리)
     // WebSocket STOMP Controller 에서 입력값 매핑시 사용됨
     implementation("javax.persistence:persistence-api:1.0.2")
+
+    // (폰트 파일 내부 이름 가져오기용)
+    implementation("org.apache.pdfbox:pdfbox:2.0.1")
+
 }
 
 tasks.withType<KotlinCompile> {

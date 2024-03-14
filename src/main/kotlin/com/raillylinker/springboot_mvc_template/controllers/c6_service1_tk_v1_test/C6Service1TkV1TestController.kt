@@ -340,4 +340,39 @@ class C6Service1TkV1TestController(
         @JsonProperty("jarResult")
         val jarResult: Long
     )
+
+
+    ////
+    @Operation(
+        summary = "N9 : 입력받은 폰트 파일의 내부 이름을 반환",
+        description = "입력받은 폰트 파일의 내부 이름을 반환\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @PostMapping(
+        path = ["/font-file-inner-name"],
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api9(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @ModelAttribute
+        inputVo: Api9InputVo
+    ): Api9OutputVo? {
+        return service.api9(httpServletResponse, inputVo)
+    }
+
+    data class Api9InputVo(
+        @Schema(description = "업로드 폰트 파일", required = true)
+        @JsonProperty("fontFile")
+        val fontFile: MultipartFile
+    )
+
+    data class Api9OutputVo(
+        @Schema(description = "폰트 파일의 내부 이름", required = true, example = "NanumGothic")
+        @JsonProperty("innerName")
+        val innerName: String
+    )
 }

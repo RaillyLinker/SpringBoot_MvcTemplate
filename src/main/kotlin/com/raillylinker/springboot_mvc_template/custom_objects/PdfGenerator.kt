@@ -30,6 +30,7 @@ object PdfGenerator {
         htmlString: String, // PDF 로 변환할 HTML String (ex : <!DOCTYPE html> <html> ....)
         // 주의사항 : HTML 내에서 폰트를 사용하고 싶다면 아래 리스트 변수에 resource 내의 폰트 파일 URI 를 추가하고 HTML 내에서 CSS 로 적용할것.
         // HTML 내부 태그의 CSS 명시를 안하거나 여기에 폰트 파일명을 명시하지 않으면 폰트 적용이 되지 않음.
+        // HTML 내부에서 폰트를 사용하려면 해당 폰트 파일의 내부 이름을 입력해야합니다.(6-9 로 내부명을 확인하여 적용하세요.)
         resourceFontFilePathList: List<String>? // HTML 내에 적용할 resource 내 폰트 파일 경로 리스트 (ex : "/static/fonts/NanumGothic.ttf")
     ): File {
         val fileDirectoryPathString =

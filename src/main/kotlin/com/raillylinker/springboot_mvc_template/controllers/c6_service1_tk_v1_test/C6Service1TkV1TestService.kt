@@ -4,26 +4,26 @@ import com.raillylinker.springboot_mvc_template.custom_dis.EmailSenderUtilDi
 import com.raillylinker.springboot_mvc_template.custom_dis.NaverSmsUtilDi
 import com.raillylinker.springboot_mvc_template.custom_objects.*
 import jakarta.servlet.http.HttpServletResponse
+import org.apache.fontbox.ttf.TTFParser
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.InputStreamResource
+import org.springframework.core.io.Resource
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import java.io.*
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import org.springframework.core.io.Resource
-import org.springframework.http.ContentDisposition
-import org.springframework.http.HttpHeaders
-import org.springframework.web.multipart.MultipartFile
-import java.nio.charset.StandardCharsets
 
 
 @Service
@@ -290,6 +290,27 @@ class C6Service1TkV1TestService(
         httpServletResponse.setHeader("api-result-code", "0")
         return C6Service1TkV1TestController.Api8OutputVo(
             result
+        )
+    }
+
+
+    ////
+    fun api9(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api9InputVo
+    ): C6Service1TkV1TestController.Api9OutputVo? {
+        // MultipartFile에서 InputStream을 얻어옴
+        val fontInputStream = inputVo.fontFile.inputStream
+
+        val parser = TTFParser()
+        val ttf = parser.parse(fontInputStream)
+        val fontName: String = ttf.name
+        ttf.close()
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
+        return C6Service1TkV1TestController.Api9OutputVo(
+            fontName
         )
     }
 }
