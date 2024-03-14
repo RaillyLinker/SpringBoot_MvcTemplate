@@ -142,8 +142,11 @@ object PdfGenerator {
         // 주의사항 : HTML 내에서 폰트를 사용하고 싶다면 아래 리스트 변수에 resource 내의 폰트 파일 URI 를 추가하고 HTML 내에서 CSS 로 적용할것.
         // HTML 내부 태그의 CSS 명시를 안하거나 여기에 폰트 파일명을 명시하지 않으면 폰트 적용이 되지 않음.
         resourceFontFilePathList: List<String>?, // HTML 내에 적용할 resource 내 폰트 파일 경로 리스트 (ex : "/static/fonts/NanumGothic.ttf")
+        resourceFontFileNameMap: HashMap<String, String>?,
         savedImgFilePathMap: HashMap<String, String>
     ): ByteArray {
+        var newHtmlString = htmlString
+
         // PDF 변환 객체
         val renderer = ITextRenderer()
 
@@ -156,6 +159,37 @@ object PdfGenerator {
                     BaseFont.IDENTITY_H,
                     BaseFont.EMBEDDED
                 )
+            }
+        }
+
+        if (resourceFontFileNameMap != null) {
+            for (fontFilePathKv in resourceFontFileNameMap) {
+                // htmlString 의,
+                //      @font-face {
+                //			font-family: NanumGothic;
+                //			src: fileName.ttf;
+                //			-fs-pdf-font-embed: embed;
+                //			-fs-pdf-font-encoding: Identity-H;
+                //		}
+                //      이것을
+                //      @font-face {
+                //			font-family: NanumGothic;
+                //			src: url('resourceFontFileNameMap['fileName.ttf']');
+                //			-fs-pdf-font-embed: embed;
+                //			-fs-pdf-font-encoding: Identity-H;
+                //		}
+                //      이렇게 합성
+
+                val originalFontFileName = fontFilePathKv.key
+                val mappedFontFileName = fontFilePathKv.value
+
+                val pattern = """@font-face\s*\{([^}]*src:\s*)([^;]*);""".toRegex()
+                newHtmlString = pattern.replace(newHtmlString) { result ->
+                    val srcPrefix = result.groupValues[1]
+                    val srcValue = result.groupValues[2]
+                    val modifiedSrcValue = srcValue.replace(originalFontFileName, "url('$mappedFontFileName')")
+                    "@font-face { $srcPrefix$modifiedSrcValue;"
+                }
             }
         }
 
@@ -233,7 +267,7 @@ object PdfGenerator {
                 }
             }
 
-        renderer.setDocumentFromString(htmlString) // HTML String 세팅
+        renderer.setDocumentFromString(newHtmlString) // HTML String 세팅
         renderer.layout() // PDF 데이터 생성
 
         val byteArrayOutputStream = ByteArrayOutputStream()

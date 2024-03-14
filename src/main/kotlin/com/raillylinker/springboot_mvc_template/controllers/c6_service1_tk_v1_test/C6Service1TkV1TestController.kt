@@ -267,13 +267,20 @@ class C6Service1TkV1TestController(
         @JsonProperty("htmlFile")
         val htmlFile: MultipartFile,
         @Schema(
-            description = "폰트 파일 리스트 (위 HTML 에서 사용할 폰트 파일을 넣어주세요. HTML 내에서는 해당 폰트의 내부 폰트명을 사용하세요.)",
+            description = "폰트 파일 리스트 (위 HTML 에서 사용할 폰트 파일을 넣어주세요. HTML 내에서는 해당 폰트의 파일명(ex : test.ttf)을 사용하세요.)\n\n" +
+                    "ex : @font-face {\n" +
+                    "            font-family: NanumGothic;\n" +
+                    "            src: SeoulNamsanZangL.ttf;\n" +
+                    "            -fs-pdf-font-embed: embed;\n" +
+                    "            -fs-pdf-font-encoding: Identity-H;\n" +
+                    "        }",
             required = false
         )
         @JsonProperty("fontFiles")
         val fontFiles: List<MultipartFile>?,
         @Schema(
-            description = "이미지 파일 리스트 (위 HTML 에서 사용할 이미지 파일을 넣어주세요. HTML 내에서는 해당 폰트의 파일명(ex : test.jpg)을 사용하세요.)",
+            description = "이미지 파일 리스트 (위 HTML 에서 사용할 이미지 파일을 넣어주세요. HTML 내에서는 해당 이미지의 파일명(ex : test.jpg)을 사용하세요.)\n\n" +
+                    "ex : <img src=\"html_to_pdf_sample.jpg\"/>",
             required = false
         )
         @JsonProperty("imgFiles")

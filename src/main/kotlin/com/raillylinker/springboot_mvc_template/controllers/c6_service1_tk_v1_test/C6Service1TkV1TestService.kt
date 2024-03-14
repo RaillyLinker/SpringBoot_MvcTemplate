@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils
 import java.io.*
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -36,7 +37,9 @@ class C6Service1TkV1TestService(
     private val emailSenderUtilDi: EmailSenderUtilDi,
     // 네이버 메시지 발송 유틸
     private val naverSmsUtilDi: NaverSmsUtilDi,
-    @Qualifier("kafkaProducer0") private val kafkaProducer0: KafkaTemplate<String, Any>
+    @Qualifier("kafkaProducer0") private val kafkaProducer0: KafkaTemplate<String, Any>,
+
+    @Value("\${spring.boot.admin.client.instance.service-url}") private var serviceUrl: String
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -209,10 +212,7 @@ class C6Service1TkV1TestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C6Service1TkV1TestController.Api6Dot1InputVo
     ): ResponseEntity<Resource>? {
-        // 폰트 파일 저장
-        val savedFontFileList: ArrayList<File> = arrayListOf()
-        val savedFontFilePathList: ArrayList<String> = arrayListOf()
-
+        val savedFontFileNameMap: HashMap<String, String> = hashMapOf()
         val savedImgFileList: ArrayList<File> = arrayListOf()
         val savedImgFilePathMap: HashMap<String, String> = hashMapOf()
 
@@ -223,17 +223,54 @@ class C6Service1TkV1TestService(
                 for (fontFile in inputVo.fontFiles) {
                     val multiPartFileNameString = StringUtils.cleanPath(fontFile.originalFilename!!)
                     val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
-                    val fileExtension: String? =
-                        if (fileExtensionSplitIdx == -1) {
-                            null
-                        } else {
-                            multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
-                        }
-                    val tempFile: File = Files.createTempFile(null, ".$fileExtension").toFile()
-                    fontFile.transferTo(tempFile)
 
-                    savedFontFileList.add(tempFile)
-                    savedFontFilePathList.add(tempFile.toString())
+                    // 확장자가 없는 파일명
+                    val fileNameWithOutExtension: String
+                    // 확장자
+                    val fileExtension: String
+
+                    if (fileExtensionSplitIdx == -1) {
+                        fileNameWithOutExtension = multiPartFileNameString
+                        fileExtension = ""
+                    } else {
+                        fileNameWithOutExtension = multiPartFileNameString.substring(0, fileExtensionSplitIdx)
+                        fileExtension =
+                            multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
+                    }
+
+                    if (fileExtension != "ttf") {
+                        throw Exception("font File must be ttf")
+                    }
+
+                    val fontInputStream = fontFile.inputStream
+
+                    val ttf = TTFParser().parse(fontInputStream)
+                    val fontName: String = ttf.name
+                    ttf.close()
+
+                    val directoryPathStr = "src/main/resources/static/uploads/fonts"
+
+                    val directoryPath = Paths.get(directoryPathStr)
+
+                    if (!Files.exists(directoryPath)) {
+                        Files.createDirectories(directoryPath)
+                    }
+
+                    val path: Path = Paths.get(directoryPathStr + File.separator + fontName + ".$fileExtension")
+
+                    if (!Files.exists(path)) {
+                        val bytes = fontFile.bytes
+                        Files.write(path, bytes)
+                    }
+
+                    savedFontFileNameMap["$fileNameWithOutExtension.$fileExtension"] =
+                        "${
+                            if (serviceUrl.endsWith("/")) {
+                                serviceUrl.dropLast(1)
+                            } else {
+                                serviceUrl
+                            }
+                        }/uploads/fonts/$fontName.$fileExtension"
                 }
             }
 
@@ -241,15 +278,13 @@ class C6Service1TkV1TestService(
                 for (imgFile in inputVo.imgFiles) {
                     val multiPartFileNameString = StringUtils.cleanPath(imgFile.originalFilename!!)
                     val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
+
                     // 확장자가 없는 파일명
                     // 확장자
-                    val fileExtension: String
-
-                    if (fileExtensionSplitIdx == -1) {
-                        fileExtension = ""
+                    val fileExtension: String = if (fileExtensionSplitIdx == -1) {
+                        ""
                     } else {
-                        fileExtension =
-                            multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
+                        multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
                     }
                     val tempFile: File = Files.createTempFile(null, ".$fileExtension").toFile()
                     imgFile.transferTo(tempFile)
@@ -261,7 +296,8 @@ class C6Service1TkV1TestService(
 
             val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
                 String(inputVo.htmlFile.bytes, Charsets.UTF_8),
-                savedFontFilePathList,
+                null,
+                savedFontFileNameMap,
                 savedImgFilePathMap
             )
 
@@ -289,10 +325,6 @@ class C6Service1TkV1TestService(
             e.printStackTrace()
             return null
         } finally {
-            for (fontFile in savedFontFileList) {
-                val result = fontFile.delete()
-                println("delete $fontFile : $result")
-            }
             for (imgFile in savedImgFileList) {
                 val result = imgFile.delete()
                 println("delete $imgFile : $result")
