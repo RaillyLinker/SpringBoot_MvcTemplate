@@ -430,4 +430,108 @@ class C6Service1TkV1TestController(
         @JsonProperty("innerName")
         val innerName: String
     )
+
+    ////
+    @Operation(
+        summary = "N10 : AES256 암호화 테스트",
+        description = "입력받은 텍스트를 암호화 하여 반환합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @GetMapping(
+        path = ["/aes256_encrypt"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api10(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "plainText", description = "암호화 하려는 평문", example = "testString")
+        @RequestParam("plainText")
+        plainText: String,
+        @Parameter(name = "alg", description = "암호화 알고리즘", example = "AES_CBC_PKCS5")
+        @RequestParam("alg")
+        alg: Api10CryptoAlgEnum,
+        @Parameter(name = "initializationVector", description = "초기화 벡터 16byte = 16char", example = "1q2w3e4r5t6y7u8i")
+        @RequestParam("initializationVector")
+        initializationVector: String,
+        @Parameter(
+            name = "encryptionKey",
+            description = "암호화 키 32byte = 32char",
+            example = "1q2w3e4r5t6y7u8i9o0p1q2w3e4r5t6y"
+        )
+        @RequestParam("encryptionKey")
+        encryptionKey: String
+    ): Api10OutputVo? {
+        return service.api10(
+            httpServletResponse,
+            plainText,
+            alg,
+            initializationVector,
+            encryptionKey
+        )
+    }
+
+    enum class Api10CryptoAlgEnum(val alg: String) {
+        AES_CBC_PKCS5("AES/CBC/PKCS5Padding")
+    }
+
+    data class Api10OutputVo(
+        @Schema(description = "암호화된 결과물", required = true, example = "testString")
+        @JsonProperty("cryptoResult")
+        val cryptoResult: String
+    )
+
+    ////
+    @Operation(
+        summary = "N11 : AES256 복호화 테스트",
+        description = "입력받은 텍스트를 복호화 하여 반환합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @GetMapping(
+        path = ["/aes256_decrypt"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api11(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "encryptedText", description = "복호화 하려는 암호문", example = "testString")
+        @RequestParam("encryptedText")
+        encryptedText: String,
+        @Parameter(name = "alg", description = "암호화 알고리즘", example = "AES_CBC_PKCS5")
+        @RequestParam("alg")
+        alg: Api11CryptoAlgEnum,
+        @Parameter(name = "initializationVector", description = "초기화 벡터 16byte = 16char", example = "1q2w3e4r5t6y7u8i")
+        @RequestParam("initializationVector")
+        initializationVector: String,
+        @Parameter(
+            name = "encryptionKey",
+            description = "암호화 키 32byte = 32char",
+            example = "1q2w3e4r5t6y7u8i9o0p1q2w3e4r5t6y"
+        )
+        @RequestParam("encryptionKey")
+        encryptionKey: String
+    ): Api11OutputVo? {
+        return service.api11(
+            httpServletResponse,
+            encryptedText,
+            alg,
+            initializationVector,
+            encryptionKey
+        )
+    }
+
+    enum class Api11CryptoAlgEnum(val alg: String) {
+        AES_CBC_PKCS5("AES/CBC/PKCS5Padding")
+    }
+
+    data class Api11OutputVo(
+        @Schema(description = "암호화된 결과물", required = true, example = "testString")
+        @JsonProperty("cryptoResult")
+        val cryptoResult: String
+    )
 }

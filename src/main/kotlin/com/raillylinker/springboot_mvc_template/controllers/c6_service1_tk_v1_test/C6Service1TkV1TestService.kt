@@ -441,4 +441,42 @@ class C6Service1TkV1TestService(
             fontName
         )
     }
+
+
+    ////
+    fun api10(
+        httpServletResponse: HttpServletResponse,
+        plainText: String,
+        alg: C6Service1TkV1TestController.Api10CryptoAlgEnum,
+        initializationVector: String,
+        encryptionKey: String
+    ): C6Service1TkV1TestController.Api10OutputVo? {
+        return C6Service1TkV1TestController.Api10OutputVo(
+            CryptoUtilObject.encryptAES256(
+                plainText,
+                alg.alg,
+                initializationVector,
+                encryptionKey
+            )
+        )
+    }
+
+
+    ////
+    fun api11(
+        httpServletResponse: HttpServletResponse,
+        encryptedText: String,
+        alg: C6Service1TkV1TestController.Api11CryptoAlgEnum,
+        initializationVector: String,
+        encryptionKey: String
+    ): C6Service1TkV1TestController.Api11OutputVo? {
+        return C6Service1TkV1TestController.Api11OutputVo(
+            CryptoUtilObject.decryptAES256(
+                encryptedText,
+                alg.alg,
+                initializationVector,
+                encryptionKey
+            )
+        )
+    }
 }
