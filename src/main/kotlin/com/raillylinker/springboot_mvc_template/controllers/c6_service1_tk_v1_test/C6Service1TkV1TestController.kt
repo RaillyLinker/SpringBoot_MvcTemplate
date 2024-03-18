@@ -281,7 +281,7 @@ class C6Service1TkV1TestController(
                     "ex : \n\n" +
                     "       @font-face {\n\n" +
                     "            font-family: NanumGothic;\n\n" +
-                    "            src: NanumGothicFile.ttf;\n\n" +
+                    "            src: \"NanumGothicFile.ttf\";\n\n" +
                     "            -fs-pdf-font-embed: embed;\n\n" +
                     "            -fs-pdf-font-encoding: Identity-H;\n\n" +
                     "        }",

@@ -187,7 +187,7 @@ object PdfGenerator {
                 newHtmlString = pattern.replace(newHtmlString) { result ->
                     val srcPrefix = result.groupValues[1]
                     val srcValue = result.groupValues[2]
-                    val modifiedSrcValue = srcValue.replace(originalFontFileName, "url('$mappedFontFileName')")
+                    val modifiedSrcValue = srcValue.replace("\"$originalFontFileName\"", "url('$mappedFontFileName')")
                     "@font-face { $srcPrefix$modifiedSrcValue;"
                 }
             }
