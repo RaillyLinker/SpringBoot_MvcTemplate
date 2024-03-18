@@ -264,7 +264,7 @@ class C6Service1TkV1TestService(
                         ttf.close()
 
                         val fontFileUrl =
-                            "http://127.0.0.1:${serverProperties.port}${controllerBasicMapping}/files/uploads/fonts/$ttfName.$fileExtension"
+                            "http://127.0.0.1:${serverProperties.port}${controllerBasicMapping ?: ""}/files/uploads/fonts/$ttfName.$fileExtension"
 
                         savedFontFileNameMap["$fileNameWithOutExtension.$fileExtension"] = fontFileUrl
                     }
