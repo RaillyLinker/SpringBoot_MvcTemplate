@@ -241,16 +241,15 @@ class C6Service1TkV1TestService(
                     val fileNameWithOutExtension: String
                     // 확장자
                     val fileExtension: String
+                    // 폰트 이름
+                    val ttfName: String
 
                     if (fileExtensionSplitIdx == -1) {
                         httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
                         httpServletResponse.setHeader("api-result-code", "1")
                         return null
                     } else {
-                        val fontInputStream = fontFile.inputStream
-                        val ttf = TTFParser().parse(fontInputStream)
-                        fileNameWithOutExtension = ttf.name
-                        ttf.close()
+                        fileNameWithOutExtension = multiPartFileNameString.substring(0, fileExtensionSplitIdx)
                         fileExtension =
                             multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
                         if (fileExtension != "ttf") {
@@ -259,17 +258,23 @@ class C6Service1TkV1TestService(
                             return null
                         }
 
+                        val fontInputStream = fontFile.inputStream
+                        val ttf = TTFParser().parse(fontInputStream)
+                        ttfName = ttf.name
+                        ttf.close()
+
                         val fontFileUrl =
-                            "http://127.0.0.1:${serverProperties.port}${controllerBasicMapping}/files/uploads/fonts/$fileNameWithOutExtension.$fileExtension"
+                            "http://127.0.0.1:${serverProperties.port}${controllerBasicMapping}/files/uploads/fonts/$ttfName.$fileExtension"
 
                         savedFontFileNameMap["$fileNameWithOutExtension.$fileExtension"] = fontFileUrl
                     }
 
-                    // multipartFile 을 targetPath 에 저장
-                    fontFile.transferTo(
-                        // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
-                        saveDirectoryPath.resolve("$fileNameWithOutExtension.$fileExtension").normalize()
-                    )
+                    val fontFilePath = saveDirectoryPath.resolve("$ttfName.$fileExtension").normalize()
+
+                    if (!Files.exists(fontFilePath)) {
+                        // multipartFile 을 targetPath 에 저장
+                        fontFile.transferTo(fontFilePath)
+                    }
                 }
             }
 
