@@ -9,6 +9,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.web.ServerProperties
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
@@ -39,7 +40,9 @@ class C6Service1TkV1TestService(
     private val naverSmsUtilDi: NaverSmsUtilDi,
     @Qualifier("kafkaProducer0") private val kafkaProducer0: KafkaTemplate<String, Any>,
 
-    @Value("\${spring.boot.admin.client.instance.service-url}") private var serviceUrl: String
+    @Value("\${spring.boot.admin.client.instance.service-url}") private var serviceUrl: String,
+
+    private var serverProperties: ServerProperties
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -210,7 +213,8 @@ class C6Service1TkV1TestService(
     ////
     fun api6Dot1(
         httpServletResponse: HttpServletResponse,
-        inputVo: C6Service1TkV1TestController.Api6Dot1InputVo
+        inputVo: C6Service1TkV1TestController.Api6Dot1InputVo,
+        controllerBasicMapping: String?
     ): ResponseEntity<Resource>? {
         val savedFontFileNameMap: HashMap<String, String> = hashMapOf()
         val savedImgFileList: ArrayList<File> = arrayListOf()
@@ -221,7 +225,16 @@ class C6Service1TkV1TestService(
         try {
             if (inputVo.fontFiles != null) {
                 for (fontFile in inputVo.fontFiles) {
+                    // 파일 저장 기본 디렉토리 경로
+                    val saveDirectoryPath: Path = Paths.get("./files/uploads/fonts").toAbsolutePath().normalize()
+
+                    // 파일 저장 기본 디렉토리 생성
+                    Files.createDirectories(saveDirectoryPath)
+
+                    // 원본 파일명(with suffix)
                     val multiPartFileNameString = StringUtils.cleanPath(fontFile.originalFilename!!)
+
+                    // 파일 확장자 구분 위치
                     val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
 
                     // 확장자가 없는 파일명
@@ -230,47 +243,33 @@ class C6Service1TkV1TestService(
                     val fileExtension: String
 
                     if (fileExtensionSplitIdx == -1) {
-                        fileNameWithOutExtension = multiPartFileNameString
-                        fileExtension = ""
+                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.setHeader("api-result-code", "1")
+                        return null
                     } else {
-                        fileNameWithOutExtension = multiPartFileNameString.substring(0, fileExtensionSplitIdx)
+                        val fontInputStream = fontFile.inputStream
+                        val ttf = TTFParser().parse(fontInputStream)
+                        fileNameWithOutExtension = ttf.name
+                        ttf.close()
                         fileExtension =
                             multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
+                        if (fileExtension != "ttf") {
+                            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                            httpServletResponse.setHeader("api-result-code", "1")
+                            return null
+                        }
+
+                        val fontFileUrl =
+                            "http://127.0.0.1:${serverProperties.port}${controllerBasicMapping}/files/uploads/fonts/$fileNameWithOutExtension.$fileExtension"
+
+                        savedFontFileNameMap["$fileNameWithOutExtension.$fileExtension"] = fontFileUrl
                     }
 
-                    if (fileExtension != "ttf") {
-                        throw Exception("font File must be ttf")
-                    }
-
-                    val fontInputStream = fontFile.inputStream
-
-                    val ttf = TTFParser().parse(fontInputStream)
-                    val fontName: String = ttf.name
-                    ttf.close()
-
-                    val directoryPathStr = "src/main/resources/static/uploads/fonts"
-
-                    val directoryPath = Paths.get(directoryPathStr)
-
-                    if (!Files.exists(directoryPath)) {
-                        Files.createDirectories(directoryPath)
-                    }
-
-                    val path: Path = Paths.get(directoryPathStr + File.separator + fontName + ".$fileExtension")
-
-                    if (!Files.exists(path)) {
-                        val bytes = fontFile.bytes
-                        Files.write(path, bytes)
-                    }
-
-                    savedFontFileNameMap["$fileNameWithOutExtension.$fileExtension"] =
-                        "${
-                            if (serviceUrl.endsWith("/")) {
-                                serviceUrl.dropLast(1)
-                            } else {
-                                serviceUrl
-                            }
-                        }/uploads/fonts/$fontName.$fileExtension"
+                    // multipartFile 을 targetPath 에 저장
+                    fontFile.transferTo(
+                        // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
+                        saveDirectoryPath.resolve("$fileNameWithOutExtension.$fileExtension").normalize()
+                    )
                 }
             }
 
@@ -330,6 +329,45 @@ class C6Service1TkV1TestService(
                 println("delete $imgFile : $result")
             }
         }
+    }
+
+    ////
+    fun api6Dot2(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
+        // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
+        val projectRootAbsolutePathString: String = File("").absolutePath
+
+        // 파일 절대 경로 및 파일명 (프로젝트 루트 경로에 있는 files/temp 폴더를 기준으로 함)
+        val serverFilePathObject =
+            Paths.get("$projectRootAbsolutePathString/files/uploads/fonts/$fileName")
+
+        when {
+            Files.isDirectory(serverFilePathObject) -> {
+                // 파일이 디렉토리일때
+                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.setHeader("api-result-code", "1")
+                return null
+            }
+
+            Files.notExists(serverFilePathObject) -> {
+                // 파일이 없을 때
+                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.setHeader("api-result-code", "1")
+                return null
+            }
+        }
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
+        return ResponseEntity<Resource>(
+            InputStreamResource(Files.newInputStream(serverFilePathObject)),
+            HttpHeaders().apply {
+                this.contentDisposition = ContentDisposition.builder("attachment")
+                    .filename(fileName, StandardCharsets.UTF_8)
+                    .build()
+                this.add(HttpHeaders.CONTENT_TYPE, Files.probeContentType(serverFilePathObject))
+            },
+            HttpStatus.OK
+        )
     }
 
 

@@ -245,7 +245,8 @@ class C6Service1TkV1TestController(
         description = "입력받은 HTML 1.0(strict), CSS 2.1 을 기반으로 PDF 를 생성 후 반환\n\n" +
                 "HTML 이 엄격한 규격을 요구받으므로 그것을 확인하며 변환하는 과정에 사용하라고 제공되는 api 입니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "0 : 정상 동작\n\n" +
+                "1 : 폰트 파일은 ttf 만 가능합니다."
     )
     @PostMapping(
         path = ["/multipart-html-to-pdf"],
@@ -259,7 +260,16 @@ class C6Service1TkV1TestController(
         @ModelAttribute
         inputVo: Api6Dot1InputVo
     ): ResponseEntity<Resource>? {
-        return service.api6Dot1(httpServletResponse, inputVo)
+        var controllerBasicMapping: String? = null
+        for (requestMappingAnnotation in this.javaClass.getAnnotationsByType(org.springframework.web.bind.annotation.RequestMapping::class.java)) {
+            val paths = requestMappingAnnotation.value
+            if (paths.isNotEmpty()) {
+                controllerBasicMapping = paths[0]
+                break
+            }
+        }
+
+        return service.api6Dot1(httpServletResponse, inputVo, controllerBasicMapping)
     }
 
     data class Api6Dot1InputVo(
@@ -268,11 +278,12 @@ class C6Service1TkV1TestController(
         val htmlFile: MultipartFile,
         @Schema(
             description = "폰트 파일 리스트 (위 HTML 에서 사용할 폰트 파일을 넣어주세요. HTML 내에서는 해당 폰트의 파일명(ex : test.ttf)을 사용하세요.)\n\n" +
-                    "ex : @font-face {\n" +
-                    "            font-family: NanumGothic;\n" +
-                    "            src: SeoulNamsanZangL.ttf;\n" +
-                    "            -fs-pdf-font-embed: embed;\n" +
-                    "            -fs-pdf-font-encoding: Identity-H;\n" +
+                    "ex : \n\n" +
+                    "       @font-face {\n\n" +
+                    "            font-family: NanumGothic;\n\n" +
+                    "            src: NanumGothicFile.ttf;\n\n" +
+                    "            -fs-pdf-font-embed: embed;\n\n" +
+                    "            -fs-pdf-font-encoding: Identity-H;\n\n" +
                     "        }",
             required = false
         )
@@ -280,12 +291,38 @@ class C6Service1TkV1TestController(
         val fontFiles: List<MultipartFile>?,
         @Schema(
             description = "이미지 파일 리스트 (위 HTML 에서 사용할 이미지 파일을 넣어주세요. HTML 내에서는 해당 이미지의 파일명(ex : test.jpg)을 사용하세요.)\n\n" +
-                    "ex : <img src=\"html_to_pdf_sample.jpg\"/>",
+                    "ex : \n\n" +
+                    "       img src=\"html_to_pdf_sample.jpg\"/",
             required = false
         )
         @JsonProperty("imgFiles")
         val imgFiles: List<MultipartFile>?
     )
+
+
+    ////
+    @Operation(
+        summary = "N6.2 : files/uploads/fonts 폴더에서 파일 다운받기",
+        description = "files/uploads/fonts 경로의 파일을 다운로드\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작\n\n" +
+                "1 : 파일이 존재하지 않습니다."
+    )
+    @GetMapping(
+        path = ["/files/uploads/fonts/{fileName}"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
+    )
+    @ResponseBody
+    fun api6Dot2(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "fileName", description = "files/temp 폴더 안의 파일명", example = "sample.txt")
+        @PathVariable("fileName")
+        fileName: String
+    ): ResponseEntity<Resource>? {
+        return service.api6Dot2(httpServletResponse, fileName)
+    }
 
 
     ////
