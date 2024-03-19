@@ -221,21 +221,21 @@ class C6Service1TkV1TestController(
     ////
     @Operation(
         summary = "N6 : HTML 을 기반으로 PDF 를 생성",
-        description = "준비된 HTML 1.0(strict), CSS 2.1 을 기반으로 PDF 를 생성 후 files/temp 폴더에 저장\n\n" +
+        description = "준비된 HTML 1.0(strict), CSS 2.1 을 기반으로 PDF 를 생성\n\n" +
                 "(api-result-code)\n\n" +
                 "0 : 정상 동작"
     )
     @PostMapping(
         path = ["/html-to-pdf"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.ALL_VALUE]
+        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @ResponseBody
     fun api6(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ) {
-        service.api6(httpServletResponse)
+    ): ResponseEntity<Resource>? {
+        return service.api6(httpServletResponse)
     }
 
 

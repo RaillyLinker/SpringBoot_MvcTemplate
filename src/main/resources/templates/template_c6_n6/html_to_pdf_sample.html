@@ -7,39 +7,46 @@
 
     <style>
         @font-face {
-			font-family: NanumGothic;
-			src: url('http://127.0.0.1:8080/resource_global/fonts/for_itext/NanumGothic.ttf');
-			-fs-pdf-font-embed: embed;
-			-fs-pdf-font-encoding: Identity-H;
-		}
+             font-family: NanumGothic;
+             src: "NanumGothicFile.ttf";
+             -fs-pdf-font-embed: embed;
+             -fs-pdf-font-encoding: Identity-H;
+         }
+
+        @font-face {
+             font-family: NanumMyeongjo;
+             src: "NanumMyeongjo.ttf";
+             -fs-pdf-font-embed: embed;
+             -fs-pdf-font-encoding: Identity-H;
+         }
 
         /* [Tag] */
         body {
-            padding: 10px 20px;
-            box-sizing: border-box;
-            height: 100%;
-            min-height: 100vh;
-            font-family: 'NanumGothic';
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.5;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
+             padding: 10px 20px;
+             box-sizing: border-box;
+             height: 100%;
+             min-height: 100vh;
+             font-family: 'NanumGothic';
+             font-size: 14px;
+             font-weight: 400;
+             line-height: 1.5;
+             margin: 0;
+             display: flex;
+             flex-direction: column;
         }
 
         hr{
-            width: 100%;
+             width: 100%;
         }
 
         img{
-            width: 50%;
-            height: auto;
+             width: 50%;
+             height: auto;
         }
 
         /* [Class] */
         .other_font{
-            font-family: 'NanumMyeongjo';
+             font-family: 'NanumMyeongjo';
         }
 
         /* [Id] */
@@ -56,7 +63,7 @@
 
     <div>
         <h2>Static 이미지 예시</h2>
-        <img src="classpath:/static/resource_c6_n6/html_to_pdf_sample.jpg"/>
+        <img src="html_to_pdf_sample.jpg"/>
     </div>
 
     <div>

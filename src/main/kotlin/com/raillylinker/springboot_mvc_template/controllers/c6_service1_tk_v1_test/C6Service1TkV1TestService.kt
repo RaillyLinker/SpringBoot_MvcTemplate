@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.web.ServerProperties
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
+import org.springframework.core.io.ResourceLoader
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -42,7 +43,8 @@ class C6Service1TkV1TestService(
 
     @Value("\${spring.boot.admin.client.instance.service-url}") private var serviceUrl: String,
 
-    private var serverProperties: ServerProperties
+    private var serverProperties: ServerProperties,
+    private val resourceLoader: ResourceLoader
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -179,7 +181,7 @@ class C6Service1TkV1TestService(
     ////
     fun api6(
         httpServletResponse: HttpServletResponse
-    ) {
+    ): ResponseEntity<Resource>? {
         // thymeLeaf 엔진으로 파싱한 HTML String 가져오기
         // 여기서 가져온 HTML 내에 기입된 static resources 의 경로는 절대경로가 아님
         val htmlString = ThymeleafParserUtilObject.parseHtmlFileToHtmlString(
@@ -189,24 +191,51 @@ class C6Service1TkV1TestService(
                 "title" to "PDF 변환 테스트"
             )
         )
+        val savedFontFileNameMap: HashMap<String, String> = hashMapOf()
+        val savedImgFilePathMap: HashMap<String, String> = hashMapOf()
 
         // htmlString 을 PDF 로 변환하여 저장
         // XHTML 1.0(strict), CSS 2.1 (@page 의 size 는 가능)
-        PdfGenerator.createPdfFileFromHtmlString(
-            "./files/temp",
-            "temp(${
-                LocalDateTime.now().format(
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                )
-            }).pdf",
-            htmlString,
-            arrayListOf(
-                ClassPathResource("/static/resource_global/fonts/for_itext/NanumMyeongjo.ttf").url.toString()
-            )
-        )
+        try {
+            savedFontFileNameMap["NanumGothicFile.ttf"] =
+                "http://127.0.0.1:${serverProperties.port}/resource_c6_n6/NanumGothic.ttf"
 
-        httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
+            savedFontFileNameMap["NanumMyeongjo.ttf"] =
+                "http://127.0.0.1:${serverProperties.port}/resource_c6_n6/NanumMyeongjo.ttf"
+
+            savedImgFilePathMap["html_to_pdf_sample.jpg"] =
+                resourceLoader.getResource("classpath:static/resource_c6_n6/html_to_pdf_sample.jpg").file.absolutePath
+
+            val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
+                htmlString,
+                savedFontFileNameMap,
+                savedImgFilePathMap
+            )
+
+            httpServletResponse.status = HttpStatus.OK.value()
+            httpServletResponse.setHeader("api-result-code", "0")
+            return ResponseEntity<Resource>(
+                InputStreamResource(pdfByteArray.inputStream()),
+                HttpHeaders().apply {
+                    this.contentDisposition = ContentDisposition.builder("attachment")
+                        .filename(
+                            "result(${
+                                LocalDateTime.now().format(
+                                    DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
+                                )
+                            }).pdf", StandardCharsets.UTF_8
+                        )
+                        .build()
+                    this.add(HttpHeaders.CONTENT_TYPE, "application/pdf")
+                },
+                HttpStatus.OK
+            )
+        } catch (e: Exception) {
+            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.setHeader("api-msg", e.message)
+            e.printStackTrace()
+            return null
+        }
     }
 
 
