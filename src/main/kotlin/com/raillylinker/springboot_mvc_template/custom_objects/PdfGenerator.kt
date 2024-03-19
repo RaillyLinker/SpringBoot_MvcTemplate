@@ -139,9 +139,20 @@ object PdfGenerator {
 
     fun createPdfByteArrayFromHtmlString(
         htmlString: String, // PDF 로 변환할 HTML String (ex : <!DOCTYPE html> <html> ....)
-        // 주의사항 : HTML 내에서 폰트를 사용하고 싶다면 아래 리스트 변수에 resource 내의 폰트 파일 URI 를 추가하고 HTML 내에서 CSS 로 적용할것.
-        // HTML 내부 태그의 CSS 명시를 안하거나 여기에 폰트 파일명을 명시하지 않으면 폰트 적용이 되지 않음.
-        resourceFontFileNameMap: HashMap<String, String>?,
+        // 폰트 파일 맵 (키 : html 의 @font-face src 에 입력한 파일명, 값 : html 의 @font-face src 에 url('주소') 이런 형식으로 치환될 값)
+        // map value ex : {"NanumGothicFile.ttf" : "http://127.0.0.1:8080/test.ttf"}
+        // html ex :
+        // @font-face {
+        //     font-family: NanumGothic;
+        //     src: "NanumGothicFile.ttf";
+        //     -fs-pdf-font-embed: embed;
+        //     -fs-pdf-font-encoding: Identity-H;
+        // }
+        resourceFontFileNameMap: HashMap<String, String>,
+        // 이미지 파일 맵 (키 : html 의 img src 에 입력한 파일명, 값 : 로컬에 저장된 이미지 파일 full 경로)
+        // map value ex : {"html_to_pdf_sample.jpg" : "C:\Dev\test.jpg"}
+        // html ex :
+        // <img src="html_to_pdf_sample.jpg" />
         savedImgFilePathMap: HashMap<String, String>
     ): ByteArray {
         var newHtmlString = htmlString
@@ -149,34 +160,32 @@ object PdfGenerator {
         // PDF 변환 객체
         val renderer = ITextRenderer()
 
-        if (resourceFontFileNameMap != null) {
-            for (fontFilePathKv in resourceFontFileNameMap) {
-                // htmlString 의,
-                //      @font-face {
-                //			font-family: NanumGothic;
-                //			src: fileName.ttf;
-                //			-fs-pdf-font-embed: embed;
-                //			-fs-pdf-font-encoding: Identity-H;
-                //		}
-                //      이것을
-                //      @font-face {
-                //			font-family: NanumGothic;
-                //			src: url('resourceFontFileNameMap['fileName.ttf']');
-                //			-fs-pdf-font-embed: embed;
-                //			-fs-pdf-font-encoding: Identity-H;
-                //		}
-                //      이렇게 합성
+        for (fontFilePathKv in resourceFontFileNameMap) {
+            // htmlString 의,
+            //      @font-face {
+            //			font-family: NanumGothic;
+            //			src: fileName.ttf;
+            //			-fs-pdf-font-embed: embed;
+            //			-fs-pdf-font-encoding: Identity-H;
+            //		}
+            //      이것을
+            //      @font-face {
+            //			font-family: NanumGothic;
+            //			src: url('resourceFontFileNameMap['fileName.ttf']');
+            //			-fs-pdf-font-embed: embed;
+            //			-fs-pdf-font-encoding: Identity-H;
+            //		}
+            //      이렇게 합성
 
-                val originalFontFileName = fontFilePathKv.key
-                val mappedFontFileName = fontFilePathKv.value
+            val originalFontFileName = fontFilePathKv.key
+            val mappedFontFileName = fontFilePathKv.value
 
-                val pattern = """@font-face\s*\{([^}]*src:\s*)([^;]*);""".toRegex()
-                newHtmlString = pattern.replace(newHtmlString) { result ->
-                    val srcPrefix = result.groupValues[1]
-                    val srcValue = result.groupValues[2]
-                    val modifiedSrcValue = srcValue.replace("\"$originalFontFileName\"", "url('$mappedFontFileName')")
-                    "@font-face { $srcPrefix$modifiedSrcValue;"
-                }
+            val pattern = """@font-face\s*\{([^}]*src:\s*)([^;]*);""".toRegex()
+            newHtmlString = pattern.replace(newHtmlString) { result ->
+                val srcPrefix = result.groupValues[1]
+                val srcValue = result.groupValues[2]
+                val modifiedSrcValue = srcValue.replace("\"$originalFontFileName\"", "url('$mappedFontFileName')")
+                "@font-face { $srcPrefix$modifiedSrcValue;"
             }
         }
 
