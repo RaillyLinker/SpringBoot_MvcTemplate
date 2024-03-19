@@ -13,6 +13,8 @@ import java.util.regex.Pattern
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
+import kotlin.reflect.KClass
+import kotlin.reflect.full.memberProperties
 
 // [커스텀 유틸 함수 모음]
 object CustomUtilObject {
@@ -119,6 +121,19 @@ object CustomUtilObject {
     // (radian 을 degree 로)
     fun rad2deg(rad: Double): Double {
         return rad * 180 / Math.PI
+    }
+
+    // (Object 2 Map)
+    fun <T : Any> toMap(obj: T): Map<String, Any?> {
+        return (obj::class as KClass<T>).memberProperties.associate { prop ->
+            prop.name to prop.get(obj)?.let { value ->
+                if (value::class.isData) {
+                    toMap(value)
+                } else {
+                    value
+                }
+            }
+        }
     }
 
 
