@@ -300,7 +300,6 @@ class C6Service1TkV1TestService(
 
             val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
                 String(inputVo.htmlFile.bytes, Charsets.UTF_8),
-                null,
                 savedFontFileNameMap,
                 savedImgFilePathMap
             )

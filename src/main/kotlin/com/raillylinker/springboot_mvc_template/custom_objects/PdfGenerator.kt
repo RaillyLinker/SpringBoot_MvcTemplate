@@ -141,7 +141,6 @@ object PdfGenerator {
         htmlString: String, // PDF 로 변환할 HTML String (ex : <!DOCTYPE html> <html> ....)
         // 주의사항 : HTML 내에서 폰트를 사용하고 싶다면 아래 리스트 변수에 resource 내의 폰트 파일 URI 를 추가하고 HTML 내에서 CSS 로 적용할것.
         // HTML 내부 태그의 CSS 명시를 안하거나 여기에 폰트 파일명을 명시하지 않으면 폰트 적용이 되지 않음.
-        resourceFontFilePathList: List<String>?, // HTML 내에 적용할 resource 내 폰트 파일 경로 리스트 (ex : "/static/fonts/NanumGothic.ttf")
         resourceFontFileNameMap: HashMap<String, String>?,
         savedImgFilePathMap: HashMap<String, String>
     ): ByteArray {
@@ -149,18 +148,6 @@ object PdfGenerator {
 
         // PDF 변환 객체
         val renderer = ITextRenderer()
-
-        // PDF 변환기에 폰트 파일 적용
-        if (resourceFontFilePathList != null) {
-            for (fontFilePath in resourceFontFilePathList) {
-                renderer.fontResolver.addFont(
-                    // resources 아래에 있는 폰트 경로를 입력해준다
-                    fontFilePath,
-                    BaseFont.IDENTITY_H,
-                    BaseFont.EMBEDDED
-                )
-            }
-        }
 
         if (resourceFontFileNameMap != null) {
             for (fontFilePathKv in resourceFontFileNameMap) {
