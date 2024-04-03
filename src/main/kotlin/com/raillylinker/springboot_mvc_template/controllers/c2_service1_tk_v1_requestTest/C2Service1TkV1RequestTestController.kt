@@ -905,6 +905,9 @@ class C2Service1TkV1RequestTestController(
 
 
     ////
+    // UTF-8 설정을 적용하려면,
+    // produces = ["text/plain;charset=utf-8"]
+    // produces = ["text/html;charset=utf-8"]
     @Operation(
         summary = "N14 : text/string 반환 샘플",
         description = "text/string 형식의 Response Body 를 반환합니다.\n\n" +

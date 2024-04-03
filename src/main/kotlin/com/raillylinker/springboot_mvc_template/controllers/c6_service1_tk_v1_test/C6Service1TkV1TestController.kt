@@ -545,7 +545,7 @@ class C6Service1TkV1TestController(
     @GetMapping(
         path = ["/jsoup-test"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.TEXT_HTML_VALUE]
+        produces = ["text/html;charset=utf-8"]
     )
     @ResponseBody
     fun api12(

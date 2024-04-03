@@ -528,13 +528,13 @@ class C6Service1TkV1TestService(
                 <div>
                     <div>
                         <div class="fix">
-                            before fix
+                            수정 전
                         </div>
                     </div>
 
                     <div>
                         <div class="fix">
-                            <h1>before fix</h1>
+                            <h1>수정 전</h1>
                         </div>
                     </div>
                 </div>
@@ -552,7 +552,7 @@ class C6Service1TkV1TestService(
                 buyerSignElement.children().remove()
                 buyerSignElement.text("")
                 // 선택된 요소에 태그를 추가합니다.
-                buyerSignElement.append("<span>fix complete</span>")
+                buyerSignElement.append("<span>수정 완료</span>")
             }
 
             httpServletResponse.status = HttpStatus.OK.value()
