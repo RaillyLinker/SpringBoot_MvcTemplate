@@ -439,7 +439,7 @@ class C6Service1TkV1TestController(
                 "0 : 정상 동작"
     )
     @GetMapping(
-        path = ["/aes256_encrypt"],
+        path = ["/aes256-encrypt"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
@@ -491,7 +491,7 @@ class C6Service1TkV1TestController(
                 "0 : 정상 동작"
     )
     @GetMapping(
-        path = ["/aes256_decrypt"],
+        path = ["/aes256-decrypt"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
@@ -534,4 +534,30 @@ class C6Service1TkV1TestController(
         @JsonProperty("cryptoResult")
         val cryptoResult: String
     )
+
+    ////
+    @Operation(
+        summary = "N12 : Jsoup 태그 조작 테스트",
+        description = "Jsoup 을 이용하여, HTML 태그를 조작하여 반환합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "0 : 정상 동작"
+    )
+    @GetMapping(
+        path = ["/jsoup-test"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @ResponseBody
+    fun api12(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "fix", description = "변환 여부", example = "true")
+        @RequestParam("fix")
+        fix: Boolean
+    ): String? {
+        return service.api12(
+            httpServletResponse,
+            fix
+        )
+    }
 }

@@ -110,6 +110,8 @@ dependencies {
     // (폰트 파일 내부 이름 가져오기용)
     implementation("org.apache.pdfbox:pdfbox:2.0.1")
 
+    // (JSOUP - HTML 태그 조작)
+    implementation("org.jsoup:jsoup:1.17.2")
 }
 
 tasks.withType<KotlinCompile> {

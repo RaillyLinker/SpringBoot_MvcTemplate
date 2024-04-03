@@ -5,6 +5,7 @@ import com.raillylinker.springboot_mvc_template.custom_dis.NaverSmsUtilDi
 import com.raillylinker.springboot_mvc_template.custom_objects.*
 import jakarta.servlet.http.HttpServletResponse
 import org.apache.fontbox.ttf.TTFParser
+import org.jsoup.Jsoup
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
@@ -479,6 +480,8 @@ class C6Service1TkV1TestService(
         initializationVector: String,
         encryptionKey: String
     ): C6Service1TkV1TestController.Api10OutputVo? {
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
         return C6Service1TkV1TestController.Api10OutputVo(
             CryptoUtilObject.encryptAES256(
                 plainText,
@@ -498,6 +501,8 @@ class C6Service1TkV1TestService(
         initializationVector: String,
         encryptionKey: String
     ): C6Service1TkV1TestController.Api11OutputVo? {
+        httpServletResponse.status = HttpStatus.OK.value()
+        httpServletResponse.setHeader("api-result-code", "0")
         return C6Service1TkV1TestController.Api11OutputVo(
             CryptoUtilObject.decryptAES256(
                 encryptedText,
@@ -506,5 +511,57 @@ class C6Service1TkV1TestService(
                 encryptionKey
             )
         )
+    }
+
+
+    ////
+    fun api12(httpServletResponse: HttpServletResponse, fix: Boolean): String? {
+        val htmlString =
+            """
+                <!DOCTYPE HTML>
+                <head>
+                    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+                    <meta charset='UTF-8'/>
+                    <title>Test</title>
+                </head>
+                <body>
+                <div>
+                    <div>
+                        <div class="fix">
+                            before fix
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="fix">
+                            <h1>before fix</h1>
+                        </div>
+                    </div>
+                </div>
+
+                </body>
+                </html>
+            """.trimIndent()
+
+        if (fix) {
+            val doc = Jsoup.parse(htmlString)
+            // 클래스가 "fix"인 모든 요소를 선택합니다.
+            val buyerSignElements = doc.select(".fix")
+            for (buyerSignElement in buyerSignElements) {
+                // 선택된 요소 내의 모든 자식 요소를 삭제합니다.
+                buyerSignElement.children().remove()
+                buyerSignElement.text("")
+                // 선택된 요소에 태그를 추가합니다.
+                buyerSignElement.append("<span>fix complete</span>")
+            }
+
+            httpServletResponse.status = HttpStatus.OK.value()
+            httpServletResponse.setHeader("api-result-code", "0")
+            return doc.html()
+        } else {
+            httpServletResponse.status = HttpStatus.OK.value()
+            httpServletResponse.setHeader("api-result-code", "0")
+            return htmlString
+        }
     }
 }
