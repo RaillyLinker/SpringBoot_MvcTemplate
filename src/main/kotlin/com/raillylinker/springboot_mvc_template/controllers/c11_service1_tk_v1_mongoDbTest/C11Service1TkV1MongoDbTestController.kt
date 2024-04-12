@@ -24,8 +24,7 @@ class C11Service1TkV1MongoDbTestController(
     @Operation(
         summary = "N1 : DB document 입력 테스트 API",
         description = "테스트 테이블에 document 를 입력합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/test-document"],
@@ -71,8 +70,7 @@ class C11Service1TkV1MongoDbTestController(
     @Operation(
         summary = "N2 : DB Rows 삭제 테스트 API",
         description = "테스트 테이블의 모든 Row 를 모두 삭제합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/test-document"],
@@ -92,8 +90,7 @@ class C11Service1TkV1MongoDbTestController(
     @Operation(
         summary = "N3 : DB Row 삭제 테스트",
         description = "테스트 테이블의 Row 하나를 삭제합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/test-document/{id}"],
@@ -116,8 +113,7 @@ class C11Service1TkV1MongoDbTestController(
     @Operation(
         summary = "N4 : DB Rows 조회 테스트",
         description = "테스트 테이블의 모든 Rows 를 반환합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/test-document"],

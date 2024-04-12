@@ -65,7 +65,6 @@ class C6Service1TkV1TestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -92,7 +91,6 @@ class C6Service1TkV1TestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -116,7 +114,6 @@ class C6Service1TkV1TestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -135,7 +132,6 @@ class C6Service1TkV1TestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C6Service1TkV1TestController.Api4OutputVo(
             excelData?.size ?: 0,
             excelData.toString()
@@ -175,7 +171,6 @@ class C6Service1TkV1TestService(
         ExcelFileUtilObject.writeExcel(file.outputStream(), inputExcelSheetDataMap)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -197,46 +192,38 @@ class C6Service1TkV1TestService(
 
         // htmlString 을 PDF 로 변환하여 저장
         // XHTML 1.0(strict), CSS 2.1 (@page 의 size 는 가능)
-        try {
-            savedFontFileNameMap["NanumGothicFile.ttf"] =
-                "http://127.0.0.1:${serverProperties.port}/resource_c6_n6/NanumGothic.ttf"
+        savedFontFileNameMap["NanumGothicFile.ttf"] =
+            "http://127.0.0.1:${serverProperties.port}/resource_c6_n6/NanumGothic.ttf"
 
-            savedFontFileNameMap["NanumMyeongjo.ttf"] =
-                "http://127.0.0.1:${serverProperties.port}/resource_c6_n6/NanumMyeongjo.ttf"
+        savedFontFileNameMap["NanumMyeongjo.ttf"] =
+            "http://127.0.0.1:${serverProperties.port}/resource_c6_n6/NanumMyeongjo.ttf"
 
-            savedImgFilePathMap["html_to_pdf_sample.jpg"] =
-                resourceLoader.getResource("classpath:static/resource_c6_n6/html_to_pdf_sample.jpg").file.absolutePath
+        savedImgFilePathMap["html_to_pdf_sample.jpg"] =
+            resourceLoader.getResource("classpath:static/resource_c6_n6/html_to_pdf_sample.jpg").file.absolutePath
 
-            val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
-                htmlString,
-                savedFontFileNameMap,
-                savedImgFilePathMap
-            )
+        val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
+            htmlString,
+            savedFontFileNameMap,
+            savedImgFilePathMap
+        )
 
-            httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
-            return ResponseEntity<Resource>(
-                InputStreamResource(pdfByteArray.inputStream()),
-                HttpHeaders().apply {
-                    this.contentDisposition = ContentDisposition.builder("attachment")
-                        .filename(
-                            "result(${
-                                LocalDateTime.now().format(
-                                    DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                                )
-                            }).pdf", StandardCharsets.UTF_8
-                        )
-                        .build()
-                    this.add(HttpHeaders.CONTENT_TYPE, "application/pdf")
-                },
-                HttpStatus.OK
-            )
-        } catch (e: Exception) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
-            httpServletResponse.setHeader("api-msg", e.message)
-            e.printStackTrace()
-            return null
-        }
+        httpServletResponse.status = HttpStatus.OK.value()
+        return ResponseEntity<Resource>(
+            InputStreamResource(pdfByteArray.inputStream()),
+            HttpHeaders().apply {
+                this.contentDisposition = ContentDisposition.builder("attachment")
+                    .filename(
+                        "result(${
+                            LocalDateTime.now().format(
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
+                            )
+                        }).pdf", StandardCharsets.UTF_8
+                    )
+                    .build()
+                this.add(HttpHeaders.CONTENT_TYPE, "application/pdf")
+            },
+            HttpStatus.OK
+        )
     }
 
 
@@ -275,7 +262,7 @@ class C6Service1TkV1TestService(
                     val ttfName: String
 
                     if (fileExtensionSplitIdx == -1) {
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "1")
                         return null
                     } else {
@@ -283,7 +270,7 @@ class C6Service1TkV1TestService(
                         fileExtension =
                             multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
                         if (fileExtension != "ttf") {
-                            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                             httpServletResponse.setHeader("api-result-code", "1")
                             return null
                         }
@@ -335,7 +322,6 @@ class C6Service1TkV1TestService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return ResponseEntity<Resource>(
                 InputStreamResource(pdfByteArray.inputStream()),
                 HttpHeaders().apply {
@@ -352,11 +338,6 @@ class C6Service1TkV1TestService(
                 },
                 HttpStatus.OK
             )
-        } catch (e: Exception) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
-            httpServletResponse.setHeader("api-msg", e.message)
-            e.printStackTrace()
-            return null
         } finally {
             for (imgFile in savedImgFileList) {
                 val result = imgFile.delete()
@@ -377,21 +358,20 @@ class C6Service1TkV1TestService(
         when {
             Files.isDirectory(serverFilePathObject) -> {
                 // 파일이 디렉토리일때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "1")
                 return null
             }
 
             Files.notExists(serverFilePathObject) -> {
                 // 파일이 없을 때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "1")
                 return null
             }
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return ResponseEntity<Resource>(
             InputStreamResource(Files.newInputStream(serverFilePathObject)),
             HttpHeaders().apply {
@@ -411,7 +391,6 @@ class C6Service1TkV1TestService(
         kafkaProducer0.send(inputVo.topic, inputVo.message)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
     ////
@@ -444,7 +423,6 @@ class C6Service1TkV1TestService(
         inputStream.close()
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C6Service1TkV1TestController.Api8OutputVo(
             result
         )
@@ -465,7 +443,6 @@ class C6Service1TkV1TestService(
         ttf.close()
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C6Service1TkV1TestController.Api9OutputVo(
             fontName
         )
@@ -481,7 +458,6 @@ class C6Service1TkV1TestService(
         encryptionKey: String
     ): C6Service1TkV1TestController.Api10OutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C6Service1TkV1TestController.Api10OutputVo(
             CryptoUtilObject.encryptAES256(
                 plainText,
@@ -502,7 +478,6 @@ class C6Service1TkV1TestService(
         encryptionKey: String
     ): C6Service1TkV1TestController.Api11OutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C6Service1TkV1TestController.Api11OutputVo(
             CryptoUtilObject.decryptAES256(
                 encryptedText,
@@ -556,11 +531,9 @@ class C6Service1TkV1TestService(
             }
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return doc.html()
         } else {
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return htmlString
         }
     }

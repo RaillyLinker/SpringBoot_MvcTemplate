@@ -132,7 +132,6 @@ class SecurityConfig {
                 }
                 // 비인가(멤버 권한이 충족되지 않음) 처리
                 exceptionHandlingCustomizer.accessDeniedHandler { _, response, _ -> // Http Status 403
-                    response.setHeader("api-result-code", "c")
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error: Forbidden")
                 }
             }
@@ -254,7 +253,7 @@ class SecurityConfig {
                                                     WebAuthenticationDetailsSource().buildDetails(request)
                                             }
                                     } else { // 액세스 토큰 만료
-                                        response.setHeader("api-result-code", "b")
+                                        response.setHeader("api-result-code", "2")
                                         // 바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
                                         // SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
                                         // @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
@@ -262,7 +261,7 @@ class SecurityConfig {
                                     }
                                 } else {
                                     // 올바르지 않은 Authorization Token
-                                    response.setHeader("api-result-code", "a")
+                                    response.setHeader("api-result-code", "1")
                                     // 바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
                                     // SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
                                     // @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
@@ -272,7 +271,7 @@ class SecurityConfig {
 
                             else -> {
                                 // 올바르지 않은 Authorization Token
-                                response.setHeader("api-result-code", "a")
+                                response.setHeader("api-result-code", "1")
                                 // 바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
                                 // SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
                                 // @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
@@ -281,7 +280,7 @@ class SecurityConfig {
                         }
                     } else {
                         // 올바르지 않은 Authorization Token
-                        response.setHeader("api-result-code", "a")
+                        response.setHeader("api-result-code", "1")
                         // 바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
                         // SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
                         // @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
@@ -291,7 +290,9 @@ class SecurityConfig {
             }
 
             // 필터 체인 실행
-            //  : 정상 로그인시 Security Context 에 정보가 있고, 아니라면 없으므로 unAuthorized 상태
+            // 정상 로그인시 Security Context 에 정보가 있고, 아니라면 없습니다.
+            // 로그인 되지 않은 상태로 인증/인가 어노테이션을 붙인 api 에 진입하면, 401 에러가,
+            // 인가받지 않은 상태로 진입하면 403 에러가 발생합니다.
             filterChain.doFilter(request, response)
         }
     }

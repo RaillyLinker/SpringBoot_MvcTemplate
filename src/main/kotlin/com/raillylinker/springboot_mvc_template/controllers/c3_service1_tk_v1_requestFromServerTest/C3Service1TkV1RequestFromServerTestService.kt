@@ -18,6 +18,7 @@ import java.io.File
 import java.net.SocketTimeoutException
 import java.nio.file.Paths
 
+// todo : 바뀐 api-result-code 와 status 기준에 따라 로직 변경
 @Service
 class C3Service1TkV1RequestFromServerTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
@@ -46,26 +47,25 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         responseObj.body()!!
                     }
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -87,26 +87,25 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         responseObj.body()!!
                     }
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -128,26 +127,25 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         responseObj.body()!!
                     }
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -180,7 +178,6 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         val responseBody = responseObj.body()!!
                         C3Service1TkV1RequestFromServerTestController.Api4OutputVo(
                             responseBody.queryParamString,
@@ -198,20 +195,20 @@ class C3Service1TkV1RequestFromServerTestService(
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -235,7 +232,6 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         val responseBody = responseObj.body()!!
                         C3Service1TkV1RequestFromServerTestController.Api5OutputVo(
                             responseBody.pathParamInt
@@ -244,20 +240,20 @@ class C3Service1TkV1RequestFromServerTestService(
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -293,7 +289,6 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         val responseBody = responseObj.body()!!
                         C3Service1TkV1RequestFromServerTestController.Api6OutputVo(
                             responseBody.requestBodyString,
@@ -311,20 +306,20 @@ class C3Service1TkV1RequestFromServerTestService(
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -358,7 +353,6 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         val responseBody = responseObj.body()!!
                         C3Service1TkV1RequestFromServerTestController.Api7OutputVo(
                             responseBody.requestFormString,
@@ -376,20 +370,20 @@ class C3Service1TkV1RequestFromServerTestService(
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -449,7 +443,6 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         val responseBody = responseObj.body()!!
                         C3Service1TkV1RequestFromServerTestController.Api8OutputVo(
                             responseBody.requestFormString,
@@ -467,20 +460,20 @@ class C3Service1TkV1RequestFromServerTestService(
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -555,7 +548,6 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         val responseBody = responseObj.body()!!
                         C3Service1TkV1RequestFromServerTestController.Api9OutputVo(
                             responseBody.requestFormString,
@@ -573,20 +565,20 @@ class C3Service1TkV1RequestFromServerTestService(
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -640,7 +632,6 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         val responseBody = responseObj.body()!!
                         C3Service1TkV1RequestFromServerTestController.Api10OutputVo(
                             responseBody.requestFormString,
@@ -658,20 +649,20 @@ class C3Service1TkV1RequestFromServerTestService(
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -693,23 +684,22 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                     }
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
         }
     }
@@ -731,38 +721,37 @@ class C3Service1TkV1RequestFromServerTestService(
                 // api-result-code 분기
                 when (apiResultCode) {
                     "0" -> {
-                        httpServletResponse.setHeader("api-result-code", "0")
                     }
 
                     "1" -> {
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "3")
                     }
 
                     "2" -> {
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "4")
                     }
 
                     "3" -> {
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "5")
                     }
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
         }
     }
@@ -785,23 +774,22 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                     }
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
         }
     }
@@ -823,26 +811,25 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         responseObj.body()!!
                     }
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -864,26 +851,25 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         responseObj.body()!!
                     }
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -905,7 +891,6 @@ class C3Service1TkV1RequestFromServerTestService(
                 when (apiResultCode) {
                     "0" -> {
                         httpServletResponse.status = HttpStatus.OK.value()
-                        httpServletResponse.setHeader("api-result-code", "0")
                         val responseBody = responseObj.body()!!
                         C3Service1TkV1RequestFromServerTestController.Api16OutputVo(
                             responseBody.resultMessage
@@ -914,20 +899,20 @@ class C3Service1TkV1RequestFromServerTestService(
 
                     else -> {
                         // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
                 }
             } else {
                 // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         } catch (e: SocketTimeoutException) {
             // 타임아웃 에러 처리 = 런타임에서 처리해야하는 유일한 클라이언트 측 에러
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -990,7 +975,6 @@ class C3Service1TkV1RequestFromServerTestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -1059,7 +1043,6 @@ class C3Service1TkV1RequestFromServerTestService(
         classLogger.info(webSocket.toString())
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
     data class Api18MessagePayloadVo(

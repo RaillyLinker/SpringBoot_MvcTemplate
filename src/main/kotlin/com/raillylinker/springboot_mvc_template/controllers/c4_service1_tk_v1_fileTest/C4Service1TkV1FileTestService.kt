@@ -78,7 +78,6 @@ class C4Service1TkV1FileTestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
 
         return C4Service1TkV1FileTestController.Api1OutputVo("http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-temp/$savedFileName")
     }
@@ -94,21 +93,20 @@ class C4Service1TkV1FileTestService(
         when {
             Files.isDirectory(serverFilePathObject) -> {
                 // 파일이 디렉토리일때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "1")
                 return null
             }
 
             Files.notExists(serverFilePathObject) -> {
                 // 파일이 없을 때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "1")
                 return null
             }
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return ResponseEntity<Resource>(
             InputStreamResource(Files.newInputStream(serverFilePathObject)),
             HttpHeaders().apply {
@@ -161,7 +159,6 @@ class C4Service1TkV1FileTestService(
         zipOutputStream.close()
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -190,7 +187,6 @@ class C4Service1TkV1FileTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -218,7 +214,6 @@ class C4Service1TkV1FileTestService(
         CustomUtilObject.unzipFile(filePathString, fileTargetPath)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -234,7 +229,6 @@ class C4Service1TkV1FileTestService(
         val file: Resource = ClassPathResource("static/resource_c4_n5/client_image_test.jpg")
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return ResponseEntity<Resource>(
             file,
             HttpHeaders().apply {

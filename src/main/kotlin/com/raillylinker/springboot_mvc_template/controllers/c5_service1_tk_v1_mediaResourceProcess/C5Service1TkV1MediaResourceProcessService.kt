@@ -45,7 +45,7 @@ class C5Service1TkV1MediaResourceProcessService(
         val fileExtension = fileName?.split(".")?.lastOrNull()?.lowercase(Locale.getDefault())
 
         if (fileExtension !in allowedExtensions) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -59,7 +59,6 @@ class C5Service1TkV1MediaResourceProcessService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         httpServletResponse.setHeader("Content-Disposition", "attachment; filename=\"$fileName\"")
 
         return ResponseEntity<Resource>(
@@ -105,7 +104,6 @@ class C5Service1TkV1MediaResourceProcessService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -149,7 +147,6 @@ class C5Service1TkV1MediaResourceProcessService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -165,7 +162,7 @@ class C5Service1TkV1MediaResourceProcessService(
         )
 
         if (contentType !in allowedContentTypes) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -184,7 +181,6 @@ class C5Service1TkV1MediaResourceProcessService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return ResponseEntity<Resource>(
             InputStreamResource(ByteArrayInputStream(resizedImageByteArray)),
             HttpHeaders().apply {

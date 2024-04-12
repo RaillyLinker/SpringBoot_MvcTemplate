@@ -40,7 +40,6 @@ class C7Service1TkV1DatabaseTestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api1OutputVo(
             result.uid!!,
             result.content,
@@ -57,7 +56,6 @@ class C7Service1TkV1DatabaseTestService(
         database1TemplateTestRepository.deleteAll()
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -67,7 +65,6 @@ class C7Service1TkV1DatabaseTestService(
         database1TemplateTestRepository.deleteById(index)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -89,7 +86,6 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api4OutputVo(
             testEntityVoList
         )
@@ -120,7 +116,6 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api5OutputVo(
             testEntityVoList
         )
@@ -151,7 +146,6 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api6OutputVo(
             testEntityVoList
         )
@@ -184,7 +178,6 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api7OutputVo(
             entityList.totalElements,
             testEntityVoList
@@ -220,7 +213,6 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api8OutputVo(
             voList.totalElements,
             testEntityVoList
@@ -238,7 +230,7 @@ class C7Service1TkV1DatabaseTestService(
         val oldEntity = database1TemplateTestRepository.findById(testTableUid)
 
         if (oldEntity.isEmpty || oldEntity.get().rowDeleteDateStr != "-") {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -251,7 +243,6 @@ class C7Service1TkV1DatabaseTestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api9OutputVo(
             result.uid!!,
             result.content,
@@ -275,7 +266,7 @@ class C7Service1TkV1DatabaseTestService(
         val testEntity = database1TemplateTestRepository.findById(testTableUid)
 
         if (testEntity.isEmpty || testEntity.get().rowDeleteDateStr != "-") {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             // 트랜젝션 커밋
             return
@@ -284,7 +275,6 @@ class C7Service1TkV1DatabaseTestService(
         database1NativeRepository.forC7N10(testTableUid, inputVo.content)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -315,7 +305,6 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api11OutputVo(
             voList.totalElements,
             testEntityVoList
@@ -376,7 +365,6 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api14OutputVo(count, testEntityVoList)
     }
 
@@ -386,7 +374,6 @@ class C7Service1TkV1DatabaseTestService(
         val count = database1TemplateTestRepository.countByRowDeleteDateStr("-")
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api15OutputVo(count)
     }
 
@@ -396,7 +383,6 @@ class C7Service1TkV1DatabaseTestService(
         val count = database1NativeRepository.forC7N16()
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api16OutputVo(count)
     }
 
@@ -415,7 +401,6 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C7Service1TkV1DatabaseTestController.Api17OutputVo(
             entity.uid,
             entity.content,

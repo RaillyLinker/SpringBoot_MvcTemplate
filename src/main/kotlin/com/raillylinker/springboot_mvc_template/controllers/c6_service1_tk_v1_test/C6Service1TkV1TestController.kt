@@ -27,8 +27,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N1 : 이메일 발송 테스트",
         description = "이메일 발송 테스트\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/send-email"],
@@ -71,8 +70,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N2 : HTML 이메일 발송 테스트",
         description = "HTML 로 이루어진 이메일 발송 테스트\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/send-html-email"],
@@ -116,8 +114,7 @@ class C6Service1TkV1TestController(
         summary = "N3 : Naver API SMS 발송 샘플",
         description = "Naver API 를 사용한 SMS 발송 샘플\n\n" +
                 "Service 에서 사용하는 Naver SMS 발송 유틸 내의 개인정보를 변경해야 사용 가능\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/naver-sms-sample"],
@@ -148,8 +145,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N4 : 액셀 파일을 받아서 해석 후 데이터 반환",
         description = "액셀 파일을 받아서 해석 후 데이터 반환\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/read-excel"],
@@ -201,8 +197,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N5 : 액셀 파일 쓰기",
         description = "받은 데이터를 기반으로 액셀 파일을 만들어 files/temp 폴더에 저장\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/write-excel"],
@@ -222,8 +217,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N6 : HTML 을 기반으로 PDF 를 생성",
         description = "준비된 HTML 1.0(strict), CSS 2.1 을 기반으로 PDF 를 생성\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/html-to-pdf"],
@@ -245,8 +239,7 @@ class C6Service1TkV1TestController(
         description = "입력받은 HTML 1.0(strict), CSS 2.1 을 기반으로 PDF 를 생성 후 반환\n\n" +
                 "HTML 이 엄격한 규격을 요구받으므로 그것을 확인하며 변환하는 과정에 사용하라고 제공되는 api 입니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 폰트 파일은 ttf 만 가능합니다."
+                "1 : 폰트 파일은 ttf 만 가능합니다.\n\n"
     )
     @PostMapping(
         path = ["/multipart-html-to-pdf"],
@@ -305,8 +298,7 @@ class C6Service1TkV1TestController(
         summary = "N6.2 : files/uploads/fonts 폴더에서 파일 다운받기",
         description = "files/uploads/fonts 경로의 파일을 다운로드\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 파일이 존재하지 않습니다."
+                "1 : 파일이 존재하지 않습니다.\n\n"
     )
     @GetMapping(
         path = ["/files/uploads/fonts/{fileName}"],
@@ -329,8 +321,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N7 : Kafka 토픽 메세지 발행 테스트",
         description = "Kafka 토픽 메세지를 발행합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/kafka-produce-test"],
@@ -364,8 +355,7 @@ class C6Service1TkV1TestController(
         summary = "N8 : ProcessBuilder 샘플",
         description = "ProcessBuilder 를 이용하여 준비된 jar 파일을 실행시킵니다.\n\n" +
                 "jar 파일은 3초간 while 문으로 int 변수에 ++ 를 한 후 그 결과를 반환합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/process-builder-test"],
@@ -401,8 +391,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N9 : 입력받은 폰트 파일의 내부 이름을 반환",
         description = "입력받은 폰트 파일의 내부 이름을 반환\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/font-file-inner-name"],
@@ -435,8 +424,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N10 : AES256 암호화 테스트",
         description = "입력받은 텍스트를 암호화 하여 반환합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/aes256-encrypt"],
@@ -487,8 +475,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N11 : AES256 복호화 테스트",
         description = "입력받은 텍스트를 복호화 하여 반환합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/aes256-decrypt"],
@@ -539,8 +526,7 @@ class C6Service1TkV1TestController(
     @Operation(
         summary = "N12 : Jsoup 태그 조작 테스트",
         description = "Jsoup 을 이용하여, HTML 태그를 조작하여 반환합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/jsoup-test"],

@@ -1,6 +1,5 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
-import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -20,14 +19,16 @@ class C1Controller(
 
     // ---------------------------------------------------------------------------------------------
     // <매핑 함수 공간>
-    @Hidden
     @Operation(
         summary = "N1 : 홈페이지",
         description = "루트 홈페이지를 반환합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
-    @GetMapping("", "/", consumes = [MediaType.ALL_VALUE], produces = [MediaType.TEXT_HTML_VALUE])
+    @GetMapping(
+        path = ["", "/"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
     fun api1(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse

@@ -93,7 +93,6 @@ class C10Service1TkV1AuthService(
         result["result"] = externalAccessAddress
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return result
     }
 
@@ -110,7 +109,6 @@ class C10Service1TkV1AuthService(
         result["result"] = "Member No.$memberUid : Test Success"
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return result
 
     }
@@ -127,7 +125,6 @@ class C10Service1TkV1AuthService(
         result["result"] = "Member No.$memberUid : Test Success"
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return result
 
     }
@@ -144,7 +141,6 @@ class C10Service1TkV1AuthService(
         result["result"] = "Member No.$memberUid : Test Success"
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return result
 
     }
@@ -165,7 +161,7 @@ class C10Service1TkV1AuthService(
                 )
 
                 if (member == null) { // 가입된 회원이 없음
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -180,7 +176,7 @@ class C10Service1TkV1AuthService(
                 )
 
                 if (memberEmail == null) { // 가입된 회원이 없음
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -195,7 +191,7 @@ class C10Service1TkV1AuthService(
                 )
 
                 if (memberPhone == null) { // 가입된 회원이 없음
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -215,7 +211,7 @@ class C10Service1TkV1AuthService(
         )
 
         if (member == null) { // 가입된 회원이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -224,7 +220,7 @@ class C10Service1TkV1AuthService(
             !passwordEncoder.matches(inputVo.password, member.accountPassword!!) // 패스워드 불일치
         ) {
             // 두 상황 모두 비밀번호 찾기를 하면 해결이 됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -357,7 +353,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api5OutputVo(
             memberUid,
             member.nickName,
@@ -411,7 +406,7 @@ class C10Service1TkV1AuthService(
                     atResponse.body() == null ||
                     atResponse.body()!!.accessToken == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -439,7 +434,7 @@ class C10Service1TkV1AuthService(
                     atResponse.body() == null ||
                     atResponse.body()!!.accessToken == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -463,7 +458,7 @@ class C10Service1TkV1AuthService(
                     atResponse.body() == null ||
                     atResponse.body()!!.accessToken == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -480,7 +475,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api6OutputVo(
             snsAccessTokenType,
             snsAccessToken
@@ -508,7 +502,7 @@ class C10Service1TkV1AuthService(
                 if (response.code() != 200 ||
                     response.body() == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -531,7 +525,7 @@ class C10Service1TkV1AuthService(
                 if (response.code() != 200 ||
                     response.body() == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -554,7 +548,7 @@ class C10Service1TkV1AuthService(
                 if (response.code() != 200 ||
                     response.body() == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -575,7 +569,7 @@ class C10Service1TkV1AuthService(
         }
 
         if (snsOauth2 == null) { // 가입된 회원이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -586,7 +580,7 @@ class C10Service1TkV1AuthService(
         )
 
         if (member == null) { // 가입된 회원이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -721,7 +715,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api7OutputVo(
             snsOauth2.memberUid,
             member.nickName,
@@ -757,7 +750,7 @@ class C10Service1TkV1AuthService(
                 if (appleInfo != null) {
                     loginId = appleInfo.snsId
                 } else {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -778,7 +771,7 @@ class C10Service1TkV1AuthService(
         }
 
         if (snsOauth2 == null) { // 가입된 회원이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -789,7 +782,7 @@ class C10Service1TkV1AuthService(
         )
 
         if (member == null) { // 가입된 회원이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -924,7 +917,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api7Dot1OutputVo(
             snsOauth2.memberUid,
             member.nickName,
@@ -965,7 +957,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -987,7 +978,7 @@ class C10Service1TkV1AuthService(
 
         if (memberInfo == null) {
             // 가입되지 않은 회원
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -1030,7 +1021,7 @@ class C10Service1TkV1AuthService(
                             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
                         ) != accessTokenMemberUid // 리프레시 토큰의 멤버 고유번호와 액세스 토큰 멤버 고유번호가 다를시
                     ) {
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "2")
                         return null
                     }
@@ -1050,14 +1041,14 @@ class C10Service1TkV1AuthService(
                     if (JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) == 0L || // 만료시간 지남
                         tokenInfo == null // jwtAccessToken 의 리프레시 토큰이 저장소에 없음
                     ) {
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "3")
                         return null
                     }
 
                     if (jwtRefreshToken != tokenInfo.refreshToken) {
                         // 건내받은 토큰이 해당 액세스 토큰의 가용 토큰과 맞지 않음
-                        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "4")
                         return null
                     }
@@ -1204,7 +1195,6 @@ class C10Service1TkV1AuthService(
                     }
 
                     httpServletResponse.status = HttpStatus.OK.value()
-                    httpServletResponse.setHeader("api-result-code", "0")
                     return C10Service1TkV1AuthController.Api9OutputVo(
                         memberInfo.uid!!,
                         memberInfo.nickName,
@@ -1224,14 +1214,14 @@ class C10Service1TkV1AuthService(
 
                 else -> {
                     // 처리 가능한 토큰 타입이 아닐 때
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
             }
         } else {
             // 타입을 전달 하지 않았을 때
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -1262,7 +1252,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -1272,7 +1261,6 @@ class C10Service1TkV1AuthService(
         nickName: String
     ): C10Service1TkV1AuthController.Api11OutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api11OutputVo(
             database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(nickName.trim(), "-")
         )
@@ -1290,7 +1278,7 @@ class C10Service1TkV1AuthService(
         val userInfo = database1Service1MemberDataRepository.findById(memberUid.toLong()).get()
 
         if (database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(nickName, "-")) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -1301,7 +1289,6 @@ class C10Service1TkV1AuthService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -1319,7 +1306,7 @@ class C10Service1TkV1AuthService(
             )
 
         if (isDatabase1MemberUserExists) { // 기존 회원 존재
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -1352,7 +1339,6 @@ class C10Service1TkV1AuthService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api13OutputVo(
             database1MemberRegisterEmailVerificationData.uid!!,
             database1MemberRegisterEmailVerificationData.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
@@ -1372,7 +1358,7 @@ class C10Service1TkV1AuthService(
             database1Service1JoinTheMembershipWithEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -1382,14 +1368,14 @@ class C10Service1TkV1AuthService(
         if (emailVerification.rowDeleteDateStr != "-" ||
             emailVerification.emailAddress != email
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
         if (LocalDateTime.now().isAfter(emailVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -1406,12 +1392,11 @@ class C10Service1TkV1AuthService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             C10Service1TkV1AuthController.Api14OutputVo(
                 emailVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
             )
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             null
         }
@@ -1425,7 +1410,7 @@ class C10Service1TkV1AuthService(
             database1Service1JoinTheMembershipWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -1435,14 +1420,14 @@ class C10Service1TkV1AuthService(
         if (emailVerification.rowDeleteDateStr != "-" ||
             emailVerification.emailAddress != inputVo.email
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
         if (LocalDateTime.now().isAfter(emailVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return
         }
@@ -1457,7 +1442,7 @@ class C10Service1TkV1AuthService(
                     "-"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return
             }
@@ -1467,7 +1452,7 @@ class C10Service1TkV1AuthService(
                     "-"
                 )
             ) {
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "5")
                 return
             }
@@ -1575,10 +1560,9 @@ class C10Service1TkV1AuthService(
             database1Service1JoinTheMembershipWithEmailVerificationDataRepository.save(emailVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             return
         }
@@ -1599,7 +1583,7 @@ class C10Service1TkV1AuthService(
             )
 
         if (isDatabase1MemberUserExists) { // 기존 회원 존재
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -1633,7 +1617,6 @@ class C10Service1TkV1AuthService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api16OutputVo(
             database1MemberRegisterPhoneNumberVerificationData.uid!!,
             database1MemberRegisterPhoneNumberVerificationData.verificationExpireWhen.format(
@@ -1657,7 +1640,7 @@ class C10Service1TkV1AuthService(
             database1Service1JoinTheMembershipWithPhoneNumberVerificationDataRepository.findById(verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -1667,14 +1650,14 @@ class C10Service1TkV1AuthService(
         if (phoneNumberVerification.rowDeleteDateStr != "-" ||
             phoneNumberVerification.phoneNumber != phoneNumber
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
         if (LocalDateTime.now().isAfter(phoneNumberVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -1691,12 +1674,11 @@ class C10Service1TkV1AuthService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             C10Service1TkV1AuthController.Api17OutputVo(
                 phoneNumberVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
             )
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             null
         }
@@ -1710,7 +1692,7 @@ class C10Service1TkV1AuthService(
             database1Service1JoinTheMembershipWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -1720,14 +1702,14 @@ class C10Service1TkV1AuthService(
         if (phoneNumberVerification.rowDeleteDateStr != "-" ||
             phoneNumberVerification.phoneNumber != inputVo.phoneNumber
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
         if (LocalDateTime.now().isAfter(phoneNumberVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return
         }
@@ -1742,7 +1724,7 @@ class C10Service1TkV1AuthService(
                     "-"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return
             }
@@ -1752,7 +1734,7 @@ class C10Service1TkV1AuthService(
                     "-"
                 )
             ) {
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "5")
                 return
             }
@@ -1860,10 +1842,9 @@ class C10Service1TkV1AuthService(
             database1Service1JoinTheMembershipWithPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             return
         }
@@ -1894,7 +1875,7 @@ class C10Service1TkV1AuthService(
                 if (response.code() != 200 ||
                     response.body() == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -1909,7 +1890,7 @@ class C10Service1TkV1AuthService(
                     )
 
                 if (isDatabase1MemberUserExists) { // 기존 회원 존재
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
@@ -1942,7 +1923,7 @@ class C10Service1TkV1AuthService(
                 if (response.code() != 200 ||
                     response.body() == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -1957,7 +1938,7 @@ class C10Service1TkV1AuthService(
                     )
 
                 if (isDatabase1MemberUserExists) { // 기존 회원 존재
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
@@ -1990,7 +1971,7 @@ class C10Service1TkV1AuthService(
                 if (response.code() != 200 ||
                     response.body() == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -2005,7 +1986,7 @@ class C10Service1TkV1AuthService(
                     )
 
                 if (isDatabase1MemberUserExists) { // 기존 회원 존재
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
@@ -2036,7 +2017,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api19OutputVo(
             verificationUid,
             verificationCode,
@@ -2066,7 +2046,7 @@ class C10Service1TkV1AuthService(
                 if (appleInfo != null) {
                     loginId = appleInfo.snsId
                 } else {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
@@ -2079,7 +2059,7 @@ class C10Service1TkV1AuthService(
                     )
 
                 if (isDatabase1MemberUserExists) { // 기존 회원 존재
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
@@ -2110,7 +2090,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api19Dot1OutputVo(
             verificationUid,
             verificationCode,
@@ -2153,7 +2132,7 @@ class C10Service1TkV1AuthService(
             database1Service1JoinTheMembershipWithOauth2VerificationDataRepository.findById(inputVo.verificationUid)
 
         if (oauth2VerificationOpt.isEmpty) { // 해당 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -2164,14 +2143,14 @@ class C10Service1TkV1AuthService(
             oauth2Verification.oauth2TypeCode != oauth2TypeCode.toByte() ||
             oauth2Verification.oauth2Id != inputVo.oauth2Id
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
         if (LocalDateTime.now().isAfter(oauth2Verification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return
         }
@@ -2187,7 +2166,7 @@ class C10Service1TkV1AuthService(
                     "-"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return
             }
@@ -2197,7 +2176,7 @@ class C10Service1TkV1AuthService(
                     "-"
                 )
             ) {
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "5")
                 return
             }
@@ -2301,10 +2280,9 @@ class C10Service1TkV1AuthService(
             database1Service1JoinTheMembershipWithOauth2VerificationDataRepository.save(oauth2Verification)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             return
         }
@@ -2326,14 +2304,14 @@ class C10Service1TkV1AuthService(
         val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid.toLong(), "-")
 
         if (member == null) { // 멤버 정보가 없을 때
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
         if (member.accountPassword == null) { // 기존 비번이 존재하지 않음
             if (inputVo.oldPassword != null) { // 비밀번호 불일치
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return
             }
@@ -2343,7 +2321,7 @@ class C10Service1TkV1AuthService(
                     member.accountPassword
                 )
             ) { // 비밀번호 불일치
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return
             }
@@ -2358,7 +2336,7 @@ class C10Service1TkV1AuthService(
 
             if (oAuth2EntityList.isEmpty()) {
                 // null 로 만들려고 할 때 account 외의 OAuth2 인증이 없다면 제거 불가
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "3")
                 return
             }
@@ -2370,7 +2348,6 @@ class C10Service1TkV1AuthService(
         database1Service1MemberDataRepository.save(member)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -2387,7 +2364,7 @@ class C10Service1TkV1AuthService(
                 "-"
             )
         if (!isDatabase1MemberUserExists) { // 회원 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -2438,7 +2415,7 @@ class C10Service1TkV1AuthService(
             database1Service1FindPasswordWithEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -2448,14 +2425,14 @@ class C10Service1TkV1AuthService(
         if (emailVerification.rowDeleteDateStr != "-" ||
             emailVerification.emailAddress != email
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
         if (LocalDateTime.now().isAfter(emailVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -2472,12 +2449,11 @@ class C10Service1TkV1AuthService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             C10Service1TkV1AuthController.Api23OutputVo(
                 emailVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
             )
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             null
         }
@@ -2491,7 +2467,7 @@ class C10Service1TkV1AuthService(
             database1Service1FindPasswordWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -2501,14 +2477,14 @@ class C10Service1TkV1AuthService(
         if (emailVerification.rowDeleteDateStr != "-" ||
             emailVerification.emailAddress != inputVo.email
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
         if (LocalDateTime.now().isAfter(emailVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return
         }
@@ -2525,7 +2501,7 @@ class C10Service1TkV1AuthService(
                 )
 
             if (memberEmail == null) {
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return
             }
@@ -2536,7 +2512,7 @@ class C10Service1TkV1AuthService(
             )
 
             if (member == null) {
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return
             }
@@ -2568,10 +2544,9 @@ class C10Service1TkV1AuthService(
             database1Service1FindPasswordWithEmailVerificationDataRepository.save(emailVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             return
         }
@@ -2591,7 +2566,7 @@ class C10Service1TkV1AuthService(
                 "-"
             )
         if (!isDatabase1MemberUserExists) { // 회원 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -2647,7 +2622,7 @@ class C10Service1TkV1AuthService(
             database1Service1FindPasswordWithPhoneNumberVerificationDataRepository.findById(verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -2657,14 +2632,14 @@ class C10Service1TkV1AuthService(
         if (phoneNumberVerification.rowDeleteDateStr != "-" ||
             phoneNumberVerification.phoneNumber != phoneNumber
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
         if (LocalDateTime.now().isAfter(phoneNumberVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -2681,12 +2656,11 @@ class C10Service1TkV1AuthService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             C10Service1TkV1AuthController.Api26OutputVo(
                 phoneNumberVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
             )
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             null
         }
@@ -2700,7 +2674,7 @@ class C10Service1TkV1AuthService(
             database1Service1FindPasswordWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -2710,14 +2684,14 @@ class C10Service1TkV1AuthService(
         if (phoneNumberVerification.rowDeleteDateStr != "-" ||
             phoneNumberVerification.phoneNumber != inputVo.phoneNumber
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
         if (LocalDateTime.now().isAfter(phoneNumberVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return
         }
@@ -2734,7 +2708,7 @@ class C10Service1TkV1AuthService(
                 )
 
             if (memberPhone == null) {
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return
             }
@@ -2745,7 +2719,7 @@ class C10Service1TkV1AuthService(
             )
 
             if (member == null) {
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return
             }
@@ -2777,10 +2751,9 @@ class C10Service1TkV1AuthService(
             database1Service1FindPasswordWithPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             return
         }
@@ -2817,7 +2790,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api29OutputVo(
             emailList
         )
@@ -2854,7 +2826,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api30OutputVo(
             phoneNumberList
         )
@@ -2889,7 +2860,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api31OutputVo(
             myOAuth2List
         )
@@ -2917,7 +2887,7 @@ class C10Service1TkV1AuthService(
             )
 
         if (isDatabase1MemberUserExists) { // 기존 회원 존재
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -2950,7 +2920,6 @@ class C10Service1TkV1AuthService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api32OutputVo(
             database1MemberRegisterEmailVerificationData.uid!!,
             database1MemberRegisterEmailVerificationData.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
@@ -2976,7 +2945,7 @@ class C10Service1TkV1AuthService(
         val emailVerificationOpt = database1Service1AddEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -2987,14 +2956,14 @@ class C10Service1TkV1AuthService(
             emailVerification.memberUid != memberUid.toLong() ||
             emailVerification.emailAddress != email
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
         if (LocalDateTime.now().isAfter(emailVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -3011,12 +2980,11 @@ class C10Service1TkV1AuthService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             C10Service1TkV1AuthController.Api33OutputVo(
                 emailVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
             )
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             null
         }
@@ -3040,7 +3008,7 @@ class C10Service1TkV1AuthService(
             database1Service1AddEmailVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -3051,14 +3019,14 @@ class C10Service1TkV1AuthService(
             emailVerification.memberUid != memberUid.toLong() ||
             emailVerification.emailAddress != inputVo.email
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
         if (LocalDateTime.now().isAfter(emailVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -3073,7 +3041,7 @@ class C10Service1TkV1AuthService(
                     "-"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return null
             }
@@ -3092,12 +3060,11 @@ class C10Service1TkV1AuthService(
             database1Service1AddEmailVerificationDataRepository.save(emailVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return C10Service1TkV1AuthController.Api34OutputVo(
                 database1Service1MemberEmailData.uid!!
             )
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             return null
         }
@@ -3127,7 +3094,6 @@ class C10Service1TkV1AuthService(
 
         if (myEmail == null) {
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         }
 
@@ -3156,12 +3122,11 @@ class C10Service1TkV1AuthService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         }
 
         // 이외에 사용 가능한 로그인 정보가 존재하지 않을 때
-        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
         httpServletResponse.setHeader("api-result-code", "1")
         return
     }
@@ -3188,7 +3153,7 @@ class C10Service1TkV1AuthService(
             )
 
         if (isDatabase1MemberUserExists) { // 기존 회원 존재
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -3223,7 +3188,6 @@ class C10Service1TkV1AuthService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api36OutputVo(
             database1MemberAddPhoneNumberVerificationData.uid!!,
             database1MemberAddPhoneNumberVerificationData.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
@@ -3250,7 +3214,7 @@ class C10Service1TkV1AuthService(
             database1Service1AddPhoneNumberVerificationDataRepository.findById(verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -3261,14 +3225,14 @@ class C10Service1TkV1AuthService(
             phoneNumberVerification.memberUid != memberUid.toLong() ||
             phoneNumberVerification.phoneNumber != phoneNumber
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
         if (LocalDateTime.now().isAfter(phoneNumberVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -3285,12 +3249,11 @@ class C10Service1TkV1AuthService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             C10Service1TkV1AuthController.Api37OutputVo(
                 phoneNumberVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
             )
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             null
         }
@@ -3314,7 +3277,7 @@ class C10Service1TkV1AuthService(
             database1Service1AddPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
@@ -3325,14 +3288,14 @@ class C10Service1TkV1AuthService(
             phoneNumberVerification.memberUid != memberUid.toLong() ||
             phoneNumberVerification.phoneNumber != inputVo.phoneNumber
         ) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
         if (LocalDateTime.now().isAfter(phoneNumberVerification.verificationExpireWhen)) {
             // 만료됨
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
@@ -3347,7 +3310,7 @@ class C10Service1TkV1AuthService(
                     "-"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return null
             }
@@ -3366,12 +3329,11 @@ class C10Service1TkV1AuthService(
             database1Service1AddPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return C10Service1TkV1AuthController.Api38OutputVo(
                 database1Service1MemberPhoneData.uid!!
             )
         } else { // 코드 불일치
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             return null
         }
@@ -3402,7 +3364,6 @@ class C10Service1TkV1AuthService(
         if (myPhone == null) {
             // 전화번호 리스트가 비어있다면
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         }
 
@@ -3433,12 +3394,11 @@ class C10Service1TkV1AuthService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         }
 
         // 이외에 사용 가능한 로그인 정보가 존재하지 않을 때
-        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
         httpServletResponse.setHeader("api-result-code", "1")
         return
     }
@@ -3472,7 +3432,7 @@ class C10Service1TkV1AuthService(
                 if (response.code() != 200 ||
                     response.body() == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return
                 }
@@ -3490,7 +3450,7 @@ class C10Service1TkV1AuthService(
                 // 액세트 토큰 정상 동작 확인
                 if (response.body() == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return
                 }
@@ -3509,7 +3469,7 @@ class C10Service1TkV1AuthService(
                 if (response.code() != 200 ||
                     response.body() == null
                 ) {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return
                 }
@@ -3532,7 +3492,7 @@ class C10Service1TkV1AuthService(
         )
 
         if (member == null) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return
         }
@@ -3546,7 +3506,7 @@ class C10Service1TkV1AuthService(
             )
 
         if (isDatabase1MemberUserExists) { // 이미 사용중인 SNS 인증
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             return
         }
@@ -3561,7 +3521,6 @@ class C10Service1TkV1AuthService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -3589,7 +3548,7 @@ class C10Service1TkV1AuthService(
                 if (appleInfo != null) {
                     snsId = appleInfo.snsId
                 } else {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                     return
                 }
@@ -3611,7 +3570,7 @@ class C10Service1TkV1AuthService(
         )
 
         if (member == null) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return
         }
@@ -3625,7 +3584,7 @@ class C10Service1TkV1AuthService(
             )
 
         if (isDatabase1MemberUserExists) { // 이미 사용중인 SNS 인증
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
             return
         }
@@ -3640,7 +3599,6 @@ class C10Service1TkV1AuthService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -3668,7 +3626,6 @@ class C10Service1TkV1AuthService(
         if (myOAuth2 == null) {
             // 리스트가 비어있다면
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         }
 
@@ -3699,12 +3656,11 @@ class C10Service1TkV1AuthService(
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         }
 
         // 이외에 사용 가능한 로그인 정보가 존재하지 않을 때
-        httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
         httpServletResponse.setHeader("api-result-code", "1")
         return
     }
@@ -3792,7 +3748,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -3828,7 +3783,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api43OutputVo(
             myProfileList
         )
@@ -3867,7 +3821,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api44OutputVo(
             myProfile
         )
@@ -3894,7 +3847,7 @@ class C10Service1TkV1AuthService(
 
         if (profileData.isEmpty()) {
             // 내 프로필이 하나도 없을 때
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -3904,7 +3857,6 @@ class C10Service1TkV1AuthService(
             database1Service1MemberDataRepository.save(memberInfo)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         }
 
@@ -3918,7 +3870,7 @@ class C10Service1TkV1AuthService(
 
         if (selectedProfile == null) {
             // 이번에 선택하려는 프로필이 없을 때
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -3928,7 +3880,6 @@ class C10Service1TkV1AuthService(
         database1Service1MemberDataRepository.save(memberInfo)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -3960,7 +3911,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -4033,7 +3983,6 @@ class C10Service1TkV1AuthService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api47OutputVo(
             profileData.uid!!,
             profileData.imageFullUrl
@@ -4053,21 +4002,20 @@ class C10Service1TkV1AuthService(
         when {
             Files.isDirectory(serverFilePathObject) -> {
                 // 파일이 디렉토리일때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "1")
                 return null
             }
 
             Files.notExists(serverFilePathObject) -> {
                 // 파일이 없을 때
-                httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "1")
                 return null
             }
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return ResponseEntity<Resource>(
             InputStreamResource(Files.newInputStream(serverFilePathObject)),
             HttpHeaders().apply {
@@ -4113,7 +4061,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api49OutputVo(
             myEmail
         )
@@ -4140,7 +4087,7 @@ class C10Service1TkV1AuthService(
 
         if (emailData.isEmpty()) {
             // 내 이메일이 하나도 없을 때
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -4150,7 +4097,6 @@ class C10Service1TkV1AuthService(
             database1Service1MemberDataRepository.save(memberInfo)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         }
 
@@ -4164,7 +4110,7 @@ class C10Service1TkV1AuthService(
 
         if (selectedProfile == null) {
             // 이번에 선택하려는 이메일이 없을 때
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -4174,7 +4120,6 @@ class C10Service1TkV1AuthService(
         database1Service1MemberDataRepository.save(memberInfo)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -4210,7 +4155,6 @@ class C10Service1TkV1AuthService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C10Service1TkV1AuthController.Api51OutputVo(
             myPhone
         )
@@ -4237,7 +4181,7 @@ class C10Service1TkV1AuthService(
 
         if (phoneNumberData.isEmpty()) {
             // 내 전화번호가 하나도 없을 때
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -4247,7 +4191,6 @@ class C10Service1TkV1AuthService(
             database1Service1MemberDataRepository.save(memberInfo)
 
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
             return
         }
 
@@ -4261,7 +4204,7 @@ class C10Service1TkV1AuthService(
 
         if (selectedPhone == null) {
             // 이번에 선택하려는 전화번호가 없을 때
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
@@ -4271,6 +4214,5 @@ class C10Service1TkV1AuthService(
         database1Service1MemberDataRepository.save(memberInfo)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 }

@@ -45,7 +45,6 @@ class C2Service1TkV1RequestTestService(
     // <공개 메소드 공간>
     fun api1(httpServletResponse: HttpServletResponse): String? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return activeProfile
     }
 
@@ -83,7 +82,6 @@ class C2Service1TkV1RequestTestService(
         queryParamStringListNullable: List<String>?
     ): C2Service1TkV1RequestTestController.Api4OutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C2Service1TkV1RequestTestController.Api4OutputVo(
             queryParamString,
             queryParamStringNullable,
@@ -105,7 +103,6 @@ class C2Service1TkV1RequestTestService(
         pathParamInt: Int
     ): C2Service1TkV1RequestTestController.Api5OutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C2Service1TkV1RequestTestController.Api5OutputVo(pathParamInt)
     }
 
@@ -116,7 +113,6 @@ class C2Service1TkV1RequestTestService(
         inputVo: C2Service1TkV1RequestTestController.Api6InputVo
     ): C2Service1TkV1RequestTestController.Api6OutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C2Service1TkV1RequestTestController.Api6OutputVo(
             inputVo.requestBodyString,
             inputVo.requestBodyStringNullable,
@@ -138,7 +134,6 @@ class C2Service1TkV1RequestTestService(
         inputVo: C2Service1TkV1RequestTestController.Api7InputVo
     ): C2Service1TkV1RequestTestController.Api7OutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C2Service1TkV1RequestTestController.Api7OutputVo(
             inputVo.requestFormString,
             inputVo.requestFormStringNullable,
@@ -237,7 +232,6 @@ class C2Service1TkV1RequestTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C2Service1TkV1RequestTestController.Api8OutputVo(
             inputVo.requestFormString,
             inputVo.requestFormStringNullable,
@@ -340,7 +334,6 @@ class C2Service1TkV1RequestTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C2Service1TkV1RequestTestController.Api9OutputVo(
             inputVo.requestFormString,
             inputVo.requestFormStringNullable,
@@ -446,7 +439,6 @@ class C2Service1TkV1RequestTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C2Service1TkV1RequestTestController.Api10OutputVo(
             inputJsonObject.requestFormString,
             inputJsonObject.requestFormStringNullable,
@@ -474,21 +466,20 @@ class C2Service1TkV1RequestTestService(
     ) {
         if (errorType == null) {
             httpServletResponse.status = HttpStatus.OK.value()
-            httpServletResponse.setHeader("api-result-code", "0")
         } else {
             when (errorType) {
                 C2Service1TkV1RequestTestController.Api12ErrorTypeEnum.A -> {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                 }
 
                 C2Service1TkV1RequestTestController.Api12ErrorTypeEnum.B -> {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "2")
                 }
 
                 C2Service1TkV1RequestTestController.Api12ErrorTypeEnum.C -> {
-                    httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "3")
                 }
             }
@@ -506,14 +497,12 @@ class C2Service1TkV1RequestTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
     ////
     fun api14(httpServletResponse: HttpServletResponse): String? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return "test Complete!"
     }
 
@@ -524,7 +513,6 @@ class C2Service1TkV1RequestTestService(
         modelAndView.viewName = "template_c2_n15/html_response_example"
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return modelAndView
     }
 
@@ -532,7 +520,6 @@ class C2Service1TkV1RequestTestService(
     ////
     fun api16(httpServletResponse: HttpServletResponse): Resource? {
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return ByteArrayResource(
             byteArrayOf(
                 'a'.code.toByte(),
@@ -581,7 +568,6 @@ class C2Service1TkV1RequestTestService(
         val fileInputStream = FileInputStream("$serverFileAbsolutePathString/$serverFileNameString")
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return ByteArrayResource(FileCopyUtils.copyToByteArray(fileInputStream))
     }
 
@@ -599,7 +585,6 @@ class C2Service1TkV1RequestTestService(
         val fileInputStream = FileInputStream("$serverFileAbsolutePathString/$serverFileNameString")
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return ByteArrayResource(FileCopyUtils.copyToByteArray(fileInputStream))
     }
 
@@ -622,7 +607,6 @@ class C2Service1TkV1RequestTestService(
 
         // 결과 대기 객체를 먼저 반환
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return deferredResult
     }
 
@@ -647,7 +631,6 @@ class C2Service1TkV1RequestTestService(
         api20SseEmitterWrapperMbr.emitterMapSemaphore.release()
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return sseEmitter
     }
 
@@ -692,6 +675,5 @@ class C2Service1TkV1RequestTestService(
         api20SseEmitterWrapperMbr.emitterMapSemaphore.release()
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 }

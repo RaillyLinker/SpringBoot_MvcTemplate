@@ -36,8 +36,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N1 : 비 로그인 접속 테스트",
         description = "비 로그인 접속 테스트용 API\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/for-no-logged-in"],
@@ -57,8 +56,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N2 : 로그인 진입 테스트 <>",
         description = "로그인 되어 있어야 진입 가능\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/for-logged-in"],
@@ -82,8 +80,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N3 : ADMIN 권한 진입 테스트 <'ADMIN'>",
         description = "ADMIN 권한이 있어야 진입 가능\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/for-admin"],
@@ -107,8 +104,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N4 : Developer 권한 진입 테스트 <'ADMIN' or 'Developer'>",
         description = "Developer 권한이 있어야 진입 가능\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/for-developer"],
@@ -133,9 +129,8 @@ class C10Service1TkV1AuthController(
         summary = "N5 : 계정 비밀번호 로그인",
         description = "계정 아이디 + 비밀번호를 사용하는 로그인 요청\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 가입 되지 않은 회원\n\n" +
-                "2 : 패스워드 불일치"
+                "2 : 패스워드 불일치\n\n"
     )
     @PostMapping(
         path = ["/login-with-password"],
@@ -309,8 +304,7 @@ class C10Service1TkV1AuthController(
         summary = "N6 : OAuth2 Code 로 OAuth2 AccessToken 발급",
         description = "OAuth2 Code 를 사용하여 얻은 OAuth2 AccessToken 발급\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 유효하지 않은 OAuth2 인증 정보"
+                "1 : 유효하지 않은 OAuth2 인증 정보\n\n"
     )
     @GetMapping(
         path = ["/oauth2-access-token"],
@@ -358,9 +352,8 @@ class C10Service1TkV1AuthController(
         summary = "N7 : OAuth2 로그인 (Access Token)",
         description = "OAuth2 Access Token 으로 로그인 요청\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 유효하지 않은 OAuth2 Access Token\n\n" +
-                "2 : 가입 되지 않은 회원"
+                "2 : 가입 되지 않은 회원\n\n"
     )
     @PostMapping(
         path = ["/login-with-oauth2-access-token"],
@@ -526,9 +519,8 @@ class C10Service1TkV1AuthController(
         summary = "N7.1 : OAuth2 로그인 (ID Token)",
         description = "OAuth2 ID Token 으로 로그인 요청\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 유효하지 않은 OAuth2 ID Token\n\n" +
-                "2 : 가입 되지 않은 회원"
+                "2 : 가입 되지 않은 회원\n\n"
     )
     @PostMapping(
         path = ["/login-with-oauth2-id-token"],
@@ -696,8 +688,7 @@ class C10Service1TkV1AuthController(
         description = "로그아웃 처리\n\n" +
                 "Jwt 에서 로그아웃의 의미는, 지금 당장 해당 액세스 토큰을 못쓰도록 만드는 것이 아니라,\n\n" +
                 "액세스 토큰이 만료되어 리플레시 토큰으로 재발급을 시도 할 때 막는 기능입니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/logout"],
@@ -720,11 +711,10 @@ class C10Service1TkV1AuthController(
         summary = "N9 : 토큰 재발급 <>",
         description = "엑세스 토큰 및 리프레시 토큰 재발행\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 탈퇴된 회원\n\n" +
                 "2 : 유효하지 않은 리프레시 토큰\n\n" +
                 "3 : 리프레시 토큰 만료\n\n" +
-                "4 : 리프레시 토큰이 액세스 토큰과 매칭되지 않음"
+                "4 : 리프레시 토큰이 액세스 토큰과 매칭되지 않음\n\n"
     )
     @PostMapping(
         path = ["/reissue"],
@@ -882,8 +872,7 @@ class C10Service1TkV1AuthController(
         summary = "N10 : 멤버의 현재 발행된 모든 리프레시 토큰 비활성화 (= 모든 기기에서 로그아웃) <>",
         description = "멤버의 현재 발행된 모든 리프레시 토큰을 비활성화 (= 모든 기기에서 로그아웃) 하는 API\n\n" +
                 "한번 발행된 액세스 토큰을 강제로 못쓰게 만들 수는 없지만, 현재 발행된 모든 리플래시 토큰을 사용할 수 없도록 만듭니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/all-authorization-token"],
@@ -907,8 +896,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N11 : 닉네임 중복 검사",
         description = "닉네임 중복 여부 반환\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/nickname-duplicate-check"],
@@ -941,8 +929,7 @@ class C10Service1TkV1AuthController(
         summary = "N12 : 닉네임 수정하기 <>",
         description = "닉네임 수정하기\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1. 중복된 닉네임 : 중복검사를 했음에도 그 사이에 동일 닉네임이 등록되었을 수 있음"
+                "1. 중복된 닉네임 : 중복검사를 했음에도 그 사이에 동일 닉네임이 등록되었을 수 있음\n\n"
     )
     @PatchMapping(
         path = ["/my/profile/nickname"],
@@ -974,8 +961,7 @@ class C10Service1TkV1AuthController(
         description = "이메일 회원가입시 본인 이메일 확인 메일 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 기존 회원 존재"
+                "1 : 기존 회원 존재\n\n"
     )
     @PostMapping(
         path = ["/join-the-membership-email-verification"],
@@ -1022,10 +1008,9 @@ class C10Service1TkV1AuthController(
         description = "이메일 회원가입시 본인 이메일에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
                 "첫 인증 완료시 이메일 회원가입까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
-                "3 : verificationCode 가 일치하지 않음"
+                "3 : verificationCode 가 일치하지 않음\n\n"
     )
     @GetMapping(
         path = ["/join-the-membership-email-verification-check"],
@@ -1065,12 +1050,11 @@ class C10Service1TkV1AuthController(
         summary = "N15 : 이메일 회원가입",
         description = "이메일 회원가입 처리\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
                 "4 : 이미 가입된 회원이 있습니다.\n\n" +
-                "5 : 이미 사용중인 닉네임"
+                "5 : 이미 사용중인 닉네임\n\n"
     )
     @PostMapping(
         path = ["/join-the-membership-with-email"],
@@ -1139,8 +1123,7 @@ class C10Service1TkV1AuthController(
         description = "전화번호 회원가입시 본인 전화번호 확인 문자 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 기존 회원 존재"
+                "1 : 기존 회원 존재\n\n"
     )
     @PostMapping(
         path = ["/join-the-membership-phone-number-verification"],
@@ -1188,10 +1171,9 @@ class C10Service1TkV1AuthController(
         description = "전화번호 회원가입시 본인 전화번호에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
                 "첫 인증 완료시 SMS 회원가입까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
-                "3 : verificationCode 가 일치하지 않음"
+                "3 : verificationCode 가 일치하지 않음\n\n"
     )
     @GetMapping(
         path = ["/join-the-membership-phone-number-verification-check"],
@@ -1231,12 +1213,11 @@ class C10Service1TkV1AuthController(
         summary = "N18 : 전화번호 회원가입",
         description = "전화번호 회원가입 처리\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
                 "4 : 이미 가입된 회원이 있습니다.\n\n" +
-                "5 : 이미 사용중인 닉네임"
+                "5 : 이미 사용중인 닉네임\n\n"
     )
     @PostMapping(
         path = ["/join-the-membership-with-phone-number"],
@@ -1305,9 +1286,8 @@ class C10Service1TkV1AuthController(
         summary = "N19 : OAuth2 AccessToken 으로 회원가입 검증",
         description = "OAuth2 AccessToken 으로 회원가입 검증\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 잘못된 OAuth2 AccessToken\n\n" +
-                "2 : 기존 회원 존재"
+                "2 : 기존 회원 존재\n\n"
     )
     @PostMapping(
         path = ["/join-the-membership-oauth2-access-token-verification"],
@@ -1382,9 +1362,8 @@ class C10Service1TkV1AuthController(
         summary = "N19.1 : OAuth2 IdToken 으로 회원가입 검증",
         description = "OAuth2 IdToken 으로 회원가입 검증\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 잘못된 OAuth2 IdToken\n\n" +
-                "2 : 기존 회원 존재"
+                "2 : 기존 회원 존재\n\n"
     )
     @PostMapping(
         path = ["/join-the-membership-oauth2-id-token-verification"],
@@ -1459,12 +1438,11 @@ class C10Service1TkV1AuthController(
         summary = "N20 : OAuth2 회원가입",
         description = "OAuth2 회원가입 처리\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : OAuth2 검증 요청을 보낸 적 없음\n\n" +
                 "2 : OAuth2 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
                 "4 : 이미 가입된 회원이 있습니다.\n\n" +
-                "5 : 이미 사용중인 닉네임"
+                "5 : 이미 사용중인 닉네임\n\n"
     )
     @PostMapping(
         path = ["/join-the-membership-with-oauth2"],
@@ -1534,7 +1512,6 @@ class C10Service1TkV1AuthController(
         description = "계정 비밀번호 변경\n\n" +
                 "변경 완료된 후, 기존 모든 인증/인가 토큰을 비활성화 시키고 싶다면 별도의 API 사용하기\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 탈퇴된 회원\n\n" +
                 "2 : 기존 비밀번호가 일치하지 않음\n\n" +
                 "3 : 비번을 null 로 만들려고 할 때 account 외의 OAuth2 인증이 없기에 비번 제거 불가\n\n"
@@ -1575,8 +1552,7 @@ class C10Service1TkV1AuthController(
         description = "이메일 비밀번호 찾기 본인 이메일 확인 메일 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 가입되지 않은 회원"
+                "1 : 가입되지 않은 회원\n\n"
     )
     @PostMapping(
         path = ["/find-password-email-verification"],
@@ -1623,10 +1599,9 @@ class C10Service1TkV1AuthController(
         description = "이메일 비밀번호 찾기 시 본인 이메일에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
                 "첫 인증 완료시 비밀번호 찾기 까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
-                "3 : verificationCode 가 일치하지 않음"
+                "3 : verificationCode 가 일치하지 않음\n\n"
     )
     @GetMapping(
         path = ["/find-password-email-verification-check"],
@@ -1667,11 +1642,10 @@ class C10Service1TkV1AuthController(
         description = "계정 비밀번호를 랜덤 값으로 변경 후 인증한 이메일로 발송\n\n" +
                 "변경 완료된 후, 기존 모든 인증/인가 토큰을 비활성화 시키고 싶다면 별도의 API 사용하기\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
-                "4 : 탈퇴한 회원입니다."
+                "4 : 탈퇴한 회원입니다.\n\n"
     )
     @PostMapping(
         path = ["/find-password-with-email"],
@@ -1717,8 +1691,7 @@ class C10Service1TkV1AuthController(
         description = "전화번호 비밀번호 찾기 본인 전화번호 확인 문자 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 가입되지 않은 회원"
+                "1 : 가입되지 않은 회원\n\n"
     )
     @PostMapping(
         path = ["/find-password-phone-number-verification"],
@@ -1766,10 +1739,9 @@ class C10Service1TkV1AuthController(
         description = "전화번호 비밀번호 찾기 시 본인 전와번호에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
                 "첫 인증 완료시 비밀번호 찾기 까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
-                "3 : verificationCode 가 일치하지 않음"
+                "3 : verificationCode 가 일치하지 않음\n\n"
     )
     @GetMapping(
         path = ["/find-password-phone-number-verification-check"],
@@ -1810,11 +1782,10 @@ class C10Service1TkV1AuthController(
         description = "계정 비밀번호를 랜덤 값으로 변경 후 인증한 전화번호로 발송\n\n" +
                 "변경 완료된 후, 기존 모든 인증/인가 토큰을 비활성화 시키고 싶다면 별도의 API 사용하기\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
-                "4 : 탈퇴된 회원"
+                "4 : 탈퇴된 회원\n\n"
     )
     @PostMapping(
         path = ["/find-password-with-phone-number"],
@@ -1858,8 +1829,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N29 : 내 이메일 리스트 가져오기 <>",
         description = "내 이메일 리스트 가져오기\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-email-addresses"],
@@ -1902,8 +1872,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N30 : 내 전화번호 리스트 가져오기 <>",
         description = "내 전화번호 리스트 가져오기\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-phone-numbers"],
@@ -1946,8 +1915,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N31 : 내 OAuth2 로그인 리스트 가져오기 <>",
         description = "내 OAuth2 로그인 리스트 가져오기\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-oauth2-list"],
@@ -1996,8 +1964,7 @@ class C10Service1TkV1AuthController(
         description = "이메일 추가하기 본인 이메일 확인 메일 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 이미 사용중인 이메일"
+                "1 : 이미 사용중인 이메일\n\n"
     )
     @PostMapping(
         path = ["/add-email-verification"],
@@ -2049,10 +2016,9 @@ class C10Service1TkV1AuthController(
         description = "이메일 추가하기 본인 이메일에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
                 "첫 인증 완료시 추가하기 까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
-                "3 : verificationCode 가 일치하지 않음"
+                "3 : verificationCode 가 일치하지 않음\n\n"
     )
     @GetMapping(
         path = ["/add-email-verification-check"],
@@ -2096,11 +2062,10 @@ class C10Service1TkV1AuthController(
         summary = "N34 : 이메일 추가하기 <>",
         description = "내 계정에 이메일 추가\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
-                "4 : 이미 사용중인 이메일"
+                "4 : 이미 사용중인 이메일\n\n"
     )
     @PostMapping(
         path = ["/my-new-email"],
@@ -2155,8 +2120,7 @@ class C10Service1TkV1AuthController(
         summary = "N35 : 내 이메일 제거하기 <>",
         description = "내 계정에서 이메일 제거\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)"
+                "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
     @DeleteMapping(
         path = ["/my-email"],
@@ -2185,8 +2149,7 @@ class C10Service1TkV1AuthController(
         description = "전화번호 추가하기 본인 전화번호 확인 문자 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 이미 사용중인 전화번호"
+                "1 : 이미 사용중인 전화번호\n\n"
     )
     @PostMapping(
         path = ["/add-phone-number-verification"],
@@ -2238,10 +2201,9 @@ class C10Service1TkV1AuthController(
         description = "전화번호 추가하기 본인 전화번호에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
                 "첫 인증 완료시 추가하기 까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
-                "3 : verificationCode 가 일치하지 않음"
+                "3 : verificationCode 가 일치하지 않음\n\n"
     )
     @GetMapping(
         path = ["/add-phone-number-verification-check"],
@@ -2284,11 +2246,10 @@ class C10Service1TkV1AuthController(
         summary = "N38 : 전화번호 추가하기 <>",
         description = "내 계정에 전화번호 추가\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
-                "4 : 이미 사용중인 전화번호"
+                "4 : 이미 사용중인 전화번호\n\n"
     )
     @PostMapping(
         path = ["/my-new-phone-number"],
@@ -2343,8 +2304,7 @@ class C10Service1TkV1AuthController(
         summary = "N39 : 내 전화번호 제거하기 <>",
         description = "내 계정에서 전화번호 제거\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)"
+                "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
     @DeleteMapping(
         path = ["/my-phone-number"],
@@ -2372,10 +2332,9 @@ class C10Service1TkV1AuthController(
         summary = "N40 : OAuth2 추가하기 (Access Token) <>",
         description = "내 계정에 OAuth2 Access Token 으로 인증 추가\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : oAuth2 Access Token 정보 검증 불일치\n\n" +
                 "2 : 탈퇴된 회원\n\n" +
-                "3 : 이미 사용중인 인증"
+                "3 : 이미 사용중인 인증\n\n"
     )
     @PostMapping(
         path = ["/my-new-oauth2-token"],
@@ -2420,10 +2379,9 @@ class C10Service1TkV1AuthController(
         summary = "N40.1 : OAuth2 추가하기 (Id Token) <>",
         description = "내 계정에 OAuth2 Id Token 으로 인증 추가\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : oAuth2 Id Token 정보 검증 불일치\n\n" +
                 "2 : 탈퇴된 회원\n\n" +
-                "3 : 이미 사용중인 인증"
+                "3 : 이미 사용중인 인증\n\n"
     )
     @PostMapping(
         path = ["/my-new-oauth2-id-token"],
@@ -2468,8 +2426,7 @@ class C10Service1TkV1AuthController(
         summary = "N41 : 내 OAuth2 제거하기 <>",
         description = "내 계정에서 OAuth2 제거\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)"
+                "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
     @DeleteMapping(
         path = ["/my-oauth2"],
@@ -2496,8 +2453,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N42 : 회원탈퇴 <>",
         description = "회원탈퇴 요청\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/withdrawal"],
@@ -2521,8 +2477,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N43 : 내 Profile 이미지 정보 리스트 가져오기 <>",
         description = "내 Profile 이미지 정보 리스트 가져오기\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-profile-list"],
@@ -2565,8 +2520,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N44 : 내 대표 Profile 이미지 정보 가져오기 <>",
         description = "내 대표 Profile 이미지 정보 가져오기\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-front-profile"],
@@ -2607,8 +2561,7 @@ class C10Service1TkV1AuthController(
         summary = "N45 : 내 대표 프로필 설정하기 <>",
         description = "내가 등록한 프로필들 중 대표 프로필 설정하기\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1. 선택한 profileUid 가 없습니다."
+                "1. 선택한 profileUid 가 없습니다.\n\n"
     )
     @PatchMapping(
         path = ["/my-front-profile"],
@@ -2639,8 +2592,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N46 : 내 프로필 삭제 <>",
         description = "내가 등록한 프로필들 중 하나를 삭제합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/my-profile/{profileUid}"],
@@ -2667,8 +2619,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N47 : 내 프로필 이미지 추가",
         description = "내 프로필 이미지 추가 (대표 이미지 설정은 다른 API 로 해야합니다.)\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/my-profile"],
@@ -2711,8 +2662,7 @@ class C10Service1TkV1AuthController(
         description = "프로필 이미지를 files/member/profile 위치에 저장했을 때 파일을 가져오기 위한 API 로,\n\n" +
                 "AWS 나 다른 Storage 서비스를 사용해도 좋습니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 파일이 존재하지 않습니다."
+                "1 : 파일이 존재하지 않습니다.\n\n"
     )
     @GetMapping(
         path = ["/member-profile/{fileName}"],
@@ -2735,8 +2685,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N49 : 내 대표 이메일 정보 가져오기 <>",
         description = "내 대표 이메일 정보 가져오기\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-front-email"],
@@ -2777,8 +2726,7 @@ class C10Service1TkV1AuthController(
         summary = "N50 : 내 대표 이메일 설정하기 <>",
         description = "내가 등록한 이메일들 중 대표 이메일 설정하기\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1. 선택한 emailUid 가 없습니다."
+                "1. 선택한 emailUid 가 없습니다.\n\n"
     )
     @PatchMapping(
         path = ["/my-front-email"],
@@ -2809,8 +2757,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N51 : 내 대표 전화번호 정보 가져오기 <>",
         description = "내 대표 전화번호 정보 가져오기\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-front-phone-number"],
@@ -2851,8 +2798,7 @@ class C10Service1TkV1AuthController(
         summary = "N52 : 내 대표 전화번호 설정하기 <>",
         description = "내가 등록한 전화번호들 중 대표 전화번호 설정하기\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1. 선택한 phoneNumberUid 가 없습니다."
+                "1. 선택한 phoneNumberUid 가 없습니다.\n\n"
     )
     @PatchMapping(
         path = ["/my-front-phone-number"],

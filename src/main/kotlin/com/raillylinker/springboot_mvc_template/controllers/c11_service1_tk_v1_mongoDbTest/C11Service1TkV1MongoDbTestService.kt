@@ -42,7 +42,6 @@ class C11Service1TkV1MongoDbTestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C11Service1TkV1MongoDbTestController.Api1OutputVo(
             resultCollection.uid!!.toString(),
             resultCollection.content,
@@ -57,7 +56,6 @@ class C11Service1TkV1MongoDbTestService(
         testCollectionRepository.deleteAll()
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
     ////
@@ -65,7 +63,6 @@ class C11Service1TkV1MongoDbTestService(
         testCollectionRepository.deleteById(id)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
     ////
@@ -87,7 +84,6 @@ class C11Service1TkV1MongoDbTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C11Service1TkV1MongoDbTestController.Api4OutputVo(
             resultVoList
         )

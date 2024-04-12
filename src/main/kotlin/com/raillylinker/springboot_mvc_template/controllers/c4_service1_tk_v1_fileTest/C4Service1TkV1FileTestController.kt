@@ -27,8 +27,7 @@ class C4Service1TkV1FileTestController(
     @Operation(
         summary = "N1 : files/temp 폴더로 파일 업로드",
         description = "multipart File 을 하나 업로드하여 서버의 files/temp 폴더에 저장\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/upload-to-temp"],
@@ -66,8 +65,7 @@ class C4Service1TkV1FileTestController(
         summary = "N2 : files/temp 폴더에서 파일 다운받기",
         description = "업로드 API 를 사용하여 files/temp 로 업로드한 파일을 다운로드\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
-                "1 : 파일이 존재하지 않습니다."
+                "1 : 파일이 존재하지 않습니다.\n\n"
     )
     @GetMapping(
         path = ["/download-from-temp/{fileName}"],
@@ -90,8 +88,7 @@ class C4Service1TkV1FileTestController(
     @Operation(
         summary = "N3 : 파일 리스트 zip 압축 테스트",
         description = "파일들을 zip 타입으로 압축하여 files/temp 폴더에 저장\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/zip-files"],
@@ -111,8 +108,7 @@ class C4Service1TkV1FileTestController(
     @Operation(
         summary = "N3.1 : 폴더 zip 압축 테스트",
         description = "폴더를 통째로 zip 타입으로 압축하여 files/temp 폴더에 저장\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/zip-folder"],
@@ -132,8 +128,7 @@ class C4Service1TkV1FileTestController(
     @Operation(
         summary = "N4 : zip 압축 파일 해제 테스트",
         description = "zip 압축 파일을 해제하여 files/temp 폴더에 저장\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/unzip-file"],
@@ -153,8 +148,7 @@ class C4Service1TkV1FileTestController(
     @Operation(
         summary = "N5 : 클라이언트 이미지 표시 테스트용 API",
         description = "서버에서 이미지를 반환합니다. 클라이언트에서의 이미지 표시 시 PlaceHolder, Error 처리에 대응 할 수 있습니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/client-image-test"],

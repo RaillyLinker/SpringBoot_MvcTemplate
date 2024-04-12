@@ -41,7 +41,6 @@ class C8Service1TkV1RedisTestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -51,13 +50,12 @@ class C8Service1TkV1RedisTestService(
         val keyValue = redis1TestRepository.findKeyValue(key)
 
         if (keyValue == null) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C8Service1TkV1RedisTestController.Api2OutputVo(
             Redis1_Test.TABLE_NAME,
             keyValue.key,
@@ -84,7 +82,6 @@ class C8Service1TkV1RedisTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
         return C8Service1TkV1RedisTestController.Api3OutputVo(
             Redis1_Test.TABLE_NAME,
             testEntityListVoList
@@ -97,7 +94,6 @@ class C8Service1TkV1RedisTestService(
         redis1TestRepository.deleteKeyValue(key)
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 
@@ -106,7 +102,6 @@ class C8Service1TkV1RedisTestService(
         redis1TestRepository.deleteAllKeyValues()
 
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("api-result-code", "0")
     }
 
 

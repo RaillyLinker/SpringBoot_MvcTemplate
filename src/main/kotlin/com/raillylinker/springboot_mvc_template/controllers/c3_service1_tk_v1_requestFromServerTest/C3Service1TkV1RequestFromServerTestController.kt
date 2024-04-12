@@ -28,9 +28,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N1 : 기본 요청 테스트",
         description = "기본적인 Get 메소드 요청 테스트입니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/request-test"],
@@ -50,9 +49,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N2 : Redirect 테스트",
         description = "Redirect 되었을 때의 응답 테스트입니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/redirect-to-blank"],
@@ -72,9 +70,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N3 : Forward 테스트",
         description = "Forward 되었을 때의 응답 테스트입니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/forward-to-blank"],
@@ -94,9 +91,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N4 : Get 요청 테스트 (Query Parameter)",
         description = "Query 파라미터를 받는 Get 요청 테스트\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/get-request"],
@@ -157,9 +153,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N5 : Get 요청 테스트 (Path Parameter)",
         description = "Path 파라미터를 받는 Get 요청 테스트\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/get-request-path-param"],
@@ -185,9 +180,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N6 : Post 요청 테스트 (Request Body, application/json)",
         description = "application/json 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/post-request-application-json"],
@@ -248,9 +242,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N7 : Post 요청 테스트 (Request Body, x-www-form-urlencoded)",
         description = "x-www-form-urlencoded 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/post-request-x-www-form-urlencoded"],
@@ -311,9 +304,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N8 : Post 요청 테스트 (Request Body, multipart/form-data)",
         description = "multipart/form-data 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/post-request-multipart-form-data"],
@@ -375,9 +367,8 @@ class C3Service1TkV1RequestFromServerTestController(
         description = "multipart/form-data 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
                 "MultipartFile 파라미터를 List 로 받습니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/post-request-multipart-form-data2"],
@@ -439,9 +430,8 @@ class C3Service1TkV1RequestFromServerTestController(
         description = "multipart/form-data 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
                 "파일 외의 파라미터를 JsonString 형식으로 받습니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/post-request-multipart-form-data-json"],
@@ -502,9 +492,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N11 : 에러 발생 테스트",
         description = "요청시 에러가 발생했을 때의 테스트입니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/generate-error"],
@@ -524,12 +513,11 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N12 : api-result-code 반환 테스트",
         description = "api-result-code 가 Response Header 로 반환되는 테스트입니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
                 "2 : 서버 에러\n\n" +
                 "3 : errorType 을 A 로 보냈습니다.\n\n" +
                 "4 : errorType 을 B 로 보냈습니다.\n\n" +
-                "5 : errorType 을 C 로 보냈습니다."
+                "5 : errorType 을 C 로 보냈습니다.\n\n"
     )
     @GetMapping(
         path = ["/api-result-code-test"],
@@ -549,9 +537,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N13 : 응답 지연 발생 테스트",
         description = "요청을 보내어 인위적으로 응답이 지연 되었을 때를 테스트합니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/time-delay-test"],
@@ -575,9 +562,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N14 : text/string 형식 Response 받아오기",
         description = "text/string 형식 Response 를 받아옵니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/text-string-response"],
@@ -600,9 +586,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N15 : text/html 형식 Response 받아오기",
         description = "text/html 형식 Response 를 받아옵니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/text-html-response"],
@@ -625,9 +610,8 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N16 : DeferredResult Get 요청 테스트",
         description = "결과 반환 지연 Get 메소드 요청 테스트\n\n" +
                 "(api-result-code)\n\n" +
-                "0 : 정상 동작\n\n" +
                 "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러"
+                "2 : 서버 에러\n\n"
     )
     @GetMapping(
         path = ["/delayed-result-test"],
@@ -656,8 +640,7 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N17 : SSE 구독 테스트",
         description = "SSE 구독 요청 테스트\n\n" +
                 "SSE 를 구독하여 백그라운드에서 실행합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/sse-subscribe"],
@@ -680,8 +663,7 @@ class C3Service1TkV1RequestFromServerTestController(
         summary = "N18 : WebSocket 연결 테스트",
         description = "WebSocket 연결 요청 테스트\n\n" +
                 "WebSocket 을 연결 하여 백그라운드에서 실행합니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "0 : 정상 동작"
+                "(api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/websocket-connect"],
