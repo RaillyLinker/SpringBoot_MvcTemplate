@@ -115,16 +115,6 @@ class SwaggerConfig(
                                                 .description("인가되지 않은 접근입니다.")
                                         )
                                         .addApiResponse(
-                                            "404",
-                                            ApiResponse()
-                                                .description("요청한 API 가 없습니다.")
-                                        )
-                                        .addApiResponse(
-                                            "405",
-                                            ApiResponse()
-                                                .description("요청 메소드가 다릅니다.")
-                                        )
-                                        .addApiResponse(
                                             "500",
                                             ApiResponse()
                                                 .description(
