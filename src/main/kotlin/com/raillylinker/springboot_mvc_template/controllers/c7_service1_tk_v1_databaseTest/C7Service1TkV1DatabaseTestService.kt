@@ -3,6 +3,8 @@ package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_d
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_NativeRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_FkTestOneToManyChildRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_FkTestParentRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_TestsRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_TestData
 import jakarta.servlet.http.HttpServletResponse
@@ -22,7 +24,9 @@ class C7Service1TkV1DatabaseTestService(
 
     // (Database1 Repository)
     private val database1NativeRepository: Database1_NativeRepository,
-    private val database1TemplateTestRepository: Database1_Template_TestsRepository
+    private val database1TemplateTestRepository: Database1_Template_TestsRepository,
+    private val database1TemplateFkTestParentRepository: Database1_Template_FkTestParentRepository,
+    private val database1TemplateFkTestOneToManyChildRepository: Database1_Template_FkTestOneToManyChildRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
