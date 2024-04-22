@@ -20,9 +20,9 @@ class Database1_Template_FkTestOneToManyChild(
     var childName: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_test_parent_uid", nullable = true)
+    @JoinColumn(name = "fk_test_parent_uid", nullable = false)
     @Comment("FK 대상 template.fk_test_parent 고유번호")
-    var fkTestParent: Database1_Template_FkTestParent?
+    var fkTestParent: Database1_Template_FkTestParent
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

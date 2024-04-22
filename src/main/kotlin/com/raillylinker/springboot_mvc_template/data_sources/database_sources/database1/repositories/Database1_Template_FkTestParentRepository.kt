@@ -6,5 +6,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface Database1_Template_FkTestParentRepository : JpaRepository<Database1_Template_FkTestParent, Long> {
-
+    fun findByUidAndRowDeleteDateStr(
+        uid: Long,
+        rowDeleteDateStr: String
+    ): Database1_Template_FkTestParent?
 }

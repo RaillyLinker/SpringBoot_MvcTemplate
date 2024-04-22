@@ -6,6 +6,8 @@ import com.raillylinker.springboot_mvc_template.data_sources.database_sources.da
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_FkTestOneToManyChildRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_FkTestParentRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_TestsRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_FkTestOneToManyChild
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_FkTestParent
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_TestData
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
@@ -411,6 +413,64 @@ class C7Service1TkV1DatabaseTestService(
             entity.randomNum,
             entity.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
             entity.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+        )
+    }
+
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api18(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C7Service1TkV1DatabaseTestController.Api18InputVo
+    ): C7Service1TkV1DatabaseTestController.Api18OutputVo? {
+        val result = database1TemplateFkTestParentRepository.save(
+            Database1_Template_FkTestParent(
+                inputVo.fkParentName
+            )
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api18OutputVo(
+            result.uid!!,
+            result.parentName,
+            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+        )
+    }
+
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api19(
+        httpServletResponse: HttpServletResponse,
+        parentUid: Long,
+        inputVo: C7Service1TkV1DatabaseTestController.Api19InputVo
+    ): C7Service1TkV1DatabaseTestController.Api19OutputVo? {
+        val parentEntity = database1TemplateFkTestParentRepository.findByUidAndRowDeleteDateStr(
+            parentUid,
+            "-"
+        )
+
+        if (parentEntity == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return null
+        }
+
+        val result = database1TemplateFkTestOneToManyChildRepository.save(
+            Database1_Template_FkTestOneToManyChild(
+                inputVo.fkChildName,
+                parentEntity
+            )
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api19OutputVo(
+            result.uid!!,
+            result.childName,
+            result.fkTestParent.parentName,
+            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
         )
     }
 }
