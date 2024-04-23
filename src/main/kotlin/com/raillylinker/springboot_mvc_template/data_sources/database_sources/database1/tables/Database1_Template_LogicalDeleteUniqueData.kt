@@ -6,23 +6,27 @@ import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
+// 본 테이블은 논리적 삭제를 적용한 테이블에 Unique 변수를 적용하는 방법을 설명하기 위한 샘플입니다.
+// 논리적 삭제시, 데이터에서 행이 삭제될 일은 없다고 보면 되므로,
+// 변수에 단순하게 unique 를 걸어둔다면, 해당 행이 비활성 상태일 때에도, 새로운 행으로 동일한 값을 가질 수 없게 됩니다.
+// 이에, unique 를 적용할 변수와 더불어, 행의 삭제일을 나타내는 row_delete_date_str 변수를 같이 묶어 unique 를 걸어둠으로써,
+// 삭제시에는 row_delete_date_str 가 현재 시간으로 매번 달라지기에 문제가 없고,
+// 생성시에는 행 활성화 상태를 뜻하는 row_delete_date_str 가 "-" 경우가 없다면 문제가 없게 됩니다.
+
+// 주의 : 낙관적 Lock (@Version) 사용시 Transaction 기능과 충돌이 있음
 @Entity
 @Table(
-    name = "member_phone_data",
-    catalog = "service1",
+    name = "test_data",
+    catalog = "template",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["phone_number", "row_delete_date_str"])
+        UniqueConstraint(columnNames = ["unique_value", "row_delete_date_str"])
     ]
 )
-@Comment("회원 전화 정보 테이블")
-class Database1_Service1_MemberPhoneData(
-    @Column(name = "member_uid", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    @Comment("멤버 고유값 (member.members.uid)")
-    var memberUid: Long,
-
-    @Column(name = "phone_number", nullable = false, columnDefinition = "VARCHAR(45)")
-    @Comment("전화번호(국가번호 + 전화번호, 중복 비허용)")
-    var phoneNumber: String
+@Comment("테스트 정보 테이블")
+class Database1_Template_LogicalDeleteUniqueData(
+    @Column(name = "unique_value", nullable = false, columnDefinition = "INT")
+    @Comment("유니크 값")
+    var uniqueValue: Int
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +51,6 @@ class Database1_Service1_MemberPhoneData(
 
     // ---------------------------------------------------------------------------------------------
     // <중첩 클래스 공간>
+
+
 }

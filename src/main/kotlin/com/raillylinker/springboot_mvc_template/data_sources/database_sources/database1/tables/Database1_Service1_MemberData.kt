@@ -42,12 +42,12 @@ class Database1_Service1_MemberData(
     @Comment("행 고유값")
     var uid: Long? = null
 
-    @Column(name = "row_create_date", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "row_create_date", nullable = false, columnDefinition = "DATETIME(3)")
     @CreationTimestamp
     @Comment("행 생성일")
     var rowCreateDate: LocalDateTime? = null
 
-    @Column(name = "row_update_date", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "row_update_date", nullable = false, columnDefinition = "DATETIME(3)")
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null

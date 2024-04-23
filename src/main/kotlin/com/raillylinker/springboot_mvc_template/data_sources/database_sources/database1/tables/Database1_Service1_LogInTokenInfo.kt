@@ -24,7 +24,7 @@ class Database1_Service1_LogInTokenInfo(
     @Comment("토큰 타입 (ex : Bearer)")
     var tokenType: String,
 
-    @Column(name = "login_date", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "login_date", nullable = false, columnDefinition = "DATETIME(3)")
     @Comment("로그인 시간")
     var loginDate: LocalDateTime,
 
@@ -32,7 +32,7 @@ class Database1_Service1_LogInTokenInfo(
     @Comment("발행된 액세스 토큰")
     var accessToken: String,
 
-    @Column(name = "access_token_expire_when", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "access_token_expire_when", nullable = false, columnDefinition = "DATETIME(3)")
     @Comment("액세스 토큰 만료 일시")
     var accessTokenExpireWhen: LocalDateTime,
 
@@ -40,7 +40,7 @@ class Database1_Service1_LogInTokenInfo(
     @Comment("발행된 리플레시 토큰")
     var refreshToken: String,
 
-    @Column(name = "refresh_token_expire_when", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "refresh_token_expire_when", nullable = false, columnDefinition = "DATETIME(3)")
     @Comment("리플레시 토큰 만료 일시")
     var refreshTokenExpireWhen: LocalDateTime
 ) {
@@ -50,12 +50,12 @@ class Database1_Service1_LogInTokenInfo(
     @Comment("행 고유값")
     var uid: Long? = null
 
-    @Column(name = "row_create_date", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "row_create_date", nullable = false, columnDefinition = "DATETIME(3)")
     @CreationTimestamp
     @Comment("행 생성일")
     var rowCreateDate: LocalDateTime? = null
 
-    @Column(name = "row_update_date", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "row_update_date", nullable = false, columnDefinition = "DATETIME(3)")
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
