@@ -13,7 +13,6 @@ interface LocalHostRequestApi {
     // [기본 요청 테스트 API]
     // 이 API 를 요청하면 현재 실행중인 프로필 이름을 반환합니다.
     // (api-result-code)
-    // 0 : 정상 동작
     @GET("/service1/tk/v1/request-test")
     fun getService1TkV1RequestTest(): Call<String?>
 
@@ -22,7 +21,6 @@ interface LocalHostRequestApi {
     // [요청 Redirect 테스트 API]
     // 이 API 를 요청하면 /service1/tk/v1/request-test 로 Redirect 됩니다.
     // (api-result-code)
-    // 0 : 정상 동작
     @GET("/service1/tk/v1/request-test/redirect-to-blank")
     fun getService1TkV1RequestTestRedirectToBlank(): Call<String?>
 
@@ -31,7 +29,6 @@ interface LocalHostRequestApi {
     // [요청 Forward 테스트 API]
     // 이 API 를 요청하면 /service1/tk/v1/request-test 로 Forward 됩니다.
     // (api-result-code)
-    // 0 : 정상 동작
     @GET("/service1/tk/v1/request-test/forward-to-blank")
     fun getService1TkV1RequestTestForwardToBlank(): Call<String?>
 
@@ -40,7 +37,6 @@ interface LocalHostRequestApi {
     // [Get 요청(Query Parameter) 테스트 API]
     // Query Parameter 를 받는 Get 메소드 요청 테스트
     // (api-result-code)
-    // 0 : 정상 동작
     @GET("/service1/tk/v1/request-test/get-request")
     fun getService1TkV1RequestTestGetRequest(
         @Query("queryParamString") queryParamString: String,
@@ -93,7 +89,6 @@ interface LocalHostRequestApi {
     // [Get 요청(Path Parameter) 테스트 API]
     // Path Parameter 를 받는 Get 메소드 요청 테스트
     // (api-result-code)
-    // 0 : 정상 동작
     @GET("/service1/tk/v1/request-test/get-request/{pathParamInt}")
     fun getService1TkV1RequestTestGetRequestPathParamInt(
         @Path("pathParamInt") pathParamInt: Int
@@ -110,7 +105,6 @@ interface LocalHostRequestApi {
     // [Post 요청(Application-Json) 테스트 API]
     // application-json 형태의 Request Body 를 받는 Post 메소드 요청 테스트
     // (api-result-code)
-    // 0 : 정상 동작
     @POST("/service1/tk/v1/request-test/post-request-application-json")
     fun postService1TkV1RequestTestPostRequestApplicationJson(
         @Body inputVo: PostService1TkV1RequestTestPostRequestApplicationJsonInputVO
@@ -187,7 +181,6 @@ interface LocalHostRequestApi {
     // [Post 요청(x-www-form-urlencoded) 테스트 API]
     // x-www-form-urlencoded 형태의 Request Body 를 받는 Post 메소드 요청 테스트
     // (api-result-code)
-    // 0 : 정상 동작
     @POST("service1/tk/v1/request-test/post-request-x-www-form-urlencoded")
     @FormUrlEncoded
     fun postService1TkV1RequestTestPostRequestXWwwFormUrlencoded(
@@ -242,7 +235,6 @@ interface LocalHostRequestApi {
     // multipart/form-data 형태의 Request Body 를 받는 Post 메소드 요청 테스트(Multipart File List)
     // MultipartFile 파라미터가 null 이 아니라면 저장
     // (api-result-code)
-    // 0 : 정상 동작
     @POST("/service1/tk/v1/request-test/post-request-multipart-form-data")
     @Multipart
     fun postService1TkV1RequestTestPostRequestMultipartFormData(
@@ -299,7 +291,6 @@ interface LocalHostRequestApi {
     // multipart/form-data 형태의 Request Body 를 받는 Post 메소드 요청 테스트(Multipart File List)
     // 파일 리스트가 null 이 아니라면 저장
     // (api-result-code)
-    // 0 : 정상 동작
     @POST("/service1/tk/v1/request-test/post-request-multipart-form-data2")
     @Multipart
     fun postService1TkV1RequestTestPostRequestMultipartFormData2(
@@ -356,7 +347,6 @@ interface LocalHostRequestApi {
     // multipart/form-data 형태의 Request Body 를 받는 Post 메소드 요청 테스트(Multipart File List)
     // 파일 리스트가 null 이 아니라면 저장
     // (api-result-code)
-    // 0 : 정상 동작
     @POST("/service1/tk/v1/request-test/post-request-multipart-form-data-json")
     @Multipart
     fun postService1TkV1RequestTestPostRequestMultipartFormDataJson(
@@ -426,7 +416,6 @@ interface LocalHostRequestApi {
     // [인위적 에러 발생 테스트 API]
     // 요청 받으면 인위적인 서버 에러를 발생시킵니다.(Http Response Status 500)
     // (api-result-code)
-    // 0 : 정상 동작
     @POST("service1/tk/v1/request-test/generate-error")
     fun postService1TkV1RequestTestGenerateError(): Call<Unit?>
 
@@ -435,10 +424,9 @@ interface LocalHostRequestApi {
     // [결과 코드 발생 테스트 API]
     // Response Header 에 api-result-code 를 반환하는 테스트 API
     //(api-result-code)
-    //0 : 정상 동작
-    //1 : errorType 을 A 로 보냈습니다.
-    //2 : errorType 을 B 로 보냈습니다.
-    //3 : errorType 을 C 로 보냈습니다.
+    // 1 : errorType 을 A 로 보냈습니다.
+    // 2 : errorType 을 B 로 보냈습니다.
+    // 3 : errorType 을 C 로 보냈습니다.
     @POST("/service1/tk/v1/request-test/api-result-code-test")
     fun postService1TkV1RequestTestApiResultCodeTest(
         @Query("errorType") errorType: PostService1TkV1RequestTestApiResultCodeTestErrorTypeEnum
@@ -455,7 +443,6 @@ interface LocalHostRequestApi {
     // [인위적 타임아웃 에러 발생 테스트]
     // 타임아웃 에러를 발생시키기 위해 임의로 응답 시간을 지연시킵니다.
     // (api-result-code)
-    // 0 : 정상 동작
     @POST("/service1/tk/v1/request-test/time-delay-test")
     fun postService1TkV1RequestTestGenerateTimeOutError(
         @Query("delayTimeSec") delayTimeSec: Long
@@ -466,7 +453,6 @@ interface LocalHostRequestApi {
     // [text/string 반환 샘플]
     // text/string 형식의 Response Body 를 반환합니다.
     // (api-result-code)
-    // 0 : 정상 동작
     @GET("/service1/tk/v1/request-test/return-text-string")
     @Headers("Content-Type: text/string")
     fun getService1TkV1RequestTestReturnTextString(): Call<String>
@@ -476,7 +462,6 @@ interface LocalHostRequestApi {
     // [text/html 반환 샘플]
     // text/html 형식의 Response Body 를 반환합니다.
     // (api-result-code)
-    // 0 : 정상 동작
     @GET("/service1/tk/v1/request-test/return-text-html")
     @Headers("Content-Type: text/html")
     fun getService1TkV1RequestTestReturnTextHtml(): Call<String>
@@ -487,7 +472,6 @@ interface LocalHostRequestApi {
     // API 호출시 함수 내에서 별도 스레드로 작업을 수행하고,
     // 비동기 작업 완료 후 그 처리 결과가 반환됨
     // (api-result-code)
-    // 0 : 정상 동작
     @GET("/service1/tk/v1/request-test/async-result")
     fun getService1TkV1RequestTestAsyncResult(): Call<GetService1TkV1RequestTestAsyncResultOutputVO>
 

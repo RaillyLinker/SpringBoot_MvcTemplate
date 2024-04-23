@@ -18,7 +18,6 @@ import java.io.File
 import java.net.SocketTimeoutException
 import java.nio.file.Paths
 
-// todo : 바뀐 api-result-code 와 status 기준에 따라 로직 변경
 @Service
 class C3Service1TkV1RequestFromServerTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
@@ -38,27 +37,12 @@ class C3Service1TkV1RequestFromServerTestService(
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTest().execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        responseObj.body()!!
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                responseObj.body()!!
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -78,27 +62,12 @@ class C3Service1TkV1RequestFromServerTestService(
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestRedirectToBlank().execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        responseObj.body()!!
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                responseObj.body()!!
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -118,27 +87,12 @@ class C3Service1TkV1RequestFromServerTestService(
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestForwardToBlank().execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        responseObj.body()!!
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                responseObj.body()!!
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -169,39 +123,24 @@ class C3Service1TkV1RequestFromServerTestService(
                 null
             ).execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        val responseBody = responseObj.body()!!
-                        C3Service1TkV1RequestFromServerTestController.Api4OutputVo(
-                            responseBody.queryParamString,
-                            responseBody.queryParamStringNullable,
-                            responseBody.queryParamInt,
-                            responseBody.queryParamIntNullable,
-                            responseBody.queryParamDouble,
-                            responseBody.queryParamDoubleNullable,
-                            responseBody.queryParamBoolean,
-                            responseBody.queryParamBooleanNullable,
-                            responseBody.queryParamStringList,
-                            responseBody.queryParamStringListNullable
-                        )
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                val responseBody = responseObj.body()!!
+                C3Service1TkV1RequestFromServerTestController.Api4OutputVo(
+                    responseBody.queryParamString,
+                    responseBody.queryParamStringNullable,
+                    responseBody.queryParamInt,
+                    responseBody.queryParamIntNullable,
+                    responseBody.queryParamDouble,
+                    responseBody.queryParamDoubleNullable,
+                    responseBody.queryParamBoolean,
+                    responseBody.queryParamBooleanNullable,
+                    responseBody.queryParamStringList,
+                    responseBody.queryParamStringListNullable
+                )
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -223,30 +162,15 @@ class C3Service1TkV1RequestFromServerTestService(
                 1234
             ).execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        val responseBody = responseObj.body()!!
-                        C3Service1TkV1RequestFromServerTestController.Api5OutputVo(
-                            responseBody.pathParamInt
-                        )
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                val responseBody = responseObj.body()!!
+                C3Service1TkV1RequestFromServerTestController.Api5OutputVo(
+                    responseBody.pathParamInt
+                )
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -280,39 +204,24 @@ class C3Service1TkV1RequestFromServerTestService(
                     )
                 ).execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        val responseBody = responseObj.body()!!
-                        C3Service1TkV1RequestFromServerTestController.Api6OutputVo(
-                            responseBody.requestBodyString,
-                            responseBody.requestBodyStringNullable,
-                            responseBody.requestBodyInt,
-                            responseBody.requestBodyIntNullable,
-                            responseBody.requestBodyDouble,
-                            responseBody.requestBodyDoubleNullable,
-                            responseBody.requestBodyBoolean,
-                            responseBody.requestBodyBooleanNullable,
-                            responseBody.requestBodyStringList,
-                            responseBody.requestBodyStringListNullable
-                        )
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                val responseBody = responseObj.body()!!
+                C3Service1TkV1RequestFromServerTestController.Api6OutputVo(
+                    responseBody.requestBodyString,
+                    responseBody.requestBodyStringNullable,
+                    responseBody.requestBodyInt,
+                    responseBody.requestBodyIntNullable,
+                    responseBody.requestBodyDouble,
+                    responseBody.requestBodyDoubleNullable,
+                    responseBody.requestBodyBoolean,
+                    responseBody.requestBodyBooleanNullable,
+                    responseBody.requestBodyStringList,
+                    responseBody.requestBodyStringListNullable
+                )
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -344,39 +253,24 @@ class C3Service1TkV1RequestFromServerTestService(
                     null
                 ).execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        val responseBody = responseObj.body()!!
-                        C3Service1TkV1RequestFromServerTestController.Api7OutputVo(
-                            responseBody.requestFormString,
-                            responseBody.requestFormStringNullable,
-                            responseBody.requestFormInt,
-                            responseBody.requestFormIntNullable,
-                            responseBody.requestFormDouble,
-                            responseBody.requestFormDoubleNullable,
-                            responseBody.requestFormBoolean,
-                            responseBody.requestFormBooleanNullable,
-                            responseBody.requestFormStringList,
-                            responseBody.requestFormStringListNullable
-                        )
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                val responseBody = responseObj.body()!!
+                C3Service1TkV1RequestFromServerTestController.Api7OutputVo(
+                    responseBody.requestFormString,
+                    responseBody.requestFormStringNullable,
+                    responseBody.requestFormInt,
+                    responseBody.requestFormIntNullable,
+                    responseBody.requestFormDouble,
+                    responseBody.requestFormDoubleNullable,
+                    responseBody.requestFormBoolean,
+                    responseBody.requestFormBooleanNullable,
+                    responseBody.requestFormStringList,
+                    responseBody.requestFormStringListNullable
+                )
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -434,39 +328,24 @@ class C3Service1TkV1RequestFromServerTestService(
                     null
                 ).execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        val responseBody = responseObj.body()!!
-                        C3Service1TkV1RequestFromServerTestController.Api8OutputVo(
-                            responseBody.requestFormString,
-                            responseBody.requestFormStringNullable,
-                            responseBody.requestFormInt,
-                            responseBody.requestFormIntNullable,
-                            responseBody.requestFormDouble,
-                            responseBody.requestFormDoubleNullable,
-                            responseBody.requestFormBoolean,
-                            responseBody.requestFormBooleanNullable,
-                            responseBody.requestFormStringList,
-                            responseBody.requestFormStringListNullable
-                        )
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                val responseBody = responseObj.body()!!
+                C3Service1TkV1RequestFromServerTestController.Api8OutputVo(
+                    responseBody.requestFormString,
+                    responseBody.requestFormStringNullable,
+                    responseBody.requestFormInt,
+                    responseBody.requestFormIntNullable,
+                    responseBody.requestFormDouble,
+                    responseBody.requestFormDoubleNullable,
+                    responseBody.requestFormBoolean,
+                    responseBody.requestFormBooleanNullable,
+                    responseBody.requestFormStringList,
+                    responseBody.requestFormStringListNullable
+                )
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -539,39 +418,24 @@ class C3Service1TkV1RequestFromServerTestService(
                     null
                 ).execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        val responseBody = responseObj.body()!!
-                        C3Service1TkV1RequestFromServerTestController.Api9OutputVo(
-                            responseBody.requestFormString,
-                            responseBody.requestFormStringNullable,
-                            responseBody.requestFormInt,
-                            responseBody.requestFormIntNullable,
-                            responseBody.requestFormDouble,
-                            responseBody.requestFormDoubleNullable,
-                            responseBody.requestFormBoolean,
-                            responseBody.requestFormBooleanNullable,
-                            responseBody.requestFormStringList,
-                            responseBody.requestFormStringListNullable
-                        )
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                val responseBody = responseObj.body()!!
+                C3Service1TkV1RequestFromServerTestController.Api9OutputVo(
+                    responseBody.requestFormString,
+                    responseBody.requestFormStringNullable,
+                    responseBody.requestFormInt,
+                    responseBody.requestFormIntNullable,
+                    responseBody.requestFormDouble,
+                    responseBody.requestFormDoubleNullable,
+                    responseBody.requestFormBoolean,
+                    responseBody.requestFormBooleanNullable,
+                    responseBody.requestFormStringList,
+                    responseBody.requestFormStringListNullable
+                )
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -623,39 +487,24 @@ class C3Service1TkV1RequestFromServerTestService(
                     null
                 ).execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        val responseBody = responseObj.body()!!
-                        C3Service1TkV1RequestFromServerTestController.Api10OutputVo(
-                            responseBody.requestFormString,
-                            responseBody.requestFormStringNullable,
-                            responseBody.requestFormInt,
-                            responseBody.requestFormIntNullable,
-                            responseBody.requestFormDouble,
-                            responseBody.requestFormDoubleNullable,
-                            responseBody.requestFormBoolean,
-                            responseBody.requestFormBooleanNullable,
-                            responseBody.requestFormStringList,
-                            responseBody.requestFormStringListNullable
-                        )
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                val responseBody = responseObj.body()!!
+                C3Service1TkV1RequestFromServerTestController.Api10OutputVo(
+                    responseBody.requestFormString,
+                    responseBody.requestFormStringNullable,
+                    responseBody.requestFormInt,
+                    responseBody.requestFormIntNullable,
+                    responseBody.requestFormDouble,
+                    responseBody.requestFormDoubleNullable,
+                    responseBody.requestFormBoolean,
+                    responseBody.requestFormBooleanNullable,
+                    responseBody.requestFormStringList,
+                    responseBody.requestFormStringListNullable
+                )
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -675,25 +524,11 @@ class C3Service1TkV1RequestFromServerTestService(
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.postService1TkV1RequestTestGenerateError().execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
             }
@@ -713,16 +548,17 @@ class C3Service1TkV1RequestFromServerTestService(
                 LocalHostRequestApi.PostService1TkV1RequestTestApiResultCodeTestErrorTypeEnum.A
             ).execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            if (responseHeaders.names().contains("api-result-code")) {
+            if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+            } else if (responseObj.code() == 204) {
+                // api-result-code 확인 필요
+
+                val responseHeaders = responseObj.headers()
                 val apiResultCode = responseHeaders["api-result-code"]
 
                 // api-result-code 분기
                 when (apiResultCode) {
-                    "0" -> {
-                    }
-
                     "1" -> {
                         httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                         httpServletResponse.setHeader("api-result-code", "3")
@@ -745,7 +581,7 @@ class C3Service1TkV1RequestFromServerTestService(
                     }
                 }
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
             }
@@ -765,25 +601,11 @@ class C3Service1TkV1RequestFromServerTestService(
                 networkRetrofit2.localHostRequestApi.postService1TkV1RequestTestGenerateTimeOutError(delayTimeSec)
                     .execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
             }
@@ -802,27 +624,12 @@ class C3Service1TkV1RequestFromServerTestService(
             val responseObj =
                 networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestReturnTextString().execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        responseObj.body()!!
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                responseObj.body()!!
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -842,27 +649,12 @@ class C3Service1TkV1RequestFromServerTestService(
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestReturnTextHtml().execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        responseObj.body()!!
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                responseObj.body()!!
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
@@ -882,30 +674,15 @@ class C3Service1TkV1RequestFromServerTestService(
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestAsyncResult().execute()
 
-            // api-result-code 확인
-            val responseHeaders = responseObj.headers()
-            return if (responseHeaders.names().contains("api-result-code")) {
-                val apiResultCode = responseHeaders["api-result-code"]
-
-                // api-result-code 분기
-                when (apiResultCode) {
-                    "0" -> {
-                        httpServletResponse.status = HttpStatus.OK.value()
-                        val responseBody = responseObj.body()!!
-                        C3Service1TkV1RequestFromServerTestController.Api16OutputVo(
-                            responseBody.resultMessage
-                        )
-                    }
-
-                    else -> {
-                        // 알수없는 api-result-code
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
-                }
+            return if (responseObj.code() == 200) {
+                // 정상 동작
+                httpServletResponse.status = HttpStatus.OK.value()
+                val responseBody = responseObj.body()!!
+                C3Service1TkV1RequestFromServerTestController.Api16OutputVo(
+                    responseBody.resultMessage
+                )
             } else {
-                // 반환되어야 할 api-result-code 가 오지 않음 = 서버측 에러
+                // 반환될 일 없는 상태 = 서버측 에러
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "2")
                 return null
