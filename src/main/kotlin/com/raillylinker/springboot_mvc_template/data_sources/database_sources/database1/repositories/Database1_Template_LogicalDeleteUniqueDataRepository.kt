@@ -7,5 +7,16 @@ import org.springframework.stereotype.Repository
 @Repository
 interface Database1_Template_LogicalDeleteUniqueDataRepository :
     JpaRepository<Database1_Template_LogicalDeleteUniqueData, Long> {
+    fun findByUidAndRowDeleteDateStr(
+        uid: Long,
+        rowDeleteDateStr: String
+    ): Database1_Template_LogicalDeleteUniqueData?
 
+    fun findAllByRowDeleteDateStrOrderByRowCreateDate(
+        rowDeleteDateStr: String
+    ): List<Database1_Template_LogicalDeleteUniqueData>
+
+    fun findAllByRowDeleteDateStrNotOrderByRowCreateDate(
+        rowDeleteDateStr: String
+    ): List<Database1_Template_LogicalDeleteUniqueData>
 }

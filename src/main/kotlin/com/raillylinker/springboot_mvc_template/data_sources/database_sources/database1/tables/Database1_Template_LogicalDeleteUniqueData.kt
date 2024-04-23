@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 // 주의 : 낙관적 Lock (@Version) 사용시 Transaction 기능과 충돌이 있음
 @Entity
 @Table(
-    name = "test_data",
+    name = "logical_delete_unique_data",
     catalog = "template",
     uniqueConstraints = [
         UniqueConstraint(columnNames = ["unique_value", "row_delete_date_str"])

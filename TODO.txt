@@ -1,6 +1,7 @@
 [TODO]
-- 데이터베이스 Unique, Join, Native Join, Lazy Loading, N + 1 예시 추가
-- 데이터베이스 기존 테이블에 fk 제약 추가
+- 데이터베이스 Join, Native Join, Lazy Loading, N + 1 예시 추가
+
+- 데이터베이스 C10 과 관련된 모든 테이블에 fk 제약 추가 후 테스트
 
 [REMIND]
 - 트랜젝션 실행시 비동기 실행시 오작동을 할 수 있습니다.

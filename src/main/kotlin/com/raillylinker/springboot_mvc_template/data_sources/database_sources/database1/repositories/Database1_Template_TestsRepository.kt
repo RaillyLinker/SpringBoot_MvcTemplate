@@ -10,10 +10,23 @@ import java.time.LocalDateTime
 @Repository
 interface Database1_Template_TestsRepository : JpaRepository<Database1_Template_TestData, Long> {
     fun findAllByRowDeleteDateStrOrderByRowCreateDate(
-        rowDeleteDateStr :String,
+        rowDeleteDateStr: String,
         pageable: Pageable
     ): Page<Database1_Template_TestData>
 
-    fun countByRowDeleteDateStr(rowDeleteDateStr :String): Long
+    fun countByRowDeleteDateStr(rowDeleteDateStr: String): Long
+
+    fun findByUidAndRowDeleteDateStr(
+        uid: Long,
+        rowDeleteDateStr: String
+    ): Database1_Template_TestData?
+
+    fun findAllByRowDeleteDateStrOrderByRowCreateDate(
+        rowDeleteDateStr: String
+    ): List<Database1_Template_TestData>
+
+    fun findAllByRowDeleteDateStrNotOrderByRowCreateDate(
+        rowDeleteDateStr: String
+    ): List<Database1_Template_TestData>
 
 }
