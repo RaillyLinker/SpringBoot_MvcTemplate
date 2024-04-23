@@ -39,6 +39,7 @@ class C4Service1TkV1FileTestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api1InputVo
     ): Api1OutputVo? {
         return service.api1(httpServletResponse, inputVo)

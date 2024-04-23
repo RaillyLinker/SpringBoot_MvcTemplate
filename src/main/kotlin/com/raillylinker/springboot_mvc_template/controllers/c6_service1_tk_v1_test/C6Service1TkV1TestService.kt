@@ -276,7 +276,7 @@ class C6Service1TkV1TestService(
                         }
 
                         val fontInputStream = fontFile.inputStream
-                        val ttf = TTFParser().parse(fontInputStream)
+                        val ttf = TTFParser().parseEmbedded(fontInputStream)
                         ttfName = ttf.name
                         ttf.close()
 
@@ -438,7 +438,7 @@ class C6Service1TkV1TestService(
         val fontInputStream = inputVo.fontFile.inputStream
 
         val parser = TTFParser()
-        val ttf = parser.parse(fontInputStream)
+        val ttf = parser.parseEmbedded(fontInputStream)
         val fontName: String = ttf.name
         ttf.close()
 

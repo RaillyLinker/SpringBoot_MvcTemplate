@@ -1066,6 +1066,7 @@ class C10Service1TkV1AuthController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api15InputVo
     ) {
         service.api15(httpServletResponse, inputVo)
@@ -1229,6 +1230,7 @@ class C10Service1TkV1AuthController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api18InputVo
     ) {
         service.api18(httpServletResponse, inputVo)
@@ -1454,6 +1456,7 @@ class C10Service1TkV1AuthController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api20InputVo
     ) {
         service.api20(httpServletResponse, inputVo)
@@ -2635,6 +2638,7 @@ class C10Service1TkV1AuthController(
         @RequestHeader("Authorization")
         authorization: String?,
         @ModelAttribute
+        @RequestBody
         inputVo: Api47InputVo
     ): Api47OutputVo? {
         return service.api47(httpServletResponse, authorization!!, inputVo)

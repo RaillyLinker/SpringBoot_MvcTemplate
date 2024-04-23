@@ -42,6 +42,7 @@ class C5Service1TkV1MediaResourceProcessController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api1InputVo
     ): ResponseEntity<Resource>? {
         return service.api1(inputVo, httpServletResponse)
@@ -120,6 +121,7 @@ class C5Service1TkV1MediaResourceProcessController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api4InputVo
     ): ResponseEntity<Resource>? {
         return service.api4(inputVo, httpServletResponse)

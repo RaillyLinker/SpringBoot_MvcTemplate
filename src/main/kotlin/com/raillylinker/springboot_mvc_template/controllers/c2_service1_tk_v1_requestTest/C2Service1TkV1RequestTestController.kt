@@ -344,6 +344,7 @@ class C2Service1TkV1RequestTestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api7InputVo
     ): Api7OutputVo? {
         return service.api7(httpServletResponse, inputVo)
@@ -445,6 +446,7 @@ class C2Service1TkV1RequestTestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api8InputVo
     ): Api8OutputVo? {
         return service.api8(httpServletResponse, inputVo)
@@ -552,6 +554,7 @@ class C2Service1TkV1RequestTestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api9InputVo
     ): Api9OutputVo? {
         return service.api9(httpServletResponse, inputVo)
@@ -661,6 +664,7 @@ class C2Service1TkV1RequestTestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api10InputVo
     ): Api10OutputVo? {
         return service.api10(httpServletResponse, inputVo)

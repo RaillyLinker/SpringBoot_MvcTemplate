@@ -1,5 +1,4 @@
 [TODO]
-- 종속성 업데이트
 - 데이터베이스 Unique, Join, Native Join, Lazy Loading, N + 1 예시 추가
 - 데이터베이스 기존 테이블에 fk 제약 추가
 - 객체 생성시 파라미터명 명시하기

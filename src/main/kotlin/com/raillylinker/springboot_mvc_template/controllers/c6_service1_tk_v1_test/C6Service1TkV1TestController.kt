@@ -39,6 +39,7 @@ class C6Service1TkV1TestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api1InputVo
     ) {
         service.api1(httpServletResponse, inputVo)
@@ -82,6 +83,7 @@ class C6Service1TkV1TestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api2InputVo
     ) {
         service.api2(httpServletResponse, inputVo)
@@ -157,6 +159,7 @@ class C6Service1TkV1TestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api4InputVo
     ): Api4OutputVo? {
         return service.api4(httpServletResponse, inputVo)
@@ -251,6 +254,7 @@ class C6Service1TkV1TestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api6Dot1InputVo
     ): ResponseEntity<Resource>? {
         var controllerBasicMapping: String? = null
@@ -403,6 +407,7 @@ class C6Service1TkV1TestController(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
+        @RequestBody
         inputVo: Api9InputVo
     ): Api9OutputVo? {
         return service.api9(httpServletResponse, inputVo)
