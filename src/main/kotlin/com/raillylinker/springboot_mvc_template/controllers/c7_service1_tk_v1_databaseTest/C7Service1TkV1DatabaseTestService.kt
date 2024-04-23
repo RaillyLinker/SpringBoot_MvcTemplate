@@ -3,6 +3,8 @@ package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_d
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_FkTestOneToManyChild
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_FkTestParent
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_LogicalDeleteUniqueData
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_TestData
 import jakarta.servlet.http.HttpServletResponse
@@ -63,6 +65,7 @@ class C7Service1TkV1DatabaseTestService(
             for (entity in entityList) {
                 entity.rowDeleteDateStr =
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                database1TemplateTestRepository.save(entity)
             }
         } else {
             database1TemplateTestRepository.deleteAll()
@@ -80,6 +83,7 @@ class C7Service1TkV1DatabaseTestService(
             if (entity != null) {
                 entity.rowDeleteDateStr =
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                database1TemplateTestRepository.save(entity)
             }
         } else {
             database1TemplateTestRepository.deleteById(index)
@@ -276,9 +280,7 @@ class C7Service1TkV1DatabaseTestService(
 
         oldEntity.content = inputVo.content
 
-        val result = database1TemplateTestRepository.save(
-            oldEntity
-        )
+        val result = database1TemplateTestRepository.save(oldEntity)
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C7Service1TkV1DatabaseTestController.Api9OutputVo(
@@ -512,60 +514,117 @@ class C7Service1TkV1DatabaseTestService(
     }
 
 
-//    ////
-//    @CustomTransactional([Database1Config.TRANSACTION_NAME])
-//    fun api18(
-//        httpServletResponse: HttpServletResponse,
-//        inputVo: C7Service1TkV1DatabaseTestController.Api18InputVo
-//    ): C7Service1TkV1DatabaseTestController.Api18OutputVo? {
-//        val result = database1TemplateFkTestParentRepository.save(
-//            Database1_Template_FkTestParent(
-//                inputVo.fkParentName
-//            )
-//        )
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//        return C7Service1TkV1DatabaseTestController.Api18OutputVo(
-//            result.uid!!,
-//            result.parentName,
-//            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-//            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
-//        )
-//    }
-//
-//
-//    ////
-//    @CustomTransactional([Database1Config.TRANSACTION_NAME])
-//    fun api19(
-//        httpServletResponse: HttpServletResponse,
-//        parentUid: Long,
-//        inputVo: C7Service1TkV1DatabaseTestController.Api19InputVo
-//    ): C7Service1TkV1DatabaseTestController.Api19OutputVo? {
-//        val parentEntity = database1TemplateFkTestParentRepository.findByUidAndRowDeleteDateStr(
-//            parentUid,
-//            "-"
-//        )
-//
-//        if (parentEntity == null) {
-//            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-//            httpServletResponse.setHeader("api-result-code", "1")
-//            return null
-//        }
-//
-//        val result = database1TemplateFkTestOneToManyChildRepository.save(
-//            Database1_Template_FkTestOneToManyChild(
-//                inputVo.fkChildName,
-//                parentEntity
-//            )
-//        )
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//        return C7Service1TkV1DatabaseTestController.Api19OutputVo(
-//            result.uid!!,
-//            result.childName,
-//            result.fkTestParent.parentName,
-//            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-//            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
-//        )
-//    }
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api20(
+        httpServletResponse: HttpServletResponse,
+        testTableUid: Long,
+        inputVo: C7Service1TkV1DatabaseTestController.Api20InputVo
+    ): C7Service1TkV1DatabaseTestController.Api20OutputVo? {
+        val oldEntity =
+            database1Template_LogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(testTableUid, "-")
+
+        if (oldEntity == null || oldEntity.rowDeleteDateStr != "-") {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return null
+        }
+
+        val uniqueValueEntity =
+            database1Template_LogicalDeleteUniqueDataRepository.findByUniqueValueAndRowDeleteDateStr(
+                inputVo.uniqueValue,
+                "-"
+            )
+
+        if (uniqueValueEntity != null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "2")
+            return null
+        }
+
+
+        oldEntity.uniqueValue = inputVo.uniqueValue
+
+        val result = database1Template_LogicalDeleteUniqueDataRepository.save(oldEntity)
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api20OutputVo(
+            result.uid!!,
+            result.uniqueValue,
+            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+        )
+    }
+
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api21(httpServletResponse: HttpServletResponse, index: Long) {
+        val entity = database1Template_LogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(index, "-")
+        if (entity != null) {
+            entity.rowDeleteDateStr =
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            database1Template_LogicalDeleteUniqueDataRepository.save(entity)
+        }
+
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
+
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api22(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C7Service1TkV1DatabaseTestController.Api22InputVo
+    ): C7Service1TkV1DatabaseTestController.Api22OutputVo? {
+        val result = database1TemplateFkTestParentRepository.save(
+            Database1_Template_FkTestParent(
+                inputVo.fkParentName
+            )
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api22OutputVo(
+            result.uid!!,
+            result.parentName,
+            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+        )
+    }
+
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api23(
+        httpServletResponse: HttpServletResponse,
+        parentUid: Long,
+        inputVo: C7Service1TkV1DatabaseTestController.Api23InputVo
+    ): C7Service1TkV1DatabaseTestController.Api23OutputVo? {
+        val parentEntity = database1TemplateFkTestParentRepository.findByUidAndRowDeleteDateStr(
+            parentUid,
+            "-"
+        )
+
+        if (parentEntity == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return null
+        }
+
+        val result = database1TemplateFkTestOneToManyChildRepository.save(
+            Database1_Template_FkTestOneToManyChild(
+                inputVo.fkChildName,
+                parentEntity
+            )
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api23OutputVo(
+            result.uid!!,
+            result.childName,
+            result.fkTestParent.parentName,
+            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+        )
+    }
 }

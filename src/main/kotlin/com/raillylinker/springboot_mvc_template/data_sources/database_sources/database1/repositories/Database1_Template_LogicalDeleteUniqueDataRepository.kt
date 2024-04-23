@@ -19,4 +19,9 @@ interface Database1_Template_LogicalDeleteUniqueDataRepository :
     fun findAllByRowDeleteDateStrNotOrderByRowCreateDate(
         rowDeleteDateStr: String
     ): List<Database1_Template_LogicalDeleteUniqueData>
+
+    fun findByUniqueValueAndRowDeleteDateStr(
+        uniqueValue: Int,
+        rowDeleteDateStr: String
+    ): Database1_Template_LogicalDeleteUniqueData?
 }

@@ -816,98 +816,167 @@ class C7Service1TkV1DatabaseTestController(
         )
     }
 
-    // todo 유니크 테이블 관련 삭제, 수정 추가 및 테스트
+
+    ////
+    @Operation(
+        summary = "N20 : 유니크 테스트 테이블 Row 수정 테스트",
+        description = "유니크 테스트 테이블의 Row 하나를 수정합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "1 : uniqueTestTableUid 에 해당하는 정보가 DB에 없습니다.\n\n" +
+                "2 : uniqueValue 가 이미 존재합니다.\n\n"
+    )
+    @PatchMapping(
+        path = ["/unique-test-table/{uniqueTestTableUid}"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api20(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "uniqueTestTableUid", description = "unique test 테이블의 uid", example = "1")
+        @PathVariable("uniqueTestTableUid")
+        uniqueTestTableUid: Long,
+        @RequestBody
+        inputVo: Api20InputVo
+    ): Api20OutputVo? {
+        return service.api20(httpServletResponse, uniqueTestTableUid, inputVo)
+    }
+
+    data class Api20InputVo(
+        @Schema(description = "유니크 값", required = true, example = "1")
+        @JsonProperty("uniqueValue")
+        val uniqueValue: Int
+    )
+
+    data class Api20OutputVo(
+        @Schema(description = "글 고유번호", required = true, example = "1234")
+        @JsonProperty("uid")
+        val uid: Long,
+        @Schema(description = "유니크 값", required = true, example = "1")
+        @JsonProperty("uniqueValue")
+        val uniqueValue: Int,
+        @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+        @JsonProperty("createDate")
+        val createDate: String,
+        @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+        @JsonProperty("updateDate")
+        val updateDate: String
+    )
 
 
-//    ////
-//    @Operation(
-//        summary = "N18 : 외례키 부모 테이블 Row 입력 API",
-//        description = "외례키 부모 테이블에 Row 를 입력합니다.\n\n" +
-//                "(api-result-code)\n\n"
-//    )
-//    @PostMapping(
-//        path = ["/fk-parent"],
-//        consumes = [MediaType.APPLICATION_JSON_VALUE],
-//        produces = [MediaType.APPLICATION_JSON_VALUE]
-//    )
-//    @ResponseBody
-//    fun api18(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse,
-//        @RequestBody
-//        inputVo: Api18InputVo
-//    ): Api18OutputVo? {
-//        return service.api18(httpServletResponse, inputVo)
-//    }
-//
-//    data class Api18InputVo(
-//        @Schema(description = "외례키 테이블 부모 이름", required = true, example = "홍길동")
-//        @JsonProperty("fkParentName")
-//        val fkParentName: String
-//    )
-//
-//    data class Api18OutputVo(
-//        @Schema(description = "글 고유번호", required = true, example = "1234")
-//        @JsonProperty("uid")
-//        val uid: Long,
-//        @Schema(description = "외례키 테이블 부모 이름", required = true, example = "홍길동")
-//        @JsonProperty("fkParentName")
-//        val fkParentName: String,
-//        @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
-//        @JsonProperty("createDate")
-//        val createDate: String,
-//        @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
-//        @JsonProperty("updateDate")
-//        val updateDate: String
-//    )
-//
-//
-//    ////
-//    @Operation(
-//        summary = "N19 : 외례키 부모 테이블 아래에 자식 테이블의 Row 입력 API",
-//        description = "외례키 부모 테이블의 아래에 자식 테이블의 Row 를 입력합니다.\n\n" +
-//                "(api-result-code)\n\n" +
-//                "1 : 부모 테이블 uid 의 정보가 없습니다.\n\n"
-//    )
-//    @PostMapping(
-//        path = ["/fk-parent/{parentUid}"],
-//        consumes = [MediaType.APPLICATION_JSON_VALUE],
-//        produces = [MediaType.APPLICATION_JSON_VALUE]
-//    )
-//    @ResponseBody
-//    fun api19(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse,
-//        @Parameter(name = "parentUid", description = "외례키 부모 테이블 고유번호", example = "1")
-//        @PathVariable("parentUid")
-//        parentUid: Long,
-//        @RequestBody
-//        inputVo: Api19InputVo
-//    ): Api19OutputVo? {
-//        return service.api19(httpServletResponse, parentUid, inputVo)
-//    }
-//
-//    data class Api19InputVo(
-//        @Schema(description = "외례키 테이블 자식 이름", required = true, example = "홍길동")
-//        @JsonProperty("fkChildName")
-//        val fkChildName: String
-//    )
-//
-//    data class Api19OutputVo(
-//        @Schema(description = "글 고유번호", required = true, example = "1234")
-//        @JsonProperty("uid")
-//        val uid: Long,
-//        @Schema(description = "외례키 테이블 부모 이름", required = true, example = "홍길동")
-//        @JsonProperty("fkParentName")
-//        val fkParentName: String,
-//        @Schema(description = "외례키 테이블 자식 이름", required = true, example = "홍길동")
-//        @JsonProperty("fkChildName")
-//        val fkChildName: String,
-//        @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
-//        @JsonProperty("createDate")
-//        val createDate: String,
-//        @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
-//        @JsonProperty("updateDate")
-//        val updateDate: String
-//    )
+    ////
+    @Operation(
+        summary = "N21 : 유니크 테스트 테이블 Row 삭제 테스트",
+        description = "유니크 테스트 테이블의 Row 하나를 삭제합니다.\n\n" +
+                "(api-result-code)\n\n"
+    )
+    @DeleteMapping(
+        path = ["/unique-test-table/{index}"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api21(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "index", description = "글 인덱스", example = "1")
+        @PathVariable("index")
+        index: Long
+    ) {
+        service.api21(httpServletResponse, index)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N22 : 외례키 부모 테이블 Row 입력 API",
+        description = "외례키 부모 테이블에 Row 를 입력합니다.\n\n" +
+                "(api-result-code)\n\n"
+    )
+    @PostMapping(
+        path = ["/fk-parent"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api22(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @RequestBody
+        inputVo: Api22InputVo
+    ): Api22OutputVo? {
+        return service.api22(httpServletResponse, inputVo)
+    }
+
+    data class Api22InputVo(
+        @Schema(description = "외례키 테이블 부모 이름", required = true, example = "홍길동")
+        @JsonProperty("fkParentName")
+        val fkParentName: String
+    )
+
+    data class Api22OutputVo(
+        @Schema(description = "글 고유번호", required = true, example = "1234")
+        @JsonProperty("uid")
+        val uid: Long,
+        @Schema(description = "외례키 테이블 부모 이름", required = true, example = "홍길동")
+        @JsonProperty("fkParentName")
+        val fkParentName: String,
+        @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+        @JsonProperty("createDate")
+        val createDate: String,
+        @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+        @JsonProperty("updateDate")
+        val updateDate: String
+    )
+
+
+    ////
+    @Operation(
+        summary = "N23 : 외례키 부모 테이블 아래에 자식 테이블의 Row 입력 API",
+        description = "외례키 부모 테이블의 아래에 자식 테이블의 Row 를 입력합니다.\n\n" +
+                "(api-result-code)\n\n" +
+                "1 : 부모 테이블 uid 의 정보가 없습니다.\n\n"
+    )
+    @PostMapping(
+        path = ["/fk-parent/{parentUid}"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api23(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "parentUid", description = "외례키 부모 테이블 고유번호", example = "1")
+        @PathVariable("parentUid")
+        parentUid: Long,
+        @RequestBody
+        inputVo: Api23InputVo
+    ): Api23OutputVo? {
+        return service.api23(httpServletResponse, parentUid, inputVo)
+    }
+
+    data class Api23InputVo(
+        @Schema(description = "외례키 테이블 자식 이름", required = true, example = "홍길동")
+        @JsonProperty("fkChildName")
+        val fkChildName: String
+    )
+
+    data class Api23OutputVo(
+        @Schema(description = "글 고유번호", required = true, example = "1234")
+        @JsonProperty("uid")
+        val uid: Long,
+        @Schema(description = "외례키 테이블 부모 이름", required = true, example = "홍길동")
+        @JsonProperty("fkParentName")
+        val fkParentName: String,
+        @Schema(description = "외례키 테이블 자식 이름", required = true, example = "홍길동")
+        @JsonProperty("fkChildName")
+        val fkChildName: String,
+        @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+        @JsonProperty("createDate")
+        val createDate: String,
+        @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+        @JsonProperty("updateDate")
+        val updateDate: String
+    )
 }
