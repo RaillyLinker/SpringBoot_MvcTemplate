@@ -308,7 +308,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
-                    profile.uid == member.frontProfileUid
+                    profile.uid == member.frontMemberProfileData?.uid
                 )
             )
         }
@@ -321,7 +321,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api5OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
-                    emailEntity.uid == member.frontEmailUid
+                    emailEntity.uid == member.frontMemberEmailData?.uid
                 )
             )
         }
@@ -334,7 +334,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
-                    phoneEntity.uid == member.frontPhoneUid
+                    phoneEntity.uid == member.frontMemberPhoneData?.uid
                 )
             )
         }
@@ -670,7 +670,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
-                    profile.uid == member.frontProfileUid
+                    profile.uid == member.frontMemberProfileData?.uid
                 )
             )
         }
@@ -686,7 +686,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
-                    emailEntity.uid == member.frontEmailUid
+                    emailEntity.uid == member.frontMemberEmailData?.uid
                 )
             )
         }
@@ -702,7 +702,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7OutputVo.PhoneNumberInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
-                    phoneEntity.uid == member.frontPhoneUid
+                    phoneEntity.uid == member.frontMemberPhoneData?.uid
                 )
             )
         }
@@ -881,7 +881,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7Dot1OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
-                    profile.uid == member.frontProfileUid
+                    profile.uid == member.frontMemberProfileData?.uid
                 )
             )
         }
@@ -897,7 +897,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7Dot1OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
-                    emailEntity.uid == member.frontEmailUid
+                    emailEntity.uid == member.frontMemberEmailData?.uid
                 )
             )
         }
@@ -913,7 +913,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7Dot1OutputVo.PhoneNumberInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
-                    phoneEntity.uid == member.frontPhoneUid
+                    phoneEntity.uid == member.frontMemberPhoneData?.uid
                 )
             )
         }
@@ -1158,7 +1158,7 @@ class C10Service1TkV1AuthService(
                             C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo(
                                 profile.uid!!,
                                 profile.imageFullUrl,
-                                profile.uid == memberInfo.frontProfileUid
+                                profile.uid == memberInfo.frontMemberProfileData?.uid
                             )
                         )
                     }
@@ -1174,7 +1174,7 @@ class C10Service1TkV1AuthService(
                             C10Service1TkV1AuthController.Api9OutputVo.EmailInfo(
                                 emailEntity.uid!!,
                                 emailEntity.emailAddress,
-                                emailEntity.uid == memberInfo.frontEmailUid
+                                emailEntity.uid == memberInfo.frontMemberEmailData?.uid
                             )
                         )
                     }
@@ -1191,7 +1191,7 @@ class C10Service1TkV1AuthService(
                             C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo(
                                 phoneEntity.uid!!,
                                 phoneEntity.phoneNumber,
-                                phoneEntity.uid == memberInfo.frontPhoneUid
+                                phoneEntity.uid == memberInfo.frontMemberPhoneData?.uid
                             )
                         )
                     }
@@ -1501,7 +1501,7 @@ class C10Service1TkV1AuthService(
                 )
             )
 
-            database1MemberUser.frontEmailUid = database1Service2MemberEmailData.uid!!
+            database1MemberUser.frontMemberEmailData = database1Service2MemberEmailData
 
             // 역할 저장
             val database1MemberUserRoleList = ArrayList<Database1_Service1_MemberRoleData>()
@@ -1572,7 +1572,7 @@ class C10Service1TkV1AuthService(
                         )
                     )
 
-                database1MemberUser.frontProfileUid = database1Service1MemberProfileData.uid!!
+                database1MemberUser.frontMemberProfileData = database1Service1MemberProfileData
             }
 
             database1Service1MemberDataRepository.save(database1MemberUser)
@@ -1784,7 +1784,7 @@ class C10Service1TkV1AuthService(
                     )
                 )
 
-            database1MemberUser.frontPhoneUid = database1Service1MemberPhoneData.uid
+            database1MemberUser.frontMemberPhoneData = database1Service1MemberPhoneData
 
             // 역할 저장
             val database1MemberUserRoleList = ArrayList<Database1_Service1_MemberRoleData>()
@@ -1854,7 +1854,7 @@ class C10Service1TkV1AuthService(
                     )
                 )
 
-                database1MemberUser.frontProfileUid = database1Service1MemberProfileData.uid
+                database1MemberUser.frontMemberProfileData = database1Service1MemberProfileData
             }
 
             database1Service1MemberDataRepository.save(database1MemberUser)
@@ -2292,7 +2292,7 @@ class C10Service1TkV1AuthService(
                     )
                 )
 
-                database1MemberUser.frontProfileUid = database1Service1MemberProfileData.uid
+                database1MemberUser.frontMemberProfileData = database1Service1MemberProfileData
             }
 
             database1Service1MemberDataRepository.save(database1MemberUser)
@@ -2810,7 +2810,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api29OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
-                    emailEntity.uid == member.frontEmailUid
+                    emailEntity.uid == member.frontMemberEmailData?.uid
                 )
             )
         }
@@ -2849,7 +2849,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api30OutputVo.PhoneInfo(
                     emailEntity.uid!!,
                     emailEntity.phoneNumber,
-                    emailEntity.uid == member.frontPhoneUid
+                    emailEntity.uid == member.frontMemberPhoneData?.uid
                 )
             )
         }
@@ -3829,7 +3829,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api43OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
-                    profile.uid == memberInfo.frontProfileUid
+                    profile.uid == memberInfo.frontMemberProfileData?.uid
                 )
             )
         }
@@ -3862,7 +3862,7 @@ class C10Service1TkV1AuthService(
 
         var myProfile: C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo? = null
         for (profile in profileData) {
-            if (profile.uid!! == memberInfo.frontProfileUid) {
+            if (profile.uid!! == memberInfo.frontMemberProfileData?.uid) {
                 myProfile = C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl
@@ -3891,12 +3891,12 @@ class C10Service1TkV1AuthService(
             database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(accessTokenMemberUid.toLong(), "-")!!
 
         // 내 프로필 리스트 가져오기
-        val profileData = database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+        val profileDataList = database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberInfo,
             "-"
         )
 
-        if (profileData.isEmpty()) {
+        if (profileDataList.isEmpty()) {
             // 내 프로필이 하나도 없을 때
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
@@ -3904,7 +3904,7 @@ class C10Service1TkV1AuthService(
         }
 
         if (profileUid == null) {
-            memberInfo.frontProfileUid = null
+            memberInfo.frontMemberProfileData = null
             database1Service1MemberDataRepository.save(memberInfo)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -3913,7 +3913,7 @@ class C10Service1TkV1AuthService(
 
         // 이번에 선택하려는 프로필
         var selectedProfile: Database1_Service1_MemberProfileData? = null
-        for (profile in profileData) {
+        for (profile in profileDataList) {
             if (profileUid == profile.uid) {
                 selectedProfile = profile
             }
@@ -3927,7 +3927,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 프로필을 선택하기
-        memberInfo.frontProfileUid = profileUid
+        memberInfo.frontMemberProfileData = selectedProfile
         database1Service1MemberDataRepository.save(memberInfo)
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -4106,7 +4106,7 @@ class C10Service1TkV1AuthService(
 
         var myEmail: C10Service1TkV1AuthController.Api49OutputVo.EmailInfo? = null
         for (email in emailData) {
-            if (email.uid!! == memberInfo.frontEmailUid) {
+            if (email.uid!! == memberInfo.frontMemberEmailData?.uid) {
                 myEmail = C10Service1TkV1AuthController.Api49OutputVo.EmailInfo(
                     email.uid!!,
                     email.emailAddress
@@ -4135,12 +4135,12 @@ class C10Service1TkV1AuthService(
             database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(accessTokenMemberUid.toLong(), "-")!!
 
         // 내 이메일 리스트 가져오기
-        val emailData = database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+        val emailDataList = database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberInfo,
             "-"
         )
 
-        if (emailData.isEmpty()) {
+        if (emailDataList.isEmpty()) {
             // 내 이메일이 하나도 없을 때
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
@@ -4148,7 +4148,7 @@ class C10Service1TkV1AuthService(
         }
 
         if (emailUid == null) {
-            memberInfo.frontEmailUid = null
+            memberInfo.frontMemberEmailData = null
             database1Service1MemberDataRepository.save(memberInfo)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -4156,14 +4156,14 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 이메일
-        var selectedProfile: Database1_Service1_MemberEmailData? = null
-        for (email in emailData) {
+        var selectedEmail: Database1_Service1_MemberEmailData? = null
+        for (email in emailDataList) {
             if (emailUid == email.uid) {
-                selectedProfile = email
+                selectedEmail = email
             }
         }
 
-        if (selectedProfile == null) {
+        if (selectedEmail == null) {
             // 이번에 선택하려는 이메일이 없을 때
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
@@ -4171,7 +4171,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 프로필을 선택하기
-        memberInfo.frontEmailUid = emailUid
+        memberInfo.frontMemberEmailData = selectedEmail
         database1Service1MemberDataRepository.save(memberInfo)
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -4199,7 +4199,7 @@ class C10Service1TkV1AuthService(
 
         var myPhone: C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo? = null
         for (phone in phoneNumberData) {
-            if (phone.uid!! == memberInfo.frontPhoneUid) {
+            if (phone.uid!! == memberInfo.frontMemberPhoneData?.uid) {
                 myPhone = C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo(
                     phone.uid!!,
                     phone.phoneNumber
@@ -4241,7 +4241,7 @@ class C10Service1TkV1AuthService(
         }
 
         if (phoneNumberUid == null) {
-            memberInfo.frontPhoneUid = null
+            memberInfo.frontMemberPhoneData = null
             database1Service1MemberDataRepository.save(memberInfo)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -4264,7 +4264,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 프로필을 선택하기
-        memberInfo.frontPhoneUid = phoneNumberUid
+        memberInfo.frontMemberPhoneData = selectedPhone
         database1Service1MemberDataRepository.save(memberInfo)
 
         httpServletResponse.status = HttpStatus.OK.value()
