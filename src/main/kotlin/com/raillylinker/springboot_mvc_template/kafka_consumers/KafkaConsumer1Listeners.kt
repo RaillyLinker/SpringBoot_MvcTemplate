@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 
-@Component
+//@Component // !!!Kafka 사용시 주석을 푸세요. (kafka 환경이 구성되지 않았을 때 경고 메시지가 계속 발생하기에 주석처리를 한 상태)!!!
 class KafkaConsumer1Listeners {
     // <멤버 변수 공간>
     companion object {

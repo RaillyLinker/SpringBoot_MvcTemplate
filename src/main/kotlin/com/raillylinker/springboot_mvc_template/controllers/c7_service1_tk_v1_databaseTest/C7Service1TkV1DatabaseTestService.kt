@@ -2,8 +2,9 @@ package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_d
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
+import com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_databaseTest.C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo.ChildEntityVo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_FkTestOneToManyChild
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_FkTestManyToOneChild
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_FkTestParent
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_LogicalDeleteUniqueData
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_TestData
@@ -27,7 +28,7 @@ class C7Service1TkV1DatabaseTestService(
     private val database1NativeRepository: Database1_NativeRepository,
     private val database1TemplateTestRepository: Database1_Template_TestsRepository,
     private val database1TemplateFkTestParentRepository: Database1_Template_FkTestParentRepository,
-    private val database1TemplateFkTestOneToManyChildRepository: Database1_Template_FkTestOneToManyChildRepository,
+    private val database1TemplateFkTestOneToManyChildRepository: Database1_Template_FkTestManyToOneChildRepository,
     private val database1Template_LogicalDeleteUniqueDataRepository: Database1_Template_LogicalDeleteUniqueDataRepository
 ) {
     // <멤버 변수 공간>
@@ -612,7 +613,7 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         val result = database1TemplateFkTestOneToManyChildRepository.save(
-            Database1_Template_FkTestOneToManyChild(
+            Database1_Template_FkTestManyToOneChild(
                 inputVo.fkChildName,
                 parentEntity
             )
@@ -625,6 +626,50 @@ class C7Service1TkV1DatabaseTestService(
             result.fkTestParent.parentName,
             result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
             result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+        )
+    }
+
+
+    ////
+    fun api24(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api24OutputVo? {
+        val resultEntityList =
+            database1TemplateFkTestParentRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("-")
+
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo>()
+        for (resultEntity in resultEntityList) {
+            val childEntityVoList: ArrayList<ChildEntityVo> = arrayListOf()
+
+            val childList =
+                database1TemplateFkTestOneToManyChildRepository.findAllByFkTestParentUidAndRowDeleteDateStrOrderByRowCreateDate(
+                    resultEntity.uid!!,
+                    "-"
+                )
+
+            for (childEntity in childList) {
+                childEntityVoList.add(
+                    ChildEntityVo(
+                        childEntity.uid!!,
+                        childEntity.childName,
+                        childEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                        childEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                    )
+                )
+            }
+
+            entityVoList.add(
+                C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo(
+                    resultEntity.uid!!,
+                    resultEntity.parentName,
+                    resultEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    childEntityVoList
+                )
+            )
+        }
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api24OutputVo(
+            entityVoList
         )
     }
 }

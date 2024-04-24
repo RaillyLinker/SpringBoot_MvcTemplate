@@ -10,4 +10,8 @@ interface Database1_Template_FkTestParentRepository : JpaRepository<Database1_Te
         uid: Long,
         rowDeleteDateStr: String
     ): Database1_Template_FkTestParent?
+
+    fun findAllByRowDeleteDateStrOrderByRowCreateDate(
+        rowDeleteDateStr: String
+    ): List<Database1_Template_FkTestParent>
 }

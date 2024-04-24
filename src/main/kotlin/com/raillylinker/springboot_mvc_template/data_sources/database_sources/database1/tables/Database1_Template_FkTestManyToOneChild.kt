@@ -12,9 +12,9 @@ import java.time.LocalDateTime
 
 // 주의 : 낙관적 Lock (@Version) 사용시 Transaction 기능과 충돌이 있음
 @Entity
-@Table(name = "fk_test_one_to_many_child", catalog = "template")
+@Table(name = "fk_test_many_to_one_child", catalog = "template")
 @Comment("Foreign Key 테스트용 테이블 (one to many 테스트용 자식 테이블)")
-class Database1_Template_FkTestOneToManyChild(
+class Database1_Template_FkTestManyToOneChild(
     @Column(name = "child_name", nullable = false, columnDefinition = "VARCHAR(255)")
     @Comment("자식 테이블 이름")
     var childName: String,

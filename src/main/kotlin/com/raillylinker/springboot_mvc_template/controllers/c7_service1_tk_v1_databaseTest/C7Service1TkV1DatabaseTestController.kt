@@ -890,8 +890,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N22 : 외례키 부모 테이블 Row 입력 API",
-        description = "외례키 부모 테이블에 Row 를 입력합니다.\n\n" +
+        summary = "N22 : 외래키 부모 테이블 Row 입력 API",
+        description = "외래키 부모 테이블에 Row 를 입력합니다.\n\n" +
                 "(api-result-code)\n\n"
     )
     @PostMapping(
@@ -910,7 +910,7 @@ class C7Service1TkV1DatabaseTestController(
     }
 
     data class Api22InputVo(
-        @Schema(description = "외례키 테이블 부모 이름", required = true, example = "홍길동")
+        @Schema(description = "외래키 테이블 부모 이름", required = true, example = "홍길동")
         @JsonProperty("fkParentName")
         val fkParentName: String
     )
@@ -919,7 +919,7 @@ class C7Service1TkV1DatabaseTestController(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
-        @Schema(description = "외례키 테이블 부모 이름", required = true, example = "홍길동")
+        @Schema(description = "외래키 테이블 부모 이름", required = true, example = "홍길동")
         @JsonProperty("fkParentName")
         val fkParentName: String,
         @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
@@ -933,8 +933,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N23 : 외례키 부모 테이블 아래에 자식 테이블의 Row 입력 API",
-        description = "외례키 부모 테이블의 아래에 자식 테이블의 Row 를 입력합니다.\n\n" +
+        summary = "N23 : 외래키 부모 테이블 아래에 자식 테이블의 Row 입력 API",
+        description = "외래키 부모 테이블의 아래에 자식 테이블의 Row 를 입력합니다.\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : 부모 테이블 uid 의 정보가 없습니다.\n\n"
     )
@@ -947,7 +947,7 @@ class C7Service1TkV1DatabaseTestController(
     fun api23(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @Parameter(name = "parentUid", description = "외례키 부모 테이블 고유번호", example = "1")
+        @Parameter(name = "parentUid", description = "외래키 부모 테이블 고유번호", example = "1")
         @PathVariable("parentUid")
         parentUid: Long,
         @RequestBody
@@ -957,7 +957,7 @@ class C7Service1TkV1DatabaseTestController(
     }
 
     data class Api23InputVo(
-        @Schema(description = "외례키 테이블 자식 이름", required = true, example = "홍길동")
+        @Schema(description = "외래키 테이블 자식 이름", required = true, example = "홍길동")
         @JsonProperty("fkChildName")
         val fkChildName: String
     )
@@ -966,10 +966,10 @@ class C7Service1TkV1DatabaseTestController(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
-        @Schema(description = "외례키 테이블 부모 이름", required = true, example = "홍길동")
+        @Schema(description = "외래키 테이블 부모 이름", required = true, example = "홍길동")
         @JsonProperty("fkParentName")
         val fkParentName: String,
-        @Schema(description = "외례키 테이블 자식 이름", required = true, example = "홍길동")
+        @Schema(description = "외래키 테이블 자식 이름", required = true, example = "홍길동")
         @JsonProperty("fkChildName")
         val fkChildName: String,
         @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
@@ -979,4 +979,65 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("updateDate")
         val updateDate: String
     )
+
+
+    ////
+    @Operation(
+        summary = "N24 : 외래키 관련 테이블 Rows 조회 테스트",
+        description = "외래키 관련 테이블의 모든 Rows 를 반환합니다.\n\n" +
+                "(api-result-code)\n\n"
+    )
+    @GetMapping(
+        path = ["/fk-table/all"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api24(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ): Api24OutputVo? {
+        return service.api24(httpServletResponse)
+    }
+
+    data class Api24OutputVo(
+        @Schema(description = "아이템 리스트", required = true)
+        @JsonProperty("testEntityVoList")
+        val parentEntityVoList: List<ParentEntityVo>
+    ) {
+        @Schema(description = "아이템")
+        data class ParentEntityVo(
+            @Schema(description = "글 고유번호", required = true, example = "1234")
+            @JsonProperty("uid")
+            val uid: Long,
+            @Schema(description = "부모 테이블 이름", required = true, example = "1")
+            @JsonProperty("parentName")
+            val parentName: String,
+            @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("createDate")
+            val createDate: String,
+            @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("updateDate")
+            val updateDate: String,
+            @Schema(description = "부모 테이블에 속하는 자식 테이블 리스트", required = true)
+            @JsonProperty("childEntityList")
+            val childEntityList: List<ChildEntityVo>
+        ) {
+            @Schema(description = "아이템")
+            data class ChildEntityVo(
+                @Schema(description = "글 고유번호", required = true, example = "1234")
+                @JsonProperty("uid")
+                val uid: Long,
+                @Schema(description = "자식 테이블 이름", required = true, example = "1")
+                @JsonProperty("childName")
+                val childName: String,
+                @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+                @JsonProperty("createDate")
+                val createDate: String,
+                @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+                @JsonProperty("updateDate")
+                val updateDate: String
+            )
+        }
+    }
 }

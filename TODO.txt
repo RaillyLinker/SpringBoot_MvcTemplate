@@ -1,6 +1,4 @@
 [TODO]
-- 데이터베이스 Join, Native Join, Lazy Loading, N + 1 예시 추가
-
 - 데이터베이스 C10 과 관련된 모든 테이블에 fk 제약 추가 후 테스트
 
 [REMIND]
