@@ -79,13 +79,18 @@ class C7Service1TkV1DatabaseTestService(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api3(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
+        val entity = database1TemplateTestRepository.findByUidAndRowDeleteDateStr(index, "-")
+
+        if (entity == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
         if (deleteLogically) {
-            val entity = database1TemplateTestRepository.findByUidAndRowDeleteDateStr(index, "-")
-            if (entity != null) {
-                entity.rowDeleteDateStr =
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
-                database1TemplateTestRepository.save(entity)
-            }
+            entity.rowDeleteDateStr =
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            database1TemplateTestRepository.save(entity)
         } else {
             database1TemplateTestRepository.deleteById(index)
         }
@@ -562,11 +567,16 @@ class C7Service1TkV1DatabaseTestService(
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api21(httpServletResponse: HttpServletResponse, index: Long) {
         val entity = database1Template_LogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(index, "-")
-        if (entity != null) {
-            entity.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
-            database1Template_LogicalDeleteUniqueDataRepository.save(entity)
+
+        if (entity == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
         }
+
+        entity.rowDeleteDateStr =
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+        database1Template_LogicalDeleteUniqueDataRepository.save(entity)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }

@@ -96,7 +96,8 @@ class C7Service1TkV1DatabaseTestController(
     @Operation(
         summary = "N3 : DB Row 삭제 테스트",
         description = "테스트 테이블의 Row 하나를 삭제합니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(api-result-code)\n\n" +
+                "1 : 삭제할 행이 없습니다.\n\n"
     )
     @DeleteMapping(
         path = ["/row/{index}"],
@@ -869,7 +870,8 @@ class C7Service1TkV1DatabaseTestController(
     @Operation(
         summary = "N21 : 유니크 테스트 테이블 Row 삭제 테스트",
         description = "유니크 테스트 테이블의 Row 하나를 삭제합니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(api-result-code)\n\n" +
+                "1 : 삭제할 행이 없습니다.\n\n"
     )
     @DeleteMapping(
         path = ["/unique-test-table/{index}"],
