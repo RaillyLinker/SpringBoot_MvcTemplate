@@ -1,9 +1,10 @@
 package com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories
 
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_LogInTokenInfo
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_MemberData
+import org.apache.kafka.clients.consumer.internals.AbstractStickyAssignor.MemberData
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import java.time.LocalDateTime
 
 // (JPA 레포지토리)
 // : 함수 작성 명명법에 따라 데이터베이스 SQL 동작을 자동지원
@@ -16,8 +17,8 @@ interface Database1_Service1_LogInTokenInfoRepository :
         rowDeleteDateStr :String
     ): Database1_Service1_LogInTokenInfo?
 
-    fun findAllByMemberUidAndRowDeleteDateStr(
-        memberUid: Long,
+    fun findAllByMemberDataAndRowDeleteDateStr(
+        memberData: Database1_Service1_MemberData,
         rowDeleteDateStr :String
     ): List<Database1_Service1_LogInTokenInfo>
 }

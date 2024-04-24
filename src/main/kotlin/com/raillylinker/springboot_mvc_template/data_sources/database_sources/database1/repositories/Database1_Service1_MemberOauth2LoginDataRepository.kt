@@ -1,9 +1,9 @@
 package com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories
 
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_MemberData
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_MemberOauth2LoginData
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import java.time.LocalDateTime
 
 // (JPA 레포지토리)
 // : 함수 작성 명명법에 따라 데이터베이스 SQL 동작을 자동지원
@@ -22,16 +22,19 @@ interface Database1_Service1_MemberOauth2LoginDataRepository :
         rowDeleteDateStr :String
     ): Boolean
 
-    fun findAllByMemberUidAndRowDeleteDateStr(
-        memberUid: Long,
+    fun findAllByMemberDataAndRowDeleteDateStr(
+        memberData: Database1_Service1_MemberData,
         rowDeleteDateStr :String
     ): List<Database1_Service1_MemberOauth2LoginData>
 
-    fun findByUidAndMemberUidAndRowDeleteDateStr(
+    fun findByUidAndMemberDataAndRowDeleteDateStr(
         uid : Long,
-        memberUid: Long,
+        memberData: Database1_Service1_MemberData,
         rowDeleteDateStr :String
     ): Database1_Service1_MemberOauth2LoginData?
 
-    fun existsByMemberUidAndRowDeleteDateStr(memberUid: Long, rowDeleteDateStr :String): Boolean
+    fun existsByMemberDataAndRowDeleteDateStr(
+        memberData: Database1_Service1_MemberData,
+        rowDeleteDateStr :String
+    ): Boolean
 }

@@ -21,7 +21,7 @@ class Database1_Template_FkTestManyToOneChild(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_test_parent_uid", nullable = false)
-    @Comment("FK 대상 template.fk_test_parent 고유번호")
+    @Comment("FK 부모 테이블 고유번호 (template.fk_test_parent.uid)")
     var fkTestParent: Database1_Template_FkTestParent
 ) {
     @Id

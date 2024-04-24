@@ -16,9 +16,10 @@ import java.time.LocalDateTime
 )
 @Comment("회원 이메일 정보 테이블")
 class Database1_Service1_MemberEmailData(
-    @Column(name = "member_uid", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    @Comment("멤버 고유값 (member.members.uid)")
-    var memberUid: Long,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_uid", nullable = false)
+    @Comment("멤버 고유번호(service1.member_data.uid)")
+    var memberData: Database1_Service1_MemberData,
 
     @Column(name = "email_address", nullable = false, columnDefinition = "VARCHAR(100)")
     @Comment("이메일 주소 (중복 비허용)")

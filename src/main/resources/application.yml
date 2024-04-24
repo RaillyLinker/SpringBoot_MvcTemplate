@@ -43,17 +43,17 @@ customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
   corsList: http://localhost:8081, http://127.0.0.1:8081
 
   smtp: # SMTP 설정
-    host: smtp.gmail.com # SMTP 호스트
-    port: 587 # SMTP 포트
-    senderName: contact@test.com # SMTP 계정 아이디
-    senderPassword: test # SMTP 계정 비밀번호
+    host: mail.my-puppy.co.kr # SMTP 호스트
+    port: 465 # SMTP 포트
+    senderName: no-reply@my-puppy.co.kr # SMTP 계정 아이디
+    senderPassword: mypuppy1248@! # SMTP 계정 비밀번호
     timeOutMillis: 10000 # 타임아웃 밀리초
 
   naverSms: # Naver SMS 설정
-    accessKey: test
-    secretKey: test
-    serviceId: ncp:sms:kr:test:test
-    phoneNumber: test
+    accessKey: ziKws7nWm9qe5SVJ8sbf
+    secretKey: E1GPppqPxwpBH3vkh2te5pFDJyXRah8blwvsxkT2
+    serviceId: ncp:sms:kr:253830666250:petlink_message
+    phoneNumber: 07049191248
 
   swagger: # Swagger 문서 설정
     documentVersion: 1.0.0

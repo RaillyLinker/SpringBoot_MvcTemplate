@@ -640,8 +640,8 @@ class C7Service1TkV1DatabaseTestService(
             val childEntityVoList: ArrayList<ChildEntityVo> = arrayListOf()
 
             val childList =
-                database1TemplateFkTestOneToManyChildRepository.findAllByFkTestParentUidAndRowDeleteDateStrOrderByRowCreateDate(
-                    resultEntity.uid!!,
+                database1TemplateFkTestOneToManyChildRepository.findAllByFkTestParentAndRowDeleteDateStrOrderByRowCreateDate(
+                    resultEntity,
                     "-"
                 )
 

@@ -16,9 +16,10 @@ import java.time.LocalDateTime
 )
 @Comment("토큰 발행 정보 테이블 : 로그인, 로그아웃 기록 역할도 겸함")
 class Database1_Service1_LogInTokenInfo(
-    @Column(name = "member_uid", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    @Comment("멤버 고유값 (member.members.uid)")
-    var memberUid: Long,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_uid", nullable = false)
+    @Comment("멤버 고유번호(service1.member_data.uid)")
+    var memberData: Database1_Service1_MemberData,
 
     @Column(name = "token_type", nullable = false, columnDefinition = "VARCHAR(50)")
     @Comment("토큰 타입 (ex : Bearer)")

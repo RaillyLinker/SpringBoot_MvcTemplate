@@ -10,9 +10,10 @@ import java.time.LocalDateTime
 @Table(name = "member_profile_data", catalog = "service1")
 @Comment("회원 프로필 정보 테이블")
 class Database1_Service1_MemberProfileData(
-    @Column(name = "member_uid", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    @Comment("멤버 고유값 (member.members.uid)")
-    var memberUid: Long,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_uid", nullable = false)
+    @Comment("멤버 고유번호(service1.member_data.uid)")
+    var memberData: Database1_Service1_MemberData,
 
     @Column(name = "image_full_url", nullable = false, columnDefinition = "VARCHAR(200)")
     @Comment("프로필 이미지 Full URL")

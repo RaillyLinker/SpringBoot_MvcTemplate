@@ -16,9 +16,10 @@ import java.time.LocalDateTime
 )
 @Comment("회원 권한 정보 테이블")
 class Database1_Service1_MemberRoleData(
-    @Column(name = "member_uid", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    @Comment("멤버 고유값 (member.members.uid)")
-    var memberUid: Long,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_uid", nullable = false)
+    @Comment("멤버 고유번호(service1.member_data.uid)")
+    var memberData: Database1_Service1_MemberData,
 
     @Column(name = "role", nullable = false, columnDefinition = "VARCHAR(100)")
     @Comment("권한 코드 (ROLE_{권한} 형식으로 저장합니다.) (ex : (관리자 : ROLE_ADMIN, 개발자 : ROLE_DEVELOPER))")

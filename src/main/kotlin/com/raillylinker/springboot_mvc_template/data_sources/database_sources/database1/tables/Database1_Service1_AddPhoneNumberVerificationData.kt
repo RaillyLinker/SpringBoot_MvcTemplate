@@ -10,9 +10,10 @@ import java.time.LocalDateTime
 @Table(name = "add_phone_number_verification_data", catalog = "service1")
 @Comment("이메일 추가하기 검증 테이블")
 class Database1_Service1_AddPhoneNumberVerificationData(
-    @Column(name = "member_uid", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    @Comment("멤버 고유값 (member.members.uid)")
-    var memberUid: Long,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_uid", nullable = false)
+    @Comment("멤버 고유번호(service1.member_data.uid)")
+    var memberData: Database1_Service1_MemberData,
 
     @Column(name = "phone_number", nullable = false, columnDefinition = "VARCHAR(45)")
     @Comment("전화 번호")
