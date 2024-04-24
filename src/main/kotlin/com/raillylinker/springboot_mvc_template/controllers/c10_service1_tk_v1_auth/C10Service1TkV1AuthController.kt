@@ -2126,7 +2126,7 @@ class C10Service1TkV1AuthController(
                 "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
     @DeleteMapping(
-        path = ["/my-email"],
+        path = ["/my-email/{emailUid}"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )
@@ -2310,7 +2310,7 @@ class C10Service1TkV1AuthController(
                 "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
     @DeleteMapping(
-        path = ["/my-phone-number"],
+        path = ["/my-phone-number/{phoneUid}"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )
@@ -2432,7 +2432,7 @@ class C10Service1TkV1AuthController(
                 "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
     @DeleteMapping(
-        path = ["/my-oauth2"],
+        path = ["/my-oauth2/{oAuth2Uid}"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )

@@ -3060,7 +3060,7 @@ class C10Service1TkV1AuthService(
         val emailVerification = emailVerificationOpt.get()
 
         if (emailVerification.rowDeleteDateStr != "-" ||
-            emailVerification.memberData.uid!! != memberUid.toLong() ||
+            emailVerification.memberData.uid!! != memberUid ||
             emailVerification.emailAddress != inputVo.email
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3116,6 +3116,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
+    // todo 삭제 가능 상태 확인 로직 다시 보기(동일 로그인 타입의 다른 로우가 있어도 삭제 가능)
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api35(
         httpServletResponse: HttpServletResponse,
@@ -3393,6 +3394,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
+    // todo 삭제 가능 상태 확인 로직 다시 보기(동일 로그인 타입의 다른 로우가 있어도 삭제 가능)
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api39(
         httpServletResponse: HttpServletResponse,
@@ -3658,6 +3660,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
+    // todo 삭제 가능 상태 확인 로직 다시 보기(동일 로그인 타입의 다른 로우가 있어도 삭제 가능)
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api41(
         httpServletResponse: HttpServletResponse,
@@ -3935,6 +3938,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
+    // todo 프로필 삭제 정상 로직 여부 파악
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api46(authorization: String, httpServletResponse: HttpServletResponse, profileUid: Long) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
