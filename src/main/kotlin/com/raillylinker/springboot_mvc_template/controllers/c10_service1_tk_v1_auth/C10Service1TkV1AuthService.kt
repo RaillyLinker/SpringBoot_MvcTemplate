@@ -3120,7 +3120,6 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    // todo 삭제 가능 상태 확인 로직 다시 보기(동일 로그인 타입의 다른 로우가 있어도 삭제 가능)
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api35(
         httpServletResponse: HttpServletResponse,
@@ -3139,14 +3138,29 @@ class C10Service1TkV1AuthService(
         )!!
 
         // 내 계정에 등록된 모든 이메일 리스트 가져오기
-        val myEmail = database1Service1MemberEmailDataRepository.findByUidAndMemberDataAndRowDeleteDateStr(
-            emailUid,
+        val myEmailList = database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
             "-"
         )
 
-        if (myEmail == null) {
-            httpServletResponse.status = HttpStatus.OK.value()
+        if (myEmailList.isEmpty()) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
+        var myEmailVo: Database1_Service1_MemberEmailData? = null
+
+        for (myEmail in myEmailList) {
+            if (myEmail.uid == emailUid) {
+                myEmailVo = myEmail
+                break
+            }
+        }
+
+        if (myEmailVo == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
@@ -3160,22 +3174,25 @@ class C10Service1TkV1AuthService(
             "-"
         )
 
-        if (isOauth2Exists || (memberData.accountPassword != null && isMemberPhoneExists)) {
+        if (isOauth2Exists ||
+            (memberData.accountPassword != null && myEmailList.size > 1) ||
+            (memberData.accountPassword != null && isMemberPhoneExists)
+        ) {
             // 이메일 지우기
-            myEmail.rowDeleteDateStr =
+            myEmailVo.rowDeleteDateStr =
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
             database1Service1MemberEmailDataRepository.save(
-                myEmail
+                myEmailVo
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
             return
+        } else {
+            // 이외에 사용 가능한 로그인 정보가 존재하지 않을 때
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "2")
+            return
         }
-
-        // 이외에 사용 가능한 로그인 정보가 존재하지 않을 때
-        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-        httpServletResponse.setHeader("api-result-code", "1")
-        return
     }
 
 
@@ -3398,7 +3415,6 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    // todo 삭제 가능 상태 확인 로직 다시 보기(동일 로그인 타입의 다른 로우가 있어도 삭제 가능)
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api39(
         httpServletResponse: HttpServletResponse,
@@ -3411,52 +3427,67 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         ).toLong()
 
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
             "-"
         )!!
 
         // 내 계정에 등록된 모든 전화번호 리스트 가져오기
-        val myPhone = database1Service1MemberPhoneDataRepository.findByUidAndMemberDataAndRowDeleteDateStr(
-            phoneUid,
-            member,
+        val myPhoneList = database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+            memberData,
             "-"
         )
 
-        if (myPhone == null) {
-            // 전화번호 리스트가 비어있다면
-            httpServletResponse.status = HttpStatus.OK.value()
+        if (myPhoneList.isEmpty()) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
+        var myPhoneVo: Database1_Service1_MemberPhoneData? = null
+
+        for (myPhone in myPhoneList) {
+            if (myPhone.uid == phoneUid) {
+                myPhoneVo = myPhone
+                break
+            }
+        }
+
+        if (myPhoneVo == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
         val isOauth2Exists = database1Service1MemberOauth2LoginDataRepository.existsByMemberDataAndRowDeleteDateStr(
-            member,
+            memberData,
             "-"
         )
 
         val isMemberEmailExists = database1Service1MemberEmailDataRepository.existsByMemberDataAndRowDeleteDateStr(
-            member,
+            memberData,
             "-"
         )
 
-        if (isOauth2Exists || (member.accountPassword != null && isMemberEmailExists)) {
-            // 사용 가능한 계정 로그인 정보가 존재
-
+        if (isOauth2Exists ||
+            (memberData.accountPassword != null && myPhoneList.size > 1) ||
+            (memberData.accountPassword != null && isMemberEmailExists)
+        ) {
             // 전화번호 지우기
-            myPhone.rowDeleteDateStr =
+            myPhoneVo.rowDeleteDateStr =
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
             database1Service1MemberPhoneDataRepository.save(
-                myPhone
+                myPhoneVo
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
             return
+        } else {
+            // 이외에 사용 가능한 로그인 정보가 존재하지 않을 때
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "2")
+            return
         }
-
-        // 이외에 사용 가능한 로그인 정보가 존재하지 않을 때
-        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-        httpServletResponse.setHeader("api-result-code", "1")
-        return
     }
 
 
@@ -3664,7 +3695,6 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    // todo 삭제 가능 상태 확인 로직 다시 보기(동일 로그인 타입의 다른 로우가 있어도 삭제 가능)
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api41(
         httpServletResponse: HttpServletResponse,
@@ -3677,52 +3707,67 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         ).toLong()
 
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
             "-"
         )!!
 
         // 내 계정에 등록된 모든 인증 리스트 가져오기
-        val myOAuth2 = database1Service1MemberOauth2LoginDataRepository.findByUidAndMemberDataAndRowDeleteDateStr(
-            oAuth2Uid,
-            member,
+        val myOAuth2List = database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+            memberData,
             "-"
         )
 
-        if (myOAuth2 == null) {
-            // 리스트가 비어있다면
-            httpServletResponse.status = HttpStatus.OK.value()
+        if (myOAuth2List.isEmpty()) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
+        var myOAuth2Vo: Database1_Service1_MemberOauth2LoginData? = null
+
+        for (myOAuth2 in myOAuth2List) {
+            if (myOAuth2.uid == oAuth2Uid) {
+                myOAuth2Vo = myOAuth2
+                break
+            }
+        }
+
+        if (myOAuth2Vo == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
         val isMemberEmailExists = database1Service1MemberEmailDataRepository.existsByMemberDataAndRowDeleteDateStr(
-            member,
+            memberData,
             "-"
         )
 
         val isMemberPhoneExists = database1Service1MemberPhoneDataRepository.existsByMemberDataAndRowDeleteDateStr(
-            member,
+            memberData,
             "-"
         )
 
-        if (member.accountPassword != null && (isMemberEmailExists || isMemberPhoneExists)) {
-            // 사용 가능한 계정 로그인 정보가 존재
-
+        if (myOAuth2List.size > 1 ||
+            (memberData.accountPassword != null && isMemberEmailExists) ||
+            (memberData.accountPassword != null && isMemberPhoneExists)
+        ) {
             // 로그인 정보 지우기
-            myOAuth2.rowDeleteDateStr =
+            myOAuth2Vo.rowDeleteDateStr =
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
             database1Service1MemberOauth2LoginDataRepository.save(
-                myOAuth2
+                myOAuth2Vo
             )
 
             httpServletResponse.status = HttpStatus.OK.value()
             return
+        } else {
+            // 이외에 사용 가능한 로그인 정보가 존재하지 않을 때
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "2")
+            return
         }
-
-        // 이외에 사용 가능한 로그인 정보가 존재하지 않을 때
-        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-        httpServletResponse.setHeader("api-result-code", "1")
-        return
     }
 
 
@@ -3742,7 +3787,13 @@ class C10Service1TkV1AuthService(
         val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUidLong,
             "-"
-        ) ?: return  // 가입된 회원이 없음 = 회원탈퇴한 것으로 처리
+        )
+
+        if (member == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
 
         // 회원탈퇴 처리
         member.rowDeleteDateStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
@@ -3942,32 +3993,36 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    // todo 프로필 삭제 정상 로직 여부 파악
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api46(authorization: String, httpServletResponse: HttpServletResponse, profileUid: Long) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
+
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         // 프로필 가져오기
-        val profileDataOpt = database1Service1MemberProfileDataRepository.findById(profileUid)
+        val profileData = database1Service1MemberProfileDataRepository.findByUidAndMemberDataAndRowDeleteDateStr(
+            profileUid,
+            memberData,
+            "-"
+        )
 
-        if (profileDataOpt.isPresent) {
-            // 프로필이 존재할 때
-            val profileData = profileDataOpt.get()
-
-            if (profileData.rowDeleteDateStr != "-" &&
-                profileData.memberData.uid!! == memberUid.toLong()
-            ) {
-                // 프로필이 활성 상태이고, 멤버 고유번호가 내 고유 번호와 같을 때
-                // 프로필 비활성화
-                profileData.rowDeleteDateStr =
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
-                database1Service1MemberProfileDataRepository.save(profileData)
-            }
+        if (profileData == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
         }
+
+        // 프로필 비활성화
+        profileData.rowDeleteDateStr =
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+        database1Service1MemberProfileDataRepository.save(profileData)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }

@@ -2124,7 +2124,8 @@ class C10Service1TkV1AuthController(
         summary = "N35 : 내 이메일 제거하기 <>",
         description = "내 계정에서 이메일 제거\n\n" +
                 "(api-result-code)\n\n" +
-                "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
+                "1 : emailUid 의 정보가 없습니다.\n\n" +
+                "2 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
     @DeleteMapping(
         path = ["/my-email/{emailUid}"],
@@ -2308,7 +2309,8 @@ class C10Service1TkV1AuthController(
         summary = "N39 : 내 전화번호 제거하기 <>",
         description = "내 계정에서 전화번호 제거\n\n" +
                 "(api-result-code)\n\n" +
-                "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
+                "1 : phoneUid 의 정보가 없습니다.\n\n" +
+                "2 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
     @DeleteMapping(
         path = ["/my-phone-number/{phoneUid}"],
@@ -2430,7 +2432,8 @@ class C10Service1TkV1AuthController(
         summary = "N41 : 내 OAuth2 제거하기 <>",
         description = "내 계정에서 OAuth2 제거\n\n" +
                 "(api-result-code)\n\n" +
-                "1 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
+                "1 : emailUid 의 정보가 없습니다.\n\n" +
+                "2 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
     @DeleteMapping(
         path = ["/my-oauth2/{oAuth2Uid}"],
@@ -2457,7 +2460,8 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N42 : 회원탈퇴 <>",
         description = "회원탈퇴 요청\n\n" +
-                "(api-result-code)\n\n"
+                "(api-result-code)\n\n" +
+                "1 : 이미 탈퇴된 회원입니다.\n\n"
     )
     @DeleteMapping(
         path = ["/withdrawal"],
@@ -2596,7 +2600,8 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N46 : 내 프로필 삭제 <>",
         description = "내가 등록한 프로필들 중 하나를 삭제합니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(api-result-code)\n\n" +
+                "1 : profileUid 의 정보가 없습니다.\n\n"
     )
     @DeleteMapping(
         path = ["/my-profile/{profileUid}"],

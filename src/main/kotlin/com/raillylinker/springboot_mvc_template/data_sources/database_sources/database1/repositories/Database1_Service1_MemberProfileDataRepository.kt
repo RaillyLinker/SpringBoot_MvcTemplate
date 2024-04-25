@@ -13,4 +13,10 @@ interface Database1_Service1_MemberProfileDataRepository : JpaRepository<Databas
         memberData: Database1_Service1_MemberData,
         rowDeleteDateStr: String
     ): List<Database1_Service1_MemberProfileData>
+
+    fun findByUidAndMemberDataAndRowDeleteDateStr(
+        uid : Long,
+        memberData: Database1_Service1_MemberData,
+        rowDeleteDateStr: String
+    ): Database1_Service1_MemberProfileData?
 }
