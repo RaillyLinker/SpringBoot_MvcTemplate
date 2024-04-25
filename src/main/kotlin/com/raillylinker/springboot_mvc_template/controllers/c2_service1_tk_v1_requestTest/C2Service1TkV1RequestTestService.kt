@@ -676,4 +676,19 @@ class C2Service1TkV1RequestTestService(
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
+
+
+    ////
+    fun api22(
+        httpServletResponse: HttpServletResponse,
+        stringList: List<String>,
+        inputVo: C2Service1TkV1RequestTestController.Api22InputVo
+    ): C2Service1TkV1RequestTestController.Api22OutputVo? {
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C2Service1TkV1RequestTestController.Api22OutputVo(
+            stringList,
+            inputVo.requestBodyStringList
+        )
+    }
 }
