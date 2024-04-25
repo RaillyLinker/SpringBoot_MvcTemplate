@@ -143,7 +143,8 @@ class C8Service1TkV1RedisTestController(
     @Operation(
         summary = "N4 : Redis Key-Value 삭제 테스트",
         description = "Redis Table 에 저장된 Key 를 삭제합니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(api-result-code)\n\n" +
+                "1 : 삭제할 값이 없습니다.\n\n"
     )
     @DeleteMapping(
         path = ["/test"],

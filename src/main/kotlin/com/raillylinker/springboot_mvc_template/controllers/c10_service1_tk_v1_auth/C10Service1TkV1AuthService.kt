@@ -968,11 +968,15 @@ class C10Service1TkV1AuthService(
             "-"
         )
 
-        if (tokenInfo != null) {
-            tokenInfo.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
-            database1Service1LogInTokenInfoRepository.save(tokenInfo)
+        if (tokenInfo == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
         }
+
+        tokenInfo.rowDeleteDateStr =
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+        database1Service1LogInTokenInfoRepository.save(tokenInfo)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }

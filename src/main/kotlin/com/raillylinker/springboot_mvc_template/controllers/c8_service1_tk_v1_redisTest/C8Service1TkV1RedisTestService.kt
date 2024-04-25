@@ -93,6 +93,14 @@ class C8Service1TkV1RedisTestService(
     ////
     @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api4(httpServletResponse: HttpServletResponse, key: String) {
+        val keyValue = redis1TestRepository.findKeyValue(key)
+
+        if (keyValue == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
         redis1TestRepository.deleteKeyValue(key)
 
         httpServletResponse.status = HttpStatus.OK.value()

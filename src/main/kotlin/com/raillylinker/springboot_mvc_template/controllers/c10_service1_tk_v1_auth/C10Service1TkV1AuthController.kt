@@ -688,7 +688,8 @@ class C10Service1TkV1AuthController(
         description = "로그아웃 처리\n\n" +
                 "Jwt 에서 로그아웃의 의미는, 지금 당장 해당 액세스 토큰을 못쓰도록 만드는 것이 아니라,\n\n" +
                 "액세스 토큰이 만료되어 리플레시 토큰으로 재발급을 시도 할 때 막는 기능입니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(api-result-code)\n\n" +
+                "1 : 이미 로그아웃 처리된 토큰입니다.\n\n"
     )
     @PostMapping(
         path = ["/logout"],
