@@ -1042,4 +1042,47 @@ class C7Service1TkV1DatabaseTestController(
             )
         }
     }
+
+    ////
+    @Operation(
+        summary = "N25 : Native Query 반환값 테스트",
+        description = "Native Query Select 문에서 IF, CASE 등의 문구에서 반환되는 값들을 받는 예시\n\n" +
+                "(api-result-code)\n\n"
+    )
+    @GetMapping(
+        path = ["/native-query-return"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api25(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "inputVal", description = "Native Query 비교문에 사용되는 파라미터", example = "true")
+        @RequestParam("inputVal")
+        inputVal: Boolean
+    ): Api25OutputVo? {
+        return service.api25(
+            httpServletResponse,
+            inputVal
+        )
+    }
+
+    data class Api25OutputVo(
+        @Schema(description = "Select 문에서 직접적으로 true 를 반환한 예시", required = true, example = "true")
+        @JsonProperty("normalBoolValue")
+        val normalBoolValue: Boolean,
+        @Schema(description = "Select 문에서 (1=1) 과 같이 비교한 결과를 반환한 예시", required = true, example = "true")
+        @JsonProperty("funcBoolValue")
+        val funcBoolValue: Boolean,
+        @Schema(description = "Select 문에서 if 문의 결과를 반환한 예시", required = true, example = "true")
+        @JsonProperty("ifBoolValue")
+        val ifBoolValue: Boolean,
+        @Schema(description = "Select 문에서 case 문의 결과를 반환한 예시", required = true, example = "true")
+        @JsonProperty("caseBoolValue")
+        val caseBoolValue: Boolean,
+        @Schema(description = "Select 문에서 테이블의 Boolean 컬럼의 결과를 반환한 예시", required = true, example = "true")
+        @JsonProperty("tableColumnBoolValue")
+        val tableColumnBoolValue: Boolean
+    )
 }

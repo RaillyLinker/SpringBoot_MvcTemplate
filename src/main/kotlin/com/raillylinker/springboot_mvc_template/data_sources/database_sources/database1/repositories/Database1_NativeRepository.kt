@@ -315,6 +315,52 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
     }
 
 
+    ////
+    @Query(
+        nativeQuery = true,
+        value = """
+            SELECT 
+            true AS normalBoolValue, 
+            (TRUE = :inputVal) AS funcBoolValue, 
+            IF
+            (
+                (TRUE = :inputVal),
+                TRUE,
+                FALSE
+            ) AS ifBoolValue, 
+            (
+                CASE 
+                    WHEN 
+                        (TRUE = :inputVal)
+                    THEN 
+                        TRUE 
+                    ELSE 
+                        FALSE
+                END
+            ) AS caseBoolValue,
+            (
+                SELECT 
+                bool_value 
+                FROM 
+                template.just_boolean_test 
+                WHERE 
+                uid = 1
+            ) AS tableColumnBoolValue
+            """
+    )
+    fun forC7N25(
+        @Param(value = "inputVal") inputVal: Boolean
+    ): ForC7N25OutputVo
+
+    interface ForC7N25OutputVo {
+        var normalBoolValue: Long
+        var funcBoolValue: Long
+        var ifBoolValue: Long
+        var caseBoolValue: Long
+        var tableColumnBoolValue: Boolean
+    }
+
+
     //------------------------------------------------------------------------------------------------------------------
     // <C9>
     @Query(
@@ -339,13 +385,13 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             distanceKiloMeter
             """
     )
-    fun forApiC9N5(
+    fun forC9N5(
         @Param(value = "latitude") latitude: Double,
         @Param(value = "longitude") longitude: Double,
         @Param(value = "radiusKiloMeter") radiusKiloMeter: Double
-    ): List<ForApiC9N5OutputVo>
+    ): List<ForC9N5OutputVo>
 
-    interface ForApiC9N5OutputVo {
+    interface ForC9N5OutputVo {
         var uid: Long
         var latitude: Double
         var longitude: Double
@@ -377,14 +423,14 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             )
             """
     )
-    fun forApiC9N6(
+    fun forC9N6(
         @Param(value = "northLatitude") northLatitude: Double,
         @Param(value = "eastLongitude") eastLongitude: Double,
         @Param(value = "southLatitude") southLatitude: Double,
         @Param(value = "westLongitude") westLongitude: Double
-    ): List<ForApiC9N6OutputVo>
+    ): List<ForC9N6OutputVo>
 
-    interface ForApiC9N6OutputVo {
+    interface ForC9N6OutputVo {
         var uid: Long
         var latitude: Double
         var longitude: Double

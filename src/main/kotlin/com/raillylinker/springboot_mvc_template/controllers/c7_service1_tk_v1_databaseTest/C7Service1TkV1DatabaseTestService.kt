@@ -4,10 +4,7 @@ import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
 import com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_databaseTest.C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo.ChildEntityVo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_FkTestManyToOneChild
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_FkTestParent
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_LogicalDeleteUniqueData
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_TestData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.*
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -29,7 +26,8 @@ class C7Service1TkV1DatabaseTestService(
     private val database1TemplateTestRepository: Database1_Template_TestsRepository,
     private val database1TemplateFkTestParentRepository: Database1_Template_FkTestParentRepository,
     private val database1TemplateFkTestOneToManyChildRepository: Database1_Template_FkTestManyToOneChildRepository,
-    private val database1Template_LogicalDeleteUniqueDataRepository: Database1_Template_LogicalDeleteUniqueDataRepository
+    private val database1TemplateLogicalDeleteUniqueDataRepository: Database1_Template_LogicalDeleteUniqueDataRepository,
+    private val database1TemplateJustBooleanTestRepository: Database1_Template_JustBooleanTestRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -463,7 +461,7 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C7Service1TkV1DatabaseTestController.Api18InputVo
     ): C7Service1TkV1DatabaseTestController.Api18OutputVo? {
-        val result = database1Template_LogicalDeleteUniqueDataRepository.save(
+        val result = database1TemplateLogicalDeleteUniqueDataRepository.save(
             Database1_Template_LogicalDeleteUniqueData(
                 inputVo.uniqueValue
             )
@@ -483,7 +481,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api19(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api19OutputVo? {
         val resultEntityList =
-            database1Template_LogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("-")
+            database1TemplateLogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("-")
         val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo>()
         for (resultEntity in resultEntityList) {
             entityVoList.add(
@@ -498,7 +496,7 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         val logicalDeleteEntityVoList =
-            database1Template_LogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("-")
+            database1TemplateLogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("-")
         val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo>()
         for (resultEntity in logicalDeleteEntityVoList) {
             logicalDeleteVoList.add(
@@ -528,7 +526,7 @@ class C7Service1TkV1DatabaseTestService(
         inputVo: C7Service1TkV1DatabaseTestController.Api20InputVo
     ): C7Service1TkV1DatabaseTestController.Api20OutputVo? {
         val oldEntity =
-            database1Template_LogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(testTableUid, "-")
+            database1TemplateLogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(testTableUid, "-")
 
         if (oldEntity == null || oldEntity.rowDeleteDateStr != "-") {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -537,7 +535,7 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         val uniqueValueEntity =
-            database1Template_LogicalDeleteUniqueDataRepository.findByUniqueValueAndRowDeleteDateStr(
+            database1TemplateLogicalDeleteUniqueDataRepository.findByUniqueValueAndRowDeleteDateStr(
                 inputVo.uniqueValue,
                 "-"
             )
@@ -551,7 +549,7 @@ class C7Service1TkV1DatabaseTestService(
 
         oldEntity.uniqueValue = inputVo.uniqueValue
 
-        val result = database1Template_LogicalDeleteUniqueDataRepository.save(oldEntity)
+        val result = database1TemplateLogicalDeleteUniqueDataRepository.save(oldEntity)
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C7Service1TkV1DatabaseTestController.Api20OutputVo(
@@ -566,7 +564,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api21(httpServletResponse: HttpServletResponse, index: Long) {
-        val entity = database1Template_LogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(index, "-")
+        val entity = database1TemplateLogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(index, "-")
 
         if (entity == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -576,7 +574,7 @@ class C7Service1TkV1DatabaseTestService(
 
         entity.rowDeleteDateStr =
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
-        database1Template_LogicalDeleteUniqueDataRepository.save(entity)
+        database1TemplateLogicalDeleteUniqueDataRepository.save(entity)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
@@ -680,6 +678,37 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse.status = HttpStatus.OK.value()
         return C7Service1TkV1DatabaseTestController.Api24OutputVo(
             entityVoList
+        )
+    }
+
+
+    ////
+    fun api25(
+        httpServletResponse: HttpServletResponse,
+        inputVal: Boolean
+    ): C7Service1TkV1DatabaseTestController.Api25OutputVo? {
+        // boolean 값을 갖고오기 위한 테스트 테이블이 존재하지 않는다면 하나 생성하기
+        val justBooleanEntity = database1TemplateJustBooleanTestRepository.findAll()
+        if (justBooleanEntity.isEmpty()) {
+            database1TemplateJustBooleanTestRepository.save(
+                Database1_Template_JustBooleanTest(
+                    true
+                )
+            )
+        }
+
+        val resultEntity = database1NativeRepository.forC7N25(inputVal)
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api25OutputVo(
+            // 쿼리문 내에서 True, False 로 반환하는 값은 Long 타입으로 받습니다.
+            resultEntity.normalBoolValue == 1L,
+            resultEntity.funcBoolValue == 1L,
+            resultEntity.ifBoolValue == 1L,
+            resultEntity.caseBoolValue == 1L,
+
+            // 테이블 쿼리의 Boolean 값은 그대로 Boolean 타입으로 받습니다.
+            resultEntity.tableColumnBoolValue
         )
     }
 }
