@@ -23,6 +23,7 @@ class C8Service1TkV1RedisTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
+    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api1(
         httpServletResponse: HttpServletResponse,
         inputVo: C8Service1TkV1RedisTestController.Api1InputVo
@@ -90,6 +91,7 @@ class C8Service1TkV1RedisTestService(
 
 
     ////
+    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api4(httpServletResponse: HttpServletResponse, key: String) {
         redis1TestRepository.deleteKeyValue(key)
 
@@ -98,6 +100,7 @@ class C8Service1TkV1RedisTestService(
 
 
     ////
+    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api5(httpServletResponse: HttpServletResponse) {
         redis1TestRepository.deleteAllKeyValues()
 
