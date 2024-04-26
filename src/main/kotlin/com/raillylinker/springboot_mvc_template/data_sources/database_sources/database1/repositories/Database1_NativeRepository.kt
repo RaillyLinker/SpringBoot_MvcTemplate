@@ -320,6 +320,40 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         nativeQuery = true,
         value = """
             SELECT 
+            fk_test_many_to_one_child.uid AS childUid, 
+            fk_test_many_to_one_child.child_name AS childName, 
+            fk_test_many_to_one_child.row_create_date AS childCreateDate, 
+            fk_test_many_to_one_child.row_update_date AS childUpdateDate, 
+            fk_test_parent.uid AS parentUid, 
+            fk_test_parent.parent_name AS parentName 
+            FROM 
+            template.fk_test_many_to_one_child AS fk_test_many_to_one_child 
+            INNER JOIN 
+            template.fk_test_parent AS fk_test_parent 
+            ON 
+            fk_test_parent.row_delete_date_str = "-" AND 
+            fk_test_parent.uid = fk_test_many_to_one_child.fk_test_parent_uid 
+            WHERE 
+            fk_test_many_to_one_child.row_delete_date_str = "-"
+            """
+    )
+    fun forC7N24Dot1(): List<ForC7N24Dot1OutputVo>
+
+    interface ForC7N24Dot1OutputVo {
+        var childUid: Long
+        var childName: String
+        var childCreateDate: LocalDateTime
+        var childUpdateDate: LocalDateTime
+        var parentUid: Long
+        var parentName: String
+    }
+
+
+    ////
+    @Query(
+        nativeQuery = true,
+        value = """
+            SELECT 
             true AS normalBoolValue, 
             (TRUE = :inputVal) AS funcBoolValue, 
             IF

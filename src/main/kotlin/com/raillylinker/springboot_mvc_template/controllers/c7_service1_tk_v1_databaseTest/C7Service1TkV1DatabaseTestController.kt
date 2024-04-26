@@ -1003,11 +1003,11 @@ class C7Service1TkV1DatabaseTestController(
     }
 
     data class Api24OutputVo(
-        @Schema(description = "아이템 리스트", required = true)
-        @JsonProperty("testEntityVoList")
+        @Schema(description = "부모 아이템 리스트", required = true)
+        @JsonProperty("parentEntityVoList")
         val parentEntityVoList: List<ParentEntityVo>
     ) {
-        @Schema(description = "아이템")
+        @Schema(description = "부모 아이템")
         data class ParentEntityVo(
             @Schema(description = "글 고유번호", required = true, example = "1234")
             @JsonProperty("uid")
@@ -1025,7 +1025,7 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("childEntityList")
             val childEntityList: List<ChildEntityVo>
         ) {
-            @Schema(description = "아이템")
+            @Schema(description = "자식 아이템")
             data class ChildEntityVo(
                 @Schema(description = "글 고유번호", required = true, example = "1234")
                 @JsonProperty("uid")
@@ -1042,6 +1042,55 @@ class C7Service1TkV1DatabaseTestController(
             )
         }
     }
+
+
+    ////
+    @Operation(
+        summary = "N24.1 : 외래키 관련 테이블 Rows 조회 테스트(Native Join)",
+        description = "외래키 관련 테이블의 모든 Rows 를 Native Query 로 Join 하여 반환합니다.\n\n" +
+                "(api-result-code)\n\n"
+    )
+    @GetMapping(
+        path = ["/fk-table-native-join"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api24Dot1(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ): Api24Dot1OutputVo? {
+        return service.api24Dot1(httpServletResponse)
+    }
+
+    data class Api24Dot1OutputVo(
+        @Schema(description = "자식 아이템 리스트", required = true)
+        @JsonProperty("childEntityVoList")
+        val childEntityVoList: List<ChildEntityVo>
+    ) {
+        @Schema(description = "자식 아이템")
+        data class ChildEntityVo(
+            @Schema(description = "글 고유번호", required = true, example = "1234")
+            @JsonProperty("uid")
+            val uid: Long,
+            @Schema(description = "자식 테이블 이름", required = true, example = "1")
+            @JsonProperty("childName")
+            val childName: String,
+            @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("createDate")
+            val createDate: String,
+            @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("updateDate")
+            val updateDate: String,
+            @Schema(description = "부모 테이블 고유번호", required = true)
+            @JsonProperty("parentUid")
+            val parentUid: Long,
+            @Schema(description = "부모 테이블 이름", required = true)
+            @JsonProperty("parentName")
+            val parentName: String
+        )
+    }
+
 
     ////
     @Operation(

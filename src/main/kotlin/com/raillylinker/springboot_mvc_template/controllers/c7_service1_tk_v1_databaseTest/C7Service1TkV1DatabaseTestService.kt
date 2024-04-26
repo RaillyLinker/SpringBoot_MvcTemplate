@@ -683,6 +683,31 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
+    fun api24Dot1(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api24Dot1OutputVo? {
+        val resultEntityList = database1NativeRepository.forC7N24Dot1()
+
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api24Dot1OutputVo.ChildEntityVo>()
+        for (resultEntity in resultEntityList) {
+            entityVoList.add(
+                C7Service1TkV1DatabaseTestController.Api24Dot1OutputVo.ChildEntityVo(
+                    resultEntity.childUid,
+                    resultEntity.childName,
+                    resultEntity.childCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.childUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.parentUid,
+                    resultEntity.parentName
+                )
+            )
+        }
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api24Dot1OutputVo(
+            entityVoList
+        )
+    }
+
+
+    ////
     fun api25(
         httpServletResponse: HttpServletResponse,
         inputVal: Boolean
