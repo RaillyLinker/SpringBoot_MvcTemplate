@@ -6,6 +6,8 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.json.BasicJsonParser
 import java.nio.charset.StandardCharsets
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // [JWT 토큰 유틸]
@@ -185,6 +187,7 @@ object JwtTokenUtilObject {
         claimsMap["iss"] = issuer
         claimsMap["iat"] = Date(System.currentTimeMillis())
         claimsMap["exp"] = Date(System.currentTimeMillis() + expireTimeMs)
+        claimsMap["cd"] = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSSSSS"))
 
         if (memberRoleList != null) {
             // member role list
