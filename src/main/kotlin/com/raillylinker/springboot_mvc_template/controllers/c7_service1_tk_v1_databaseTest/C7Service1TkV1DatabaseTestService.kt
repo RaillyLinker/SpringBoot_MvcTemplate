@@ -382,15 +382,15 @@ class C7Service1TkV1DatabaseTestService(
     fun api14(
         httpServletResponse: HttpServletResponse,
         lastItemUid: Long?,
-        pageElementsCount: Int,
-        num: Int
+        pageElementsCount: Int
     ): C7Service1TkV1DatabaseTestController.Api14OutputVo? {
+        // 중복 없는 페이징 쿼리를 사용합니다.
         val voList = database1NativeRepository.forC7N14(
-            lastItemUid ?: -1,
-            pageElementsCount,
-            num
+            lastItemUid,
+            pageElementsCount
         )
 
+        // 전체 개수 카운팅은 따로 해주어야 합니다.
         val count = database1TemplateTestRepository.countByRowDeleteDateStr("-")
 
         val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api14OutputVo.TestEntityVo>()
@@ -401,8 +401,7 @@ class C7Service1TkV1DatabaseTestService(
                     vo.content,
                     vo.randomNum,
                     vo.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    vo.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    vo.distance
+                    vo.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
                 )
             )
         }
@@ -803,9 +802,10 @@ class C7Service1TkV1DatabaseTestService(
             )
         }
 
-        /* 결론 : 위 세 방식은 모두 SQL Injection 공격에서 안전합니다.
-         *     셋 모두 쿼리문에 직접 값을 입력하는 것이 아니며, 매개변수로 먼저 받아서 JPA 를 경유하여 입력되므로,
-         *     라이브러리가 자동으로 인젝션 공격을 막아주게 됩니다.
+        /*
+            결론 : 위 세 방식은 모두 SQL Injection 공격에서 안전합니다.
+                셋 모두 쿼리문에 직접 값을 입력하는 것이 아니며, 매개변수로 먼저 받아서 JPA 를 경유하여 입력되므로,
+                라이브러리가 자동으로 인젝션 공격을 막아주게 됩니다.
          */
 
         httpServletResponse.status = HttpStatus.OK.value()

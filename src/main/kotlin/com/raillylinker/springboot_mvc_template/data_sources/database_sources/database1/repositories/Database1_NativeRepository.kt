@@ -13,24 +13,33 @@ import java.time.LocalDateTime
 // 주의 : NativeRepository 의 반환값으로 기본 Entity 객체는 매핑되지 않으므로 OutputVo Interface 를 작성하여 사용할것.
 // sql 문은 한줄로 표기 할 것을 권장. (간편하게 복사해서 사용하며 디버그하기 위하여)
 // Output Interface 변수에 is 로 시작되는 변수는 매핑이 안되므로 사용하지 말것.
+
+/* SQL Select 의 실행 순서
+    1. FROM 절: 데이터베이스에서 데이터를 추출할 테이블이나 뷰를 지정합니다.
+    2. WHERE 절: FROM 절에서 지정된 테이블에서 필터링을 수행합니다. 조건에 맞지 않는 행을 제외합니다.
+    3. GROUP BY 절: 그룹별로 데이터를 집계하기 위해 데이터를 그룹화합니다. GROUP BY 절에 지정된 열을 기준으로 행을 그룹화하고, 이후 집계 함수를 사용하여 각 그룹에 대한 집계를 계산합니다.
+    4. HAVING 절: GROUP BY 절에서 그룹화된 결과에 대한 조건을 지정합니다. HAVING 절은 WHERE 절과 유사하지만, 그룹별로 조건을 적용하여 그룹을 필터링합니다.
+    5. SELECT 절: 쿼리 결과 집합에 포함할 열을 선택합니다. GROUP BY 절과 함께 사용할 때는 집계 함수를 포함할 수 있습니다.
+    6. ORDER BY 절: 결과 집합을 정렬합니다. ORDER BY 절은 SELECT 문이 실행된 후에 적용됩니다.
+ */
 @Repository
 interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData, Long> {
     // <C7>
     @Query(
         nativeQuery = true,
         value = """
-            select 
-            test_data.uid as uid, 
-            test_data.row_create_date as rowCreateDate, 
-            test_data.row_update_date as rowUpdateDate, 
-            test_data.content as content, 
-            test_data.random_num as randomNum, 
-            ABS(test_data.random_num-:num) as distance 
-            from 
-            template.test_data 
-            where 
-            row_delete_date_str = '-' 
-            order by 
+            SELECT 
+            test_data.uid AS uid, 
+            test_data.row_create_date AS rowCreateDate, 
+            test_data.row_update_date AS rowUpdateDate, 
+            test_data.content AS content, 
+            test_data.random_num AS randomNum, 
+            ABS(test_data.random_num-:num) AS distance 
+            FROM 
+            template.test_data AS test_data 
+            WHERE 
+            test_data.row_delete_date_str = '-' 
+            ORDER BY 
             distance
             """
     )
@@ -52,18 +61,18 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
     @Query(
         nativeQuery = true,
         value = """
-            select 
-            test_data.uid as uid, 
-            test_data.content as content, 
-            test_data.random_num as randomNum, 
-            test_data.row_create_date as rowCreateDate, 
-            test_data.row_update_date as rowUpdateDate, 
-            ABS(TIMESTAMPDIFF(SECOND, test_data.row_create_date, :date)) as timeDiffSec 
-            from 
-            template.test_data 
-            where 
-            row_delete_date_str = '-' 
-            order by 
+            SELECT 
+            test_data.uid AS uid, 
+            test_data.content AS content, 
+            test_data.random_num AS randomNum, 
+            test_data.row_create_date AS rowCreateDate, 
+            test_data.row_update_date AS rowUpdateDate, 
+            ABS(TIMESTAMPDIFF(SECOND, test_data.row_create_date, :date)) AS timeDiffSec 
+            FROM 
+            template.test_data AS test_data 
+            WHERE 
+            test_data.row_delete_date_str = '-' 
+            ORDER BY 
             timeDiffSec
             """
     )
@@ -85,26 +94,27 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
     @Query(
         nativeQuery = true,
         value = """
-            select 
-            test_data.uid as uid, 
-            test_data.row_create_date as rowCreateDate, 
-            test_data.row_update_date as rowUpdateDate, 
-            test_data.content as content, 
-            test_data.random_num as randomNum, 
-            ABS(test_data.random_num-:num) as distance 
-            from 
-            template.test_data 
-            where 
-            row_delete_date_str = '-' 
-            order by distance
+            SELECT 
+            test_data.uid AS uid, 
+            test_data.row_create_date AS rowCreateDate, 
+            test_data.row_update_date AS rowUpdateDate, 
+            test_data.content AS content, 
+            test_data.random_num AS randomNum, 
+            ABS(test_data.random_num-:num) AS distance 
+            FROM 
+            template.test_data AS test_data 
+            WHERE 
+            test_data.row_delete_date_str = '-' 
+            ORDER BY 
+            distance
             """,
         countQuery = """
-            select 
-            count(*) 
-            from 
-            template.test_data 
-            where 
-            row_delete_date_str = '-'
+            SELECT 
+            COUNT(*) 
+            FROM 
+            template.test_data AS test_data 
+            WHERE 
+            test_data.row_delete_date_str = '-'
             """
     )
     fun forC7N8(
@@ -146,24 +156,28 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
     @Query(
         nativeQuery = true,
         value = """
-            select 
-            test_data.uid as uid, 
-            test_data.row_create_date as rowCreateDate, 
-            test_data.row_update_date as rowUpdateDate, 
-            test_data.content as content, 
-            test_data.random_num as randomNum 
-            from template.test_data 
-            where 
-            replace(content, ' ', '') like replace(concat('%',:searchKeyword,'%'), ' ', '') and 
-            row_delete_date_str = '-'
+            SELECT 
+            test_data.uid AS uid, 
+            test_data.row_create_date AS rowCreateDate, 
+            test_data.row_update_date AS rowUpdateDate, 
+            test_data.content AS content, 
+            test_data.random_num AS randomNum 
+            FROM 
+            template.test_data AS test_data 
+            WHERE 
+            REPLACE(test_data.content, ' ', '') LIKE REPLACE(CONCAT('%',:searchKeyword,'%'), ' ', '') AND 
+            test_data.row_delete_date_str = '-' 
+            ORDER BY 
+            test_data.row_create_date DESC
             """,
         countQuery = """
-            select 
-            count(*) 
-            from template.test_data 
-            where 
-            replace(content, ' ', '') like replace(concat('%',:searchKeyword,'%'), ' ', '') and 
-            row_delete_date_str = '-'
+            SELECT 
+            COUNT(*) 
+            FROM 
+            template.test_data AS test_data 
+            WHERE 
+            REPLACE(test_data.content, ' ', '') LIKE REPLACE(CONCAT('%',:searchKeyword,'%'), ' ', '') AND 
+            test_data.row_delete_date_str = '-'
             """
     )
     fun forC7N11(
@@ -181,83 +195,94 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
 
 
     ////
-    // 1. 먼저 가져올 정보를 인터페이스에 맞게 가져옵니다.
-    //     주의할 점은, where 문을 절대 사용하지 않으며, order by 로 순서만 정렬해야 합니다.
-    //     이것이 orderedCoreTable 입니다.
-    // 2. orderedCoreTable 에 rowNum 을 붙여줍니다.
-    //     이것이 rowNumTable 입니다.
-    // 3. rowNumTable 에서 where 문을 사용하여, 동일한 쿼리 결과에서 원하는 uid 의 rowNum 을 찾고, 이보다 큰 rowNum 을 추려냅니다.
-    // 4. 3번을 했다면, 이제부터 where 문과 limit 을 사용하여 결과를 마음껏 필터링 하면 됩니다.
+    /*
+        [중복 없는 페이징 구현 쿼리 설명]
+        - 아래 방법은, 논리적 삭제를 사용하는 테이블에만 사용이 가능하며,
+            행 자체가 삭제되어 행 번호가 변경될 가능성이 존재하는 테이블에는 사용할 수 없습니다.
+
+        (From 외곽 부분)
+        1. 먼저 가져올 정보를 인터페이스에 맞게 가져옵니다.
+            주의할 점은, where 문을 절대 사용하지 않으며, order by 로 순서만 정렬해야 합니다.
+            그리고, 여기서 순서를 정하므로, 바깥 부분에서는 ORDER BY 를 사용하면 안됩니다.
+            이것이 orderedCoreTable 입니다. (순서 정렬)
+
+        2. orderedCoreTable 에 rowNum 을 붙여줍니다.
+            이것이 rowNumTable 입니다. (행 번호 붙이기)
+
+        - 여기까지 하여, 정렬 기준에 따라 행이 붙여진 rowNumTable 가 생성됩니다.
+            이곳에 여러 필터링을 하면 되는데,
+            먼저 중복 방지 기준이 되는 아이템(클라이언트에서 받은 마지막 아이템)의 고유값을 사용하여 그 행번호를 찾아야 합니다.
+
+        3. rowNumTable 에서 where 문을 사용하여, 원하는 uid 의 rowNum 을 찾고,
+            이보다 큰 rowNum 을 추려냅니다. (앵커의 행 번호 검색 후, 그것을 포함하여 앞의 결과를 제거)
+
+        4. 3번을 했다면, 이제부터 where 문과 limit 을 사용하여 결과를 마음껏 필터링 하면 됩니다. (본격적인 필터링)
+     */
     @Query(
         nativeQuery = true,
         value = """
-            select
-            *
-            from
+            SELECT 
+            * 
+            FROM 
             (
-                select
-                *,
-                @rownum \:= @rownum + 1 AS rowNum
-                from
+                SELECT 
+                *, 
+                @rownum \:= @rownum + 1 AS rowNum 
+                FROM 
                 (
                     SELECT 
-                    uid as uid, 
-                    row_create_date as rowCreateDate, 
-                    row_update_date as rowUpdateDate, 
-                    content as content, random_num as randomNum,
-                    ABS(test_data.random_num-:num) as distance,
-                    row_delete_date_str as rowDeleteDateStr
-                    from
-                    template.test_data
-                    order by
-                    distance asc
-                ) as orderedCoreTable,
-                (SELECT @rownum \:= 0) as rowNumStart
-            ) as rowNumTable
-            where
-            rowNum > 
+                    test_data.uid AS uid, 
+                    test_data.row_create_date AS rowCreateDate, 
+                    test_data.row_update_date AS rowUpdateDate, 
+                    test_data.content as content, 
+                    test_data.random_num AS randomNum, 
+                    test_data.row_delete_date_str AS rowDeleteDateStr 
+                    FROM 
+                    template.test_data AS test_data 
+                    ORDER BY 
+                    test_data.row_create_date DESC
+                ) AS orderedCoreTable,
+                (SELECT @rownum \:= 0) AS rowNumStart
+            ) AS rowNumTable 
+            WHERE 
             (
-                select if
+                :lastItemUid IS NULL OR 
+                rowNumTable.rowNum > 
                 (
-                    :lastItemUid > 0,
+                    SELECT 
+                    rowNumCopy 
+                    FROM 
                     (
+                        SELECT 
+                        *, 
+                        @rownumCopy \:= @rownumCopy + 1 AS rowNumCopy 
+                        FROM 
                         (
-                            select rowNumCopy
-                            from
-                            (
-                                select
-                                *,
-                                @rownumCopy \:= @rownumCopy + 1 AS rowNumCopy 
-                                from
-                                (
-                                    SELECT 
-                                    uid as uid, 
-                                    row_create_date as rowCreateDate, 
-                                    row_update_date as rowUpdateDate, 
-                                    content as content, random_num as randomNum,
-                                    ABS(test_data.random_num-:num) as distance,
-                                    row_delete_date_str as rowDeleteDateStr
-                                    from
-                                    template.test_data
-                                    order by
-                                    distance asc
-                                ) as orderedCoreTableCopy,
-                                (SELECT @rownumCopy \:= 0) as rowNumStartCopy
-                            ) as rowNumTableCopy
-                            where uid = :lastItemUid
-                        )
-                    ),
-                    0
+                            SELECT 
+                            test_data.uid AS uid, 
+                            test_data.row_create_date AS rowCreateDate, 
+                            test_data.row_update_date AS rowUpdateDate, 
+                            test_data.content as content, 
+                            test_data.random_num AS randomNum, 
+                            test_data.row_delete_date_str AS rowDeleteDateStr 
+                            FROM 
+                            template.test_data AS test_data 
+                            ORDER BY 
+                            test_data.row_create_date DESC
+                        ) AS orderedCoreTableCopy, 
+                        (SELECT @rownumCopy \:= 0) AS rowNumStartCopy
+                    ) AS rowNumTableCopy 
+                    WHERE 
+                    uid = :lastItemUid
                 )
-            ) and
-            rowDeleteDateStr = '-' 
-            limit :pageElementsCount
+            ) AND 
+            rowNumTable.rowDeleteDateStr = '-' 
+            LIMIT :pageElementsCount
             """
     )
     fun forC7N14(
-        @Param(value = "lastItemUid") lastItemUid: Long,
-        @Param(value = "pageElementsCount") pageElementsCount: Int,
-        @Param(value = "num") num: Int
+        @Param(value = "lastItemUid") lastItemUid: Long?,
+        @Param(value = "pageElementsCount") pageElementsCount: Int
     ): List<ForC7N14OutputVo>
 
     interface ForC7N14OutputVo {
@@ -266,7 +291,6 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var rowUpdateDate: LocalDateTime
         var content: String
         var randomNum: Int
-        var distance: Int
     }
 
 
@@ -274,12 +298,12 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
     @Query(
         nativeQuery = true,
         value = """
-            select 
-            count(*) 
-            from 
-            template.test_data 
-            where 
-            row_delete_date_str = '-'
+            SELECT 
+            COUNT(*) 
+            FROM 
+            template.test_data AS test_data 
+            WHERE 
+            test_data.row_delete_date_str = '-'
             """
     )
     fun forC7N16(): Long
@@ -289,17 +313,17 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
     @Query(
         nativeQuery = true,
         value = """
-            select 
-            test_data.uid as uid, 
-            test_data.content as content, 
-            test_data.random_num as randomNum, 
-            test_data.row_create_date as rowCreateDate, 
-            test_data.row_update_date as rowUpdateDate 
-            from 
-            template.test_data 
-            where 
-            row_delete_date_str = '-' and 
-            uid = :testTableUid
+            SELECT 
+            test_data.uid AS uid, 
+            test_data.content AS content, 
+            test_data.random_num AS randomNum, 
+            test_data.row_create_date AS rowCreateDate, 
+            test_data.row_update_date AS rowUpdateDate 
+            FROM 
+            template.test_data AS test_data 
+            WHERE 
+            test_data.row_delete_date_str = '-' AND 
+            test_data.uid = :testTableUid
             """
     )
     fun forC7N17(
@@ -358,20 +382,20 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             (TRUE = :inputVal) AS funcBoolValue, 
             IF
             (
-                (TRUE = :inputVal),
-                TRUE,
+                (TRUE = :inputVal), 
+                TRUE, 
                 FALSE
             ) AS ifBoolValue, 
             (
                 CASE 
                     WHEN 
-                        (TRUE = :inputVal)
+                        (TRUE = :inputVal) 
                     THEN 
                         TRUE 
                     ELSE 
-                        FALSE
+                        FALSE 
                 END
-            ) AS caseBoolValue,
+            ) AS caseBoolValue, 
             (
                 SELECT 
                 bool_value 
@@ -400,17 +424,17 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         nativeQuery = true,
         value = """
             SELECT 
-            test_data.uid as uid, 
-            test_data.row_create_date as rowCreateDate, 
-            test_data.row_update_date as rowUpdateDate, 
-            test_data.content as content, 
-            test_data.random_num as randomNum 
+            test_data.uid AS uid, 
+            test_data.row_create_date AS rowCreateDate, 
+            test_data.row_update_date AS rowUpdateDate, 
+            test_data.content AS content, 
+            test_data.random_num AS randomNum 
             FROM 
-            template.test_data 
-            where 
-            content = :content 
-            order by 
-            row_create_date DESC
+            template.test_data AS test_data 
+            WHERE 
+            test_data.content = :content 
+            ORDER BY 
+            test_data.row_create_date DESC
             """
     )
     fun forC7N26(
@@ -442,11 +466,12 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
                     sin(radians(latitude)) * 
                     sin(radians(:latitude))
                 )
-            ) as distanceKiloMeter 
-            FROM template.test_map 
+            ) AS distanceKiloMeter 
+            FROM 
+            template.test_map 
             HAVING 
             distanceKiloMeter <= :radiusKiloMeter 
-            order by 
+            ORDER BY 
             distanceKiloMeter
             """
     )
@@ -466,7 +491,8 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
     @Query(
         nativeQuery = true,
         value = """
-            SELECT * 
+            SELECT 
+            * 
             FROM 
             template.test_map 
             WHERE 

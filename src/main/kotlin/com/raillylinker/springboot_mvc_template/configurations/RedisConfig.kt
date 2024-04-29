@@ -10,10 +10,13 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
 // (Redis 설정)
-// !!!redis 리소스를 추가하려면 application.yml 의 datasource-redis 에 접근 url host, port 정보를 입력 후,
-// 아래 부분 코드처럼 한 블록을 복사 붙여넣기 한 후 이름만 바꿔주면 됩니다.!!!
-// 사용시에는, @Qualifier("redis1RedisTemplate") private val redis1RedisTemplate: RedisTemplate<String, Any>
-// 이렇게 종속성으로 객체를 받아오고 사용하는데, 사용법은 예시 코드를 참고하세요.
+/*
+    !!!redis 리소스를 추가하려면 application.yml 의 datasource-redis 에 접근 url host, port 정보를 입력 후,
+    아래 부분 코드처럼 한 블록을 복사 붙여넣기 한 후 이름만 바꿔주면 됩니다.!!!
+
+    사용시에는, @Qualifier("redis1RedisTemplate") private val redis1RedisTemplate: RedisTemplate<String, Any>
+    이렇게 종속성으로 객체를 받아오고 사용하는데, 사용법은 예시 코드를 참고하세요.
+ */
 @Configuration
 @EnableCaching
 class RedisConfig {

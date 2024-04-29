@@ -588,12 +588,9 @@ class C7Service1TkV1DatabaseTestController(
         lastItemUid: Long?,
         @Parameter(name = "pageElementsCount", description = "페이지 아이템 개수", example = "10")
         @RequestParam("pageElementsCount")
-        pageElementsCount: Int,
-        @Parameter(name = "num", description = "근사값의 기준", example = "1")
-        @RequestParam("num")
-        num: Int
+        pageElementsCount: Int
     ): Api14OutputVo? {
-        return service.api14(httpServletResponse, lastItemUid, pageElementsCount, num)
+        return service.api14(httpServletResponse, lastItemUid, pageElementsCount)
     }
 
     data class Api14OutputVo(
@@ -620,10 +617,7 @@ class C7Service1TkV1DatabaseTestController(
             val createDate: String,
             @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
             @JsonProperty("updateDate")
-            val updateDate: String,
-            @Schema(description = "기준과의 절대거리", required = true, example = "34")
-            @JsonProperty("distance")
-            val distance: Int
+            val updateDate: String
         )
     }
 

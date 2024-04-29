@@ -16,10 +16,12 @@ import javax.sql.DataSource
 // !!! 로 감싼 메세지가 있는 주석 부분을 상황에 맞게 수정해주세요.
 
 // [DB 설정]
-// 트랜젝션 처리를 할 때는
-// @CustomTransactional([Database1Config.TRANSACTION_NAME])
-// fun api1(...
-// 와 같이 DB 를 사용하는 함수 위에 어노테이션을 붙여주세요.
+/*
+    트랜젝션 처리를 할 때는
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api1(...
+    와 같이 DB 를 사용하는 함수 위에 어노테이션을 붙여주세요.
+*/
 @Configuration
 @EnableJpaRepositories(
     // database repository path
