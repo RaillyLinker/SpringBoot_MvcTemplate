@@ -391,7 +391,7 @@ class C7Service1TkV1DatabaseTestService(
         )
 
         // 전체 개수 카운팅은 따로 해주어야 합니다.
-        val count = database1TemplateTestRepository.countByRowDeleteDateStr("-")
+        val count = database1NativeRepository.forC7N14I1()
 
         val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api14OutputVo.TestEntityVo>()
         for (vo in voList) {

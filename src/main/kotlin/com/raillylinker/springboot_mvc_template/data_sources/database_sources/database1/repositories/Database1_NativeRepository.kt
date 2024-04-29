@@ -295,6 +295,27 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
 
 
     ////
+    /*
+        forC7N14 에 대해서 전체 카운팅 쿼리를 따로 만들어야 합니다.
+        forC7N14 에서 From 문에서 사용하는 서브 쿼리를 제거하고,
+        lastItemUid 비교 부분을 제거하며,
+        LIMIT 을 제거하면 됩니다.
+     */
+    @Query(
+        nativeQuery = true,
+        value = """
+            SELECT 
+            COUNT(*) 
+            FROM 
+            template.test_data AS test_data 
+            WHERE 
+            test_data.row_delete_date_str = '-'
+            """
+    )
+    fun forC7N14I1(): Long
+
+
+    ////
     @Query(
         nativeQuery = true,
         value = """
