@@ -187,7 +187,7 @@ object JwtTokenUtilObject {
         claimsMap["iss"] = issuer
         claimsMap["iat"] = Date(System.currentTimeMillis())
         claimsMap["exp"] = Date(System.currentTimeMillis() + expireTimeMs)
-        claimsMap["cd"] = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSSSSS"))
+        claimsMap["cdt"] = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSSSSS"))
 
         if (memberRoleList != null) {
             // member role list
