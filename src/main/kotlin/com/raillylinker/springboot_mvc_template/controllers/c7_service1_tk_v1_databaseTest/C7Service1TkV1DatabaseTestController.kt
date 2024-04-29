@@ -1134,4 +1134,63 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("tableColumnBoolValue")
         val tableColumnBoolValue: Boolean
     )
+
+
+    ////
+    @Operation(
+        summary = "N26 : SQL Injection 테스트",
+        description = "각 상황에서 SQL Injection 공격이 유효한지 확인하기 위한 테스트\n\n" +
+                "SELECT 문에서, WHERE 에, content = :searchKeyword 를 하여,\n\n" +
+                " 인젝션이 일어나는 키워드를 입력시 인젝션이 먹히는지를 확인할 것입니다.\n\n" +
+                "(api-result-code)\n\n"
+    )
+    @GetMapping(
+        path = ["/sql-injection-test"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api26(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "searchKeyword", description = "Select 문 검색에 사용되는 키워드", example = "test OR 1 = 1")
+        @RequestParam("searchKeyword")
+        searchKeyword: String
+    ): Api26OutputVo? {
+        return service.api26(
+            httpServletResponse,
+            searchKeyword
+        )
+    }
+
+    data class Api26OutputVo(
+        @Schema(description = "JpaRepository 로 조회했을 때의 아이템 리스트", required = true)
+        @JsonProperty("jpaRepositoryResultList")
+        val jpaRepositoryResultList: List<TestEntityVo>,
+        @Schema(description = "JPQL 로 조회했을 때의 아이템 리스트", required = true)
+        @JsonProperty("jpqlResultList")
+        val jpqlResultList: List<TestEntityVo>,
+        @Schema(description = "Native Query 로 조회했을 때의 아이템 리스트", required = true)
+        @JsonProperty("nativeQueryResultList")
+        val nativeQueryResultList: List<TestEntityVo>
+    ) {
+        @Schema(description = "아이템")
+        data class TestEntityVo(
+            @Schema(description = "글 고유번호", required = true, example = "1234")
+            @JsonProperty("uid")
+            val uid: Long,
+            @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
+            @JsonProperty("content")
+            val content: String,
+            @Schema(description = "자동 생성 숫자", required = true, example = "21345")
+            @JsonProperty("randomNum")
+            val randomNum: Int,
+            @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("createDate")
+            val createDate: String,
+            @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("updateDate")
+            val updateDate: String
+        )
+    }
 }

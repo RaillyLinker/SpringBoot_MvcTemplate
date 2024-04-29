@@ -8,7 +8,7 @@
     예를들어 A 테이블의 a 컬럼이 null 이 아닌지 확인하고 null 이 아니라면 값을 입력하는 api 를 동시에 요청받았을 때,
     이는 서로 다른 두 스레드에서 동시 실행이 되며, 실행하는 도중에는 트랜젝션 내에서 동작하므로, 두 요청 모두 null 체크를 통과한 상태로 진행을 하게 될 것입니다.
 
-- 데이터베이스 기초 지식으로, MySQL 에서 nullable 컬럼에는 unique 제약을 하지 않는 것을 추천합니다.
+- 데이터베이스 기초 지식으로, MySQL 에서 nullable 컬럼에는 unique 제약을 하지 마세요.
     예를들어 nullable 컬럼인 a 와 b 를 합성 unique 로 설정했을 때,
     a 를 null 로 하고, b 를 2 로 입력하고,
     다음에 또 a 를 null 로 하고 b 를 2 로 입력했을 때, 이것이 차단될 것이라고 생각하겠지만, null 이 들어간 순간 unique 제약은 동작을 하지 않고,
@@ -30,11 +30,11 @@
     이렇게 되면, 추후 수정사항 반영시 서버측이 관리할 로직 부분의 일을 클라이언트가 처리하는 수고가 들 뿐 아니라.
     처리 후 서로간에 해당 로직을 일치시켰는지에 대한 싱크 확인 작업까지 추가되기에 서버측에서도 수고가 늘 것입니다.
 
-    화면을 아름답고 깔끔하게 구성하는 것이 클라이언트의 몫이고,
-    데이터 흐름을 다루는 것이 서버의 몫입니다.
+    화면을 아름답고 깔끔하게 구성하는 것이 프론트 엔드 개발자의 몫이고,
+    데이터 흐름을 다루는 것이 백엔드 개발자의 몫입니다.
 
     다만, 변수 조합이 그다지 복잡하지 않으면서 단순히 연산량이 큰 작업,
-    이미지 처리와 같은 미디어 파일 처리 등의 작업은 클라이언트 개발자와 상의하여 넘기는 방식으로 개발하면 좋습니다.
+    고사양 이미지 처리와 같은 미디어 파일 처리 등의 작업은 클라이언트 개발자와 상의하여 넘기는 방식으로 개발하면 좋습니다.
     서비스 연결 관계를 보았을 때, 데이터베이스 서버보다는 서비스 서버가, 서비스 서버 보다는 클라이언트 서버가 바쁜 것이 경제적이지만,
     위와 같은 예외가 존재합니다.
 
@@ -79,49 +79,8 @@
     그리고 nullable 타입의 컬럼에 sum 을 할 때, 검색된 결과가 모두 null 일 경우가 그러합니다. (하나라도 검색이 되었다면, null 부분은 0 으로 다루어 더해집니다.)
     요약하자면, sum 결과값은 Long? 으로 받으세요.
 
-- JPA 네이티브 쿼리에서 복잡한 기능, 데이터베이스 제공 함수는 최대한 배제합시다.
+- JPA 네이티브 쿼리에서 복잡한 기능, 특정 데이터베이스 엔진의 제공 함수는 최대한 배제합시다.
     데이터베이스 엔진 변경, 버전업 등에 영향을 받을 수 있으므로 관리가 어려워집니다.
-
-- 로그인시 멤버 정보와 관련된 정보는 보내주지 말며, JWT 의 경우는 토큰 관련 정보 외에는 보내주지 않는 것으로 합시다.
-    대부분의 경우, 로그인시 멤버 정보를 요청하는 것은, 로컬에 저장하여 해당 정보를 사용하려는 용도인데,
-    이렇게 될 것우, 동일 계정의 토큰을 발급받은 다른 디바이스에서 멤버 정보를 수정시 데이터 정합성이 깨지게 됩니다.
-    당연한 내용일텐데, 이러한 정보는 사용 위치에서 해당 시점마다 서버에서 받아 사용하도록 하세요.
 
 - 보안을 위하여, Rest 서버에서는 오로지 클라이언트에서만 요청을 받도록 AWS 와 같은 플랫폼 단에서 다른 요청들을 블록하도록 처리하세요.
     이렇게 되면 당연히 서버는 UI 를 제공할 수 없습니다.
-
-- JPA 에서 JpaRepository 를 사용하여 save, findBy 를 할 때에는 문제가 없지만,
-    쿼리를 사용할 때에는 기본적으로 SQL Injection 을 주의해야합니다.
-    예를들어서,
-
-    JPQL 을 사용할 때에는,
-
-    String username = "user123";
-    Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username");
-    query.setParameter("username", username);
-    List<User> users = query.getResultList();
-
-    위와 같이 setParameter 로 값을 전달해주는 방식(매개 변수화된 쿼리)을 사용하면 인젝션 공격에 안전한데,
-
-        @Query(
-             nativeQuery = true,
-             value = """
-                 select
-                 test_data.uid as uid,
-                 test_data.row_create_date as rowCreateDate,
-                 test_data.row_update_date as rowUpdateDate,
-                 test_data.content as content,
-                 test_data.random_num as randomNum
-                 from template.test_data
-                 where
-                 content = :searchKeyword and
-                 row_delete_date_str = '-'
-                 """
-         )
-         fun forC7N11(
-             @Param(value = "searchKeyword") searchKeyword: String
-         ): List<ForC7N11OutputVo>
-
-    위와 같은 native Query 의 경우는 위험할 수 있습니다.
-
-    고로, native Query 를 사용할 때에는 입력값 검증이 필요합니다.

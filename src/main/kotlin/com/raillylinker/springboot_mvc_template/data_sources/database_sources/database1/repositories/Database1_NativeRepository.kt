@@ -395,6 +395,37 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
     }
 
 
+    ////
+    @Query(
+        nativeQuery = true,
+        value = """
+            SELECT 
+            test_data.uid as uid, 
+            test_data.row_create_date as rowCreateDate, 
+            test_data.row_update_date as rowUpdateDate, 
+            test_data.content as content, 
+            test_data.random_num as randomNum 
+            FROM 
+            template.test_data 
+            where 
+            content = :content 
+            order by 
+            row_create_date DESC
+            """
+    )
+    fun forC7N26(
+        @Param(value = "content") content: String
+    ): List<ForC7N26OutputVo>
+
+    interface ForC7N26OutputVo {
+        var uid: Long
+        var rowCreateDate: LocalDateTime
+        var rowUpdateDate: LocalDateTime
+        var content: String
+        var randomNum: Int
+    }
+
+
     //------------------------------------------------------------------------------------------------------------------
     // <C9>
     @Query(

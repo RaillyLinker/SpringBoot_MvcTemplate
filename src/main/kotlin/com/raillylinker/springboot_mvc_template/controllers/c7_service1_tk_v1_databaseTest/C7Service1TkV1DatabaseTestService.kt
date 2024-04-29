@@ -2,7 +2,6 @@ package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_d
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
-import com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_databaseTest.C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo.ChildEntityVo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.*
 import jakarta.servlet.http.HttpServletResponse
@@ -645,7 +644,8 @@ class C7Service1TkV1DatabaseTestService(
 
         val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo>()
         for (resultEntity in resultEntityList) {
-            val childEntityVoList: ArrayList<ChildEntityVo> = arrayListOf()
+            val childEntityVoList: ArrayList<C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo.ChildEntityVo> =
+                arrayListOf()
 
             val childList =
                 database1TemplateFkTestOneToManyChildRepository.findAllByFkTestParentAndRowDeleteDateStrOrderByRowCreateDate(
@@ -655,7 +655,7 @@ class C7Service1TkV1DatabaseTestService(
 
             for (childEntity in childList) {
                 childEntityVoList.add(
-                    ChildEntityVo(
+                    C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo.ChildEntityVo(
                         childEntity.uid!!,
                         childEntity.childName,
                         childEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
@@ -734,6 +734,85 @@ class C7Service1TkV1DatabaseTestService(
 
             // 테이블 쿼리의 Boolean 값은 그대로 Boolean 타입으로 받습니다.
             resultEntity.tableColumnBoolValue
+        )
+    }
+
+
+    ////
+    fun api26(
+        httpServletResponse: HttpServletResponse,
+        searchKeyword: String
+    ): C7Service1TkV1DatabaseTestController.Api26OutputVo? {
+        // jpaRepository : Injection Safe
+        val jpaRepositoryResultEntityList =
+            database1TemplateTestRepository.findAllByContentOrderByRowCreateDate(
+                searchKeyword
+            )
+
+        val jpaRepositoryResultList: ArrayList<C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo> =
+            arrayListOf()
+        for (jpaRepositoryResultEntity in jpaRepositoryResultEntityList) {
+            jpaRepositoryResultList.add(
+                C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo(
+                    jpaRepositoryResultEntity.uid!!,
+                    jpaRepositoryResultEntity.content,
+                    jpaRepositoryResultEntity.randomNum,
+                    jpaRepositoryResultEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    jpaRepositoryResultEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                )
+            )
+        }
+
+        // JPQL : Injection Safe
+        val jpqlResultEntityList =
+            database1TemplateTestRepository.findAllByContentOrderByRowCreateDateJpql(
+                searchKeyword
+            )
+
+        val jpqlResultList: ArrayList<C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo> =
+            arrayListOf()
+        for (jpqlEntity in jpqlResultEntityList) {
+            jpqlResultList.add(
+                C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo(
+                    jpqlEntity.uid!!,
+                    jpqlEntity.content,
+                    jpqlEntity.randomNum,
+                    jpqlEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    jpqlEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                )
+            )
+        }
+
+        // NativeQuery : Injection Safe
+        val nativeQueryResultEntityList =
+            database1NativeRepository.forC7N26(
+                searchKeyword
+            )
+
+        val nativeQueryResultList: ArrayList<C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo> =
+            arrayListOf()
+        for (nativeQueryEntity in nativeQueryResultEntityList) {
+            nativeQueryResultList.add(
+                C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo(
+                    nativeQueryEntity.uid,
+                    nativeQueryEntity.content,
+                    nativeQueryEntity.randomNum,
+                    nativeQueryEntity.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    nativeQueryEntity.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                )
+            )
+        }
+
+        /* 결론 : 위 세 방식은 모두 SQL Injection 공격에서 안전합니다.
+         *     셋 모두 쿼리문에 직접 값을 입력하는 것이 아니며, 매개변수로 먼저 받아서 JPA 를 경유하여 입력되므로,
+         *     라이브러리가 자동으로 인젝션 공격을 막아주게 됩니다.
+         */
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api26OutputVo(
+            jpaRepositoryResultList,
+            jpqlResultList,
+            nativeQueryResultList
         )
     }
 }

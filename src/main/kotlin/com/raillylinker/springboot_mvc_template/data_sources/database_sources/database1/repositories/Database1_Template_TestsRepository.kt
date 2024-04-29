@@ -4,8 +4,9 @@ import com.raillylinker.springboot_mvc_template.data_sources.database_sources.da
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import java.time.LocalDateTime
+import org.springframework.data.repository.query.Param;
 
 @Repository
 interface Database1_Template_TestsRepository : JpaRepository<Database1_Template_TestData, Long> {
@@ -28,5 +29,23 @@ interface Database1_Template_TestsRepository : JpaRepository<Database1_Template_
     fun findAllByRowDeleteDateStrNotOrderByRowCreateDate(
         rowDeleteDateStr: String
     ): List<Database1_Template_TestData>
+
+    fun findAllByContentOrderByRowCreateDate(
+        content: String
+    ): List<Database1_Template_TestData>
+
+    @Query(
+        """
+        SELECT 
+        template_test_data 
+        FROM 
+        Database1_Template_TestData AS template_test_data 
+        WHERE 
+        template_test_data.content = :content 
+        order by 
+        template_test_data.rowCreateDate desc
+    """
+    )
+    fun findAllByContentOrderByRowCreateDateJpql(@Param("content") content: String): List<Database1_Template_TestData>
 
 }
