@@ -1187,4 +1187,66 @@ class C7Service1TkV1DatabaseTestController(
             val updateDate: String
         )
     }
+
+
+    ////
+    @Operation(
+        summary = "N27 : 외래키 관련 테이블 Rows 조회 (네이티브 쿼리, 부모 테이블을 자식 테이블의 가장 최근 데이터만 Join)",
+        description = "외래키 관련 테이블의 모든 Rows 를 반환합니다.\n\n" +
+                "부모 테이블을 Native Query 로 조회할 때, 부모 테이블을 가리키는 자식 테이블들 중 가장 최신 데이터만 Join 하는 예시입니다.\n\n" +
+                "(api-result-code)\n\n"
+    )
+    @GetMapping(
+        path = ["/fk-table-latest-join"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api27(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ): Api27OutputVo? {
+        return service.api27(httpServletResponse)
+    }
+
+    data class Api27OutputVo(
+        @Schema(description = "부모 아이템 리스트", required = true)
+        @JsonProperty("parentEntityVoList")
+        val parentEntityVoList: List<ParentEntityVo>
+    ) {
+        @Schema(description = "부모 아이템")
+        data class ParentEntityVo(
+            @Schema(description = "글 고유번호", required = true, example = "1234")
+            @JsonProperty("uid")
+            val uid: Long,
+            @Schema(description = "부모 테이블 이름", required = true, example = "1")
+            @JsonProperty("parentName")
+            val parentName: String,
+            @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("createDate")
+            val createDate: String,
+            @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+            @JsonProperty("updateDate")
+            val updateDate: String,
+            @Schema(description = "부모 테이블에 속하는 자식 테이블들 중 가장 최신 데이터", required = false)
+            @JsonProperty("latestChildEntity")
+            val latestChildEntity: ChildEntityVo?
+        ) {
+            @Schema(description = "자식 아이템")
+            data class ChildEntityVo(
+                @Schema(description = "글 고유번호", required = true, example = "1234")
+                @JsonProperty("uid")
+                val uid: Long,
+                @Schema(description = "자식 테이블 이름", required = true, example = "1")
+                @JsonProperty("childName")
+                val childName: String,
+                @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+                @JsonProperty("createDate")
+                val createDate: String,
+                @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+                @JsonProperty("updateDate")
+                val updateDate: String
+            )
+        }
+    }
 }

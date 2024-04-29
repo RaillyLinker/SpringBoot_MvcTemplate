@@ -815,4 +815,37 @@ class C7Service1TkV1DatabaseTestService(
             nativeQueryResultList
         )
     }
+
+
+    ////
+    fun api27(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api27OutputVo? {
+        val resultEntityList = database1NativeRepository.forC7N27()
+
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api27OutputVo.ParentEntityVo>()
+        for (resultEntity in resultEntityList) {
+            entityVoList.add(
+                C7Service1TkV1DatabaseTestController.Api27OutputVo.ParentEntityVo(
+                    resultEntity.parentUid,
+                    resultEntity.parentName,
+                    resultEntity.parentCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.parentUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    if (resultEntity.childUid == null) {
+                        null
+                    } else {
+                        C7Service1TkV1DatabaseTestController.Api27OutputVo.ParentEntityVo.ChildEntityVo(
+                            resultEntity.childUid!!,
+                            resultEntity.childName!!,
+                            resultEntity.childCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                            resultEntity.childUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                        )
+                    }
+                )
+            )
+        }
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C7Service1TkV1DatabaseTestController.Api27OutputVo(
+            entityVoList
+        )
+    }
 }
