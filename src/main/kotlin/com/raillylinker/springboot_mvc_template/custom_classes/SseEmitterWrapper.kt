@@ -13,10 +13,12 @@ data class SseEmitterWrapper(
     val sseEmitterTimeMs: Long
 ) {
     // (SSE Emitter 를 고유값과 함께 모아둔 맵)
-    // map key = EmitterId =
-    // "${emitterPublishSequence}_${SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(Date())}_${memberUid}"
-    // 쉽게 말해 (발행시퀀스_현재시간_수신자멤버고유번호(비회원은 -1)) 으로,
-    // 발행시퀀스, 현재시간 둘이 합쳐 emitter 고유성을 보장하고, 뒤에 붙는 정보들은 필터링을 위한 정보들
+    /*
+        map key = EmitterId =
+        "${emitterPublishSequence}_${SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(Date())}_${memberUid}"
+        쉽게 말해 (발행시퀀스_현재시간_수신자멤버고유번호(비회원은 -1)) 으로,
+        발행시퀀스, 현재시간 둘이 합쳐 emitter 고유성을 보장하고, 뒤에 붙는 정보들은 필터링을 위한 정보들
+     */
     val emitterMap: HashMap<String, SseEmitter> = hashMapOf()
 
     // (발행 시퀀스)
@@ -28,10 +30,12 @@ data class SseEmitterWrapper(
     val emitterMapSemaphore: Semaphore = Semaphore(1)
 
     // (발행 이벤트 맵)
-    // map key = EmitterId
-    // map value = map(dateString, EventBuilder)
-    // 발행한 모든 이벤트를 기록하는 맵이며, 키는 emitterMap 과 동일한 고유값을 사용.
-    // 값의 map 은 이벤트 발행시간이과 SSE Event Builder 객체의 쌍으로 이루어짐
+    /*
+         map key = EmitterId
+         map value = map(dateString, EventBuilder)
+         발행한 모든 이벤트를 기록하는 맵이며, 키는 emitterMap 과 동일한 고유값을 사용.
+         값의 map 은 이벤트 발행시간이과 SSE Event Builder 객체의 쌍으로 이루어짐
+     */
     val emitterEventMap: HashMap<String, ArrayList<Pair<String, SseEmitter.SseEventBuilder>>> = hashMapOf()
 
     // (이벤트 관련 세마포어)

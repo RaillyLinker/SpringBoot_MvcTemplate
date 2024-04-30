@@ -9,10 +9,12 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean
 
 // [WebSocket 연결 설정]
-// 순수 WebSocket 연결 설정.
-// WebSocketStompConfig 와 같은 주소 공간을 공유하므로 주의.
-// 만약 특별한 일이 없다면 이것보단 session 관리, 외부 메세지 브로커를 이용 가능한 WebSocketStompConfig 를 사용하는 것이 좋음.
-// web_socket_handler 화 함께 사용
+/*
+     순수 WebSocket 연결 설정.
+     WebSocketStompConfig 와 같은 주소 공간을 공유하므로 주의.
+     만약 특별한 일이 없다면 이것보단 session 관리, 외부 메세지 브로커를 이용 가능한 WebSocketStompConfig 를 사용하는 것이 좋음.
+     web_socket_handler 화 함께 사용
+ */
 @Configuration
 @EnableWebSocket
 class WebSocketConfig : WebSocketConfigurer {

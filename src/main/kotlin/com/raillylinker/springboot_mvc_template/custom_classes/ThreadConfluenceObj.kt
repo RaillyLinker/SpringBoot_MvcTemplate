@@ -5,18 +5,20 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Semaphore
 
 // (스레드 합류 객체)
-// 사용 예시 :
-// val threadConfluenceObj =
-//     ThreadConfluenceObj(
-//         3,
-//         onComplete = {
-//             screenDataSemaphoreMbr.release()
-//             onComplete()
-//         }
-//     )
-// 위와 같이 객체를 생성.
-// threadConfluenceObj.threadComplete()
-// 위와 같이 각 스레드동작 완료시마다 호출하면 객체 생성시 설정한 갯수만큼 호출되면 onComplete 가 실행되고, 그 이상으로 호출하면 아무 반응 없음
+/*
+    사용 예시 :
+    val threadConfluenceObj =
+        ThreadConfluenceObj(
+            3,
+            onComplete = {
+                screenDataSemaphoreMbr.release()
+                onComplete()
+            }
+        )
+    위와 같이 객체를 생성.
+    threadConfluenceObj.threadComplete()
+    위와 같이 각 스레드동작 완료시마다 호출하면 객체 생성시 설정한 갯수만큼 호출되면 onComplete 가 실행되고, 그 이상으로 호출하면 아무 반응 없음
+ */
 class ThreadConfluenceObj(
     private val numberOfThreadsBeingJoined: Int, // 합쳐지는 스레드 총개수
     private val onComplete: () -> Unit // 스레드 합류가 모두 끝나면 실행할 콜백 함수
