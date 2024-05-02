@@ -39,6 +39,9 @@ management:
       show-details: always # actuator/health 에 디테일 정보 반환
 
 customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
+  # 현 프로젝트에서 사용할 타임존 설정 (UTC, Asia/Seoul)
+  systemTimeZone: Asia/Seoul
+
   # cors 경로 리스트 설정 (설정하지 않으면 모든 요청 허용)
   corsList: http://localhost:8081, http://127.0.0.1:8081
 
