@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.imageio.ImageIO
@@ -81,7 +82,8 @@ class C5Service1TkV1MediaResourceProcessService(
         val frameSplit = ImageProcessUtilObject.gifToImageList(Files.newInputStream(gifFilePathObject))
 
         // 요청 시간을 문자열로
-        val timeString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss_SSS"))
+        val timeString = LocalDateTime.now().atZone(ZoneId.systemDefault())
+            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
 
         // 파일 저장 디렉토리 경로
         val saveDirectoryPathString = "./files/temp/$timeString"
@@ -128,7 +130,10 @@ class C5Service1TkV1MediaResourceProcessService(
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
         // 파일 저장 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
-        val resultFileName = "${LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss_SSS"))}.gif"
+        val resultFileName = "${
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+        }.gif"
         val fileTargetPath = saveDirectoryPath.resolve(resultFileName).normalize()
 
         val gifFrameList: ArrayList<GifUtilObject.GifFrame> = arrayListOf()
@@ -168,7 +173,8 @@ class C5Service1TkV1MediaResourceProcessService(
         }
 
         // 요청 시간을 문자열로
-        val timeString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss_SSS"))
+        val timeString = LocalDateTime.now().atZone(ZoneId.systemDefault())
+            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
 
         // 결과 파일의 확장자 포함 파일명 생성
         val resultFileName = "resized_${timeString}.gif"

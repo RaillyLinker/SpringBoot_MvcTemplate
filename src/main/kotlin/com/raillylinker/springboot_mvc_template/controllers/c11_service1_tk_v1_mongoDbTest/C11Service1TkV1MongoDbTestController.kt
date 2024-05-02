@@ -57,10 +57,18 @@ class C11Service1TkV1MongoDbTestController(
         @Schema(description = "자동 생성 숫자", required = true, example = "21345")
         @JsonProperty("randomNum")
         val randomNum: Int,
-        @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+        @Schema(
+            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552222_KST"
+        )
         @JsonProperty("createDate")
         val createDate: String,
-        @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+        @Schema(
+            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552222_KST"
+        )
         @JsonProperty("updateDate")
         val updateDate: String
     )
@@ -145,10 +153,18 @@ class C11Service1TkV1MongoDbTestController(
             @Schema(description = "자동 생성 숫자", required = true, example = "21345")
             @JsonProperty("randomNum")
             val randomNum: Int,
-            @Schema(description = "글 작성일", required = true, example = "2022-10-11T02:21:36.779")
+            @Schema(
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
             @JsonProperty("createDate")
             val createDate: String,
-            @Schema(description = "글 수정일", required = true, example = "2022-10-11T02:21:36.779")
+            @Schema(
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
             @JsonProperty("updateDate")
             val updateDate: String
         )

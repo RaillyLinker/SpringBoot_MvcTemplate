@@ -28,6 +28,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 
@@ -147,11 +148,11 @@ class C6Service1TkV1TestService(
         // 파일 저장 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
 
-        // 요청 시간을 문자열로
-        val timeString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss_SSS"))
-
         // 확장자 포함 파일명 생성
-        val saveFileName = "temp_${timeString}.xlsx"
+        val saveFileName = "temp_${
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+        }.xlsx"
 
         // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
         val fileTargetPath = saveDirectoryPath.resolve(saveFileName).normalize()
@@ -214,9 +215,8 @@ class C6Service1TkV1TestService(
                 this.contentDisposition = ContentDisposition.builder("attachment")
                     .filename(
                         "result(${
-                            LocalDateTime.now().format(
-                                DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                            )
+                            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                         }).pdf", StandardCharsets.UTF_8
                     )
                     .build()
@@ -328,9 +328,8 @@ class C6Service1TkV1TestService(
                     this.contentDisposition = ContentDisposition.builder("attachment")
                         .filename(
                             "result(${
-                                LocalDateTime.now().format(
-                                    DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                                )
+                                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                             }).pdf", StandardCharsets.UTF_8
                         )
                         .build()

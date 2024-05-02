@@ -25,7 +25,7 @@ class Database1_Service1_LogInTokenInfo(
     @Comment("토큰 타입 (ex : Bearer)")
     var tokenType: String,
 
-    @Column(name = "login_date", nullable = false, columnDefinition = "DATETIME(3)")
+    @Column(name = "login_date", nullable = false, columnDefinition = "DATETIME(6)")
     @Comment("로그인 시간")
     var loginDate: LocalDateTime,
 
@@ -33,7 +33,7 @@ class Database1_Service1_LogInTokenInfo(
     @Comment("발행된 액세스 토큰")
     var accessToken: String,
 
-    @Column(name = "access_token_expire_when", nullable = false, columnDefinition = "DATETIME(3)")
+    @Column(name = "access_token_expire_when", nullable = false, columnDefinition = "DATETIME(6)")
     @Comment("액세스 토큰 만료 일시")
     var accessTokenExpireWhen: LocalDateTime,
 
@@ -41,7 +41,7 @@ class Database1_Service1_LogInTokenInfo(
     @Comment("발행된 리플레시 토큰")
     var refreshToken: String,
 
-    @Column(name = "refresh_token_expire_when", nullable = false, columnDefinition = "DATETIME(3)")
+    @Column(name = "refresh_token_expire_when", nullable = false, columnDefinition = "DATETIME(6)")
     @Comment("리플레시 토큰 만료 일시")
     var refreshTokenExpireWhen: LocalDateTime
 ) {
@@ -51,18 +51,18 @@ class Database1_Service1_LogInTokenInfo(
     @Comment("행 고유값")
     var uid: Long? = null
 
-    @Column(name = "row_create_date", nullable = false, columnDefinition = "DATETIME(3)")
+    @Column(name = "row_create_date", nullable = false, columnDefinition = "DATETIME(6)")
     @CreationTimestamp
     @Comment("행 생성일")
     var rowCreateDate: LocalDateTime? = null
 
-    @Column(name = "row_update_date", nullable = false, columnDefinition = "DATETIME(3)")
+    @Column(name = "row_update_date", nullable = false, columnDefinition = "DATETIME(6)")
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
 
-    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(30)")
-    @Comment("행 삭제일(yyyy-MM-dd HH:mm:ss.SSS, 삭제되지 않았다면 -)")
+    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(50)")
+    @Comment("행 삭제일(yyyy_MM_dd_T_HH_mm_ss_SSSSSS_z, 삭제되지 않았다면 -)")
     var rowDeleteDateStr: String = "-"
 
 

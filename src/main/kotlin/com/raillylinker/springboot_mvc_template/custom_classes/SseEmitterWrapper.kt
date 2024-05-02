@@ -3,6 +3,8 @@ package com.raillylinker.springboot_mvc_template.custom_classes
 import com.raillylinker.springboot_mvc_template.custom_objects.SseEmitterUtilObject
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import java.text.SimpleDateFormat
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.Semaphore
 import kotlin.collections.ArrayList
@@ -15,7 +17,7 @@ data class SseEmitterWrapper(
     // (SSE Emitter 를 고유값과 함께 모아둔 맵)
     /*
         map key = EmitterId =
-        "${emitterPublishSequence}_${SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(Date())}_${memberUid}"
+        "${emitterPublishSequence}_${LocalDateTime.now().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z"))}_${memberUid}"
         쉽게 말해 (발행시퀀스_현재시간_수신자멤버고유번호(비회원은 -1)) 으로,
         발행시퀀스, 현재시간 둘이 합쳐 emitter 고유성을 보장하고, 뒤에 붙는 정보들은 필터링을 위한 정보들
      */
@@ -80,8 +82,10 @@ data class SseEmitterWrapper(
             emitterMap.remove(lastEmitterId)
 
             // 마지막으로 이벤트를 수신한 시간
-            val lastEventDate =
-                SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").parse(lastSseEventIdSplit[1])
+            val lastEventDate = ZonedDateTime.parse(
+                lastSseEventIdSplit[1],
+                DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z")
+            )
 
             // lastSseEventId 로 식별하여 다음에 발송해야할 이벤트들을 전송하기
             // 쌓인 event 처리
@@ -94,7 +98,10 @@ data class SseEmitterWrapper(
                 val newEventList = ArrayList<Pair<String, SseEmitter.SseEventBuilder>>()
                 for (lastEvent in lastEventList) {
                     val eventDateString = lastEvent.first
-                    val eventDate = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").parse(eventDateString)
+                    val eventDate = ZonedDateTime.parse(
+                        eventDateString,
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z")
+                    )
                     val event = lastEvent.second
 
                     val dateCompareResult: Int = eventDate.compareTo(lastEventDate)
@@ -116,13 +123,16 @@ data class SseEmitterWrapper(
         val removeEmitterIdList = ArrayList<String>()
         for (emitter in emitterMap) {
             // 이미터 생성시간
-            val emitterDate: Date =
-                SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").parse(emitter.key.split("_")[1])
+            val emitterDate =
+                ZonedDateTime.parse(
+                    emitter.key.split("_")[1],
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z")
+                )
             // 현재시간
-            val nowDate = Date()
+            val nowDate = ZonedDateTime.now()
 
             // 이미터 생성시간으로부터 몇 ms 지났는지
-            val diffMs = nowDate.time - emitterDate.time
+            val diffMs = nowDate.toInstant().toEpochMilli() - emitterDate.toInstant().toEpochMilli()
 
             // 이미티 생성 시간이 타임아웃 시간(+1초) 을 초과했을 때
             if (diffMs > sseEmitterTimeMs + 1000) {

@@ -24,6 +24,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -185,9 +186,8 @@ class C2Service1TkV1RequestTestService(
             // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
             saveDirectoryPath.resolve(
                 "${fileNameWithOutExtension}(${
-                    LocalDateTime.now().format(
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                    )
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 }).$fileExtension"
             ).normalize()
         )
@@ -223,9 +223,8 @@ class C2Service1TkV1RequestTestService(
                 // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
                 saveDirectoryPath.resolve(
                     "${nullableFileNameWithOutExtension}(${
-                        LocalDateTime.now().format(
-                            DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                        )
+                        LocalDateTime.now().atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                     }).$nullableFileExtension"
                 ).normalize()
             )
@@ -284,9 +283,8 @@ class C2Service1TkV1RequestTestService(
                 // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
                 saveDirectoryPath.resolve(
                     "${fileNameWithOutExtension}(${
-                        LocalDateTime.now().format(
-                            DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                        )
+                        LocalDateTime.now().atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                     }).$fileExtension"
                 ).normalize()
             )
@@ -324,9 +322,8 @@ class C2Service1TkV1RequestTestService(
                     // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
                     saveDirectoryPath.resolve(
                         "${nullableFileNameWithOutExtension}(${
-                            LocalDateTime.now().format(
-                                DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                            )
+                            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                         }).$nullableFileExtension"
                     ).normalize()
                 )
@@ -392,9 +389,8 @@ class C2Service1TkV1RequestTestService(
             // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
             saveDirectoryPath.resolve(
                 "${fileNameWithOutExtension}(${
-                    LocalDateTime.now().format(
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                    )
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 }).$fileExtension"
             ).normalize()
         )
@@ -620,9 +616,14 @@ class C2Service1TkV1RequestTestService(
 
         val emitterPublishCount = api20SseEmitterWrapperMbr.emitterPublishSequence++
 
-        // 수신 객체 아이디 (발행총개수_발행일_멤버고유번호)
+        // 수신 객체 아이디 (발행총개수_발행일_멤버고유번호(비회원은 -1))
         val sseEmitterId =
-            "${emitterPublishCount}_${SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(Date())}"
+            "${emitterPublishCount}_${
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z"))
+            }_-1"
+
+        classLogger.info("%%%%%${sseEmitterId}")
 
         // 수신 객체
         val sseEmitter = api20SseEmitterWrapperMbr.getSseEmitter(sseEmitterId, lastSseEventId)
@@ -645,7 +646,8 @@ class C2Service1TkV1RequestTestService(
 
         for (emitter in api20SseEmitterWrapperMbr.emitterMap) { // 저장된 모든 emitter 에 발송 (필터링 하려면 emitter.key 에 저장된 정보로 필터링 가능)
             // 발송 시간
-            val dateString = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(Date())
+            val dateString = LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z"))
 
             // 이벤트 고유값 생성 (이미터고유값/발송시간)
             val eventId = "${emitter.key}/${dateString}"

@@ -24,18 +24,18 @@ class Database1_Template_TestMap(
     @Comment("행 고유값")
     var uid: Long? = null
 
-    @Column(name = "row_create_date", nullable = false, columnDefinition = "DATETIME(3)")
+    @Column(name = "row_create_date", nullable = false, columnDefinition = "DATETIME(6)")
     @CreationTimestamp
     @Comment("행 생성일")
     var rowCreateDate: LocalDateTime? = null
 
-    @Column(name = "row_update_date", nullable = false, columnDefinition = "DATETIME(3)")
+    @Column(name = "row_update_date", nullable = false, columnDefinition = "DATETIME(6)")
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
 
-    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(30)")
-    @Comment("행 삭제일(yyyy-MM-dd HH:mm:ss.SSS, 삭제되지 않았다면 -)")
+    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(50)")
+    @Comment("행 삭제일(yyyy_MM_dd_T_HH_mm_ss_SSSSSS_z, 삭제되지 않았다면 -)")
     var rowDeleteDateStr: String = "-"
 
 

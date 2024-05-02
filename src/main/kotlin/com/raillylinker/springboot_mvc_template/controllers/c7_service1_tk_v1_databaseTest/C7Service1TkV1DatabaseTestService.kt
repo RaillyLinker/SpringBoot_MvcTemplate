@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Service
@@ -48,8 +49,10 @@ class C7Service1TkV1DatabaseTestService(
             result.uid!!,
             result.content,
             result.randomNum,
-            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+            result.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+            result.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             result.rowDeleteDateStr
         )
     }
@@ -62,7 +65,8 @@ class C7Service1TkV1DatabaseTestService(
             val entityList = database1TemplateTestRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("-")
             for (entity in entityList) {
                 entity.rowDeleteDateStr =
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 database1TemplateTestRepository.save(entity)
             }
         } else {
@@ -86,7 +90,8 @@ class C7Service1TkV1DatabaseTestService(
 
         if (deleteLogically) {
             entity.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1TemplateTestRepository.save(entity)
         } else {
             database1TemplateTestRepository.deleteById(index)
@@ -107,8 +112,10 @@ class C7Service1TkV1DatabaseTestService(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
-                    resultEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    resultEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    resultEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     resultEntity.rowDeleteDateStr
                 )
             )
@@ -123,8 +130,10 @@ class C7Service1TkV1DatabaseTestService(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
-                    resultEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    resultEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    resultEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     resultEntity.rowDeleteDateStr
                 )
             )
@@ -154,8 +163,10 @@ class C7Service1TkV1DatabaseTestService(
                     entity.uid,
                     entity.content,
                     entity.randomNum,
-                    entity.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    entity.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    entity.rowCreateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    entity.rowUpdateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     entity.distance
                 )
             )
@@ -184,8 +195,10 @@ class C7Service1TkV1DatabaseTestService(
                     entity.uid,
                     entity.content,
                     entity.randomNum,
-                    entity.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    entity.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    entity.rowCreateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    entity.rowUpdateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     entity.timeDiffSec
                 )
             )
@@ -217,8 +230,10 @@ class C7Service1TkV1DatabaseTestService(
                     entity.uid!!,
                     entity.content,
                     entity.randomNum,
-                    entity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    entity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                    entity.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    entity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 )
             )
         }
@@ -251,8 +266,10 @@ class C7Service1TkV1DatabaseTestService(
                     vo.uid,
                     vo.content,
                     vo.randomNum,
-                    vo.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    vo.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    vo.rowCreateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    vo.rowUpdateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     vo.distance
                 )
             )
@@ -290,8 +307,10 @@ class C7Service1TkV1DatabaseTestService(
             result.uid!!,
             result.content,
             result.randomNum,
-            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+            result.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+            result.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -341,8 +360,10 @@ class C7Service1TkV1DatabaseTestService(
                     vo.uid,
                     vo.content,
                     vo.randomNum,
-                    vo.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    vo.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                    vo.rowCreateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    vo.rowUpdateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 )
             )
         }
@@ -400,8 +421,10 @@ class C7Service1TkV1DatabaseTestService(
                     vo.uid,
                     vo.content,
                     vo.randomNum,
-                    vo.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    vo.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                    vo.rowCreateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    vo.rowUpdateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 )
             )
         }
@@ -447,8 +470,10 @@ class C7Service1TkV1DatabaseTestService(
             entity.uid,
             entity.content,
             entity.randomNum,
-            entity.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-            entity.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+            entity.rowCreateDate.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+            entity.rowUpdateDate.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -469,8 +494,10 @@ class C7Service1TkV1DatabaseTestService(
         return C7Service1TkV1DatabaseTestController.Api18OutputVo(
             result.uid!!,
             result.uniqueValue,
-            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+            result.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+            result.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             result.rowDeleteDateStr
         )
     }
@@ -486,8 +513,10 @@ class C7Service1TkV1DatabaseTestService(
                 C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.uniqueValue,
-                    resultEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    resultEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    resultEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     resultEntity.rowDeleteDateStr
                 )
             )
@@ -501,8 +530,10 @@ class C7Service1TkV1DatabaseTestService(
                 C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.uniqueValue,
-                    resultEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    resultEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    resultEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     resultEntity.rowDeleteDateStr
                 )
             )
@@ -553,8 +584,10 @@ class C7Service1TkV1DatabaseTestService(
         return C7Service1TkV1DatabaseTestController.Api20OutputVo(
             result.uid!!,
             result.uniqueValue,
-            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+            result.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+            result.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -571,7 +604,8 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         entity.rowDeleteDateStr =
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         database1TemplateLogicalDeleteUniqueDataRepository.save(entity)
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -594,8 +628,10 @@ class C7Service1TkV1DatabaseTestService(
         return C7Service1TkV1DatabaseTestController.Api22OutputVo(
             result.uid!!,
             result.parentName,
-            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+            result.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+            result.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -630,8 +666,10 @@ class C7Service1TkV1DatabaseTestService(
             result.uid!!,
             result.childName,
             result.fkTestParent.parentName,
-            result.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-            result.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+            result.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+            result.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -657,8 +695,10 @@ class C7Service1TkV1DatabaseTestService(
                     C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo.ChildEntityVo(
                         childEntity.uid!!,
                         childEntity.childName,
-                        childEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                        childEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                        childEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                        childEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                     )
                 )
             }
@@ -667,8 +707,10 @@ class C7Service1TkV1DatabaseTestService(
                 C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo(
                     resultEntity.uid!!,
                     resultEntity.parentName,
-                    resultEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    resultEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    resultEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     childEntityVoList
                 )
             )
@@ -691,8 +733,10 @@ class C7Service1TkV1DatabaseTestService(
                 C7Service1TkV1DatabaseTestController.Api24Dot1OutputVo.ChildEntityVo(
                     resultEntity.childUid,
                     resultEntity.childName,
-                    resultEntity.childCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    resultEntity.childUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.childCreateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    resultEntity.childUpdateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     resultEntity.parentUid,
                     resultEntity.parentName
                 )
@@ -756,8 +800,10 @@ class C7Service1TkV1DatabaseTestService(
                     jpaRepositoryResultEntity.uid!!,
                     jpaRepositoryResultEntity.content,
                     jpaRepositoryResultEntity.randomNum,
-                    jpaRepositoryResultEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    jpaRepositoryResultEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                    jpaRepositoryResultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    jpaRepositoryResultEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 )
             )
         }
@@ -776,8 +822,10 @@ class C7Service1TkV1DatabaseTestService(
                     jpqlEntity.uid!!,
                     jpqlEntity.content,
                     jpqlEntity.randomNum,
-                    jpqlEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    jpqlEntity.rowUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                    jpqlEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    jpqlEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 )
             )
         }
@@ -796,8 +844,10 @@ class C7Service1TkV1DatabaseTestService(
                     nativeQueryEntity.uid,
                     nativeQueryEntity.content,
                     nativeQueryEntity.randomNum,
-                    nativeQueryEntity.rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    nativeQueryEntity.rowUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                    nativeQueryEntity.rowCreateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    nativeQueryEntity.rowUpdateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 )
             )
         }
@@ -827,16 +877,20 @@ class C7Service1TkV1DatabaseTestService(
                 C7Service1TkV1DatabaseTestController.Api27OutputVo.ParentEntityVo(
                     resultEntity.parentUid,
                     resultEntity.parentName,
-                    resultEntity.parentCreateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                    resultEntity.parentUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    resultEntity.parentCreateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    resultEntity.parentUpdateDate.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     if (resultEntity.childUid == null) {
                         null
                     } else {
                         C7Service1TkV1DatabaseTestController.Api27OutputVo.ParentEntityVo.ChildEntityVo(
                             resultEntity.childUid!!,
                             resultEntity.childName!!,
-                            resultEntity.childCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-                            resultEntity.childUpdateDate!!.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
+                            resultEntity.childCreateDate!!.atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                            resultEntity.childUpdateDate!!.atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                         )
                     }
                 )
