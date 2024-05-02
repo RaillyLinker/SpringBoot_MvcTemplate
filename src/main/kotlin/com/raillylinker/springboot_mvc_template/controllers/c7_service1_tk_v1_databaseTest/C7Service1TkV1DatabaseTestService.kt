@@ -184,7 +184,10 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse,
         dateString: String
     ): C7Service1TkV1DatabaseTestController.Api6OutputVo? {
-        val foundEntityList = database1NativeRepository.forC7N6(dateString)
+        val localDateTime =
+            LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS"))
+
+        val foundEntityList = database1NativeRepository.forC7N6(localDateTime)
 
         val testEntityVoList =
             ArrayList<C7Service1TkV1DatabaseTestController.Api6OutputVo.TestEntityVo>()

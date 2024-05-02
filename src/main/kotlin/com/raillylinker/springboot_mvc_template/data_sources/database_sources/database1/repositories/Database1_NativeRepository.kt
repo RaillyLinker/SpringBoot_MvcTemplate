@@ -77,7 +77,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             """
     )
     fun forC7N6(
-        @Param(value = "date") date: String
+        @Param(value = "date") date: LocalDateTime
     ): List<ForC7N6OutputVo>
 
     interface ForC7N6OutputVo {

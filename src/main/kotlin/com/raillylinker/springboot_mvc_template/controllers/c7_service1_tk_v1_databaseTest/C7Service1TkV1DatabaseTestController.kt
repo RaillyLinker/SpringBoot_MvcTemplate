@@ -1,6 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_databaseTest
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.raillylinker.springboot_mvc_template.ApplicationConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema
@@ -247,7 +248,6 @@ class C7Service1TkV1DatabaseTestController(
 
 
     ////
-    // todo 입력 데이터 날짜 포멧 처리
     @Operation(
         summary = "N6 : DB 테이블의 row_create_date 컬럼 근사치 기준으로 정렬한 리스트 조회 API",
         description = "테이블의 row 중 row_create_date 컬럼과 dateString 파라미터의 값의 근사치로 정렬한 리스트 반환\n\n" +
@@ -262,7 +262,11 @@ class C7Service1TkV1DatabaseTestController(
     fun api6(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @Parameter(name = "dateString", description = "원하는 날짜", example = "2022-10-11T02:21:36.779")
+        @Parameter(
+            name = "dateString",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            example = "2024_05_02_T_15_14_49_552222"
+        )
         @RequestParam("dateString")
         dateString: String
     ): Api6OutputVo? {
@@ -1418,4 +1422,6 @@ class C7Service1TkV1DatabaseTestController(
             )
         }
     }
+
+    // todo 날짜 데이터 입력 테스트(타임존을 여러개 두고 입력)
 }
