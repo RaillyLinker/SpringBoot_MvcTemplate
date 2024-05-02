@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.boot.json.BasicJsonParser
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -187,7 +188,7 @@ object JwtTokenUtilObject {
         claimsMap["iss"] = issuer
         claimsMap["iat"] = Date(System.currentTimeMillis())
         claimsMap["exp"] = Date(System.currentTimeMillis() + expireTimeMs)
-        claimsMap["cdt"] = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+        claimsMap["cdt"] = LocalDateTime.now().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
 
         if (memberRoleList != null) {
             // member role list
