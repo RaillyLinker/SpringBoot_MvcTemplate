@@ -218,7 +218,7 @@ class C7Service1TkV1DatabaseTestService(
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     entity.rowUpdateDate.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
-                    entity.timeDiffSec
+                    entity.timeDiffMicroSec
                 )
             )
         }

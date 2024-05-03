@@ -338,9 +338,9 @@ class C7Service1TkV1DatabaseTestController(
             )
             @JsonProperty("updateDate")
             val updateDate: String,
-            @Schema(description = "기준과의 절대차이(초)", required = true, example = "34")
-            @JsonProperty("timeDiffSec")
-            val timeDiffSec: Long
+            @Schema(description = "기준과의 절대차이(마이크로 초)", required = true, example = "34")
+            @JsonProperty("timeDiffMicroSec")
+            val timeDiffMicroSec: Long
         )
     }
 

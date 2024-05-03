@@ -70,13 +70,13 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.test_datetime AS testDatetime, 
             test_data.row_create_date AS rowCreateDate, 
             test_data.row_update_date AS rowUpdateDate, 
-            ABS(TIMESTAMPDIFF(SECOND, test_data.row_create_date, :date)) AS timeDiffSec 
+            ABS(TIMESTAMPDIFF(MICROSECOND, test_data.row_create_date, :date)) AS timeDiffMicroSec 
             FROM 
             template.test_data AS test_data 
             WHERE 
             test_data.row_delete_date_str = '-' 
             ORDER BY 
-            timeDiffSec
+            timeDiffMicroSec
             """
     )
     fun forC7N6(
@@ -90,7 +90,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var testDatetime: LocalDateTime
         var rowCreateDate: LocalDateTime
         var rowUpdateDate: LocalDateTime
-        var timeDiffSec: Long
+        var timeDiffMicroSec: Long
     }
 
 
