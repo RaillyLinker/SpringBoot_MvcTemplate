@@ -29,20 +29,24 @@ class WebSocketStompConfig : WebSocketMessageBrokerConfigurer {
     }
 
     override fun configureMessageBroker(registry: MessageBrokerRegistry) {
-        // WebSocketStompController 의 MessageMapping 연결 주소
-        // @MessageMapping("/test") 라고 되어있다면,
-        // stompClient.send("/app/test", {}, JSON.stringify({'chat': "sample Text"}));
-        // 이처럼 요청 가능
+        /*
+             WebSocketStompController 의 MessageMapping 연결 주소
+             @MessageMapping("/test") 라고 되어있다면,
+             stompClient.send("/app/test", {}, JSON.stringify({'chat': "sample Text"}));
+             이처럼 요청 가능
+         */
         registry.setApplicationDestinationPrefixes("/app")
 
-        // 구독 주소
-        // stompClient.subscribe('/topic', function (topic) {
-        //     // 구독 콜백 : 구독된 채널에 메세지가 날아오면 여기서 받음
-        // });
-        // 위와 같이 topic 이라는 것을 구독하면,
-        // @SendTo("/topic") 로 설정 된 메세지 함수 실행 혹은
-        // simpMessagingTemplate.convertAndSend("/topic", TopicVo("waiting..."))
-        // 이렇게 메세지 전달시 그 메세지를 받을 수 있습니다.
+        /*
+             구독 주소
+             stompClient.subscribe('/topic', function (topic) {
+                 // 구독 콜백 : 구독된 채널에 메세지가 날아오면 여기서 받음
+             });
+             위와 같이 topic 이라는 것을 구독하면,
+             @SendTo("/topic") 로 설정 된 메세지 함수 실행 혹은
+             simpMessagingTemplate.convertAndSend("/topic", TopicVo("waiting..."))
+             이렇게 메세지 전달시 그 메세지를 받을 수 있습니다.
+         */
         registry.enableSimpleBroker("/topic")
     }
 

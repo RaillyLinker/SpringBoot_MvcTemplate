@@ -2,7 +2,6 @@ package com.raillylinker.springboot_mvc_template
 
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.stereotype.Component
-import org.springframework.scheduling.annotation.Scheduled
 
 // 일정 시간마다 실행되는 함수들의 클래스 (프로젝트 Application 클래스 선언 위에 @EnableScheduling 추가 필요)
 // scheduler 를 사용할 Class 에 @Component, Method 에 @Scheduled 추가

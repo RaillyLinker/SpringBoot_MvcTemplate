@@ -1,6 +1,5 @@
 package com.raillylinker.springboot_mvc_template.custom_objects
 
-import jakarta.servlet.http.HttpServletRequest
 import org.thymeleaf.context.Context
 import org.thymeleaf.spring6.SpringTemplateEngine
 import org.thymeleaf.templatemode.TemplateMode

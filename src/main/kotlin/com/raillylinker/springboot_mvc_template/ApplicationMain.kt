@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
 import java.util.*
 
-
 @EnableScheduling // 스케쥴러 사용 설정
 @EnableAsync // 스케쥴러의 Async 사용 설정
 @SpringBootApplication
@@ -19,7 +18,6 @@ fun main(args: Array<String>) {
 
     // 서버 타임존 설정
     TimeZone.setDefault(TimeZone.getTimeZone(ApplicationConstants.SYSTEM_TIME_ZONE))
-
     classLogger.info("적용된 시스템 타임존 : ${TimeZone.getDefault().id}")
 
     // 서버 실행

@@ -20,12 +20,12 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 class WebSocketConfig : WebSocketConfigurer {
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
         // (Websocket 연결 url 과 핸들러 연결)
-
-        // addHandler 에서 paths 를 /ws/test 로 설정했다면,
-        // JavaScript 에서는,
-        // var websocket = new SockJS('http://localhost:8080/ws/test');
-        // 이렇게 연결
-
+        /*
+             addHandler 에서 paths 를 /ws/test 로 설정했다면,
+             JavaScript 에서는,
+             var websocket = new SockJS('http://localhost:8080/ws/test');
+             이렇게 연결하면 됩니다.
+         */
         registry
             .addHandler(
                 // 아래 주소로 접속하면 실행될 핸들러

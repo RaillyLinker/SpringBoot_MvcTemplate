@@ -29,8 +29,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
 
 // (서비스 보안 시큐리티 설정)
-// 본 프로젝트는 토큰 인증 / 인가 방식을 사용하며, 세션 인증 / 인가 방식은 사용하지 않습니다.
-
 /*
     JWT 인증 / 인가 :
     JWT 인증 / 인가 시스템은 검증 시점에 데이터베이스 접근을 하지 않으며, Stateless 하게 검증 정보를 메모리에 저장하지 않습니다.
@@ -143,9 +141,12 @@ class SecurityConfig {
         http.securityMatcher(securityUrl)
             .authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
                 authorizeHttpRequestsCustomizer.anyRequest().permitAll()
-                // !!!접근 보안 블랙 리스트 방식
-                // @PreAuthorize("isAuthenticated() and (hasRole('ROLE_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-                // 위와 같은 어노테이션을 접근 통제하고자 하는 API 위에 작성!!!
+                /*
+                    본 서버 접근 보안은 블랙 리스트 방식을 사용합니다.
+                    일반적으로 모든 요청을 허용하며, 인증/인가가 필요한 부분에는,
+                    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_DEVELOPER') or hasRole('ROLE_ADMIN'))")
+                    위와 같은 어노테이션을 접근 통제하고자 하는 API 위에 달아주면 인증 필터가 동작하게 됩니다.
+                 */
             }
 
         return http.build()
@@ -160,11 +161,11 @@ class SecurityConfig {
             const val JWT_SECRET_KEY_STRING = "123456789abcdefghijklmnopqrstuvw"
 
             // (액세스 토큰 유효시간)
-            // !!!유효시간 변경 (최소 15분 ~ 리프레시 토큰 유효시간)!!!
+            // !!!유효시간 변경 (최소 15분 ~ {리프레시 토큰 유효시간})!!!
             const val ACCESS_TOKEN_EXPIRATION_TIME_MS = 1000L * 60L * 30L // 30분
 
             // (리프레시 토큰 유효시간)
-            // !!!유효시간 변경(최소 액세스 토큰 유효시간 ~ )!!!
+            // !!!유효시간 변경(최소 {액세스 토큰 유효시간} ~ {Long.MAX_VALUE = 292471208.7 년})!!!
             const val REFRESH_TOKEN_EXPIRATION_TIME_MS = 1000L * 60L * 60L * 24L * 7L // 7일
 
             // (JWT Claims 암호화 AES 키)
@@ -256,45 +257,55 @@ class SecurityConfig {
                                             }
                                     } else { // 액세스 토큰 만료
                                         response.setHeader("api-result-code", "2")
-                                        // 바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
-                                        // SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
-                                        // @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
-                                        // @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
+                                        /*
+                                             바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
+                                             SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
+                                             @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
+                                             @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
+                                         */
                                     }
                                 } else {
                                     // 올바르지 않은 Authorization Token
                                     response.setHeader("api-result-code", "1")
-                                    // 바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
-                                    // SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
-                                    // @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
-                                    // @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
+                                    /*
+                                         바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
+                                         SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
+                                         @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
+                                         @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
+                                     */
                                 }
                             }
 
                             else -> {
                                 // 올바르지 않은 Authorization Token
                                 response.setHeader("api-result-code", "1")
-                                // 바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
-                                // SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
-                                // @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
-                                // @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
+                                /*
+                                     바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
+                                     SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
+                                     @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
+                                     @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
+                                 */
                             }
                         }
                     } else {
                         // 올바르지 않은 Authorization Token
                         response.setHeader("api-result-code", "1")
-                        // 바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
-                        // SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
-                        // @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
-                        // @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
+                        /*
+                             바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
+                             SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
+                             @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
+                             @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
+                         */
                     }
                 }
             }
 
             // 필터 체인 실행
-            // 정상 로그인시 Security Context 에 정보가 있고, 아니라면 없습니다.
-            // 로그인 되지 않은 상태로 인증/인가 어노테이션을 붙인 api 에 진입하면, 401 에러가,
-            // 인가받지 않은 상태로 진입하면 403 에러가 발생합니다.
+            /*
+                 정상 로그인이 완료되면 Security Context 에 정보가 있고, 아니라면 없습니다.
+                 로그인 되지 않은 상태로 인증/인가 어노테이션을 붙인 api 에 진입하면, 401 에러가,
+                 인가받지 않은 상태로 진입하면 403 에러가 발생합니다.
+             */
             filterChain.doFilter(request, response)
         }
     }

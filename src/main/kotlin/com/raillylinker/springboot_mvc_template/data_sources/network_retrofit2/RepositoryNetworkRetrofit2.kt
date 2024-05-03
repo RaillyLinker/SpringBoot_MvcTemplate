@@ -15,14 +15,14 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
-// Retrofit2 함수 네트워크 URL 과 API 객체를 이어주고 제공하는 역할
-// : 주소 1개당 API 객체 1개를 request_apis 안에 생성하여 아래 (Network Request Api 객체) 공간에 변수를 추가하여 사용
+// Retrofit2 함수 네트워크 URL 과 API 객체를 이어주고 제공하는 역할을 하는 객체
+// 주소 1개당 API 객체 1개를 request_apis 안에 생성하여 아래 (Network Request Api 객체) 공간에 변수를 추가하여 사용
 class RepositoryNetworkRetrofit2 private constructor() {
     // <멤버 변수 공간>
     // (Network Request Api 객체들)
     // !!!요청을 보낼 서버 위치 경로별 RequestApi 객체를 생성하기!!!
 
-    // 로컬 테스트용
+    // (로컬 테스트용)
     val localHostRequestApi: LocalHostRequestApi =
         (getRetrofitClient(
             "http://localhost:8080",
@@ -32,7 +32,7 @@ class RepositoryNetworkRetrofit2 private constructor() {
             false
         )).create(LocalHostRequestApi::class.java)
 
-    // Naver SMS 발송용
+    // (Naver SMS 발송용)
     val sensApigwNtrussComRequestApi: SensApigwNtrussComRequestApi =
         (getRetrofitClient(
             "https://sens.apigw.ntruss.com",
@@ -42,7 +42,7 @@ class RepositoryNetworkRetrofit2 private constructor() {
             false
         )).create(SensApigwNtrussComRequestApi::class.java)
 
-    // Google AccessToken 발급용
+    // (Google AccessToken 발급용)
     val accountsGoogleComRequestApi: AccountsGoogleComRequestApi =
         (getRetrofitClient(
             "https://accounts.google.com",
@@ -52,7 +52,7 @@ class RepositoryNetworkRetrofit2 private constructor() {
             false
         )).create(AccountsGoogleComRequestApi::class.java)
 
-    // Naver AccessToken 발급용
+    // (Naver AccessToken 발급용)
     val nidNaverComRequestApi: NidNaverComRequestApi =
         (getRetrofitClient(
             "https://nid.naver.com",
@@ -62,7 +62,7 @@ class RepositoryNetworkRetrofit2 private constructor() {
             false
         )).create(NidNaverComRequestApi::class.java)
 
-    // KakaoTalk AccessToken 발급용
+    // (KakaoTalk AccessToken 발급용)
     val kauthKakaoComRequestApi: KauthKakaoComRequestApi =
         (getRetrofitClient(
             "https://kauth.kakao.com",
@@ -72,7 +72,7 @@ class RepositoryNetworkRetrofit2 private constructor() {
             false
         )).create(KauthKakaoComRequestApi::class.java)
 
-    // Google AccessToken 으로 Profile 조회용
+    // (Google AccessToken 으로 Profile 조회용)
     val wwwGoogleapisComRequestApi: WwwGoogleapisComRequestApi =
         (getRetrofitClient(
             "https://www.googleapis.com",
@@ -82,7 +82,7 @@ class RepositoryNetworkRetrofit2 private constructor() {
             false
         )).create(WwwGoogleapisComRequestApi::class.java)
 
-    // Naver AccessToken 으로 Profile 조회용
+    // (Naver AccessToken 으로 Profile 조회용)
     val openapiNaverComRequestApi: OpenapiNaverComRequestApi =
         (getRetrofitClient(
             "https://openapi.naver.com",
@@ -92,7 +92,7 @@ class RepositoryNetworkRetrofit2 private constructor() {
             false
         )).create(OpenapiNaverComRequestApi::class.java)
 
-    // KakaoTalk AccessToken 으로 Profile 조회용
+    // (KakaoTalk AccessToken 으로 Profile 조회용)
     val kapiKakaoComRequestApi: KapiKakaoComRequestApi =
         (getRetrofitClient(
             "https://kapi.kakao.com",
@@ -102,7 +102,7 @@ class RepositoryNetworkRetrofit2 private constructor() {
             false
         )).create(KapiKakaoComRequestApi::class.java)
 
-    // Apple OAuth2 IdToken 공개키 요청용
+    // (Apple OAuth2 IdToken 공개키 요청용)
     val appleIdAppleComRequestApi: AppleIdAppleComRequestApi =
         (getRetrofitClient(
             "https://appleid.apple.com",

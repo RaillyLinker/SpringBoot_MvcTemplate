@@ -2,7 +2,6 @@ package com.raillylinker.springboot_mvc_template.data_sources.database_sources.d
 
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_LogInTokenInfo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_MemberData
-import org.apache.kafka.clients.consumer.internals.AbstractStickyAssignor.MemberData
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
