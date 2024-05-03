@@ -34,6 +34,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.row_update_date AS rowUpdateDate, 
             test_data.content AS content, 
             test_data.random_num AS randomNum, 
+            test_data.test_datetime AS testDatetime, 
             ABS(test_data.random_num-:num) AS distance 
             FROM 
             template.test_data AS test_data 
@@ -53,6 +54,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var rowUpdateDate: LocalDateTime
         var content: String
         var randomNum: Int
+        var testDatetime: LocalDateTime
         var distance: Int
     }
 
@@ -65,6 +67,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.uid AS uid, 
             test_data.content AS content, 
             test_data.random_num AS randomNum, 
+            test_data.test_datetime AS testDatetime, 
             test_data.row_create_date AS rowCreateDate, 
             test_data.row_update_date AS rowUpdateDate, 
             ABS(TIMESTAMPDIFF(SECOND, test_data.row_create_date, :date)) AS timeDiffSec 
@@ -82,10 +85,11 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
 
     interface ForC7N6OutputVo {
         var uid: Long
-        var rowCreateDate: LocalDateTime
-        var rowUpdateDate: LocalDateTime
         var content: String
         var randomNum: Int
+        var testDatetime: LocalDateTime
+        var rowCreateDate: LocalDateTime
+        var rowUpdateDate: LocalDateTime
         var timeDiffSec: Long
     }
 
@@ -100,6 +104,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.row_update_date AS rowUpdateDate, 
             test_data.content AS content, 
             test_data.random_num AS randomNum, 
+            test_data.test_datetime AS testDatetime, 
             ABS(test_data.random_num-:num) AS distance 
             FROM 
             template.test_data AS test_data 
@@ -128,6 +133,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var rowUpdateDate: LocalDateTime
         var content: String
         var randomNum: Int
+        var testDatetime: LocalDateTime
         var distance: Int
     }
 
@@ -140,14 +146,16 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             UPDATE 
             template.test_data 
             SET 
-            content = :content 
+            content = :content, 
+            test_datetime = :testDatetime 
             WHERE 
             uid = :uid
             """
     )
     fun forC7N10(
         @Param(value = "uid") uid: Long,
-        @Param(value = "content") content: String
+        @Param(value = "content") content: String,
+        @Param(value = "testDatetime") testDatetime: LocalDateTime
     )
 
 
@@ -161,7 +169,8 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.row_create_date AS rowCreateDate, 
             test_data.row_update_date AS rowUpdateDate, 
             test_data.content AS content, 
-            test_data.random_num AS randomNum 
+            test_data.random_num AS randomNum, 
+            test_data.test_datetime AS testDatetime 
             FROM 
             template.test_data AS test_data 
             WHERE 
@@ -191,6 +200,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var rowUpdateDate: LocalDateTime
         var content: String
         var randomNum: Int
+        var testDatetime: LocalDateTime
     }
 
 
@@ -236,6 +246,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
                     test_data.row_update_date AS rowUpdateDate, 
                     test_data.content as content, 
                     test_data.random_num AS randomNum, 
+                    test_data.test_datetime AS testDatetime, 
                     test_data.row_delete_date_str AS rowDeleteDateStr 
                     FROM 
                     template.test_data AS test_data 
@@ -264,6 +275,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
                             test_data.row_update_date AS rowUpdateDate, 
                             test_data.content as content, 
                             test_data.random_num AS randomNum, 
+                            test_data.test_datetime AS testDatetime, 
                             test_data.row_delete_date_str AS rowDeleteDateStr 
                             FROM 
                             template.test_data AS test_data 
@@ -291,6 +303,8 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var rowUpdateDate: LocalDateTime
         var content: String
         var randomNum: Int
+        var testDatetime: LocalDateTime
+        var rowDeleteDateStr: String
     }
 
 
@@ -338,6 +352,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.uid AS uid, 
             test_data.content AS content, 
             test_data.random_num AS randomNum, 
+            test_data.test_datetime AS testDatetime, 
             test_data.row_create_date AS rowCreateDate, 
             test_data.row_update_date AS rowUpdateDate 
             FROM 
@@ -355,6 +370,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var uid: Long
         var content: String
         var randomNum: Int
+        var testDatetime: LocalDateTime
         var rowCreateDate: LocalDateTime
         var rowUpdateDate: LocalDateTime
     }
@@ -449,7 +465,8 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             test_data.row_create_date AS rowCreateDate, 
             test_data.row_update_date AS rowUpdateDate, 
             test_data.content AS content, 
-            test_data.random_num AS randomNum 
+            test_data.random_num AS randomNum, 
+            test_data.test_datetime AS testDatetime 
             FROM 
             template.test_data AS test_data 
             WHERE 
@@ -468,6 +485,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var rowUpdateDate: LocalDateTime
         var content: String
         var randomNum: Int
+        var testDatetime: LocalDateTime
     }
 
 

@@ -17,7 +17,11 @@ class Database1_Template_TestData(
 
     @Column(name = "random_num", nullable = false, columnDefinition = "INT")
     @Comment("테스트 랜덤 번호")
-    var randomNum: Int
+    var randomNum: Int,
+
+    @Column(name = "test_datetime", nullable = false, columnDefinition = "DATETIME(6)")
+    @Comment("테스트용 일시 데이터")
+    var testDatetime: LocalDateTime
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

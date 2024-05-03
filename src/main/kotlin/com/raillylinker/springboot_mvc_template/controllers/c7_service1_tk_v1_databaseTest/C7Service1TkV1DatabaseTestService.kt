@@ -41,7 +41,11 @@ class C7Service1TkV1DatabaseTestService(
         inputVo: C7Service1TkV1DatabaseTestController.Api1InputVo
     ): C7Service1TkV1DatabaseTestController.Api1OutputVo? {
         val result = database1TemplateTestRepository.save(
-            Database1_Template_TestData(inputVo.content, (0..99999999).random())
+            Database1_Template_TestData(
+                inputVo.content,
+                (0..99999999).random(),
+                LocalDateTime.parse(inputVo.dateString, DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS"))
+            )
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -49,6 +53,8 @@ class C7Service1TkV1DatabaseTestService(
             result.uid!!,
             result.content,
             result.randomNum,
+            result.testDatetime.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             result.rowCreateDate!!.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             result.rowUpdateDate!!.atZone(ZoneId.systemDefault())
@@ -112,6 +118,8 @@ class C7Service1TkV1DatabaseTestService(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
+                    resultEntity.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     resultEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
@@ -130,6 +138,8 @@ class C7Service1TkV1DatabaseTestService(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
+                    resultEntity.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     resultEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
@@ -163,6 +173,8 @@ class C7Service1TkV1DatabaseTestService(
                     entity.uid,
                     entity.content,
                     entity.randomNum,
+                    entity.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     entity.rowCreateDate.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     entity.rowUpdateDate.atZone(ZoneId.systemDefault())
@@ -184,10 +196,12 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse,
         dateString: String
     ): C7Service1TkV1DatabaseTestController.Api6OutputVo? {
-        val localDateTime =
-            LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS"))
-
-        val foundEntityList = database1NativeRepository.forC7N6(localDateTime)
+        val foundEntityList = database1NativeRepository.forC7N6(
+            LocalDateTime.parse(
+                dateString,
+                DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS")
+            )
+        )
 
         val testEntityVoList =
             ArrayList<C7Service1TkV1DatabaseTestController.Api6OutputVo.TestEntityVo>()
@@ -198,6 +212,8 @@ class C7Service1TkV1DatabaseTestService(
                     entity.uid,
                     entity.content,
                     entity.randomNum,
+                    entity.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     entity.rowCreateDate.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     entity.rowUpdateDate.atZone(ZoneId.systemDefault())
@@ -233,6 +249,8 @@ class C7Service1TkV1DatabaseTestService(
                     entity.uid!!,
                     entity.content,
                     entity.randomNum,
+                    entity.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     entity.rowCreateDate!!.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     entity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
@@ -269,6 +287,8 @@ class C7Service1TkV1DatabaseTestService(
                     vo.uid,
                     vo.content,
                     vo.randomNum,
+                    vo.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     vo.rowCreateDate.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     vo.rowUpdateDate.atZone(ZoneId.systemDefault())
@@ -302,6 +322,8 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         oldEntity.content = inputVo.content
+        oldEntity.testDatetime =
+            LocalDateTime.parse(inputVo.dateString, DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS"))
 
         val result = database1TemplateTestRepository.save(oldEntity)
 
@@ -310,6 +332,8 @@ class C7Service1TkV1DatabaseTestService(
             result.uid!!,
             result.content,
             result.randomNum,
+            result.testDatetime.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             result.rowCreateDate!!.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             result.rowUpdateDate!!.atZone(ZoneId.systemDefault())
@@ -337,7 +361,11 @@ class C7Service1TkV1DatabaseTestService(
             return
         }
 
-        database1NativeRepository.forC7N10(testTableUid, inputVo.content)
+        database1NativeRepository.forC7N10(
+            testTableUid,
+            inputVo.content,
+            LocalDateTime.parse(inputVo.dateString, DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS"))
+        )
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
@@ -363,6 +391,8 @@ class C7Service1TkV1DatabaseTestService(
                     vo.uid,
                     vo.content,
                     vo.randomNum,
+                    vo.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     vo.rowCreateDate.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     vo.rowUpdateDate.atZone(ZoneId.systemDefault())
@@ -385,7 +415,11 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse
     ) {
         database1TemplateTestRepository.save(
-            Database1_Template_TestData("error test", (0..99999999).random())
+            Database1_Template_TestData(
+                "error test",
+                (0..99999999).random(),
+                LocalDateTime.now()
+            )
         )
 
         throw Exception("Transaction Rollback Test!")
@@ -395,7 +429,11 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api13(httpServletResponse: HttpServletResponse) {
         database1TemplateTestRepository.save(
-            Database1_Template_TestData("error test", (0..99999999).random())
+            Database1_Template_TestData(
+                "error test",
+                (0..99999999).random(),
+                LocalDateTime.now()
+            )
         )
 
         throw Exception("No Transaction Exception Test!")
@@ -424,6 +462,8 @@ class C7Service1TkV1DatabaseTestService(
                     vo.uid,
                     vo.content,
                     vo.randomNum,
+                    vo.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     vo.rowCreateDate.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     vo.rowUpdateDate.atZone(ZoneId.systemDefault())
@@ -473,6 +513,8 @@ class C7Service1TkV1DatabaseTestService(
             entity.uid,
             entity.content,
             entity.randomNum,
+            entity.testDatetime.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             entity.rowCreateDate.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             entity.rowUpdateDate.atZone(ZoneId.systemDefault())
@@ -803,6 +845,8 @@ class C7Service1TkV1DatabaseTestService(
                     jpaRepositoryResultEntity.uid!!,
                     jpaRepositoryResultEntity.content,
                     jpaRepositoryResultEntity.randomNum,
+                    jpaRepositoryResultEntity.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     jpaRepositoryResultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     jpaRepositoryResultEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
@@ -825,6 +869,8 @@ class C7Service1TkV1DatabaseTestService(
                     jpqlEntity.uid!!,
                     jpqlEntity.content,
                     jpqlEntity.randomNum,
+                    jpqlEntity.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     jpqlEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     jpqlEntity.rowUpdateDate!!.atZone(ZoneId.systemDefault())
@@ -847,6 +893,8 @@ class C7Service1TkV1DatabaseTestService(
                     nativeQueryEntity.uid,
                     nativeQueryEntity.content,
                     nativeQueryEntity.randomNum,
+                    nativeQueryEntity.testDatetime.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     nativeQueryEntity.rowCreateDate.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
                     nativeQueryEntity.rowUpdateDate.atZone(ZoneId.systemDefault())

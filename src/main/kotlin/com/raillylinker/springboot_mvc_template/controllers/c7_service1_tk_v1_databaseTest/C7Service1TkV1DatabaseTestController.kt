@@ -45,7 +45,14 @@ class C7Service1TkV1DatabaseTestController(
     data class Api1InputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
-        val content: String
+        val content: String,
+        @Schema(
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552222"
+        )
+        @JsonProperty("dateString")
+        val dateString: String
     )
 
     data class Api1OutputVo(
@@ -58,6 +65,13 @@ class C7Service1TkV1DatabaseTestController(
         @Schema(description = "자동 생성 숫자", required = true, example = "21345")
         @JsonProperty("randomNum")
         val randomNum: Int,
+        @Schema(
+            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552222_KST"
+        )
+        @JsonProperty("testDatetime")
+        val testDatetime: String,
         @Schema(
             description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
@@ -168,6 +182,13 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
+            @JsonProperty("testDatetime")
+            val testDatetime: String,
+            @Schema(
                 description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
                 required = true,
                 example = "2024_05_02_T_15_14_49_552222_KST"
@@ -226,6 +247,13 @@ class C7Service1TkV1DatabaseTestController(
             @Schema(description = "자동 생성 숫자", required = true, example = "21345")
             @JsonProperty("randomNum")
             val randomNum: Int,
+            @Schema(
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
+            @JsonProperty("testDatetime")
+            val testDatetime: String,
             @Schema(
                 description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
                 required = true,
@@ -289,6 +317,13 @@ class C7Service1TkV1DatabaseTestController(
             @Schema(description = "자동 생성 숫자", required = true, example = "21345")
             @JsonProperty("randomNum")
             val randomNum: Int,
+            @Schema(
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
+            @JsonProperty("testDatetime")
+            val testDatetime: String,
             @Schema(
                 description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
                 required = true,
@@ -354,6 +389,13 @@ class C7Service1TkV1DatabaseTestController(
             @Schema(description = "자동 생성 숫자", required = true, example = "23456")
             @JsonProperty("randomNum")
             val randomNum: Int,
+            @Schema(
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
+            @JsonProperty("testDatetime")
+            val testDatetime: String,
             @Schema(
                 description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
                 required = true,
@@ -421,6 +463,13 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
+            @JsonProperty("testDatetime")
+            val testDatetime: String,
+            @Schema(
                 description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
                 required = true,
                 example = "2024_05_02_T_15_14_49_552222_KST"
@@ -469,7 +518,14 @@ class C7Service1TkV1DatabaseTestController(
     data class Api9InputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트 수정글입니다.")
         @JsonProperty("content")
-        val content: String
+        val content: String,
+        @Schema(
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552222"
+        )
+        @JsonProperty("dateString")
+        val dateString: String
     )
 
     data class Api9OutputVo(
@@ -482,6 +538,13 @@ class C7Service1TkV1DatabaseTestController(
         @Schema(description = "자동 생성 숫자", required = true, example = "21345")
         @JsonProperty("randomNum")
         val randomNum: Int,
+        @Schema(
+            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552222_KST"
+        )
+        @JsonProperty("testDatetime")
+        val testDatetime: String,
         @Schema(
             description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
@@ -527,7 +590,14 @@ class C7Service1TkV1DatabaseTestController(
     data class Api10InputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트 수정글입니다.")
         @JsonProperty("content")
-        val content: String
+        val content: String,
+        @Schema(
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552222"
+        )
+        @JsonProperty("dateString")
+        val dateString: String
     )
 
 
@@ -578,6 +648,13 @@ class C7Service1TkV1DatabaseTestController(
             @Schema(description = "자동 생성 숫자", required = true, example = "21345")
             @JsonProperty("randomNum")
             val randomNum: Int,
+            @Schema(
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
+            @JsonProperty("testDatetime")
+            val testDatetime: String,
             @Schema(
                 description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
                 required = true,
@@ -682,6 +759,13 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
+            @JsonProperty("testDatetime")
+            val testDatetime: String,
+            @Schema(
                 description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
                 required = true,
                 example = "2024_05_02_T_15_14_49_552222_KST"
@@ -784,6 +868,13 @@ class C7Service1TkV1DatabaseTestController(
         @Schema(description = "자동 생성 숫자", required = true, example = "21345")
         @JsonProperty("randomNum")
         val randomNum: Int,
+        @Schema(
+            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552222_KST"
+        )
+        @JsonProperty("testDatetime")
+        val testDatetime: String,
         @Schema(
             description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
@@ -1328,6 +1419,13 @@ class C7Service1TkV1DatabaseTestController(
             @Schema(description = "자동 생성 숫자", required = true, example = "21345")
             @JsonProperty("randomNum")
             val randomNum: Int,
+            @Schema(
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552222_KST"
+            )
+            @JsonProperty("testDatetime")
+            val testDatetime: String,
             @Schema(
                 description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
                 required = true,
