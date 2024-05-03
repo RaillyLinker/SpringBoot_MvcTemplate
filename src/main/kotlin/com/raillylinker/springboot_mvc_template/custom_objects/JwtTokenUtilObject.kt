@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.json.BasicJsonParser
 import java.nio.charset.StandardCharsets
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -19,7 +20,7 @@ object JwtTokenUtilObject {
     fun generateAccessToken(
         memberUid: String,
         memberRoleList: List<String>,
-        accessTokenExpirationTimeMs: Long,
+        accessTokenExpirationTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String,
         issuer: String,
@@ -29,7 +30,7 @@ object JwtTokenUtilObject {
             memberUid,
             memberRoleList,
             "access",
-            accessTokenExpirationTimeMs,
+            accessTokenExpirationTimeSec,
             jwtClaimsAes256InitializationVector,
             jwtClaimsAes256EncryptionKey,
             issuer,
@@ -40,14 +41,17 @@ object JwtTokenUtilObject {
     // (리프레시 토큰 발행)
     fun generateRefreshToken(
         memberUid: String,
-        refreshTokenExpirationTimeMs: Long,
+        refreshTokenExpirationTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String,
         issuer: String,
         jwtSecretKeyString: String
     ): String {
         return doGenerateToken(
-            memberUid, null, "refresh", refreshTokenExpirationTimeMs,
+            memberUid,
+            null,
+            "refresh",
+            refreshTokenExpirationTimeSec,
             jwtClaimsAes256InitializationVector,
             jwtClaimsAes256EncryptionKey,
             issuer,
@@ -128,14 +132,8 @@ object JwtTokenUtilObject {
     // 토큰 남은 유효 시간(초) 반환 (만료된 토큰이라면 0)
     fun getRemainSeconds(token: String): Long {
         val exp = parseJwtForPayload(token)["exp"] as Long
-
-        val diff = exp - (System.currentTimeMillis() / 1000)
-
-        val remain = if (diff <= 0) {
-            0
-        } else {
-            diff
-        }
+        val currentEpochSeconds = Instant.now().epochSecond
+        val remain = if (currentEpochSeconds < exp) exp - currentEpochSeconds else 0
 
         return remain
     }
@@ -153,7 +151,7 @@ object JwtTokenUtilObject {
         memberUid: String,
         memberRoleList: List<String>?,
         tokenUsage: String,
-        expireTimeMs: Long,
+        expireTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String,
         issuer: String,
@@ -186,9 +184,10 @@ object JwtTokenUtilObject {
         )
 
         claimsMap["iss"] = issuer
-        claimsMap["iat"] = Date(System.currentTimeMillis())
-        claimsMap["exp"] = Date(System.currentTimeMillis() + expireTimeMs)
-        claimsMap["cdt"] = LocalDateTime.now().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+        claimsMap["iat"] = Instant.now().epochSecond
+        claimsMap["exp"] = Instant.now().epochSecond + expireTimeSec
+        claimsMap["cdt"] = LocalDateTime.now().atZone(ZoneId.systemDefault())
+            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
 
         if (memberRoleList != null) {
             // member role list

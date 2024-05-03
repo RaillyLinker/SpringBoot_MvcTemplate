@@ -160,13 +160,13 @@ class SecurityConfig {
             // !!!비밀키 변경!!!
             const val JWT_SECRET_KEY_STRING = "123456789abcdefghijklmnopqrstuvw"
 
-            // (액세스 토큰 유효시간)
+            // (액세스 토큰 유효시간(초))
             // !!!유효시간 변경 (최소 15분 ~ {리프레시 토큰 유효시간})!!!
-            const val ACCESS_TOKEN_EXPIRATION_TIME_MS = 1000L * 60L * 30L // 30분
+            const val ACCESS_TOKEN_EXPIRATION_TIME_SEC = 60L * 30L // 30분
 
-            // (리프레시 토큰 유효시간)
+            // (리프레시 토큰 유효시간(초))
             // !!!유효시간 변경(최소 {액세스 토큰 유효시간} ~ {Long.MAX_VALUE = 292471208.7 년})!!!
-            const val REFRESH_TOKEN_EXPIRATION_TIME_MS = 1000L * 60L * 60L * 24L * 7L // 7일
+            const val REFRESH_TOKEN_EXPIRATION_TIME_SEC = 60L * 60L * 24L * 7L // 7일
 
             // (JWT Claims 암호화 AES 키)
             // !!!암호키 변경!!!

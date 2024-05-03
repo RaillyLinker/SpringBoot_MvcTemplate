@@ -30,7 +30,9 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 @Service
@@ -240,45 +242,36 @@ class C10Service1TkV1AuthService(
         val memberUidString: String = memberUid.toString()
 
         // 멤버 고유번호로 엑세스 토큰 생성
+        val localDateTimeNow = LocalDateTime.now()
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
             roleList,
-            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_MS,
+            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
             SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val accessTokenExpireWhen: String = SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss.SSS"
-        ).format(Calendar.getInstance().apply {
-            this.time = Date()
-            this.add(
-                Calendar.MILLISECOND,
-                SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_MS.toInt()
-            )
-        }.time)
+        val accessTokenExpireWhen = localDateTimeNow.plus(
+            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
+            ChronoUnit.SECONDS
+        )
 
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
             memberUidString,
-            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_MS,
+            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
             SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val refreshTokenExpireWhen: String = SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss.SSS"
-        ).format(Calendar.getInstance().apply {
-            this.time = Date()
-            this.add(
-                Calendar.MILLISECOND,
-                SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_MS.toInt()
-            )
-        }.time)
+        val refreshTokenExpireWhen = localDateTimeNow.plus(
+            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
+            ChronoUnit.SECONDS
+        )
 
         database1Service1LogInTokenInfoRepository.save(
             Database1_Service1_LogInTokenInfo(
@@ -286,17 +279,9 @@ class C10Service1TkV1AuthService(
                 "Bearer",
                 LocalDateTime.now(),
                 jwtAccessToken,
-                LocalDateTime
-                    .parse(
-                        accessTokenExpireWhen,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                    ),
+                accessTokenExpireWhen,
                 jwtRefreshToken,
-                LocalDateTime
-                    .parse(
-                        refreshTokenExpireWhen,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                    )
+                refreshTokenExpireWhen
             )
         )
 
@@ -360,8 +345,10 @@ class C10Service1TkV1AuthService(
             "Bearer",
             jwtAccessToken,
             jwtRefreshToken,
-            accessTokenExpireWhen,
-            refreshTokenExpireWhen,
+            accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+            refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
             myOAuth2List,
             myProfileList,
             myEmailList,
@@ -600,44 +587,35 @@ class C10Service1TkV1AuthService(
         // 멤버 고유번호로 엑세스 토큰 생성
         val memberUidString: String = snsOauth2.memberData.uid!!.toString()
 
+        val localDateTimeNow = LocalDateTime.now()
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString, roleList,
-            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_MS,
+            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
             SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val accessTokenExpireWhen: String = SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss.SSS"
-        ).format(Calendar.getInstance().apply {
-            this.time = Date()
-            this.add(
-                Calendar.MILLISECOND,
-                SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_MS.toInt()
-            )
-        }.time)
+        val accessTokenExpireWhen = localDateTimeNow.plus(
+            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
+            ChronoUnit.SECONDS
+        )
 
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
             memberUidString,
-            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_MS,
+            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
             SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val refreshTokenExpireWhen: String = SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss.SSS"
-        ).format(Calendar.getInstance().apply {
-            this.time = Date()
-            this.add(
-                Calendar.MILLISECOND,
-                SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_MS.toInt()
-            )
-        }.time)
+        val refreshTokenExpireWhen = localDateTimeNow.plus(
+            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
+            ChronoUnit.SECONDS
+        )
 
         database1Service1LogInTokenInfoRepository.save(
             Database1_Service1_LogInTokenInfo(
@@ -645,17 +623,9 @@ class C10Service1TkV1AuthService(
                 "Bearer",
                 LocalDateTime.now(),
                 jwtAccessToken,
-                LocalDateTime
-                    .parse(
-                        accessTokenExpireWhen,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                    ),
+                accessTokenExpireWhen,
                 jwtRefreshToken,
-                LocalDateTime
-                    .parse(
-                        refreshTokenExpireWhen,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                    )
+                refreshTokenExpireWhen
             )
         )
 
@@ -731,8 +701,10 @@ class C10Service1TkV1AuthService(
             "Bearer",
             jwtAccessToken,
             jwtRefreshToken,
-            accessTokenExpireWhen,
-            refreshTokenExpireWhen,
+            accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+            refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
             myOAuth2List,
             myProfileList,
             myEmailList,
@@ -811,44 +783,35 @@ class C10Service1TkV1AuthService(
         // 멤버 고유번호로 엑세스 토큰 생성
         val memberUidString: String = snsOauth2.memberData.uid!!.toString()
 
+        val localDateTimeNow = LocalDateTime.now()
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString, roleList,
-            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_MS,
+            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
             SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val accessTokenExpireWhen: String = SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss.SSS"
-        ).format(Calendar.getInstance().apply {
-            this.time = Date()
-            this.add(
-                Calendar.MILLISECOND,
-                SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_MS.toInt()
-            )
-        }.time)
+        val accessTokenExpireWhen = localDateTimeNow.plus(
+            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
+            ChronoUnit.SECONDS
+        )
 
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
             memberUidString,
-            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_MS,
+            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
             SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val refreshTokenExpireWhen: String = SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss.SSS"
-        ).format(Calendar.getInstance().apply {
-            this.time = Date()
-            this.add(
-                Calendar.MILLISECOND,
-                SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_MS.toInt()
-            )
-        }.time)
+        val refreshTokenExpireWhen = localDateTimeNow.plus(
+            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
+            ChronoUnit.SECONDS
+        )
 
         database1Service1LogInTokenInfoRepository.save(
             Database1_Service1_LogInTokenInfo(
@@ -856,17 +819,9 @@ class C10Service1TkV1AuthService(
                 "Bearer",
                 LocalDateTime.now(),
                 jwtAccessToken,
-                LocalDateTime
-                    .parse(
-                        accessTokenExpireWhen,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                    ),
+                accessTokenExpireWhen,
                 jwtRefreshToken,
-                LocalDateTime
-                    .parse(
-                        refreshTokenExpireWhen,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                    )
+                refreshTokenExpireWhen
             )
         )
 
@@ -942,8 +897,10 @@ class C10Service1TkV1AuthService(
             "Bearer",
             jwtAccessToken,
             jwtRefreshToken,
-            accessTokenExpireWhen,
-            refreshTokenExpireWhen,
+            accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+            refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
             myOAuth2List,
             myProfileList,
             myEmailList,
@@ -975,7 +932,8 @@ class C10Service1TkV1AuthService(
         }
 
         tokenInfo.rowDeleteDateStr =
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         database1Service1LogInTokenInfoRepository.save(tokenInfo)
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -1036,7 +994,7 @@ class C10Service1TkV1AuthService(
                             .lowercase() != "refresh" || // 토큰 타입이 Refresh 토큰이 아닐 때
                         JwtTokenUtilObject.getIssuer(jwtRefreshToken) != SecurityConfig.AuthTokenFilterService1Tk.ISSUER || // 발행인이 다를 때
                         refreshTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아닐 때
-                        JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) * 1000 > SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_MS || // 최대 만료시간을 초과
+                        JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) > SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC || // 최대 만료시간을 초과
                         JwtTokenUtilObject.getMemberUid(
                             jwtRefreshToken,
                             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -1077,7 +1035,8 @@ class C10Service1TkV1AuthService(
 
                     // 먼저 로그아웃 처리
                     tokenInfo.rowDeleteDateStr =
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                        LocalDateTime.now().atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                     database1Service1LogInTokenInfoRepository.save(tokenInfo)
 
                     // 멤버의 권한 리스트를 조회 후 반환
@@ -1093,43 +1052,34 @@ class C10Service1TkV1AuthService(
                     }
 
                     // 새 토큰 생성 및 로그인 처리
+                    val localDateTimeNow = LocalDateTime.now()
                     val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
                         accessTokenMemberUid, roleList,
-                        SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_MS,
+                        SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
                         SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                         SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
                         SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
                         SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
                     )
 
-                    val accessTokenExpireWhen: String = SimpleDateFormat(
-                        "yyyy-MM-dd HH:mm:ss.SSS"
-                    ).format(Calendar.getInstance().apply {
-                        this.time = Date()
-                        this.add(
-                            Calendar.MILLISECOND,
-                            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_MS.toInt()
-                        )
-                    }.time)
+                    val accessTokenExpireWhen = localDateTimeNow.plus(
+                        SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
+                        ChronoUnit.SECONDS
+                    )
 
                     val newRefreshToken = JwtTokenUtilObject.generateRefreshToken(
                         accessTokenMemberUid,
-                        SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_MS,
+                        SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
                         SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                         SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
                         SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
                         SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
                     )
 
-                    val refreshTokenExpireWhen: String = SimpleDateFormat(
-                        "yyyy-MM-dd HH:mm:ss.SSS"
-                    ).format(Calendar.getInstance().apply {
-                        this.time = Date()
-                        this.add(
-                            Calendar.MILLISECOND,
-                            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_MS.toInt()
-                        )
-                    }.time)
+                    val refreshTokenExpireWhen = localDateTimeNow.plus(
+                        SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
+                        ChronoUnit.SECONDS
+                    )
 
                     database1Service1LogInTokenInfoRepository.save(
                         Database1_Service1_LogInTokenInfo(
@@ -1137,17 +1087,9 @@ class C10Service1TkV1AuthService(
                             "Bearer",
                             LocalDateTime.now(),
                             newJwtAccessToken,
-                            LocalDateTime
-                                .parse(
-                                    accessTokenExpireWhen,
-                                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                                ),
+                            accessTokenExpireWhen,
                             newRefreshToken,
-                            LocalDateTime
-                                .parse(
-                                    refreshTokenExpireWhen,
-                                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                                )
+                            refreshTokenExpireWhen
                         )
                     )
 
@@ -1224,8 +1166,10 @@ class C10Service1TkV1AuthService(
                         "Bearer",
                         newJwtAccessToken,
                         newRefreshToken,
-                        accessTokenExpireWhen,
-                        refreshTokenExpireWhen,
+                        accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+                        refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
                         myOAuth2List,
                         myProfileList,
                         myEmailList,
@@ -1273,7 +1217,8 @@ class C10Service1TkV1AuthService(
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
         for (tokenInfo in tokenInfoList) {
             tokenInfo.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
 
             database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
@@ -1368,7 +1313,8 @@ class C10Service1TkV1AuthService(
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api13OutputVo(
             database1MemberRegisterEmailVerificationData.uid!!,
-            database1MemberRegisterEmailVerificationData.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            database1MemberRegisterEmailVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -1420,7 +1366,8 @@ class C10Service1TkV1AuthService(
 
             httpServletResponse.status = HttpStatus.OK.value()
             C10Service1TkV1AuthController.Api14OutputVo(
-                emailVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                emailVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1554,9 +1501,8 @@ class C10Service1TkV1AuthService(
                 }
 
                 val savedFileName = "${fileNameWithOutExtension}(${
-                    LocalDateTime.now().format(
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                    )
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 }).$fileExtension"
 
                 // multipartFile 을 targetPath 에 저장
@@ -1583,7 +1529,8 @@ class C10Service1TkV1AuthService(
 
             // 확인 완료된 검증 요청 정보 삭제
             emailVerification.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1JoinTheMembershipWithEmailVerificationDataRepository.save(emailVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -1646,11 +1593,8 @@ class C10Service1TkV1AuthService(
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api16OutputVo(
             database1MemberRegisterPhoneNumberVerificationData.uid!!,
-            database1MemberRegisterPhoneNumberVerificationData.verificationExpireWhen.format(
-                DateTimeFormatter.ofPattern(
-                    "yyyy-MM-dd HH:mm:ss.SSS"
-                )
-            )
+            database1MemberRegisterPhoneNumberVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -1702,7 +1646,8 @@ class C10Service1TkV1AuthService(
 
             httpServletResponse.status = HttpStatus.OK.value()
             C10Service1TkV1AuthController.Api17OutputVo(
-                phoneNumberVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                phoneNumberVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1837,9 +1782,8 @@ class C10Service1TkV1AuthService(
                 }
 
                 val savedFileName = "${fileNameWithOutExtension}(${
-                    LocalDateTime.now().format(
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                    )
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 }).$fileExtension"
 
                 // multipartFile 을 targetPath 에 저장
@@ -1865,7 +1809,8 @@ class C10Service1TkV1AuthService(
 
             // 확인 완료된 검증 요청 정보 삭제
             phoneNumberVerification.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1JoinTheMembershipWithPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -1935,9 +1880,9 @@ class C10Service1TkV1AuthService(
 
                 verificationUid = database1MemberRegisterOauth2VerificationData.uid!!
 
-                expireWhen = database1MemberRegisterOauth2VerificationData.verificationExpireWhen.format(
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                )
+                expireWhen =
+                    database1MemberRegisterOauth2VerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             }
 
             2 -> { // NAVER
@@ -1983,9 +1928,9 @@ class C10Service1TkV1AuthService(
 
                 verificationUid = database1MemberRegisterOauth2VerificationData.uid!!
 
-                expireWhen = database1MemberRegisterOauth2VerificationData.verificationExpireWhen.format(
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                )
+                expireWhen =
+                    database1MemberRegisterOauth2VerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             }
 
             3 -> { // KAKAO TALK
@@ -2031,9 +1976,9 @@ class C10Service1TkV1AuthService(
 
                 verificationUid = database1MemberRegisterOauth2VerificationData.uid!!
 
-                expireWhen = database1MemberRegisterOauth2VerificationData.verificationExpireWhen.format(
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                )
+                expireWhen =
+                    database1MemberRegisterOauth2VerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             }
 
             else -> {
@@ -2104,9 +2049,9 @@ class C10Service1TkV1AuthService(
 
                 verificationUid = database1MemberRegisterOauth2VerificationData.uid!!
 
-                expireWhen = database1MemberRegisterOauth2VerificationData.verificationExpireWhen.format(
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                )
+                expireWhen =
+                    database1MemberRegisterOauth2VerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             }
 
             else -> {
@@ -2275,9 +2220,8 @@ class C10Service1TkV1AuthService(
                 }
 
                 val savedFileName = "${fileNameWithOutExtension}(${
-                    LocalDateTime.now().format(
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-                    )
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
                 }).$fileExtension"
 
                 // multipartFile 을 targetPath 에 저장
@@ -2303,7 +2247,8 @@ class C10Service1TkV1AuthService(
 
             // 확인 완료된 검증 요청 정보 삭제
             oauth2Verification.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1JoinTheMembershipWithOauth2VerificationDataRepository.save(oauth2Verification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -2425,7 +2370,8 @@ class C10Service1TkV1AuthService(
 
         return C10Service1TkV1AuthController.Api22OutputVo(
             database1MemberFindPasswordEmailVerificationData.uid!!,
-            database1MemberFindPasswordEmailVerificationData.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            database1MemberFindPasswordEmailVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -2477,7 +2423,8 @@ class C10Service1TkV1AuthService(
 
             httpServletResponse.status = HttpStatus.OK.value()
             C10Service1TkV1AuthController.Api23OutputVo(
-                emailVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                emailVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2567,7 +2514,8 @@ class C10Service1TkV1AuthService(
 
             // 확인 완료된 검증 요청 정보 삭제
             emailVerification.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1FindPasswordWithEmailVerificationDataRepository.save(emailVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -2628,11 +2576,8 @@ class C10Service1TkV1AuthService(
 
         return C10Service1TkV1AuthController.Api25OutputVo(
             database1MemberFindPasswordPhoneNumberVerificationData.uid!!,
-            database1MemberFindPasswordPhoneNumberVerificationData.verificationExpireWhen.format(
-                DateTimeFormatter.ofPattern(
-                    "yyyy-MM-dd HH:mm:ss.SSS"
-                )
-            )
+            database1MemberFindPasswordPhoneNumberVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -2684,7 +2629,8 @@ class C10Service1TkV1AuthService(
 
             httpServletResponse.status = HttpStatus.OK.value()
             C10Service1TkV1AuthController.Api26OutputVo(
-                phoneNumberVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                phoneNumberVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2774,7 +2720,8 @@ class C10Service1TkV1AuthService(
 
             // 확인 완료된 검증 요청 정보 삭제
             phoneNumberVerification.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1FindPasswordWithPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -2965,7 +2912,8 @@ class C10Service1TkV1AuthService(
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api32OutputVo(
             database1MemberRegisterEmailVerificationData.uid!!,
-            database1MemberRegisterEmailVerificationData.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            database1MemberRegisterEmailVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -3024,7 +2972,8 @@ class C10Service1TkV1AuthService(
 
             httpServletResponse.status = HttpStatus.OK.value()
             C10Service1TkV1AuthController.Api33OutputVo(
-                emailVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                emailVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3104,7 +3053,8 @@ class C10Service1TkV1AuthService(
 
             // 확인 완료된 검증 요청 정보 삭제
             emailVerification.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1AddEmailVerificationDataRepository.save(emailVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -3180,7 +3130,8 @@ class C10Service1TkV1AuthService(
         ) {
             // 이메일 지우기
             myEmailVo.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1MemberEmailDataRepository.save(
                 myEmailVo
             )
@@ -3259,7 +3210,8 @@ class C10Service1TkV1AuthService(
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api36OutputVo(
             database1MemberAddPhoneNumberVerificationData.uid!!,
-            database1MemberAddPhoneNumberVerificationData.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            database1MemberAddPhoneNumberVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         )
     }
 
@@ -3319,7 +3271,8 @@ class C10Service1TkV1AuthService(
 
             httpServletResponse.status = HttpStatus.OK.value()
             C10Service1TkV1AuthController.Api37OutputVo(
-                phoneNumberVerification.verificationExpireWhen.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                phoneNumberVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3399,7 +3352,8 @@ class C10Service1TkV1AuthService(
 
             // 확인 완료된 검증 요청 정보 삭제
             phoneNumberVerification.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1AddPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -3475,7 +3429,8 @@ class C10Service1TkV1AuthService(
         ) {
             // 전화번호 지우기
             myPhoneVo.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1MemberPhoneDataRepository.save(
                 myPhoneVo
             )
@@ -3755,7 +3710,8 @@ class C10Service1TkV1AuthService(
         ) {
             // 로그인 정보 지우기
             myOAuth2Vo.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1MemberOauth2LoginDataRepository.save(
                 myOAuth2Vo
             )
@@ -3796,7 +3752,8 @@ class C10Service1TkV1AuthService(
         }
 
         // 회원탈퇴 처리
-        member.rowDeleteDateStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+        member.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
+            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         database1Service1MemberDataRepository.save(
             member
         )
@@ -3805,7 +3762,8 @@ class C10Service1TkV1AuthService(
         val emailList =
             database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
         for (email in emailList) {
-            email.rowDeleteDateStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            email.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1MemberEmailDataRepository.save(email)
         }
 
@@ -3813,7 +3771,8 @@ class C10Service1TkV1AuthService(
             database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
         for (memberRole in memberRoleList) {
             memberRole.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1MemberRoleDataRepository.save(memberRole)
         }
 
@@ -3821,7 +3780,8 @@ class C10Service1TkV1AuthService(
             database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
         for (memberSnsOauth2 in memberSnsOauth2List) {
             memberSnsOauth2.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1MemberOauth2LoginDataRepository.save(memberSnsOauth2)
         }
 
@@ -3829,7 +3789,8 @@ class C10Service1TkV1AuthService(
             database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
         for (memberPhone in memberPhoneList) {
             memberPhone.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1MemberPhoneDataRepository.save(memberPhone)
         }
 
@@ -3837,7 +3798,8 @@ class C10Service1TkV1AuthService(
             database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
         for (profile in profileData) {
             profile.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1MemberProfileDataRepository.save(profile)
         }
 
@@ -3853,7 +3815,8 @@ class C10Service1TkV1AuthService(
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
         for (tokenInfo in tokenInfoList) {
             tokenInfo.rowDeleteDateStr =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
 
             database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
@@ -4021,7 +3984,8 @@ class C10Service1TkV1AuthService(
 
         // 프로필 비활성화
         profileData.rowDeleteDateStr =
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         database1Service1MemberProfileDataRepository.save(profileData)
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -4080,9 +4044,8 @@ class C10Service1TkV1AuthService(
         }
 
         val savedFileName = "${fileNameWithOutExtension}(${
-            LocalDateTime.now().format(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd-HH_mm-ss-SSS")
-            )
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         }).$fileExtension"
 
         // multipartFile 을 targetPath 에 저장

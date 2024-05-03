@@ -203,17 +203,17 @@ class C10Service1TkV1AuthController(
         val refreshToken: String,
 
         @Schema(
-            description = "엑세스 토큰 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_KST"
         )
         @JsonProperty("accessTokenExpireWhen")
         val accessTokenExpireWhen: String,
 
         @Schema(
-            description = "리프레시 토큰 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_KST"
         )
         @JsonProperty("refreshTokenExpireWhen")
         val refreshTokenExpireWhen: String,
@@ -418,17 +418,17 @@ class C10Service1TkV1AuthController(
         val refreshToken: String,
 
         @Schema(
-            description = "엑세스 토큰 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_KST"
         )
         @JsonProperty("accessTokenExpireWhen")
         val accessTokenExpireWhen: String,
 
         @Schema(
-            description = "리프레시 토큰 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_KST"
         )
         @JsonProperty("refreshTokenExpireWhen")
         val refreshTokenExpireWhen: String,
@@ -585,17 +585,17 @@ class C10Service1TkV1AuthController(
         val refreshToken: String,
 
         @Schema(
-            description = "엑세스 토큰 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_KST"
         )
         @JsonProperty("accessTokenExpireWhen")
         val accessTokenExpireWhen: String,
 
         @Schema(
-            description = "리프레시 토큰 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_KST"
         )
         @JsonProperty("refreshTokenExpireWhen")
         val refreshTokenExpireWhen: String,
@@ -771,17 +771,17 @@ class C10Service1TkV1AuthController(
         val refreshToken: String,
 
         @Schema(
-            description = "엑세스 토큰 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_KST"
         )
         @JsonProperty("accessTokenExpireWhen")
         val accessTokenExpireWhen: String,
 
         @Schema(
-            description = "리프레시 토큰 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_KST"
         )
         @JsonProperty("refreshTokenExpireWhen")
         val refreshTokenExpireWhen: String,
@@ -994,9 +994,9 @@ class C10Service1TkV1AuthController(
         @JsonProperty("verificationUid")
         val verificationUid: Long,
         @Schema(
-            description = "검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("verificationExpireWhen")
         val verificationExpireWhen: String
@@ -1037,9 +1037,9 @@ class C10Service1TkV1AuthController(
 
     data class Api14OutputVo(
         @Schema(
-            description = "인증 완료시 새로 늘어난 검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "인증 완료시 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("expireWhen")
         val expireWhen: String
@@ -1158,9 +1158,9 @@ class C10Service1TkV1AuthController(
         val verificationUid: Long,
 
         @Schema(
-            description = "검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("verificationExpireWhen")
         val verificationExpireWhen: String
@@ -1201,9 +1201,9 @@ class C10Service1TkV1AuthController(
 
     data class Api17OutputVo(
         @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = false,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("expireWhen")
         val expireWhen: String?
@@ -1351,9 +1351,9 @@ class C10Service1TkV1AuthController(
         val oauth2Id: String,
 
         @Schema(
-            description = "검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("expireWhen")
         val expireWhen: String
@@ -1427,9 +1427,9 @@ class C10Service1TkV1AuthController(
         val oauth2Id: String,
 
         @Schema(
-            description = "검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("expireWhen")
         val expireWhen: String
@@ -1588,9 +1588,9 @@ class C10Service1TkV1AuthController(
         @JsonProperty("verificationUid")
         val verificationUid: Long,
         @Schema(
-            description = "검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("verificationExpireWhen")
         val verificationExpireWhen: String
@@ -1631,9 +1631,9 @@ class C10Service1TkV1AuthController(
 
     data class Api23OutputVo(
         @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = false,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("expireWhen")
         val expireWhen: String?
@@ -1728,9 +1728,9 @@ class C10Service1TkV1AuthController(
         val verificationUid: Long,
 
         @Schema(
-            description = "검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("verificationExpireWhen")
         val verificationExpireWhen: String
@@ -1771,9 +1771,9 @@ class C10Service1TkV1AuthController(
 
     data class Api26OutputVo(
         @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = false,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("expireWhen")
         val expireWhen: String?
@@ -2005,9 +2005,9 @@ class C10Service1TkV1AuthController(
         val verificationUid: Long,
 
         @Schema(
-            description = "검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("verificationExpireWhen")
         val verificationExpireWhen: String
@@ -2052,9 +2052,9 @@ class C10Service1TkV1AuthController(
 
     data class Api33OutputVo(
         @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = false,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("expireWhen")
         val expireWhen: String?
@@ -2191,9 +2191,9 @@ class C10Service1TkV1AuthController(
         val verificationUid: Long,
 
         @Schema(
-            description = "검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("verificationExpireWhen")
         val verificationExpireWhen: String
@@ -2238,9 +2238,9 @@ class C10Service1TkV1AuthController(
 
     data class Api37OutputVo(
         @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간 (yyyy-MM-dd HH:mm:ss.SSS)",
+            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = false,
-            example = "2023-01-02 11:11:11.111"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("expireWhen")
         val expireWhen: String?
