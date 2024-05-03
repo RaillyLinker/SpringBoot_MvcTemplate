@@ -623,8 +623,6 @@ class C2Service1TkV1RequestTestService(
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z"))
             }_-1"
 
-        classLogger.info("%%%%%${sseEmitterId}")
-
         // 수신 객체
         val sseEmitter = api20SseEmitterWrapperMbr.getSseEmitter(sseEmitterId, lastSseEventId)
 
