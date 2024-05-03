@@ -7,7 +7,6 @@ object ApplicationConstants {
     // !!!본인의 패키지명 작성!!!
     const val PACKAGE_NAME = "com.raillylinker.springboot_mvc_template"
 
-    // 현 프로젝트에서 사용할 타임존 설정 (UTC, Asia/Seoul)
-    // !!!이것을 변경했다면, datasource.{데이터베이스 종류}.jdbcUrl 의 serverTimezone 설정을 이와 동일하게 맞춰주세요.!!!
+    // 현 프로젝트에서 사용할 타임존 설정 (UTC, Asia/Seoul, ...)
     const val SYSTEM_TIME_ZONE = "Asia/Seoul"
 }
