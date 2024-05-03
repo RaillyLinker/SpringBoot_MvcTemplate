@@ -1520,6 +1520,4 @@ class C7Service1TkV1DatabaseTestController(
             )
         }
     }
-
-    // todo 날짜 데이터 입력 테스트(타임존을 여러개 두고 입력)
 }
