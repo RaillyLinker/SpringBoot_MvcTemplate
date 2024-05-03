@@ -24,7 +24,7 @@ class C9Service1TkV1MapCoordinateCalculationController(
     // <매핑 함수 공간>
     @Operation(
         summary = "N0 : 테스트용 기본 좌표 리스트를 DB에 저장",
-        description = "테스트용 기본 좌표 리스트를 DB에 저장\n\n" +
+        description = "DB 내에 기존 좌표 데이터들을 모두 날려버리고, 테스트용 기본 좌표 리스트를 DB에 저장합니다.\n\n" +
                 "(api-result-code)\n\n"
     )
     @PostMapping(
