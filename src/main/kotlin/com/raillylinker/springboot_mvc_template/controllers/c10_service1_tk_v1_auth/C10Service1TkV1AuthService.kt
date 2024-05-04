@@ -242,7 +242,6 @@ class C10Service1TkV1AuthService(
         val memberUidString: String = memberUid.toString()
 
         // 멤버 고유번호로 엑세스 토큰 생성
-        val localDateTimeNow = LocalDateTime.now()
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
             roleList,
@@ -253,10 +252,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val accessTokenExpireWhen = localDateTimeNow.plus(
-            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
-            ChronoUnit.SECONDS
-        )
+        val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtAccessToken)
 
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
@@ -268,10 +264,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val refreshTokenExpireWhen = localDateTimeNow.plus(
-            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
-            ChronoUnit.SECONDS
-        )
+        val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
         database1Service1LogInTokenInfoRepository.save(
             Database1_Service1_LogInTokenInfo(
@@ -587,7 +580,6 @@ class C10Service1TkV1AuthService(
         // 멤버 고유번호로 엑세스 토큰 생성
         val memberUidString: String = snsOauth2.memberData.uid!!.toString()
 
-        val localDateTimeNow = LocalDateTime.now()
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString, roleList,
             SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
@@ -597,10 +589,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val accessTokenExpireWhen = localDateTimeNow.plus(
-            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
-            ChronoUnit.SECONDS
-        )
+        val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtAccessToken)
 
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
@@ -612,10 +601,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val refreshTokenExpireWhen = localDateTimeNow.plus(
-            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
-            ChronoUnit.SECONDS
-        )
+        val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
         database1Service1LogInTokenInfoRepository.save(
             Database1_Service1_LogInTokenInfo(
@@ -783,7 +769,6 @@ class C10Service1TkV1AuthService(
         // 멤버 고유번호로 엑세스 토큰 생성
         val memberUidString: String = snsOauth2.memberData.uid!!.toString()
 
-        val localDateTimeNow = LocalDateTime.now()
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString, roleList,
             SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
@@ -793,10 +778,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val accessTokenExpireWhen = localDateTimeNow.plus(
-            SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
-            ChronoUnit.SECONDS
-        )
+        val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtAccessToken)
 
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
@@ -808,10 +790,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
         )
 
-        val refreshTokenExpireWhen = localDateTimeNow.plus(
-            SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
-            ChronoUnit.SECONDS
-        )
+        val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
         database1Service1LogInTokenInfoRepository.save(
             Database1_Service1_LogInTokenInfo(
@@ -1052,7 +1031,6 @@ class C10Service1TkV1AuthService(
                     }
 
                     // 새 토큰 생성 및 로그인 처리
-                    val localDateTimeNow = LocalDateTime.now()
                     val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
                         accessTokenMemberUid, roleList,
                         SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
@@ -1062,10 +1040,7 @@ class C10Service1TkV1AuthService(
                         SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
                     )
 
-                    val accessTokenExpireWhen = localDateTimeNow.plus(
-                        SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
-                        ChronoUnit.SECONDS
-                    )
+                    val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newJwtAccessToken)
 
                     val newRefreshToken = JwtTokenUtilObject.generateRefreshToken(
                         accessTokenMemberUid,
@@ -1076,10 +1051,7 @@ class C10Service1TkV1AuthService(
                         SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
                     )
 
-                    val refreshTokenExpireWhen = localDateTimeNow.plus(
-                        SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
-                        ChronoUnit.SECONDS
-                    )
+                    val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newRefreshToken)
 
                     database1Service1LogInTokenInfoRepository.save(
                         Database1_Service1_LogInTokenInfo(

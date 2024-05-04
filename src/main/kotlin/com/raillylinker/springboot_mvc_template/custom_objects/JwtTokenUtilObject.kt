@@ -133,9 +133,15 @@ object JwtTokenUtilObject {
     fun getRemainSeconds(token: String): Long {
         val exp = parseJwtForPayload(token)["exp"] as Long
         val currentEpochSeconds = Instant.now().epochSecond
-        val remain = if (currentEpochSeconds < exp) exp - currentEpochSeconds else 0
 
-        return remain
+        return if (currentEpochSeconds < exp) exp - currentEpochSeconds else 0
+    }
+
+    fun getExpirationDateTime(token: String): LocalDateTime {
+        val exp = parseJwtForPayload(token)["exp"] as Long
+        val expirationInstant = Instant.ofEpochSecond(exp)
+
+        return LocalDateTime.ofInstant(expirationInstant, ZoneId.systemDefault())
     }
 
     // 토큰 타입
