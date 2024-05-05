@@ -28,11 +28,9 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.*
 
 @Service
@@ -105,14 +103,13 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
 
         val result: MutableMap<String, Any> = HashMap()
         result["result"] = "Member No.$memberUid : Test Success"
 
         httpServletResponse.status = HttpStatus.OK.value()
         return result
-
     }
 
     ////
@@ -121,14 +118,13 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
 
         val result: MutableMap<String, Any> = HashMap()
         result["result"] = "Member No.$memberUid : Test Success"
 
         httpServletResponse.status = HttpStatus.OK.value()
         return result
-
     }
 
     ////
@@ -137,14 +133,13 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
 
         val result: MutableMap<String, Any> = HashMap()
         result["result"] = "Member No.$memberUid : Test Success"
 
         httpServletResponse.status = HttpStatus.OK.value()
         return result
-
     }
 
     ////
@@ -244,7 +239,6 @@ class C10Service1TkV1AuthService(
         // 멤버 고유번호로 엑세스 토큰 생성
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
-            roleList,
             SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -339,9 +333,9 @@ class C10Service1TkV1AuthService(
             jwtAccessToken,
             jwtRefreshToken,
             accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             myOAuth2List,
             myProfileList,
             myEmailList,
@@ -581,7 +575,7 @@ class C10Service1TkV1AuthService(
         val memberUidString: String = snsOauth2.memberData.uid!!.toString()
 
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
-            memberUidString, roleList,
+            memberUidString,
             SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -688,9 +682,9 @@ class C10Service1TkV1AuthService(
             jwtAccessToken,
             jwtRefreshToken,
             accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             myOAuth2List,
             myProfileList,
             myEmailList,
@@ -770,7 +764,7 @@ class C10Service1TkV1AuthService(
         val memberUidString: String = snsOauth2.memberData.uid!!.toString()
 
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
-            memberUidString, roleList,
+            memberUidString,
             SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -877,9 +871,9 @@ class C10Service1TkV1AuthService(
             jwtAccessToken,
             jwtRefreshToken,
             accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
             myOAuth2List,
             myProfileList,
             myEmailList,
@@ -891,12 +885,12 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
-    // 주의점 : 클라이언트 입장에선 강제종료 등의 이유로 항상 로그인과 로그아웃이 쌍을 이루는 것은 아니기에 이점을 유의
     fun api8(authorization: String, httpServletResponse: HttpServletResponse) {
-        // 해당 멤버의 토큰 발행 정보 삭제
         val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
-        val tokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
         val token = authorizationSplit[1].trim() // (ex : "abcd1234")
+
+        // 해당 멤버의 토큰 발행 정보 삭제
+        val tokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
 
         val tokenInfo = database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
             tokenType,
@@ -904,16 +898,12 @@ class C10Service1TkV1AuthService(
             "-"
         )
 
-        if (tokenInfo == null) {
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "1")
-            return
+        if (tokenInfo != null) {
+            tokenInfo.rowDeleteDateStr =
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+            database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
-
-        tokenInfo.rowDeleteDateStr =
-            LocalDateTime.now().atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
-        database1Service1LogInTokenInfoRepository.save(tokenInfo)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
@@ -926,242 +916,249 @@ class C10Service1TkV1AuthService(
         inputVo: C10Service1TkV1AuthController.Api9InputVo,
         httpServletResponse: HttpServletResponse
     ): C10Service1TkV1AuthController.Api9OutputVo? {
-        val accessTokenMemberUid = JwtTokenUtilObject.getMemberUid(
-            authorization.split(" ")[1].trim(),
-            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
-
-        val memberInfo =
-            database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(accessTokenMemberUid.toLong(), "-")
-
-        if (memberInfo == null) {
-            // 가입되지 않은 회원
+        // 타입과 토큰을 분리
+        val refreshTokenInputSplit = inputVo.refreshToken.split(" ") // ex : ["Bearer", "qwer1234"]
+        if (refreshTokenInputSplit.size < 2) {
+            // 올바르지 않은 Token
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
 
-        // 타입과 토큰을 분리
-        val refreshTokenInputSplit = inputVo.refreshToken.split(" ") // ex : ["Bearer", "qwer1234"]
+        // 저장된 현재 인증된 멤버의 리프레시 토큰 가져오기
+        val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
+        val accessTokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
+        val accessToken = authorizationSplit[1].trim() // (ex : "abcd1234")
 
-        if (refreshTokenInputSplit.size >= 2) { // 타입으로 추정되는 문장이 존재할 때
-            // 타입 분리
-            val tokenType = refreshTokenInputSplit[0].trim() // 첫번째 단어는 토큰 타입
-            val jwtRefreshToken = refreshTokenInputSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
+        val accessTokenMemberUid = JwtTokenUtilObject.getMemberUid(
+            accessToken,
+            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
+        )
 
-            when (tokenType.lowercase()) { // 타입 검증
-                "bearer" -> { // Bearer JWT 토큰 검증
-                    // 토큰 문자열 해석 가능여부 확인
-                    val refreshTokenType: String? = try {
-                        JwtTokenUtilObject.getTokenType(jwtRefreshToken)
-                    } catch (_: Exception) {
-                        null
-                    }
+        // 타입 분리
+        val tokenType = refreshTokenInputSplit[0].trim() // 첫번째 단어는 토큰 타입
+        val jwtRefreshToken = refreshTokenInputSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
 
-                    // 리프레시 토큰 검증
-                    if (refreshTokenType == null || // 해석 불가능한 리프레시 토큰
-                        !JwtTokenUtilObject.validateSignature(
-                            jwtRefreshToken,
-                            SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
-                        ) || // 시크릿 검증이 유효하지 않을 때 = 시크릿 검증시 정보가 틀림 = 위변조된 토큰
-                        JwtTokenUtilObject.getTokenUsage(
-                            jwtRefreshToken,
-                            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                        )
-                            .lowercase() != "refresh" || // 토큰 타입이 Refresh 토큰이 아닐 때
-                        JwtTokenUtilObject.getIssuer(jwtRefreshToken) != SecurityConfig.AuthTokenFilterService1Tk.ISSUER || // 발행인이 다를 때
-                        refreshTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아닐 때
-                        JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) > SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC || // 최대 만료시간을 초과
-                        JwtTokenUtilObject.getMemberUid(
-                            jwtRefreshToken,
-                            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                        ) != accessTokenMemberUid // 리프레시 토큰의 멤버 고유번호와 액세스 토큰 멤버 고유번호가 다를시
-                    ) {
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "2")
-                        return null
-                    }
+        if (jwtRefreshToken == "") {
+            // 토큰이 비어있음 (올바르지 않은 Authorization Token)
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return null
+        }
 
-                    // 저장된 현재 인증된 멤버의 리프레시 토큰 가져오기
-                    val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
-                    val tokenType1 = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
-                    val token = authorizationSplit[1].trim() // (ex : "abcd1234")
-
-                    val tokenInfo =
-                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
-                            tokenType1,
-                            token,
-                            "-"
-                        )
-
-                    if (JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) == 0L || // 만료시간 지남
-                        tokenInfo == null // jwtAccessToken 의 리프레시 토큰이 저장소에 없음
-                    ) {
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "3")
-                        return null
-                    }
-
-                    if (jwtRefreshToken != tokenInfo.refreshToken) {
-                        // 건내받은 토큰이 해당 액세스 토큰의 가용 토큰과 맞지 않음
-                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                        httpServletResponse.setHeader("api-result-code", "4")
-                        return null
-                    }
-
-                    // 먼저 로그아웃 처리
-                    tokenInfo.rowDeleteDateStr =
-                        LocalDateTime.now().atZone(ZoneId.systemDefault())
-                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
-                    database1Service1LogInTokenInfoRepository.save(tokenInfo)
-
-                    // 멤버의 권한 리스트를 조회 후 반환
-                    val memberRoleList =
-                        database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                            memberInfo,
-                            "-"
-                        )
-
-                    val roleList: ArrayList<String> = arrayListOf()
-                    for (userRole in memberRoleList) {
-                        roleList.add(userRole.role)
-                    }
-
-                    // 새 토큰 생성 및 로그인 처리
-                    val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
-                        accessTokenMemberUid, roleList,
-                        SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
-                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
-                        SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
-                        SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
-                    )
-
-                    val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newJwtAccessToken)
-
-                    val newRefreshToken = JwtTokenUtilObject.generateRefreshToken(
-                        accessTokenMemberUid,
-                        SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
-                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
-                        SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
-                        SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
-                    )
-
-                    val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newRefreshToken)
-
-                    database1Service1LogInTokenInfoRepository.save(
-                        Database1_Service1_LogInTokenInfo(
-                            memberInfo,
-                            "Bearer",
-                            LocalDateTime.now(),
-                            newJwtAccessToken,
-                            accessTokenExpireWhen,
-                            newRefreshToken,
-                            refreshTokenExpireWhen
-                        )
-                    )
-
-                    val profileData =
-                        database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                            memberInfo,
-                            "-"
-                        )
-                    val myProfileList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo> = arrayListOf()
-                    for (profile in profileData) {
-                        myProfileList.add(
-                            C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo(
-                                profile.uid!!,
-                                profile.imageFullUrl,
-                                profile.uid == memberInfo.frontMemberProfileData?.uid
-                            )
-                        )
-                    }
-
-                    val emailEntityList =
-                        database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                            memberInfo,
-                            "-"
-                        )
-                    val myEmailList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.EmailInfo> = arrayListOf()
-                    for (emailEntity in emailEntityList) {
-                        myEmailList.add(
-                            C10Service1TkV1AuthController.Api9OutputVo.EmailInfo(
-                                emailEntity.uid!!,
-                                emailEntity.emailAddress,
-                                emailEntity.uid == memberInfo.frontMemberEmailData?.uid
-                            )
-                        )
-                    }
-
-                    val phoneEntityList =
-                        database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                            memberInfo,
-                            "-"
-                        )
-                    val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo> =
-                        arrayListOf()
-                    for (phoneEntity in phoneEntityList) {
-                        myPhoneNumberList.add(
-                            C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo(
-                                phoneEntity.uid!!,
-                                phoneEntity.phoneNumber,
-                                phoneEntity.uid == memberInfo.frontMemberPhoneData?.uid
-                            )
-                        )
-                    }
-
-                    val oAuth2EntityList =
-                        database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                            memberInfo,
-                            "-"
-                        )
-                    val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api9OutputVo.OAuth2Info>()
-                    for (oAuth2Entity in oAuth2EntityList) {
-                        myOAuth2List.add(
-                            C10Service1TkV1AuthController.Api9OutputVo.OAuth2Info(
-                                oAuth2Entity.uid!!,
-                                oAuth2Entity.oauth2TypeCode.toInt(),
-                                oAuth2Entity.oauth2Id
-                            )
-                        )
-                    }
-
-                    httpServletResponse.status = HttpStatus.OK.value()
-                    return C10Service1TkV1AuthController.Api9OutputVo(
-                        memberInfo.uid!!,
-                        memberInfo.nickName,
-                        roleList,
-                        "Bearer",
-                        newJwtAccessToken,
-                        newRefreshToken,
-                        accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
-                        refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_z")),
-                        myOAuth2List,
-                        myProfileList,
-                        myEmailList,
-                        myPhoneNumberList,
-                        memberInfo.accountPassword == null
-                    )
+        when (tokenType.lowercase()) { // 타입 검증
+            "bearer" -> { // Bearer JWT 토큰 검증
+                // 토큰 문자열 해석 가능여부 확인
+                val refreshTokenType: String? = try {
+                    JwtTokenUtilObject.getTokenType(jwtRefreshToken)
+                } catch (_: Exception) {
+                    null
                 }
 
-                else -> {
-                    // 처리 가능한 토큰 타입이 아닐 때
+                // 리프레시 토큰 검증
+                if (refreshTokenType == null || // 해석 불가능한 리프레시 토큰
+                    refreshTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아닐 때
+                    JwtTokenUtilObject.getTokenUsage(
+                        jwtRefreshToken,
+                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                    ).lowercase() != "refresh" || // 토큰 타입이 Refresh 토큰이 아닐 때
+                    // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
+                    JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) > SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC ||
+                    JwtTokenUtilObject.getIssuer(jwtRefreshToken) != SecurityConfig.AuthTokenFilterService1Tk.ISSUER || // 발행인이 다를 때
+                    !JwtTokenUtilObject.validateSignature(
+                        jwtRefreshToken,
+                        SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
+                    ) || // 시크릿 검증이 유효하지 않을 때 = 위변조된 토큰
+                    JwtTokenUtilObject.getMemberUid(
+                        jwtRefreshToken,
+                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                    ) != accessTokenMemberUid // 리프레시 토큰의 멤버 고유번호와 액세스 토큰 멤버 고유번호가 다를시
+                ) {
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    httpServletResponse.setHeader("api-result-code", "1")
+                    return null
+                }
+
+                if (JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) <= 0L) {
+                    // 리플레시 토큰 만료
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
+
+                val tokenInfo =
+                    database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
+                        accessTokenType,
+                        accessToken,
+                        "-"
+                    )
+
+                if (tokenInfo == null) {// jwtAccessToken 의 리프레시 토큰이 저장소에 없음
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    httpServletResponse.setHeader("api-result-code", "2")
+                    return null
+                }
+
+                if (jwtRefreshToken != tokenInfo.refreshToken) {
+                    // 건내받은 토큰이 해당 액세스 토큰의 가용 토큰과 맞지 않음
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    httpServletResponse.setHeader("api-result-code", "3")
+                    return null
+                }
+
+                val memberInfo =
+                    database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+                        accessTokenMemberUid.toLong(),
+                        "-"
+                    )!!
+
+                // 먼저 로그아웃 처리
+                tokenInfo.rowDeleteDateStr =
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                database1Service1LogInTokenInfoRepository.save(tokenInfo)
+
+                // 멤버의 권한 리스트를 조회 후 반환
+                val memberRoleList =
+                    database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+                        memberInfo,
+                        "-"
+                    )
+
+                val roleList: ArrayList<String> = arrayListOf()
+                for (userRole in memberRoleList) {
+                    roleList.add(userRole.role)
+                }
+
+                // 새 토큰 생성 및 로그인 처리
+                val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
+                    accessTokenMemberUid,
+                    SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC,
+                    SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                    SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
+                    SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
+                    SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
+                )
+
+                val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newJwtAccessToken)
+
+                val newRefreshToken = JwtTokenUtilObject.generateRefreshToken(
+                    accessTokenMemberUid,
+                    SecurityConfig.AuthTokenFilterService1Tk.REFRESH_TOKEN_EXPIRATION_TIME_SEC,
+                    SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                    SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY,
+                    SecurityConfig.AuthTokenFilterService1Tk.ISSUER,
+                    SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
+                )
+
+                val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newRefreshToken)
+
+                database1Service1LogInTokenInfoRepository.save(
+                    Database1_Service1_LogInTokenInfo(
+                        memberInfo,
+                        "Bearer",
+                        LocalDateTime.now(),
+                        newJwtAccessToken,
+                        accessTokenExpireWhen,
+                        newRefreshToken,
+                        refreshTokenExpireWhen
+                    )
+                )
+
+                val profileData =
+                    database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+                        memberInfo,
+                        "-"
+                    )
+                val myProfileList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo> = arrayListOf()
+                for (profile in profileData) {
+                    myProfileList.add(
+                        C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo(
+                            profile.uid!!,
+                            profile.imageFullUrl,
+                            profile.uid == memberInfo.frontMemberProfileData?.uid
+                        )
+                    )
+                }
+
+                val emailEntityList =
+                    database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+                        memberInfo,
+                        "-"
+                    )
+                val myEmailList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.EmailInfo> = arrayListOf()
+                for (emailEntity in emailEntityList) {
+                    myEmailList.add(
+                        C10Service1TkV1AuthController.Api9OutputVo.EmailInfo(
+                            emailEntity.uid!!,
+                            emailEntity.emailAddress,
+                            emailEntity.uid == memberInfo.frontMemberEmailData?.uid
+                        )
+                    )
+                }
+
+                val phoneEntityList =
+                    database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+                        memberInfo,
+                        "-"
+                    )
+                val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo> =
+                    arrayListOf()
+                for (phoneEntity in phoneEntityList) {
+                    myPhoneNumberList.add(
+                        C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo(
+                            phoneEntity.uid!!,
+                            phoneEntity.phoneNumber,
+                            phoneEntity.uid == memberInfo.frontMemberPhoneData?.uid
+                        )
+                    )
+                }
+
+                val oAuth2EntityList =
+                    database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+                        memberInfo,
+                        "-"
+                    )
+                val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api9OutputVo.OAuth2Info>()
+                for (oAuth2Entity in oAuth2EntityList) {
+                    myOAuth2List.add(
+                        C10Service1TkV1AuthController.Api9OutputVo.OAuth2Info(
+                            oAuth2Entity.uid!!,
+                            oAuth2Entity.oauth2TypeCode.toInt(),
+                            oAuth2Entity.oauth2Id
+                        )
+                    )
+                }
+
+                httpServletResponse.status = HttpStatus.OK.value()
+                return C10Service1TkV1AuthController.Api9OutputVo(
+                    memberInfo.uid!!,
+                    memberInfo.nickName,
+                    roleList,
+                    "Bearer",
+                    newJwtAccessToken,
+                    newRefreshToken,
+                    accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                    myOAuth2List,
+                    myProfileList,
+                    myEmailList,
+                    myPhoneNumberList,
+                    memberInfo.accountPassword == null
+                )
             }
-        } else {
-            // 타입을 전달 하지 않았을 때
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "2")
-            return null
+
+            else -> {
+                // 지원하지 않는 토큰 타입 (올바르지 않은 Authorization Token)
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                httpServletResponse.setHeader("api-result-code", "1")
+                return null
+            }
         }
     }
 
@@ -1218,8 +1215,12 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
-        val userInfo = database1Service1MemberDataRepository.findById(memberUid.toLong()).get()
+        ).toLong()
+
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         if (database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(nickName, "-")) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1227,9 +1228,9 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        userInfo.nickName = nickName
+        memberData.nickName = nickName
         database1Service1MemberDataRepository.save(
-            userInfo
+            memberData
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -1292,20 +1293,19 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api14(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         email: String,
         verificationCode: String
-    ): C10Service1TkV1AuthController.Api14OutputVo? {
+    ) {
         val emailVerificationOpt =
             database1Service1JoinTheMembershipWithEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         val emailVerification = emailVerificationOpt.get()
@@ -1315,36 +1315,24 @@ class C10Service1TkV1AuthService(
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         if (LocalDateTime.now().isAfter(emailVerification.verificationExpireWhen)) {
             // 만료됨
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
-            return null
+            return
         }
 
         // 입력 코드와 발급된 코드와의 매칭
         val codeMatched = emailVerification.verificationSecret == verificationCode
 
-        return if (codeMatched) { // 코드 일치
-            val verificationTimeSec: Long = 60 * 10
-            emailVerification.verificationExpireWhen =
-                LocalDateTime.now().plusSeconds(verificationTimeSec)
-            database1Service1JoinTheMembershipWithEmailVerificationDataRepository.save(
-                emailVerification
-            )
-
+        if (codeMatched) { // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-            C10Service1TkV1AuthController.Api14OutputVo(
-                emailVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
-            )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
-            null
         }
     }
 
@@ -1572,20 +1560,19 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api17(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         phoneNumber: String,
         verificationCode: String
-    ): C10Service1TkV1AuthController.Api17OutputVo? {
+    ) {
         val phoneNumberVerificationOpt =
             database1Service1JoinTheMembershipWithPhoneNumberVerificationDataRepository.findById(verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
@@ -1595,36 +1582,24 @@ class C10Service1TkV1AuthService(
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         if (LocalDateTime.now().isAfter(phoneNumberVerification.verificationExpireWhen)) {
             // 만료됨
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
-            return null
+            return
         }
 
         // 입력 코드와 발급된 코드와의 매칭
         val codeMatched = phoneNumberVerification.verificationSecret == verificationCode
 
-        return if (codeMatched) { // 코드 일치
-            val verificationTimeSec: Long = 60 * 10
-            phoneNumberVerification.verificationExpireWhen =
-                LocalDateTime.now().plusSeconds(verificationTimeSec)
-            database1Service1JoinTheMembershipWithPhoneNumberVerificationDataRepository.save(
-                phoneNumberVerification
-            )
-
+        if (codeMatched) { // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-            C10Service1TkV1AuthController.Api17OutputVo(
-                phoneNumberVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
-            )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
-            null
         }
     }
 
@@ -2244,29 +2219,23 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid.toLong(), "-")
+        ).toLong()
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid, "-")!!
 
-        if (member == null) { // 멤버 정보가 없을 때
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "1")
-            return
-        }
-
-        if (member.accountPassword == null) { // 기존 비번이 존재하지 않음
+        if (memberData.accountPassword == null) { // 기존 비번이 존재하지 않음
             if (inputVo.oldPassword != null) { // 비밀번호 불일치
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                httpServletResponse.setHeader("api-result-code", "2")
+                httpServletResponse.setHeader("api-result-code", "1")
                 return
             }
         } else { // 기존 비번 존재
             if (inputVo.oldPassword == null || !passwordEncoder.matches(
                     inputVo.oldPassword,
-                    member.accountPassword
+                    memberData.accountPassword
                 )
             ) { // 비밀번호 불일치
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                httpServletResponse.setHeader("api-result-code", "2")
+                httpServletResponse.setHeader("api-result-code", "1")
                 return
             }
         }
@@ -2274,22 +2243,38 @@ class C10Service1TkV1AuthService(
         if (inputVo.newPassword == null) {
             val oAuth2EntityList =
                 database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                    member,
+                    memberData,
                     "-"
                 )
 
             if (oAuth2EntityList.isEmpty()) {
                 // null 로 만들려고 할 때 account 외의 OAuth2 인증이 없다면 제거 불가
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                httpServletResponse.setHeader("api-result-code", "3")
+                httpServletResponse.setHeader("api-result-code", "2")
                 return
             }
 
-            member.accountPassword = null
+            memberData.accountPassword = null
         } else {
-            member.accountPassword = passwordEncoder.encode(inputVo.newPassword) // 비밀번호는 암호화
+            memberData.accountPassword = passwordEncoder.encode(inputVo.newPassword) // 비밀번호는 암호화
         }
-        database1Service1MemberDataRepository.save(member)
+        database1Service1MemberDataRepository.save(memberData)
+
+        // 모든 토큰 비활성화 처리
+        // loginAccessToken 의 Iterable 가져오기
+        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+            memberData,
+            "-"
+        )
+
+        // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
+        for (tokenInfo in tokenInfoList) {
+            tokenInfo.rowDeleteDateStr =
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+
+            database1Service1LogInTokenInfoRepository.save(tokenInfo)
+        }
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
@@ -2349,20 +2334,19 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api23(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         email: String,
         verificationCode: String
-    ): C10Service1TkV1AuthController.Api23OutputVo? {
+    ) {
         val emailVerificationOpt =
             database1Service1FindPasswordWithEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         val emailVerification = emailVerificationOpt.get()
@@ -2372,36 +2356,24 @@ class C10Service1TkV1AuthService(
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         if (LocalDateTime.now().isAfter(emailVerification.verificationExpireWhen)) {
             // 만료됨
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
-            return null
+            return
         }
 
         // 입력 코드와 발급된 코드와의 매칭
         val codeMatched = emailVerification.verificationSecret == verificationCode
 
-        return if (codeMatched) { // 코드 일치
-            val verificationTimeSec: Long = 60 * 10
-            emailVerification.verificationExpireWhen =
-                LocalDateTime.now().plusSeconds(verificationTimeSec)
-            database1Service1FindPasswordWithEmailVerificationDataRepository.save(
-                emailVerification
-            )
-
+        if (codeMatched) { // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-            C10Service1TkV1AuthController.Api23OutputVo(
-                emailVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
-            )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
-            null
         }
     }
 
@@ -2490,6 +2462,22 @@ class C10Service1TkV1AuthService(
                     .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1FindPasswordWithEmailVerificationDataRepository.save(emailVerification)
 
+            // 모든 토큰 비활성화 처리
+            // loginAccessToken 의 Iterable 가져오기
+            val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+                member,
+                "-"
+            )
+
+            // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
+            for (tokenInfo in tokenInfoList) {
+                tokenInfo.rowDeleteDateStr =
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+
+                database1Service1LogInTokenInfoRepository.save(tokenInfo)
+            }
+
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else { // 코드 불일치
@@ -2555,20 +2543,19 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api26(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         phoneNumber: String,
         verificationCode: String
-    ): C10Service1TkV1AuthController.Api26OutputVo? {
+    ) {
         val phoneNumberVerificationOpt =
             database1Service1FindPasswordWithPhoneNumberVerificationDataRepository.findById(verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
@@ -2578,36 +2565,24 @@ class C10Service1TkV1AuthService(
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         if (LocalDateTime.now().isAfter(phoneNumberVerification.verificationExpireWhen)) {
             // 만료됨
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
-            return null
+            return
         }
 
         // 입력 코드와 발급된 코드와의 매칭
         val codeMatched = phoneNumberVerification.verificationSecret == verificationCode
 
-        return if (codeMatched) { // 코드 일치
-            val verificationTimeSec: Long = 60 * 10
-            phoneNumberVerification.verificationExpireWhen =
-                LocalDateTime.now().plusSeconds(verificationTimeSec)
-            database1Service1FindPasswordWithPhoneNumberVerificationDataRepository.save(
-                phoneNumberVerification
-            )
-
+        if (codeMatched) { // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-            C10Service1TkV1AuthController.Api26OutputVo(
-                phoneNumberVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
-            )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
-            null
         }
     }
 
@@ -2696,6 +2671,22 @@ class C10Service1TkV1AuthService(
                     .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1FindPasswordWithPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
+            // 모든 토큰 비활성화 처리
+            // loginAccessToken 의 Iterable 가져오기
+            val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+                member,
+                "-"
+            )
+
+            // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
+            for (tokenInfo in tokenInfoList) {
+                tokenInfo.rowDeleteDateStr =
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+
+                database1Service1LogInTokenInfoRepository.save(tokenInfo)
+            }
+
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else { // 코드 불일치
@@ -2710,21 +2701,21 @@ class C10Service1TkV1AuthService(
     fun api29(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api29OutputVo {
+    ): C10Service1TkV1AuthController.Api29OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
 
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid.toLong(),
             "-"
         )!!
 
         val emailEntityList =
             database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                member,
+                memberData,
                 "-"
             )
         val emailList = ArrayList<C10Service1TkV1AuthController.Api29OutputVo.EmailInfo>()
@@ -2733,7 +2724,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api29OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
-                    emailEntity.uid == member.frontMemberEmailData?.uid
+                    emailEntity.uid == memberData.frontMemberEmailData?.uid
                 )
             )
         }
@@ -2749,30 +2740,30 @@ class C10Service1TkV1AuthService(
     fun api30(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api30OutputVo {
+    ): C10Service1TkV1AuthController.Api30OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
 
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid.toLong(),
             "-"
         )!!
 
         val phoneEntityList =
             database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                member,
+                memberData,
                 "-"
             )
         val phoneNumberList = ArrayList<C10Service1TkV1AuthController.Api30OutputVo.PhoneInfo>()
-        for (emailEntity in phoneEntityList) {
+        for (phoneEntity in phoneEntityList) {
             phoneNumberList.add(
                 C10Service1TkV1AuthController.Api30OutputVo.PhoneInfo(
-                    emailEntity.uid!!,
-                    emailEntity.phoneNumber,
-                    emailEntity.uid == member.frontMemberPhoneData?.uid
+                    phoneEntity.uid!!,
+                    phoneEntity.phoneNumber,
+                    phoneEntity.uid == memberData.frontMemberPhoneData?.uid
                 )
             )
         }
@@ -2788,21 +2779,21 @@ class C10Service1TkV1AuthService(
     fun api31(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api31OutputVo {
+    ): C10Service1TkV1AuthController.Api31OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         ).toLong()
 
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
             "-"
         )!!
 
         val oAuth2EntityList =
             database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                member,
+                memberData,
                 "-"
             )
         val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api31OutputVo.OAuth2Info>()
@@ -2891,66 +2882,53 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api33(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         email: String,
         verificationCode: String,
         authorization: String
-    ): C10Service1TkV1AuthController.Api33OutputVo? {
+    ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
 
         val emailVerificationOpt = database1Service1AddEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         val emailVerification = emailVerificationOpt.get()
 
         if (emailVerification.rowDeleteDateStr != "-" ||
-            emailVerification.memberData.uid!! != memberUid.toLong() ||
+            emailVerification.memberData.uid!! != memberUid ||
             emailVerification.emailAddress != email
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         if (LocalDateTime.now().isAfter(emailVerification.verificationExpireWhen)) {
             // 만료됨
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
-            return null
+            return
         }
 
         // 입력 코드와 발급된 코드와의 매칭
         val codeMatched = emailVerification.verificationSecret == verificationCode
 
-        return if (codeMatched) { // 코드 일치
-            val verificationTimeSec: Long = 60 * 10
-            emailVerification.verificationExpireWhen =
-                LocalDateTime.now().plusSeconds(verificationTimeSec)
-            database1Service1AddEmailVerificationDataRepository.save(
-                emailVerification
-            )
-
+        if (codeMatched) { // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-            C10Service1TkV1AuthController.Api33OutputVo(
-                emailVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
-            )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
-            null
         }
     }
 
@@ -3028,6 +3006,12 @@ class C10Service1TkV1AuthService(
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
                     .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1AddEmailVerificationDataRepository.save(emailVerification)
+
+            if (inputVo.frontEmail) {
+                // 대표 이메일로 설정
+                memberData.frontMemberEmailData = database1Service1MemberEmailData
+                database1Service1MemberDataRepository.save(memberData)
+            }
 
             httpServletResponse.status = HttpStatus.OK.value()
             return C10Service1TkV1AuthController.Api34OutputVo(
@@ -3107,6 +3091,12 @@ class C10Service1TkV1AuthService(
             database1Service1MemberEmailDataRepository.save(
                 myEmailVo
             )
+
+            if (memberData.frontMemberEmailData?.uid == emailUid) {
+                // 대표 이메일 삭제
+                memberData.frontMemberEmailData = null
+                database1Service1MemberDataRepository.save(memberData)
+            }
 
             httpServletResponse.status = HttpStatus.OK.value()
             return
@@ -3189,19 +3179,18 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api37(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         phoneNumber: String,
         verificationCode: String,
         authorization: String
-    ): C10Service1TkV1AuthController.Api37OutputVo? {
+    ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
 
         val phoneNumberVerificationOpt =
             database1Service1AddPhoneNumberVerificationDataRepository.findById(verificationUid)
@@ -3209,47 +3198,35 @@ class C10Service1TkV1AuthService(
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
 
         if (phoneNumberVerification.rowDeleteDateStr != "-" ||
-            phoneNumberVerification.memberData.uid!! != memberUid.toLong() ||
+            phoneNumberVerification.memberData.uid!! != memberUid ||
             phoneNumberVerification.phoneNumber != phoneNumber
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
-            return null
+            return
         }
 
         if (LocalDateTime.now().isAfter(phoneNumberVerification.verificationExpireWhen)) {
             // 만료됨
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
-            return null
+            return
         }
 
         // 입력 코드와 발급된 코드와의 매칭
         val codeMatched = phoneNumberVerification.verificationSecret == verificationCode
 
-        return if (codeMatched) { // 코드 일치
-            val verificationTimeSec: Long = 60 * 10
-            phoneNumberVerification.verificationExpireWhen =
-                LocalDateTime.now().plusSeconds(verificationTimeSec)
-            database1Service1AddPhoneNumberVerificationDataRepository.save(
-                phoneNumberVerification
-            )
-
+        if (codeMatched) { // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-            C10Service1TkV1AuthController.Api37OutputVo(
-                phoneNumberVerification.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
-            )
         } else { // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
-            null
         }
     }
 
@@ -3314,7 +3291,7 @@ class C10Service1TkV1AuthService(
                 return null
             }
 
-            // 이메일 추가
+            // 추가
             val database1Service1MemberPhoneData = database1Service1MemberPhoneDataRepository.save(
                 Database1_Service1_MemberPhoneData(
                     memberData,
@@ -3327,6 +3304,12 @@ class C10Service1TkV1AuthService(
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
                     .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
             database1Service1AddPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
+
+            if (inputVo.frontPhoneNumber) {
+                // 대표 전화로 설정
+                memberData.frontMemberPhoneData = database1Service1MemberPhoneData
+                database1Service1MemberDataRepository.save(memberData)
+            }
 
             httpServletResponse.status = HttpStatus.OK.value()
             return C10Service1TkV1AuthController.Api38OutputVo(
@@ -3406,6 +3389,11 @@ class C10Service1TkV1AuthService(
             database1Service1MemberPhoneDataRepository.save(
                 myPhoneVo
             )
+
+            if (memberData.frontMemberPhoneData?.uid == phoneUid) {
+                memberData.frontMemberPhoneData = null
+                database1Service1MemberDataRepository.save(memberData)
+            }
 
             httpServletResponse.status = HttpStatus.OK.value()
             return
@@ -3504,18 +3492,6 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        // 검증됨
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-            memberUid.toLong(),
-            "-"
-        )
-
-        if (member == null) {
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "2")
-            return
-        }
-
         // 사용중인지 아닌지 검증
         val isDatabase1MemberUserExists =
             database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
@@ -3526,7 +3502,7 @@ class C10Service1TkV1AuthService(
 
         if (isDatabase1MemberUserExists) { // 이미 사용중인 SNS 인증
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "3")
+            httpServletResponse.setHeader("api-result-code", "2")
             return
         }
 
@@ -3554,7 +3530,12 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
+
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         val snsTypeCode: Int
         val snsId: String
@@ -3582,18 +3563,6 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        // 검증됨
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-            memberUid.toLong(),
-            "-"
-        )
-
-        if (member == null) {
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "2")
-            return
-        }
-
         // 사용중인지 아닌지 검증
         val isDatabase1MemberUserExists =
             database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
@@ -3604,14 +3573,14 @@ class C10Service1TkV1AuthService(
 
         if (isDatabase1MemberUserExists) { // 이미 사용중인 SNS 인증
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "3")
+            httpServletResponse.setHeader("api-result-code", "2")
             return
         }
 
         // SNS 인증 추가
         database1Service1MemberOauth2LoginDataRepository.save(
             Database1_Service1_MemberOauth2LoginData(
-                member,
+                memberData,
                 snsTypeCode.toByte(),
                 snsId
             )
@@ -3709,30 +3678,23 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
-        val memberUidLong = memberUid.toLong()
+        ).toLong()
 
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-            memberUidLong,
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
             "-"
-        )
-
-        if (member == null) {
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "1")
-            return
-        }
+        )!!
 
         // 회원탈퇴 처리
-        member.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
+        memberData.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
             .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         database1Service1MemberDataRepository.save(
-            member
+            memberData
         )
 
         // member_phone, member_email, member_role, member_sns_oauth2, member_profile 비활성화
         val emailList =
-            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
+            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
         for (email in emailList) {
             email.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
@@ -3740,7 +3702,7 @@ class C10Service1TkV1AuthService(
         }
 
         val memberRoleList =
-            database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
+            database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
         for (memberRole in memberRoleList) {
             memberRole.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -3749,7 +3711,7 @@ class C10Service1TkV1AuthService(
         }
 
         val memberSnsOauth2List =
-            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
+            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
         for (memberSnsOauth2 in memberSnsOauth2List) {
             memberSnsOauth2.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -3758,7 +3720,7 @@ class C10Service1TkV1AuthService(
         }
 
         val memberPhoneList =
-            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
+            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
         for (memberPhone in memberPhoneList) {
             memberPhone.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -3767,7 +3729,7 @@ class C10Service1TkV1AuthService(
         }
 
         val profileData =
-            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
+            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
         for (profile in profileData) {
             profile.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -3780,7 +3742,7 @@ class C10Service1TkV1AuthService(
 
         // loginAccessToken 의 Iterable 가져오기
         val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
-            member,
+            memberData,
             "-"
         )
 
@@ -3808,11 +3770,13 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         ).toLong()
 
-        val memberInfo =
-            database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid, "-")!!
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         val profileData = database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-            memberInfo,
+            memberData,
             "-"
         )
 
@@ -3822,7 +3786,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api43OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
-                    profile.uid == memberInfo.frontMemberProfileData?.uid
+                    profile.uid == memberData.frontMemberProfileData?.uid
                 )
             )
         }
@@ -3845,21 +3809,25 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         ).toLong()
 
-        val memberInfo =
-            database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid, "-")!!
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         val profileData = database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-            memberInfo,
+            memberData,
             "-"
         )
 
         var myProfile: C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo? = null
         for (profile in profileData) {
-            if (profile.uid!! == memberInfo.frontMemberProfileData?.uid) {
-                myProfile = C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo(
-                    profile.uid!!,
-                    profile.imageFullUrl
-                )
+            if (profile.uid!! == memberData.frontMemberProfileData?.uid) {
+                if (memberData.frontMemberProfileData!!.rowDeleteDateStr == "-") {
+                    myProfile = C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo(
+                        profile.uid!!,
+                        profile.imageFullUrl
+                    )
+                }
                 break
             }
         }
@@ -3874,18 +3842,20 @@ class C10Service1TkV1AuthService(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api45(httpServletResponse: HttpServletResponse, authorization: String, profileUid: Long?) {
-        val accessTokenMemberUid = JwtTokenUtilObject.getMemberUid(
+        val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
 
-        val memberInfo =
-            database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(accessTokenMemberUid.toLong(), "-")!!
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         // 내 프로필 리스트 가져오기
         val profileDataList = database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-            memberInfo,
+            memberData,
             "-"
         )
 
@@ -3897,8 +3867,8 @@ class C10Service1TkV1AuthService(
         }
 
         if (profileUid == null) {
-            memberInfo.frontMemberProfileData = null
-            database1Service1MemberDataRepository.save(memberInfo)
+            memberData.frontMemberProfileData = null
+            database1Service1MemberDataRepository.save(memberData)
 
             httpServletResponse.status = HttpStatus.OK.value()
             return
@@ -3920,8 +3890,8 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 프로필을 선택하기
-        memberInfo.frontMemberProfileData = selectedProfile
-        database1Service1MemberDataRepository.save(memberInfo)
+        memberData.frontMemberProfileData = selectedProfile
+        database1Service1MemberDataRepository.save(memberData)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
@@ -3959,6 +3929,12 @@ class C10Service1TkV1AuthService(
             LocalDateTime.now().atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
         database1Service1MemberProfileDataRepository.save(profileData)
+
+        if (memberData.frontMemberProfileData?.uid == profileUid) {
+            // 대표 프로필을 삭제했을 때 멤버 데이터에 반영
+            memberData.frontMemberProfileData = null
+            database1Service1MemberDataRepository.save(memberData)
+        }
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
@@ -4036,6 +4012,11 @@ class C10Service1TkV1AuthService(
             )
         )
 
+        if (inputVo.frontProfile) {
+            memberData.frontMemberProfileData = profileData
+            database1Service1MemberDataRepository.save(memberData)
+        }
+
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api47OutputVo(
             profileData.uid!!,
@@ -4094,21 +4075,25 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         ).toLong()
 
-        val memberInfo =
-            database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid, "-")!!
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         val emailData = database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-            memberInfo,
+            memberData,
             "-"
         )
 
         var myEmail: C10Service1TkV1AuthController.Api49OutputVo.EmailInfo? = null
         for (email in emailData) {
-            if (email.uid!! == memberInfo.frontMemberEmailData?.uid) {
-                myEmail = C10Service1TkV1AuthController.Api49OutputVo.EmailInfo(
-                    email.uid!!,
-                    email.emailAddress
-                )
+            if (email.uid!! == memberData.frontMemberEmailData?.uid) {
+                if (memberData.frontMemberEmailData!!.rowDeleteDateStr == "-") {
+                    myEmail = C10Service1TkV1AuthController.Api49OutputVo.EmailInfo(
+                        email.uid!!,
+                        email.emailAddress
+                    )
+                }
                 break
             }
         }
@@ -4123,18 +4108,20 @@ class C10Service1TkV1AuthService(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api50(httpServletResponse: HttpServletResponse, authorization: String, emailUid: Long?) {
-        val accessTokenMemberUid = JwtTokenUtilObject.getMemberUid(
+        val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
 
-        val memberInfo =
-            database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(accessTokenMemberUid.toLong(), "-")!!
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         // 내 이메일 리스트 가져오기
         val emailDataList = database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-            memberInfo,
+            memberData,
             "-"
         )
 
@@ -4146,8 +4133,8 @@ class C10Service1TkV1AuthService(
         }
 
         if (emailUid == null) {
-            memberInfo.frontMemberEmailData = null
-            database1Service1MemberDataRepository.save(memberInfo)
+            memberData.frontMemberEmailData = null
+            database1Service1MemberDataRepository.save(memberData)
 
             httpServletResponse.status = HttpStatus.OK.value()
             return
@@ -4169,8 +4156,8 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 프로필을 선택하기
-        memberInfo.frontMemberEmailData = selectedEmail
-        database1Service1MemberDataRepository.save(memberInfo)
+        memberData.frontMemberEmailData = selectedEmail
+        database1Service1MemberDataRepository.save(memberData)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
@@ -4187,21 +4174,25 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         ).toLong()
 
-        val memberInfo =
-            database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid, "-")!!
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         val phoneNumberData = database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-            memberInfo,
+            memberData,
             "-"
         )
 
         var myPhone: C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo? = null
         for (phone in phoneNumberData) {
-            if (phone.uid!! == memberInfo.frontMemberPhoneData?.uid) {
-                myPhone = C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo(
-                    phone.uid!!,
-                    phone.phoneNumber
-                )
+            if (phone.uid!! == memberData.frontMemberPhoneData?.uid) {
+                if (memberData.frontMemberPhoneData!!.rowDeleteDateStr == "-") {
+                    myPhone = C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo(
+                        phone.uid!!,
+                        phone.phoneNumber
+                    )
+                }
                 break
             }
         }
@@ -4216,18 +4207,20 @@ class C10Service1TkV1AuthService(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api52(httpServletResponse: HttpServletResponse, authorization: String, phoneNumberUid: Long?) {
-        val accessTokenMemberUid = JwtTokenUtilObject.getMemberUid(
+        val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
+        ).toLong()
 
-        val memberInfo =
-            database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(accessTokenMemberUid.toLong(), "-")!!
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "-"
+        )!!
 
         // 내 전화번호 리스트 가져오기
         val phoneNumberData = database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-            memberInfo,
+            memberData,
             "-"
         )
 
@@ -4239,8 +4232,8 @@ class C10Service1TkV1AuthService(
         }
 
         if (phoneNumberUid == null) {
-            memberInfo.frontMemberPhoneData = null
-            database1Service1MemberDataRepository.save(memberInfo)
+            memberData.frontMemberPhoneData = null
+            database1Service1MemberDataRepository.save(memberData)
 
             httpServletResponse.status = HttpStatus.OK.value()
             return
@@ -4262,8 +4255,8 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 프로필을 선택하기
-        memberInfo.frontMemberPhoneData = selectedPhone
-        database1Service1MemberDataRepository.save(memberInfo)
+        memberData.frontMemberPhoneData = selectedPhone
+        database1Service1MemberDataRepository.save(memberData)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }

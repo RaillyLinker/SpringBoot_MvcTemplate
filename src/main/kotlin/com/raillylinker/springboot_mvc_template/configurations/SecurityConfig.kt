@@ -2,6 +2,9 @@ package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.ApplicationConstants
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_LogInTokenInfoRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_MemberDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_MemberRoleDataRepository
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -22,26 +25,21 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
-import org.springframework.stereotype.Component
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
 
 // (서비스 보안 시큐리티 설정)
-/*
-    JWT 인증 / 인가 :
-    JWT 인증 / 인가 시스템은 검증 시점에 데이터베이스 접근을 하지 않으며, Stateless 하게 검증 정보를 메모리에 저장하지 않습니다.
-    즉, 토큰 검증은 발행 된 시점에 토큰 안에 넣어준 바로 그 정보만을 기준으로 하여 판단됩니다.
-    예를들어 토큰 발행 시점에 Admin 권한이 있었는데, 서버측에서 이 권한을 취소하여도 토큰만 정상적이라면 여전히 Admin 권한을 가집니다.
-    이에 대해 서버측에서 할 수 있는 것은, 액세스 토큰이 만료된 이후에 재발급 시점에 이를 판단하여 처리하는 방법,
-    혹은 SSE 등으로 클라이언트에 신호를 보내어 해당 위치에서 처리를 하도록 하는 방법 밖에는 없습니다.
-    되도록 액세스 토큰 만료시간을 짧게 잡고(15분 ~ 1시간), 클라이언트 측에서 판단하여 처리할 수 있는 부분은 클라이언트에서 처리하도록 합니다.
- */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
-class SecurityConfig {
+class SecurityConfig(
+    // (회원 정보 및 상태 확인용 데이터베이스 레포지토리 객체)
+    private val database1Service1MemberDataRepository: Database1_Service1_MemberDataRepository,
+    private val database1Service1MemberRoleDataRepository: Database1_Service1_MemberRoleDataRepository,
+    private val database1Service1LogInTokenInfoRepository: Database1_Service1_LogInTokenInfoRepository
+) {
     // <멤버 변수 공간>
 
 
@@ -107,7 +105,12 @@ class SecurityConfig {
         http.securityMatcher(securityUrl)
             .addFilterBefore(
                 // !!!시큐리티 필터 추가시 수정!!!
-                AuthTokenFilterService1Tk(securityUrl),
+                AuthTokenFilterService1Tk(
+                    securityUrl,
+                    database1Service1MemberDataRepository,
+                    database1Service1MemberRoleDataRepository,
+                    database1Service1LogInTokenInfoRepository
+                ),
                 UsernamePasswordAuthenticationFilter::class.java
             )
 
@@ -153,7 +156,12 @@ class SecurityConfig {
     }
 
     // 인증 토큰 검증 필터 - API 요청마다 검증 실행
-    class AuthTokenFilterService1Tk(private val filterPattern: String) : OncePerRequestFilter() {
+    class AuthTokenFilterService1Tk(
+        private val filterPattern: String,
+        private val database1Service1MemberDataRepository: Database1_Service1_MemberDataRepository,
+        private val database1Service1MemberRoleDataRepository: Database1_Service1_MemberRoleDataRepository,
+        private val database1Service1LogInTokenInfoRepository: Database1_Service1_LogInTokenInfoRepository
+    ) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
             // (JWT signature 비밀키)
@@ -186,127 +194,177 @@ class SecurityConfig {
         ) {
             // 패턴에 매치되는지 확인
             val pattern = AntPathRequestMatcher(filterPattern)
-            if (pattern.matches(request)) {
-                // (리퀘스트에서 가져온 AccessToken 검증)
-                // 헤더의 Authorization 의 값 가져오기
-                // 정상적인 토큰값은 "Bearer {Token String}" 형식으로 온다고 가정.
-                val authorization = request.getHeader("Authorization") // ex : "Bearer aqwer1234"
+            if (!pattern.matches(request)) {
+                // 이 필터를 실행해야 할 패턴이 아님.
 
-                if (authorization != null) {
-                    // 타입과 토큰을 분리
-                    val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
-
-                    if (authorizationSplit.size >= 2) { // 타입으로 추정되는 문장이 존재할 때
-                        // 타입 분리
-                        val accessTokenType = authorizationSplit[0].trim() // 첫번째 단어는 토큰 타입
-
-                        when (accessTokenType.lowercase()) { // 타입 검증
-                            "bearer" -> { // Bearer JWT 토큰 검증
-                                val jwtAccessToken = authorizationSplit[1].trim() // 앞의 타입을 자르고 남은 액세스 토큰
-
-                                // 토큰 문자열 해석 가능여부 확인
-                                val tokenType: String? = try {
-                                    JwtTokenUtilObject.getTokenType(jwtAccessToken)
-                                } catch (_: Exception) {
-                                    null
-                                }
-
-                                if (tokenType != null && // 해석 가능한 JWT 토큰이라는 뜻
-                                    jwtAccessToken != "" && // 액세스 토큰이 비어있지 않음
-                                    tokenType.lowercase() == "jwt" && // 토큰 타입 JWT
-                                    JwtTokenUtilObject.getTokenUsage(
-                                        jwtAccessToken,
-                                        JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                                        JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                                    ).lowercase() == "access" && // 토큰 용도 확인
-                                    JwtTokenUtilObject.getIssuer(jwtAccessToken) == ISSUER && // 발행인 동일
-                                    JwtTokenUtilObject.validateSignature(
-                                        jwtAccessToken,
-                                        JWT_SECRET_KEY_STRING
-                                    ) // 시크릿 검증이 유효 = 위변조 되지 않은 토큰
-                                ) {
-                                    // 토큰 만료 검증
-                                    val jwtRemainSeconds = JwtTokenUtilObject.getRemainSeconds(jwtAccessToken)
-
-                                    // 특정 request 에는 만료 필터링을 적용시키지 않음 (토큰 유효성 검증은 통과된 상황)
-                                    if (jwtRemainSeconds > 0L) { // 만료 검증 통과
-                                        val memberRoleList = JwtTokenUtilObject.getMemberRoleList(
-                                            jwtAccessToken,
-                                            JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                                            JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                                        )
-
-                                        // 회원 권한 형식 변경
-                                        val authorities: ArrayList<GrantedAuthority> = ArrayList()
-                                        for (role in memberRoleList) {
-                                            authorities.add(
-                                                SimpleGrantedAuthority(role)
-                                            )
-                                        }
-
-                                        // (검증된 멤버 정보와 권한 정보를 Security Context 에 입력)
-                                        // authentication 정보가 context 에 존재하는지 여부로 로그인 여부를 확인
-                                        SecurityContextHolder.getContext().authentication =
-                                            UsernamePasswordAuthenticationToken(
-                                                null, // 세션을 유지하지 않으니 굳이 입력할 필요가 없음
-                                                null, // 세션을 유지하지 않으니 굳이 입력할 필요가 없음
-                                                authorities // 멤버 권한 리스트만 입력해주어 권한 확인에 사용
-                                            ).apply {
-                                                this.details =
-                                                    WebAuthenticationDetailsSource().buildDetails(request)
-                                            }
-                                    } else { // 액세스 토큰 만료
-                                        response.setHeader("api-result-code", "2")
-                                        /*
-                                             바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
-                                             SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
-                                             @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
-                                             @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
-                                         */
-                                    }
-                                } else {
-                                    // 올바르지 않은 Authorization Token
-                                    response.setHeader("api-result-code", "1")
-                                    /*
-                                         바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
-                                         SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
-                                         @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
-                                         @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
-                                     */
-                                }
-                            }
-
-                            else -> {
-                                // 올바르지 않은 Authorization Token
-                                response.setHeader("api-result-code", "1")
-                                /*
-                                     바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
-                                     SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
-                                     @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
-                                     @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
-                                 */
-                            }
-                        }
-                    } else {
-                        // 올바르지 않은 Authorization Token
-                        response.setHeader("api-result-code", "1")
-                        /*
-                             바로 filterChain.doFilter(request, response) 를 통해 API 에 진입합니다.
-                             SecurityContextHolder.getContext().authentication 를 입력하지 않았으므로,
-                             @PreAuthorize 설정이 된 API 진입시에는 401 에러와 함께 result code 반환,
-                             @PreAuthorize 설정이 안된 API 진입시에는 해당 API 동작 완료 후 result code 가 해당 API 의 것으로 덮어써집니다.
-                         */
-                    }
-                }
+                // 다음 필터 실행
+                filterChain.doFilter(request, response)
+                return
             }
 
-            // 필터 체인 실행
-            /*
-                 정상 로그인이 완료되면 Security Context 에 정보가 있고, 아니라면 없습니다.
-                 로그인 되지 않은 상태로 인증/인가 어노테이션을 붙인 api 에 진입하면, 401 에러가,
-                 인가받지 않은 상태로 진입하면 403 에러가 발생합니다.
-             */
-            filterChain.doFilter(request, response)
+
+            // (리퀘스트에서 가져온 AccessToken 검증)
+            // 헤더의 Authorization 의 값 가져오기
+            // 정상적인 토큰값은 "Bearer {Token String}" 형식으로 온다고 가정.
+            val authorization = request.getHeader("Authorization") // ex : "Bearer aqwer1234"
+            if (authorization == null) {
+                // Authorization 에 토큰을 넣지 않은 경우 = 인증 / 인가를 받을 의도가 없음
+
+                // 다음 필터 실행
+                filterChain.doFilter(request, response)
+                return
+            }
+
+            // 타입과 토큰을 분리
+            val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
+            if (authorizationSplit.size < 2) {
+                // 올바르지 않은 Authorization Token
+                response.setHeader("api-result-code", "1")
+
+                // 다음 필터 실행
+                filterChain.doFilter(request, response)
+                return
+            }
+
+            // 타입으로 추정되는 문장이 존재할 때
+            // 타입 분리
+            val tokenType = authorizationSplit[0].trim() // 첫번째 단어는 토큰 타입
+            val jwtAccessToken = authorizationSplit[1].trim() // 앞의 타입을 자르고 남은 액세스 토큰
+
+            if (jwtAccessToken == "") {
+                // 액세스 토큰이 비어있음 (올바르지 않은 Authorization Token)
+                response.setHeader("api-result-code", "1")
+
+                // 다음 필터 실행
+                filterChain.doFilter(request, response)
+                return
+            }
+
+            when (tokenType.lowercase()) { // 타입 검증
+                "bearer" -> { // Bearer JWT 토큰 검증
+                    // 토큰 문자열 해석 가능여부 확인
+                    val accessTokenType: String? = try {
+                        JwtTokenUtilObject.getTokenType(jwtAccessToken)
+                    } catch (_: Exception) {
+                        null
+                    }
+
+                    if (accessTokenType == null || // 해석 불가능한 JWT 토큰
+                        accessTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
+                        JwtTokenUtilObject.getTokenUsage(
+                            jwtAccessToken,
+                            JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                            JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                        ).lowercase() != "access" || // 토큰 용도가 다름
+                        // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
+                        JwtTokenUtilObject.getRemainSeconds(jwtAccessToken) > ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
+                        JwtTokenUtilObject.getIssuer(jwtAccessToken) != ISSUER || // 발행인 불일치
+                        !JwtTokenUtilObject.validateSignature(
+                            jwtAccessToken,
+                            JWT_SECRET_KEY_STRING
+                        ) // 시크릿 검증이 무효 = 위변조 된 토큰
+                    ) {
+                        // 올바르지 않은 Authorization Token
+                        response.setHeader("api-result-code", "1")
+
+                        // 다음 필터 실행
+                        filterChain.doFilter(request, response)
+                        return
+                    }
+
+                    // 토큰 만료 검증
+                    val jwtRemainSeconds = JwtTokenUtilObject.getRemainSeconds(jwtAccessToken)
+
+                    if (jwtRemainSeconds <= 0L) {
+                        // 토큰이 만료됨
+                        response.setHeader("api-result-code", "2")
+
+                        // 다음 필터 실행
+                        filterChain.doFilter(request, response)
+                        return
+                    }
+
+                    // 유저 탈퇴 여부 확인
+                    val memberUid = JwtTokenUtilObject.getMemberUid(
+                        jwtAccessToken,
+                        JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                        JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                    ).toLong()
+
+                    val memberData =
+                        database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+                            memberUid,
+                            "-"
+                        )
+
+                    if (memberData == null) {
+                        // 멤버 탈퇴
+                        response.setHeader("api-result-code", "3")
+
+                        // 다음 필터 실행
+                        filterChain.doFilter(request, response)
+                        return
+                    }
+
+                    // 로그아웃 여부 파악
+                    val tokenInfo =
+                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
+                            tokenType,
+                            jwtAccessToken,
+                            "-"
+                        )
+
+                    if (tokenInfo == null) {
+                        // 로그아웃된 토큰
+                        response.setHeader("api-result-code", "4")
+
+                        // 다음 필터 실행
+                        filterChain.doFilter(request, response)
+                        return
+                    }
+
+                    // !!!패널티로 인한 접근 거부 와 같은 인증 / 인가 조건을 추가하려면 이곳에 추가하세요.!!!
+
+                    // 멤버의 권한 리스트를 조회 후 반환
+                    val memberRoleEntityList =
+                        database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+                            memberData,
+                            "-"
+                        )
+
+                    // 회원 권한 형식 변경
+                    val authorities: ArrayList<GrantedAuthority> = ArrayList()
+                    for (memberRole in memberRoleEntityList) {
+                        authorities.add(
+                            SimpleGrantedAuthority(memberRole.role)
+                        )
+                    }
+
+                    // (검증된 멤버 정보와 권한 정보를 Security Context 에 입력)
+                    // authentication 정보가 context 에 존재하는지 여부로 로그인 여부를 확인
+                    SecurityContextHolder.getContext().authentication =
+                        UsernamePasswordAuthenticationToken(
+                            null, // 세션을 유지하지 않으니 굳이 입력할 필요가 없음
+                            null, // 세션을 유지하지 않으니 굳이 입력할 필요가 없음
+                            authorities // 멤버 권한 리스트만 입력해주어 권한 확인에 사용
+                        ).apply {
+                            this.details =
+                                WebAuthenticationDetailsSource().buildDetails(request)
+                        }
+
+                    filterChain.doFilter(request, response)
+                    return
+                }
+
+                else -> {
+                    // 지원하지 않는 토큰 타입 (올바르지 않은 Authorization Token)
+                    response.setHeader("api-result-code", "1")
+
+                    // 다음 필터 실행
+                    filterChain.doFilter(request, response)
+                    return
+                }
+            }
         }
     }
 }

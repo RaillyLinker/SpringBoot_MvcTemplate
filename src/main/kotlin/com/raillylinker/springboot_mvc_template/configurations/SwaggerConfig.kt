@@ -106,7 +106,9 @@ class SwaggerConfig(
                                                             "Response Header 의 api-result-code 로 값 하나(리스트로 반환되지만 아이템은 하나. 예를들면 [1].)가 반환되거나 안될 수 있습니다.\n\n" +
                                                             "null : Request Header 에 Authorization 키로 JWT 를 넣어줘야 합니다.\n\n" +
                                                             "1 : Request Header 에 Authorization 키로 넣어준 JWT 형식이 올바르지 않습니다. (재 로그인 필요)\n\n" +
-                                                            "2 : Request Header 에 Authorization 키로 넣어준 JWT 가 만료되었습니다. (Refresh Token 으로 재발급 필요)"
+                                                            "2 : Request Header 에 Authorization 키로 넣어준 JWT 가 만료되었습니다. (Refresh Token 으로 재발급 필요)\n\n" +
+                                                            "3 : Request Header 에 Authorization 키로 넣어준 JWT 의 멤버가 탈퇴한 상태입니다.\n\n" +
+                                                            "4 : Request Header 에 Authorization 키로 넣어준 JWT 가 로그아웃 되었습니다. (재 로그인 필요)\n\n"
                                                 )
                                         )
                                         .addApiResponse(

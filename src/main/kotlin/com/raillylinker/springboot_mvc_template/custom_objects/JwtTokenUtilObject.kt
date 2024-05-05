@@ -1,7 +1,5 @@
 package com.raillylinker.springboot_mvc_template.custom_objects
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.json.BasicJsonParser
@@ -9,8 +7,6 @@ import java.nio.charset.StandardCharsets
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 // [JWT 토큰 유틸]
 object JwtTokenUtilObject {
@@ -19,7 +15,6 @@ object JwtTokenUtilObject {
     // memberRoleList : 멤버 권한 리스트 (ex : ["ROLE_ADMIN", "ROLE_DEVELOPER"])
     fun generateAccessToken(
         memberUid: String,
-        memberRoleList: List<String>,
         accessTokenExpirationTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String,
@@ -28,7 +23,6 @@ object JwtTokenUtilObject {
     ): String {
         return doGenerateToken(
             memberUid,
-            memberRoleList,
             "access",
             accessTokenExpirationTimeSec,
             jwtClaimsAes256InitializationVector,
@@ -49,7 +43,6 @@ object JwtTokenUtilObject {
     ): String {
         return doGenerateToken(
             memberUid,
-            null,
             "refresh",
             refreshTokenExpirationTimeSec,
             jwtClaimsAes256InitializationVector,
@@ -107,23 +100,6 @@ object JwtTokenUtilObject {
         )
     }
 
-    // 멤버 권한 리스트 (ex : ["ROLE_ADMIN", "ROLE_DEVELOPER"])
-    fun getMemberRoleList(
-        token: String,
-        jwtClaimsAes256InitializationVector: String,
-        jwtClaimsAes256EncryptionKey: String
-    ): List<String> {
-        return Gson().fromJson(
-            CryptoUtilObject.decryptAES256(
-                parseJwtForPayload(token)["mrl"].toString(),
-                "AES/CBC/PKCS5Padding",
-                jwtClaimsAes256InitializationVector,
-                jwtClaimsAes256EncryptionKey
-            ), // 해석하려는 json 형식의 String
-            object : TypeToken<List<String>>() {}.type // 파싱할 데이터 객체 타입
-        )
-    }
-
     // 발행자
     fun getIssuer(token: String): String {
         return parseJwtForPayload(token)["iss"].toString()
@@ -137,6 +113,7 @@ object JwtTokenUtilObject {
         return if (currentEpochSeconds < exp) exp - currentEpochSeconds else 0
     }
 
+    // 토큰 만료 일시 반환
     fun getExpirationDateTime(token: String): LocalDateTime {
         val exp = parseJwtForPayload(token)["exp"] as Long
         val expirationInstant = Instant.ofEpochSecond(exp)
@@ -155,7 +132,6 @@ object JwtTokenUtilObject {
     // (JWT 토큰 생성)
     private fun doGenerateToken(
         memberUid: String,
-        memberRoleList: List<String>?,
         tokenUsage: String,
         expireTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
@@ -189,23 +165,14 @@ object JwtTokenUtilObject {
             jwtClaimsAes256EncryptionKey
         )
 
+        // 발행자
         claimsMap["iss"] = issuer
+
+        // 액세스 토큰은 초단위를 사용합니다.
+        // 초 단위로도 겹칠 경우가 있을 수 있는데,
+        // 이는 만료 되지도 않은 토큰을 밀리초 단위로 요청하는 클라이언트의 오용이므로 오히려 클라이언트 측에 수정을 요구해야 합니다.
         claimsMap["iat"] = Instant.now().epochSecond
         claimsMap["exp"] = Instant.now().epochSecond + expireTimeSec
-        claimsMap["cdt"] = LocalDateTime.now().atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
-
-        if (memberRoleList != null) {
-            // member role list
-            claimsMap["mrl"] = CryptoUtilObject.encryptAES256(
-                Gson().toJson(
-                    memberRoleList
-                ),
-                "AES/CBC/PKCS5Padding",
-                jwtClaimsAes256InitializationVector,
-                jwtClaimsAes256EncryptionKey
-            )
-        }
 
         jwtBuilder.claims().empty().add(claimsMap)
 

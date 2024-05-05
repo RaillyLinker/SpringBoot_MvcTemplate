@@ -203,17 +203,17 @@ class C10Service1TkV1AuthController(
         val refreshToken: String,
 
         @Schema(
-            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
+            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_KST"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("accessTokenExpireWhen")
         val accessTokenExpireWhen: String,
 
         @Schema(
-            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
+            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_KST"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("refreshTokenExpireWhen")
         val refreshTokenExpireWhen: String,
@@ -418,17 +418,17 @@ class C10Service1TkV1AuthController(
         val refreshToken: String,
 
         @Schema(
-            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
+            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_KST"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("accessTokenExpireWhen")
         val accessTokenExpireWhen: String,
 
         @Schema(
-            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
+            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_KST"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("refreshTokenExpireWhen")
         val refreshTokenExpireWhen: String,
@@ -585,17 +585,17 @@ class C10Service1TkV1AuthController(
         val refreshToken: String,
 
         @Schema(
-            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
+            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_KST"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("accessTokenExpireWhen")
         val accessTokenExpireWhen: String,
 
         @Schema(
-            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
+            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_KST"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("refreshTokenExpireWhen")
         val refreshTokenExpireWhen: String,
@@ -686,12 +686,9 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N8 : 로그아웃 처리 <>",
         description = "로그아웃 처리\n\n" +
-                "Jwt 에서 로그아웃의 의미는, 지금 당장 해당 액세스 토큰을 못쓰도록 만드는 것이 아니라,\n\n" +
-                "액세스 토큰이 만료되어 리플레시 토큰으로 재발급을 시도 할 때 막는 기능입니다.\n\n" +
-                "(api-result-code)\n\n" +
-                "1 : 이미 로그아웃 처리된 토큰입니다.\n\n"
+                "(api-result-code)\n\n"
     )
-    @PostMapping(
+    @DeleteMapping(
         path = ["/logout"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
@@ -712,10 +709,9 @@ class C10Service1TkV1AuthController(
         summary = "N9 : 토큰 재발급 <>",
         description = "엑세스 토큰 및 리프레시 토큰 재발행\n\n" +
                 "(api-result-code)\n\n" +
-                "1 : 탈퇴된 회원\n\n" +
-                "2 : 유효하지 않은 리프레시 토큰\n\n" +
-                "3 : 리프레시 토큰 만료\n\n" +
-                "4 : 리프레시 토큰이 액세스 토큰과 매칭되지 않음\n\n"
+                "1 : 유효하지 않은 리프레시 토큰\n\n" +
+                "2 : 리프레시 토큰 만료\n\n" +
+                "3 : 리프레시 토큰이 액세스 토큰과 매칭되지 않음\n\n"
     )
     @PostMapping(
         path = ["/reissue"],
@@ -771,17 +767,17 @@ class C10Service1TkV1AuthController(
         val refreshToken: String,
 
         @Schema(
-            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
+            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_KST"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("accessTokenExpireWhen")
         val accessTokenExpireWhen: String,
 
         @Schema(
-            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_z)",
+            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_KST"
+            example = "2024_05_02_T_15_14_49_552222_KST"
         )
         @JsonProperty("refreshTokenExpireWhen")
         val refreshTokenExpireWhen: String,
@@ -870,9 +866,8 @@ class C10Service1TkV1AuthController(
 
     ////
     @Operation(
-        summary = "N10 : 멤버의 현재 발행된 모든 리프레시 토큰 비활성화 (= 모든 기기에서 로그아웃) <>",
-        description = "멤버의 현재 발행된 모든 리프레시 토큰을 비활성화 (= 모든 기기에서 로그아웃) 하는 API\n\n" +
-                "한번 발행된 액세스 토큰을 강제로 못쓰게 만들 수는 없지만, 현재 발행된 모든 리플래시 토큰을 사용할 수 없도록 만듭니다.\n\n" +
+        summary = "N10 : 멤버의 현재 발행된 모든 토큰 비활성화 (= 모든 기기에서 로그아웃) <>",
+        description = "멤버의 현재 발행된 모든 토큰을 비활성화 (= 모든 기기에서 로그아웃) 하는 API\n\n" +
                 "(api-result-code)\n\n"
     )
     @DeleteMapping(
@@ -930,7 +925,7 @@ class C10Service1TkV1AuthController(
         summary = "N12 : 닉네임 수정하기 <>",
         description = "닉네임 수정하기\n\n" +
                 "(api-result-code)\n\n" +
-                "1. 중복된 닉네임 : 중복검사를 했음에도 그 사이에 동일 닉네임이 등록되었을 수 있음\n\n"
+                "1 : 중복된 닉네임 - 중복검사를 했음에도 그 사이에 동일 닉네임이 등록되었을 수 있음\n\n"
     )
     @PatchMapping(
         path = ["/my/profile/nickname"],
@@ -1007,7 +1002,6 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N14 : 이메일 회원가입 본인 확인 이메일에서 받은 코드 검증하기",
         description = "이메일 회원가입시 본인 이메일에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "첫 인증 완료시 이메일 회원가입까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
@@ -1031,19 +1025,9 @@ class C10Service1TkV1AuthController(
         @Parameter(name = "verificationCode", description = "확인 이메일에 전송된 코드", example = "123456")
         @RequestParam("verificationCode")
         verificationCode: String
-    ): Api14OutputVo? {
-        return service.api14(httpServletResponse, verificationUid, email, verificationCode)
+    ) {
+        service.api14(httpServletResponse, verificationUid, email, verificationCode)
     }
-
-    data class Api14OutputVo(
-        @Schema(
-            description = "인증 완료시 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
-            required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
-        )
-        @JsonProperty("expireWhen")
-        val expireWhen: String
-    )
 
 
     ////
@@ -1171,7 +1155,6 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N17 : 전화번호 회원가입 본인 확인 문자에서 받은 코드 검증하기",
         description = "전화번호 회원가입시 본인 전화번호에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "첫 인증 완료시 SMS 회원가입까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
@@ -1195,19 +1178,9 @@ class C10Service1TkV1AuthController(
         @Parameter(name = "verificationCode", description = "확인 문자에 전송된 코드", example = "123456")
         @RequestParam("verificationCode")
         verificationCode: String
-    ): Api17OutputVo? {
-        return service.api17(httpServletResponse, verificationUid, phoneNumber, verificationCode)
+    ) {
+        service.api17(httpServletResponse, verificationUid, phoneNumber, verificationCode)
     }
-
-    data class Api17OutputVo(
-        @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
-            required = false,
-            example = "2024_05_02_T_15_14_49_552222_KST"
-        )
-        @JsonProperty("expireWhen")
-        val expireWhen: String?
-    )
 
 
     ////
@@ -1514,11 +1487,10 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N21 : 계정 비밀번호 변경 <>",
         description = "계정 비밀번호 변경\n\n" +
-                "변경 완료된 후, 기존 모든 인증/인가 토큰을 비활성화 시키고 싶다면 별도의 API 사용하기\n\n" +
+                "변경 완료된 후, 기존 모든 인증/인가 토큰이 비활성화(로그아웃) 됩니다.\n\n" +
                 "(api-result-code)\n\n" +
-                "1 : 탈퇴된 회원\n\n" +
-                "2 : 기존 비밀번호가 일치하지 않음\n\n" +
-                "3 : 비번을 null 로 만들려고 할 때 account 외의 OAuth2 인증이 없기에 비번 제거 불가\n\n"
+                "1 : 기존 비밀번호가 일치하지 않음\n\n" +
+                "2 : 비번을 null 로 만들려고 할 때 account 외의 OAuth2 인증이 없기에 비번 제거 불가\n\n"
     )
     @PutMapping(
         path = ["/change-account-password"],
@@ -1601,7 +1573,6 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N23 : 이메일 비밀번호 찾기 본인 확인 이메일에서 받은 코드 검증하기",
         description = "이메일 비밀번호 찾기 시 본인 이메일에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "첫 인증 완료시 비밀번호 찾기 까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
@@ -1625,26 +1596,16 @@ class C10Service1TkV1AuthController(
         @Parameter(name = "verificationCode", description = "확인 이메일에 전송된 코드", example = "123456")
         @RequestParam("verificationCode")
         verificationCode: String
-    ): Api23OutputVo? {
-        return service.api23(httpServletResponse, verificationUid, email, verificationCode)
+    ) {
+        service.api23(httpServletResponse, verificationUid, email, verificationCode)
     }
-
-    data class Api23OutputVo(
-        @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
-            required = false,
-            example = "2024_05_02_T_15_14_49_552222_KST"
-        )
-        @JsonProperty("expireWhen")
-        val expireWhen: String?
-    )
 
 
     ////
     @Operation(
         summary = "N24 : 이메일 비밀번호 찾기 완료",
         description = "계정 비밀번호를 랜덤 값으로 변경 후 인증한 이메일로 발송\n\n" +
-                "변경 완료된 후, 기존 모든 인증/인가 토큰을 비활성화 시키고 싶다면 별도의 API 사용하기\n\n" +
+                "변경 완료된 후, 기존 모든 인증/인가 토큰이 비활성화(로그아웃) 됩니다.\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
@@ -1741,7 +1702,6 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N26 : 전화번호 비밀번호 찾기 본인 확인 문자에서 받은 코드 검증하기",
         description = "전화번호 비밀번호 찾기 시 본인 전와번호에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "첫 인증 완료시 비밀번호 찾기 까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
@@ -1765,26 +1725,16 @@ class C10Service1TkV1AuthController(
         @Parameter(name = "verificationCode", description = "확인 이메일에 전송된 코드", example = "123456")
         @RequestParam("verificationCode")
         verificationCode: String
-    ): Api26OutputVo? {
-        return service.api26(httpServletResponse, verificationUid, phoneNumber, verificationCode)
+    ) {
+        service.api26(httpServletResponse, verificationUid, phoneNumber, verificationCode)
     }
-
-    data class Api26OutputVo(
-        @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
-            required = false,
-            example = "2024_05_02_T_15_14_49_552222_KST"
-        )
-        @JsonProperty("expireWhen")
-        val expireWhen: String?
-    )
 
 
     ////
     @Operation(
         summary = "N27 : 전화번호 비밀번호 찾기 완료",
         description = "계정 비밀번호를 랜덤 값으로 변경 후 인증한 전화번호로 발송\n\n" +
-                "변경 완료된 후, 기존 모든 인증/인가 토큰을 비활성화 시키고 싶다면 별도의 API 사용하기\n\n" +
+                "변경 완료된 후, 기존 모든 인증/인가 토큰이 비활성화 됩니다.\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
@@ -2018,7 +1968,6 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N33 : 이메일 추가하기 본인 확인 이메일에서 받은 코드 검증하기 <>",
         description = "이메일 추가하기 본인 이메일에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "첫 인증 완료시 추가하기 까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
@@ -2046,19 +1995,9 @@ class C10Service1TkV1AuthController(
         @Parameter(name = "verificationCode", description = "확인 이메일에 전송된 코드", example = "123456")
         @RequestParam("verificationCode")
         verificationCode: String
-    ): Api33OutputVo? {
-        return service.api33(httpServletResponse, verificationUid, email, verificationCode, authorization!!)
+    ) {
+        service.api33(httpServletResponse, verificationUid, email, verificationCode, authorization!!)
     }
-
-    data class Api33OutputVo(
-        @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
-            required = false,
-            example = "2024_05_02_T_15_14_49_552222_KST"
-        )
-        @JsonProperty("expireWhen")
-        val expireWhen: String?
-    )
 
 
     ////
@@ -2109,7 +2048,15 @@ class C10Service1TkV1AuthController(
             example = "123456"
         )
         @JsonProperty("verificationCode")
-        val verificationCode: String
+        val verificationCode: String,
+
+        @Schema(
+            description = "대표 이메일 설정 여부",
+            required = true,
+            example = "true"
+        )
+        @JsonProperty("frontEmail")
+        val frontEmail: Boolean
     )
 
     data class Api34OutputVo(
@@ -2204,7 +2151,6 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N37 : 전화번호 추가하기 본인 확인 문자에서 받은 코드 검증하기 <>",
         description = "전화번호 추가하기 본인 전화번호에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "첫 인증 완료시 추가하기 까지의 만료시간은 10분\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
@@ -2232,19 +2178,9 @@ class C10Service1TkV1AuthController(
         @Parameter(name = "verificationCode", description = "확인 문자에 전송된 코드", example = "123456")
         @RequestParam("verificationCode")
         verificationCode: String
-    ): Api37OutputVo? {
-        return service.api37(httpServletResponse, verificationUid, phoneNumber, verificationCode, authorization!!)
+    ) {
+        service.api37(httpServletResponse, verificationUid, phoneNumber, verificationCode, authorization!!)
     }
-
-    data class Api37OutputVo(
-        @Schema(
-            description = "isVerified true 일때 새로 늘어난 검증 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
-            required = false,
-            example = "2024_05_02_T_15_14_49_552222_KST"
-        )
-        @JsonProperty("expireWhen")
-        val expireWhen: String?
-    )
 
     ////
     @Operation(
@@ -2294,13 +2230,21 @@ class C10Service1TkV1AuthController(
             example = "123456"
         )
         @JsonProperty("verificationCode")
-        val verificationCode: String
+        val verificationCode: String,
+
+        @Schema(
+            description = "대표 전화번호 설정 여부",
+            required = true,
+            example = "true"
+        )
+        @JsonProperty("frontPhoneNumber")
+        val frontPhoneNumber: Boolean
     )
 
     data class Api38OutputVo(
-        @Schema(description = "이메일의 고유값", required = true, example = "1")
-        @JsonProperty("emailUid")
-        val emailUid: Long
+        @Schema(description = "전화번호의 고유값", required = true, example = "1")
+        @JsonProperty("phoneUid")
+        val phoneUid: Long
     )
 
 
@@ -2339,8 +2283,7 @@ class C10Service1TkV1AuthController(
         description = "내 계정에 OAuth2 Access Token 으로 인증 추가\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : oAuth2 Access Token 정보 검증 불일치\n\n" +
-                "2 : 탈퇴된 회원\n\n" +
-                "3 : 이미 사용중인 인증\n\n"
+                "2 : 이미 사용중인 인증\n\n"
     )
     @PostMapping(
         path = ["/my-new-oauth2-token"],
@@ -2386,8 +2329,7 @@ class C10Service1TkV1AuthController(
         description = "내 계정에 OAuth2 Id Token 으로 인증 추가\n\n" +
                 "(api-result-code)\n\n" +
                 "1 : oAuth2 Id Token 정보 검증 불일치\n\n" +
-                "2 : 탈퇴된 회원\n\n" +
-                "3 : 이미 사용중인 인증\n\n"
+                "2 : 이미 사용중인 인증\n\n"
     )
     @PostMapping(
         path = ["/my-new-oauth2-id-token"],
@@ -2460,8 +2402,8 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N42 : 회원탈퇴 <>",
         description = "회원탈퇴 요청\n\n" +
-                "(api-result-code)\n\n" +
-                "1 : 이미 탈퇴된 회원입니다.\n\n"
+                "탈퇴 완료 후 모든 토큰이 비활성화 됩니다.\n\n" +
+                "(api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/withdrawal"],
@@ -2569,7 +2511,7 @@ class C10Service1TkV1AuthController(
         summary = "N45 : 내 대표 프로필 설정하기 <>",
         description = "내가 등록한 프로필들 중 대표 프로필 설정하기\n\n" +
                 "(api-result-code)\n\n" +
-                "1. 선택한 profileUid 가 없습니다.\n\n"
+                "1 : 선택한 profileUid 가 없습니다.\n\n"
     )
     @PatchMapping(
         path = ["/my-front-profile"],
@@ -2627,7 +2569,7 @@ class C10Service1TkV1AuthController(
     ////
     @Operation(
         summary = "N47 : 내 프로필 이미지 추가",
-        description = "내 프로필 이미지 추가 (대표 이미지 설정은 다른 API 로 해야합니다.)\n\n" +
+        description = "내 프로필 이미지 추가\n\n" +
                 "(api-result-code)\n\n"
     )
     @PostMapping(
@@ -2653,7 +2595,10 @@ class C10Service1TkV1AuthController(
     data class Api47InputVo(
         @Schema(description = "프로필 이미지 파일", required = true)
         @JsonProperty("profileImageFile")
-        val profileImageFile: MultipartFile
+        val profileImageFile: MultipartFile,
+        @Schema(description = "대표 이미지로 설정할 것인지 여부", required = true)
+        @JsonProperty("frontProfile")
+        val frontProfile: Boolean
     )
 
     data class Api47OutputVo(
@@ -2736,7 +2681,7 @@ class C10Service1TkV1AuthController(
         summary = "N50 : 내 대표 이메일 설정하기 <>",
         description = "내가 등록한 이메일들 중 대표 이메일 설정하기\n\n" +
                 "(api-result-code)\n\n" +
-                "1. 선택한 emailUid 가 없습니다.\n\n"
+                "1 : 선택한 emailUid 가 없습니다.\n\n"
     )
     @PatchMapping(
         path = ["/my-front-email"],
@@ -2808,7 +2753,7 @@ class C10Service1TkV1AuthController(
         summary = "N52 : 내 대표 전화번호 설정하기 <>",
         description = "내가 등록한 전화번호들 중 대표 전화번호 설정하기\n\n" +
                 "(api-result-code)\n\n" +
-                "1. 선택한 phoneNumberUid 가 없습니다.\n\n"
+                "1 : 선택한 phoneNumberUid 가 없습니다.\n\n"
     )
     @PatchMapping(
         path = ["/my-front-phone-number"],
