@@ -12,6 +12,14 @@ import org.springframework.web.bind.annotation.*
 
 // Key - Value 형식으로 저장되는 Redis Wrapper 를 사용하여 Database 의 Row 를 모사할 수 있으며,
 // 이를 통해 데이터베이스 결과에 대한 캐싱을 구현할 수 있습니다.
+/*
+    !!!
+    테스트를 하고 싶다면, 도커를 설치하고,
+    cmd 를 열어,
+    프로젝트 폴더 내의 samples/docker_sample/redis-docker 로 이동 후,
+    명령어.txt 에 적힌 명령어를 입력하여 Redis 를 실행시킬 수 있습니다.
+    !!!
+ */
 @Tag(name = "/service1/tk/v1/redis-test APIs", description = "C8 : Redis 에 대한 테스트 API 컨트롤러")
 @Controller
 @RequestMapping("/service1/tk/v1/redis-test")
