@@ -202,8 +202,6 @@ customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
         1. 클라이언트 비휘발성 저장소 안에,
 
                 class LoginInfoVo {
-                  String memberUid; // 멤버 고유값
-                  String nickName; // 닉네임
                   String tokenType; // 발급받은 토큰 타입(ex : "Bearer")
                   String accessToken; // 액세스 토큰 (ex : "aaaaaaaaaa111122223333")
                   String accessTokenExpireWhen; // 액세스 토큰 만료일시 (ex : "2023-01-02 11:11:11.111")
