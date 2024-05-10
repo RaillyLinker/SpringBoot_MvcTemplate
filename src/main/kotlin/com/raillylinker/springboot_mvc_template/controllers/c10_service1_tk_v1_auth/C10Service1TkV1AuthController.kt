@@ -36,7 +36,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N1 : 비 로그인 접속 테스트",
         description = "비 로그인 접속 테스트용 API\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/for-no-logged-in"],
@@ -56,7 +56,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N2 : 로그인 진입 테스트 <>",
         description = "로그인 되어 있어야 진입 가능\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/for-logged-in"],
@@ -80,7 +80,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N3 : ADMIN 권한 진입 테스트 <'ADMIN'>",
         description = "ADMIN 권한이 있어야 진입 가능\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/for-admin"],
@@ -104,7 +104,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N4 : Developer 권한 진입 테스트 <'ADMIN' or 'Developer'>",
         description = "Developer 권한이 있어야 진입 가능\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/for-developer"],
@@ -128,7 +128,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N5 : 계정 비밀번호 로그인",
         description = "계정 아이디 + 비밀번호를 사용하는 로그인 요청\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 가입 되지 않은 회원\n\n" +
                 "2 : 패스워드 불일치\n\n"
     )
@@ -303,7 +303,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N6 : OAuth2 Code 로 OAuth2 AccessToken 발급",
         description = "OAuth2 Code 를 사용하여 얻은 OAuth2 AccessToken 발급\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 유효하지 않은 OAuth2 인증 정보\n\n"
     )
     @GetMapping(
@@ -351,7 +351,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N7 : OAuth2 로그인 (Access Token)",
         description = "OAuth2 Access Token 으로 로그인 요청\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 유효하지 않은 OAuth2 Access Token\n\n" +
                 "2 : 가입 되지 않은 회원\n\n"
     )
@@ -518,7 +518,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N7.1 : OAuth2 로그인 (ID Token)",
         description = "OAuth2 ID Token 으로 로그인 요청\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 유효하지 않은 OAuth2 ID Token\n\n" +
                 "2 : 가입 되지 않은 회원\n\n"
     )
@@ -686,7 +686,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N8 : 로그아웃 처리 <>",
         description = "로그아웃 처리\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/logout"],
@@ -708,7 +708,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N9 : 토큰 재발급 <>",
         description = "엑세스 토큰 및 리프레시 토큰 재발행\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 유효하지 않은 리프레시 토큰\n\n" +
                 "2 : 리프레시 토큰 만료\n\n" +
                 "3 : 리프레시 토큰이 액세스 토큰과 매칭되지 않음\n\n"
@@ -868,7 +868,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N10 : 멤버의 현재 발행된 모든 토큰 비활성화 (= 모든 기기에서 로그아웃) <>",
         description = "멤버의 현재 발행된 모든 토큰을 비활성화 (= 모든 기기에서 로그아웃) 하는 API\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/all-authorization-token"],
@@ -892,7 +892,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N11 : 닉네임 중복 검사",
         description = "닉네임 중복 여부 반환\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/nickname-duplicate-check"],
@@ -924,7 +924,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N12 : 닉네임 수정하기 <>",
         description = "닉네임 수정하기\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 중복된 닉네임 - 중복검사를 했음에도 그 사이에 동일 닉네임이 등록되었을 수 있음\n\n"
     )
     @PatchMapping(
@@ -956,7 +956,7 @@ class C10Service1TkV1AuthController(
         summary = "N13 : 이메일 회원가입 본인 인증 이메일 발송",
         description = "이메일 회원가입시 본인 이메일 확인 메일 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 기존 회원 존재\n\n"
     )
     @PostMapping(
@@ -1002,7 +1002,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N14 : 이메일 회원가입 본인 확인 이메일에서 받은 코드 검증하기",
         description = "이메일 회원가입시 본인 이메일에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n"
@@ -1034,7 +1034,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N15 : 이메일 회원가입",
         description = "이메일 회원가입 처리\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
@@ -1108,7 +1108,7 @@ class C10Service1TkV1AuthController(
         summary = "N16 : 전화번호 회원가입 본인 인증 문자 발송",
         description = "전화번호 회원가입시 본인 전화번호 확인 문자 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 기존 회원 존재\n\n"
     )
     @PostMapping(
@@ -1155,7 +1155,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N17 : 전화번호 회원가입 본인 확인 문자에서 받은 코드 검증하기",
         description = "전화번호 회원가입시 본인 전화번호에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n"
@@ -1187,7 +1187,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N18 : 전화번호 회원가입",
         description = "전화번호 회원가입 처리\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
@@ -1261,7 +1261,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N19 : OAuth2 AccessToken 으로 회원가입 검증",
         description = "OAuth2 AccessToken 으로 회원가입 검증\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 잘못된 OAuth2 AccessToken\n\n" +
                 "2 : 기존 회원 존재\n\n"
     )
@@ -1337,7 +1337,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N19.1 : OAuth2 IdToken 으로 회원가입 검증",
         description = "OAuth2 IdToken 으로 회원가입 검증\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 잘못된 OAuth2 IdToken\n\n" +
                 "2 : 기존 회원 존재\n\n"
     )
@@ -1413,7 +1413,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N20 : OAuth2 회원가입",
         description = "OAuth2 회원가입 처리\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : OAuth2 검증 요청을 보낸 적 없음\n\n" +
                 "2 : OAuth2 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
@@ -1488,7 +1488,7 @@ class C10Service1TkV1AuthController(
         summary = "N21 : 계정 비밀번호 변경 <>",
         description = "계정 비밀번호 변경\n\n" +
                 "변경 완료된 후, 기존 모든 인증/인가 토큰이 비활성화(로그아웃) 됩니다.\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 기존 비밀번호가 일치하지 않음\n\n" +
                 "2 : 비번을 null 로 만들려고 할 때 account 외의 OAuth2 인증이 없기에 비번 제거 불가\n\n"
     )
@@ -1527,7 +1527,7 @@ class C10Service1TkV1AuthController(
         summary = "N22 : 이메일 비밀번호 찾기 본인 인증 이메일 발송",
         description = "이메일 비밀번호 찾기 본인 이메일 확인 메일 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 가입되지 않은 회원\n\n"
     )
     @PostMapping(
@@ -1573,7 +1573,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N23 : 이메일 비밀번호 찾기 본인 확인 이메일에서 받은 코드 검증하기",
         description = "이메일 비밀번호 찾기 시 본인 이메일에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n"
@@ -1606,7 +1606,7 @@ class C10Service1TkV1AuthController(
         summary = "N24 : 이메일 비밀번호 찾기 완료",
         description = "계정 비밀번호를 랜덤 값으로 변경 후 인증한 이메일로 발송\n\n" +
                 "변경 완료된 후, 기존 모든 인증/인가 토큰이 비활성화(로그아웃) 됩니다.\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
@@ -1655,7 +1655,7 @@ class C10Service1TkV1AuthController(
         summary = "N25 : 전화번호 비밀번호 찾기 본인 인증 문자 발송",
         description = "전화번호 비밀번호 찾기 본인 전화번호 확인 문자 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 가입되지 않은 회원\n\n"
     )
     @PostMapping(
@@ -1702,7 +1702,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N26 : 전화번호 비밀번호 찾기 본인 확인 문자에서 받은 코드 검증하기",
         description = "전화번호 비밀번호 찾기 시 본인 전와번호에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n"
@@ -1735,7 +1735,7 @@ class C10Service1TkV1AuthController(
         summary = "N27 : 전화번호 비밀번호 찾기 완료",
         description = "계정 비밀번호를 랜덤 값으로 변경 후 인증한 전화번호로 발송\n\n" +
                 "변경 완료된 후, 기존 모든 인증/인가 토큰이 비활성화 됩니다.\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
@@ -1783,7 +1783,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N29 : 내 이메일 리스트 가져오기 <>",
         description = "내 이메일 리스트 가져오기\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-email-addresses"],
@@ -1826,7 +1826,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N30 : 내 전화번호 리스트 가져오기 <>",
         description = "내 전화번호 리스트 가져오기\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-phone-numbers"],
@@ -1869,7 +1869,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N31 : 내 OAuth2 로그인 리스트 가져오기 <>",
         description = "내 OAuth2 로그인 리스트 가져오기\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-oauth2-list"],
@@ -1917,7 +1917,7 @@ class C10Service1TkV1AuthController(
         summary = "N32 : 이메일 추가하기 본인 인증 이메일 발송 <>",
         description = "이메일 추가하기 본인 이메일 확인 메일 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 이미 사용중인 이메일\n\n"
     )
     @PostMapping(
@@ -1968,7 +1968,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N33 : 이메일 추가하기 본인 확인 이메일에서 받은 코드 검증하기 <>",
         description = "이메일 추가하기 본인 이메일에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n"
@@ -2004,7 +2004,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N34 : 이메일 추가하기 <>",
         description = "내 계정에 이메일 추가\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
@@ -2070,7 +2070,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N35 : 내 이메일 제거하기 <>",
         description = "내 계정에서 이메일 제거\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : emailUid 의 정보가 없습니다.\n\n" +
                 "2 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
@@ -2100,7 +2100,7 @@ class C10Service1TkV1AuthController(
         summary = "N36 : 전화번호 추가하기 본인 인증 문자 발송 <>",
         description = "전화번호 추가하기 본인 전화번호 확인 문자 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 이미 사용중인 전화번호\n\n"
     )
     @PostMapping(
@@ -2151,7 +2151,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N37 : 전화번호 추가하기 본인 확인 문자에서 받은 코드 검증하기 <>",
         description = "전화번호 추가하기 본인 전화번호에 보내진 코드를 입력하여 일치 결과 확인\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 전화번호 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 전화번호 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n"
@@ -2186,7 +2186,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N38 : 전화번호 추가하기 <>",
         description = "내 계정에 전화번호 추가\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 이메일 검증 요청을 보낸 적 없음\n\n" +
                 "2 : 이메일 검증 요청이 만료됨\n\n" +
                 "3 : verificationCode 가 일치하지 않음\n\n" +
@@ -2252,7 +2252,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N39 : 내 전화번호 제거하기 <>",
         description = "내 계정에서 전화번호 제거\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : phoneUid 의 정보가 없습니다.\n\n" +
                 "2 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
@@ -2281,7 +2281,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N40 : OAuth2 추가하기 (Access Token) <>",
         description = "내 계정에 OAuth2 Access Token 으로 인증 추가\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : oAuth2 Access Token 정보 검증 불일치\n\n" +
                 "2 : 이미 사용중인 인증\n\n"
     )
@@ -2327,7 +2327,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N40.1 : OAuth2 추가하기 (Id Token) <>",
         description = "내 계정에 OAuth2 Id Token 으로 인증 추가\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : oAuth2 Id Token 정보 검증 불일치\n\n" +
                 "2 : 이미 사용중인 인증\n\n"
     )
@@ -2373,7 +2373,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N41 : 내 OAuth2 제거하기 <>",
         description = "내 계정에서 OAuth2 제거\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : emailUid 의 정보가 없습니다.\n\n" +
                 "2 : 제거할 수 없습니다. (이외에 로그인 할 방법이 없음)\n\n"
     )
@@ -2403,7 +2403,7 @@ class C10Service1TkV1AuthController(
         summary = "N42 : 회원탈퇴 <>",
         description = "회원탈퇴 요청\n\n" +
                 "탈퇴 완료 후 모든 토큰이 비활성화 됩니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/withdrawal"],
@@ -2427,7 +2427,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N43 : 내 Profile 이미지 정보 리스트 가져오기 <>",
         description = "내 Profile 이미지 정보 리스트 가져오기\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-profile-list"],
@@ -2470,7 +2470,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N44 : 내 대표 Profile 이미지 정보 가져오기 <>",
         description = "내 대표 Profile 이미지 정보 가져오기\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-front-profile"],
@@ -2510,7 +2510,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N45 : 내 대표 프로필 설정하기 <>",
         description = "내가 등록한 프로필들 중 대표 프로필 설정하기\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 선택한 profileUid 가 없습니다.\n\n"
     )
     @PatchMapping(
@@ -2542,7 +2542,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N46 : 내 프로필 삭제 <>",
         description = "내가 등록한 프로필들 중 하나를 삭제합니다.\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : profileUid 의 정보가 없습니다.\n\n"
     )
     @DeleteMapping(
@@ -2570,7 +2570,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N47 : 내 프로필 이미지 추가",
         description = "내 프로필 이미지 추가\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/my-profile"],
@@ -2616,7 +2616,7 @@ class C10Service1TkV1AuthController(
         summary = "N48 : files/member/profile 폴더에서 파일 다운받기",
         description = "프로필 이미지를 files/member/profile 위치에 저장했을 때 파일을 가져오기 위한 API 로,\n\n" +
                 "AWS 나 다른 Storage 서비스를 사용해도 좋습니다.\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 파일이 존재하지 않습니다.\n\n"
     )
     @GetMapping(
@@ -2640,7 +2640,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N49 : 내 대표 이메일 정보 가져오기 <>",
         description = "내 대표 이메일 정보 가져오기\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-front-email"],
@@ -2680,7 +2680,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N50 : 내 대표 이메일 설정하기 <>",
         description = "내가 등록한 이메일들 중 대표 이메일 설정하기\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 선택한 emailUid 가 없습니다.\n\n"
     )
     @PatchMapping(
@@ -2712,7 +2712,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N51 : 내 대표 전화번호 정보 가져오기 <>",
         description = "내 대표 전화번호 정보 가져오기\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/my-front-phone-number"],
@@ -2752,7 +2752,7 @@ class C10Service1TkV1AuthController(
     @Operation(
         summary = "N52 : 내 대표 전화번호 설정하기 <>",
         description = "내가 등록한 전화번호들 중 대표 전화번호 설정하기\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 선택한 phoneNumberUid 가 없습니다.\n\n"
     )
     @PatchMapping(

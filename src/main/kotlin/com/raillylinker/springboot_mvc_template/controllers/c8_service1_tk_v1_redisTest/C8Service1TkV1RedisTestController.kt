@@ -34,7 +34,7 @@ class C8Service1TkV1RedisTestController(
     @Operation(
         summary = "N1 : Redis Key-Value 입력 테스트",
         description = "Redis 테이블에 Key-Value 를 입력합니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/test"],
@@ -67,7 +67,7 @@ class C8Service1TkV1RedisTestController(
     @Operation(
         summary = "N2 : Redis Key-Value 조회 테스트",
         description = "Redis Table 에 저장된 Key-Value 를 조회합니다.\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : key 에 저장된 데이터가 없음\n\n"
     )
     @GetMapping(
@@ -106,7 +106,7 @@ class C8Service1TkV1RedisTestController(
     @Operation(
         summary = "N3 : Redis Key-Value 모두 조회 테스트",
         description = "Redis Table 에 저장된 모든 Key-Value 를 조회합니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["/tests"],
@@ -151,7 +151,7 @@ class C8Service1TkV1RedisTestController(
     @Operation(
         summary = "N4 : Redis Key-Value 삭제 테스트",
         description = "Redis Table 에 저장된 Key 를 삭제합니다.\n\n" +
-                "(api-result-code)\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
                 "1 : 삭제할 값이 없습니다.\n\n"
     )
     @DeleteMapping(
@@ -175,7 +175,7 @@ class C8Service1TkV1RedisTestController(
     @Operation(
         summary = "N5 : Redis Key-Value 모두 삭제 테스트",
         description = "Redis Table 에 저장된 모든 Key 를 삭제합니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @DeleteMapping(
         path = ["/test-all"],
@@ -197,7 +197,7 @@ class C8Service1TkV1RedisTestController(
         description = "Redis 트랜젝션 테스트용 API\n\n" +
                 "Redis 에 데이터 저장 직후 바로 Exception 을 발생시킵니다.\n\n" +
                 "이 API 를 사용하고 바로 데이터 조회를 했을 때, 데이터가 없다고 나오면 Rollback 이 동작한 것입니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/test-transaction"],
@@ -232,7 +232,7 @@ class C8Service1TkV1RedisTestController(
         description = "Redis 트랜젝션 미적용 테스트용 API\n\n" +
                 "Redis 에 데이터 저장 직후 바로 Exception 을 발생시킵니다.\n\n" +
                 "트랜젝션을 적용하지 않았으니 데이터는 저장될 것입니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @PostMapping(
         path = ["/test-no-transaction"],

@@ -108,6 +108,7 @@ class C6Service1TkV1TestService(
         // SMS 전송
         naverSmsUtilDi.sendSms(
             NaverSmsUtilDi.SendSmsInputVo(
+                "SMS",
                 countryCode,
                 phoneNumber,
                 inputVo.smsMessage

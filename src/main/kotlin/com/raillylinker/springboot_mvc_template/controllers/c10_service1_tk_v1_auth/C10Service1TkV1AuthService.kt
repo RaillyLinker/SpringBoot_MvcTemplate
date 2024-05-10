@@ -1544,6 +1544,7 @@ class C10Service1TkV1AuthService(
 
         naverSmsUtilDi.sendSms(
             NaverSmsUtilDi.SendSmsInputVo(
+                "SMS",
                 countryCode,
                 phoneNumber,
                 "[Springboot Mvc Project Template - 회원가입] 인증번호 [${verificationCode}]"
@@ -2528,6 +2529,7 @@ class C10Service1TkV1AuthService(
 
         naverSmsUtilDi.sendSms(
             NaverSmsUtilDi.SendSmsInputVo(
+                "SMS",
                 countryCode,
                 phoneNumber,
                 "[Springboot Mvc Project Template - 비밀번호 찾기] 인증번호 [${verificationCode}]"
@@ -2659,6 +2661,7 @@ class C10Service1TkV1AuthService(
 
             naverSmsUtilDi.sendSms(
                 NaverSmsUtilDi.SendSmsInputVo(
+                    "SMS",
                     countryCode,
                     phoneNumber,
                     "[Springboot Mvc Project Template - 새 비밀번호] $newPassword"
@@ -3163,6 +3166,7 @@ class C10Service1TkV1AuthService(
 
         naverSmsUtilDi.sendSms(
             NaverSmsUtilDi.SendSmsInputVo(
+                "SMS",
                 countryCode,
                 phoneNumber,
                 "[Springboot Mvc Project Template - 전화번호 추가] 인증번호 [${verificationCode}]"

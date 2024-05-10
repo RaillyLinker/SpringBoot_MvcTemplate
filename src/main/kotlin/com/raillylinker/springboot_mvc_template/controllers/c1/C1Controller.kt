@@ -22,7 +22,7 @@ class C1Controller(
     @Operation(
         summary = "N1 : 홈페이지",
         description = "루트 홈페이지를 반환합니다.\n\n" +
-                "(api-result-code)\n\n"
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
     )
     @GetMapping(
         path = ["", "/"],
