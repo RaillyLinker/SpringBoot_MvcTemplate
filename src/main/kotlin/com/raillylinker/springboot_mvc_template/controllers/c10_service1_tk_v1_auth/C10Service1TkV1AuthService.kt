@@ -3826,12 +3826,10 @@ class C10Service1TkV1AuthService(
         var myProfile: C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo? = null
         for (profile in profileData) {
             if (profile.uid!! == memberData.frontMemberProfileData?.uid) {
-                if (memberData.frontMemberProfileData!!.rowDeleteDateStr == "-") {
-                    myProfile = C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo(
-                        profile.uid!!,
-                        profile.imageFullUrl
-                    )
-                }
+                myProfile = C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo(
+                    profile.uid!!,
+                    profile.imageFullUrl
+                )
                 break
             }
         }
@@ -4092,12 +4090,10 @@ class C10Service1TkV1AuthService(
         var myEmail: C10Service1TkV1AuthController.Api49OutputVo.EmailInfo? = null
         for (email in emailData) {
             if (email.uid!! == memberData.frontMemberEmailData?.uid) {
-                if (memberData.frontMemberEmailData!!.rowDeleteDateStr == "-") {
-                    myEmail = C10Service1TkV1AuthController.Api49OutputVo.EmailInfo(
-                        email.uid!!,
-                        email.emailAddress
-                    )
-                }
+                myEmail = C10Service1TkV1AuthController.Api49OutputVo.EmailInfo(
+                    email.uid!!,
+                    email.emailAddress
+                )
                 break
             }
         }
@@ -4191,12 +4187,10 @@ class C10Service1TkV1AuthService(
         var myPhone: C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo? = null
         for (phone in phoneNumberData) {
             if (phone.uid!! == memberData.frontMemberPhoneData?.uid) {
-                if (memberData.frontMemberPhoneData!!.rowDeleteDateStr == "-") {
-                    myPhone = C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo(
-                        phone.uid!!,
-                        phone.phoneNumber
-                    )
-                }
+                myPhone = C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo(
+                    phone.uid!!,
+                    phone.phoneNumber
+                )
                 break
             }
         }
