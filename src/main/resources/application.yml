@@ -167,6 +167,33 @@ customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
         위와 같은 json 형식의 string 으로 입력하면 됩니다.
 
         클라이언트에서 사용하는 각 프로그래밍 언어별 지원해주는 JsonString <-> Object 라이브러리를 사용하면 편하게 입력 처리가 가능합니다.
+      - API 입력값 중, 스웨거에서 (query) 라고 표시되는 쿼리 파라미터가 Nullable 일 때, 이를 null 로 Request 하시려면 아예 파라미터 키까지 보내지 않으시면 됩니다.
+      
+        예를들어, "keyword" 라는 파라미터가 Nullable 이라면,
+      
+        http://127.0.0.1/test?keyword=hello
+      
+        이렇게 쿼리 파라미터의 값을 보낼 수 있는데,
+      
+        http://127.0.0.1/test
+      
+        이렇게 키워드 자체가 없는 상태로 요청을 하신다면 스프링부트 API 에서 "keyword" 파라미터의 변수가 null 이 왔다고 인식을 할 것입니다.
+      
+        추가로, Form 파라미터 역시 Nullable 이라면,
+      
+            curl -X 'POST' \
+            'http://127.0.0.1:8080/service1/tk/v1/request-test/post-request-x-www-form-urlencoded' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/x-www-form-urlencoded' \
+            -d 'requestFormStringList=testString1,testString2&requestFormDouble=1.1&requestFormString=testString&requestFormBoolean=true&requestFormInt=1'
+      
+        위와 같은 방식으로 키워드까지 생략하면 되며,
+      
+        Json String 을 보내는 RequestBody 의 경우 nullable 이라면,
+      
+        {"keyword" : null}
+      
+        이렇게 보내주시면 됩니다.
 
       **(인증/인가 관련 규칙)**
       - API path tk/** 는 Token 인증/인가 방식을 사용하는 API 를 뜻하며, 나머지(특히 sc/**)는 세션-쿠키 인증/인가 방식을 사용합니다.
