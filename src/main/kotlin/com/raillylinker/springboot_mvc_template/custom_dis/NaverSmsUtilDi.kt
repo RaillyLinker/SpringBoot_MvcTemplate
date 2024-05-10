@@ -49,7 +49,7 @@ class NaverSmsUtilDi(
             accessKey,
             Base64.encodeBase64String(mac.doFinal(message.toByteArray(charset("UTF-8")))),
             SensApigwNtrussComRequestApi.PostSmsV2ServicesNaverSmsServiceIdMessagesInputVO(
-                "SMS",
+                inputVo.messageType,
                 "COMM",
                 inputVo.countryCode,
                 phoneNumber,
@@ -72,6 +72,8 @@ class NaverSmsUtilDi(
     // ---------------------------------------------------------------------------------------------
     // <중첩 클래스 공간>
     data class SendSmsInputVo(
+        // 메세지 타입 (SMS, LMS, MMS)
+        val messageType: String,
         // 국가 코드 (ex : 82)
         val countryCode: String,
         // 전화번호 (ex : 01000000000)
