@@ -78,6 +78,13 @@ class SecurityConfig(
         // 본 시큐리티 필터가 관리할 주소 체계
         val securityUrl = "/service1/tk/**" // /service1/tk/** 의 모든 경로에 적용
 
+        // sameOrigin 에서 iframe 허용
+//        http.headers { headersConfigurer ->
+//            headersConfigurer.frameOptions { frameOptionsConfig ->
+//                frameOptionsConfig.sameOrigin()
+//            }
+//        }
+
         http.securityMatcher(securityUrl)
             .cors {}
 
