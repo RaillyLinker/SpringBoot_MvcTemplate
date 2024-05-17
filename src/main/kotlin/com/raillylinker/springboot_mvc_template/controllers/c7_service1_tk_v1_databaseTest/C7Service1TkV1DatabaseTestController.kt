@@ -47,9 +47,9 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("content")
         val content: String,
         @Schema(
-            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222"
+            example = "2024_05_02_T_15_14_49_552"
         )
         @JsonProperty("dateString")
         val dateString: String
@@ -66,27 +66,27 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("randomNum")
         val randomNum: Int,
         @Schema(
-            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("testDatetime")
         val testDatetime: String,
         @Schema(
-            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("createDate")
         val createDate: String,
         @Schema(
-            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("updateDate")
         val updateDate: String,
-        @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z, Null 이면 _)", required = true, example = "-")
+        @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 _)", required = true, example = "-")
         @JsonProperty("deleteDate")
         val deleteDate: String
     )
@@ -182,27 +182,27 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
-                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("testDatetime")
             val testDatetime: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String,
-            @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z, Null 이면 _)", required = true, example = "-")
+            @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 _)", required = true, example = "-")
             @JsonProperty("deleteDate")
             val deleteDate: String
         )
@@ -248,23 +248,23 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
-                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("testDatetime")
             val testDatetime: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String,
@@ -292,7 +292,7 @@ class C7Service1TkV1DatabaseTestController(
         httpServletResponse: HttpServletResponse,
         @Parameter(
             name = "dateString",
-            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
             example = "2024_05_02_T_15_14_49_552222"
         )
         @RequestParam("dateString")
@@ -318,23 +318,23 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
-                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("testDatetime")
             val testDatetime: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String,
@@ -390,23 +390,23 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
-                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("testDatetime")
             val testDatetime: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String
@@ -463,23 +463,23 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
-                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("testDatetime")
             val testDatetime: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String,
@@ -520,7 +520,7 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("content")
         val content: String,
         @Schema(
-            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
             required = true,
             example = "2024_05_02_T_15_14_49_552222"
         )
@@ -539,23 +539,23 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("randomNum")
         val randomNum: Int,
         @Schema(
-            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("testDatetime")
         val testDatetime: String,
         @Schema(
-            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("createDate")
         val createDate: String,
         @Schema(
-            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("updateDate")
         val updateDate: String
@@ -592,7 +592,7 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("content")
         val content: String,
         @Schema(
-            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
             required = true,
             example = "2024_05_02_T_15_14_49_552222"
         )
@@ -649,23 +649,23 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
-                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("testDatetime")
             val testDatetime: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String
@@ -759,23 +759,23 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
-                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("testDatetime")
             val testDatetime: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String
@@ -869,23 +869,23 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("randomNum")
         val randomNum: Int,
         @Schema(
-            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("testDatetime")
         val testDatetime: String,
         @Schema(
-            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("createDate")
         val createDate: String,
         @Schema(
-            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("updateDate")
         val updateDate: String
@@ -928,20 +928,20 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("uniqueValue")
         val uniqueValue: Int,
         @Schema(
-            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("createDate")
         val createDate: String,
         @Schema(
-            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("updateDate")
         val updateDate: String,
-        @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z, Null 이면 _)", required = true, example = "-")
+        @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 _)", required = true, example = "-")
         @JsonProperty("deleteDate")
         val deleteDate: String
     )
@@ -984,20 +984,20 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("uniqueValue")
             val uniqueValue: Int,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String,
-            @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z, Null 이면 _)", required = true, example = "-")
+            @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 _)", required = true, example = "-")
             @JsonProperty("deleteDate")
             val deleteDate: String
         )
@@ -1044,16 +1044,16 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("uniqueValue")
         val uniqueValue: Int,
         @Schema(
-            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("createDate")
         val createDate: String,
         @Schema(
-            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("updateDate")
         val updateDate: String
@@ -1119,16 +1119,16 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("fkParentName")
         val fkParentName: String,
         @Schema(
-            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("createDate")
         val createDate: String,
         @Schema(
-            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("updateDate")
         val updateDate: String
@@ -1177,16 +1177,16 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("fkChildName")
         val fkChildName: String,
         @Schema(
-            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("createDate")
         val createDate: String,
         @Schema(
-            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222_KST"
+            example = "2024_05_02_T_15_14_49_552_KST"
         )
         @JsonProperty("updateDate")
         val updateDate: String
@@ -1226,16 +1226,16 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("parentName")
             val parentName: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String,
@@ -1252,16 +1252,16 @@ class C7Service1TkV1DatabaseTestController(
                 @JsonProperty("childName")
                 val childName: String,
                 @Schema(
-                    description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                    description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                     required = true,
-                    example = "2024_05_02_T_15_14_49_552222_KST"
+                    example = "2024_05_02_T_15_14_49_552_KST"
                 )
                 @JsonProperty("createDate")
                 val createDate: String,
                 @Schema(
-                    description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                    description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                     required = true,
-                    example = "2024_05_02_T_15_14_49_552222_KST"
+                    example = "2024_05_02_T_15_14_49_552_KST"
                 )
                 @JsonProperty("updateDate")
                 val updateDate: String
@@ -1303,16 +1303,16 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("childName")
             val childName: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String,
@@ -1420,23 +1420,23 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("randomNum")
             val randomNum: Int,
             @Schema(
-                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("testDatetime")
             val testDatetime: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String
@@ -1478,16 +1478,16 @@ class C7Service1TkV1DatabaseTestController(
             @JsonProperty("parentName")
             val parentName: String,
             @Schema(
-                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("createDate")
             val createDate: String,
             @Schema(
-                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                 required = true,
-                example = "2024_05_02_T_15_14_49_552222_KST"
+                example = "2024_05_02_T_15_14_49_552_KST"
             )
             @JsonProperty("updateDate")
             val updateDate: String,
@@ -1504,16 +1504,16 @@ class C7Service1TkV1DatabaseTestController(
                 @JsonProperty("childName")
                 val childName: String,
                 @Schema(
-                    description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                    description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                     required = true,
-                    example = "2024_05_02_T_15_14_49_552222_KST"
+                    example = "2024_05_02_T_15_14_49_552_KST"
                 )
                 @JsonProperty("createDate")
                 val createDate: String,
                 @Schema(
-                    description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z)",
+                    description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
                     required = true,
-                    example = "2024_05_02_T_15_14_49_552222_KST"
+                    example = "2024_05_02_T_15_14_49_552_KST"
                 )
                 @JsonProperty("updateDate")
                 val updateDate: String

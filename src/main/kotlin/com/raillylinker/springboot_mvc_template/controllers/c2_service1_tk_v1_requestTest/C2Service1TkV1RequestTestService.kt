@@ -187,7 +187,7 @@ class C2Service1TkV1RequestTestService(
             saveDirectoryPath.resolve(
                 "${fileNameWithOutExtension}(${
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 }).$fileExtension"
             ).normalize()
         )
@@ -224,7 +224,7 @@ class C2Service1TkV1RequestTestService(
                 saveDirectoryPath.resolve(
                     "${nullableFileNameWithOutExtension}(${
                         LocalDateTime.now().atZone(ZoneId.systemDefault())
-                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                     }).$nullableFileExtension"
                 ).normalize()
             )
@@ -284,7 +284,7 @@ class C2Service1TkV1RequestTestService(
                 saveDirectoryPath.resolve(
                     "${fileNameWithOutExtension}(${
                         LocalDateTime.now().atZone(ZoneId.systemDefault())
-                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                     }).$fileExtension"
                 ).normalize()
             )
@@ -323,7 +323,7 @@ class C2Service1TkV1RequestTestService(
                     saveDirectoryPath.resolve(
                         "${nullableFileNameWithOutExtension}(${
                             LocalDateTime.now().atZone(ZoneId.systemDefault())
-                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                         }).$nullableFileExtension"
                     ).normalize()
                 )
@@ -390,7 +390,7 @@ class C2Service1TkV1RequestTestService(
             saveDirectoryPath.resolve(
                 "${fileNameWithOutExtension}(${
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 }).$fileExtension"
             ).normalize()
         )

@@ -152,7 +152,7 @@ class C6Service1TkV1TestService(
         // 확장자 포함 파일명 생성
         val saveFileName = "temp_${
             LocalDateTime.now().atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         }.xlsx"
 
         // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
@@ -217,7 +217,7 @@ class C6Service1TkV1TestService(
                     .filename(
                         "result(${
                             LocalDateTime.now().atZone(ZoneId.systemDefault())
-                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                         }).pdf", StandardCharsets.UTF_8
                     )
                     .build()
@@ -330,7 +330,7 @@ class C6Service1TkV1TestService(
                         .filename(
                             "result(${
                                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                             }).pdf", StandardCharsets.UTF_8
                         )
                         .build()

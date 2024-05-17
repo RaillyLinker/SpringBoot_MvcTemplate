@@ -68,7 +68,7 @@ class C4Service1TkV1FileTestService(
 
         val savedFileName = "${fileNameWithOutExtension}(${
             LocalDateTime.now().atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         }).$fileExtension"
 
         // multipartFile 을 targetPath 에 저장
@@ -143,7 +143,7 @@ class C4Service1TkV1FileTestService(
         val fileTargetPath = saveDirectoryPath.resolve(
             "zipped_${
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             }.zip"
         ).normalize()
 
@@ -181,7 +181,7 @@ class C4Service1TkV1FileTestService(
         val fileTargetPath = saveDirectoryPath.resolve(
             "zipped_${
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             }.zip"
         ).normalize()
 
@@ -209,7 +209,7 @@ class C4Service1TkV1FileTestService(
 
         // 요청 시간을 문자열로
         val timeString = LocalDateTime.now().atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
         // 확장자 포함 파일명 생성
         val saveFileName = "unzipped_${timeString}/"

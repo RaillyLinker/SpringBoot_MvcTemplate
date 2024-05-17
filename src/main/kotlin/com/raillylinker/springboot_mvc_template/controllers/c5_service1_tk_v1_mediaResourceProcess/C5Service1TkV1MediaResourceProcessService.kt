@@ -83,7 +83,7 @@ class C5Service1TkV1MediaResourceProcessService(
 
         // 요청 시간을 문자열로
         val timeString = LocalDateTime.now().atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
         // 파일 저장 디렉토리 경로
         val saveDirectoryPathString = "./files/temp/$timeString"
@@ -132,7 +132,7 @@ class C5Service1TkV1MediaResourceProcessService(
         Files.createDirectories(saveDirectoryPath)
         val resultFileName = "${
             LocalDateTime.now().atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         }.gif"
         val fileTargetPath = saveDirectoryPath.resolve(resultFileName).normalize()
 
@@ -174,7 +174,7 @@ class C5Service1TkV1MediaResourceProcessService(
 
         // 요청 시간을 문자열로
         val timeString = LocalDateTime.now().atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
         // 결과 파일의 확장자 포함 파일명 생성
         val resultFileName = "resized_${timeString}.gif"

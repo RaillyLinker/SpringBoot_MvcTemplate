@@ -333,9 +333,9 @@ class C10Service1TkV1AuthService(
             jwtAccessToken,
             jwtRefreshToken,
             accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
             refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
             myOAuth2List,
             myProfileList,
             myEmailList,
@@ -682,9 +682,9 @@ class C10Service1TkV1AuthService(
             jwtAccessToken,
             jwtRefreshToken,
             accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
             refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
             myOAuth2List,
             myProfileList,
             myEmailList,
@@ -871,9 +871,9 @@ class C10Service1TkV1AuthService(
             jwtAccessToken,
             jwtRefreshToken,
             accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
             refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
             myOAuth2List,
             myProfileList,
             myEmailList,
@@ -901,7 +901,7 @@ class C10Service1TkV1AuthService(
         if (tokenInfo != null) {
             tokenInfo.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
 
@@ -1018,7 +1018,7 @@ class C10Service1TkV1AuthService(
                 // 먼저 로그아웃 처리
                 tokenInfo.rowDeleteDateStr =
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 database1Service1LogInTokenInfoRepository.save(tokenInfo)
 
                 // 멤버의 권한 리스트를 조회 후 반환
@@ -1142,9 +1142,9 @@ class C10Service1TkV1AuthService(
                     newJwtAccessToken,
                     newRefreshToken,
                     accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
                     refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z")),
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
                     myOAuth2List,
                     myProfileList,
                     myEmailList,
@@ -1187,7 +1187,7 @@ class C10Service1TkV1AuthService(
         for (tokenInfo in tokenInfoList) {
             tokenInfo.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
             database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
@@ -1287,7 +1287,7 @@ class C10Service1TkV1AuthService(
         return C10Service1TkV1AuthController.Api13OutputVo(
             database1MemberRegisterEmailVerificationData.uid!!,
             database1MemberRegisterEmailVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
 
@@ -1462,7 +1462,7 @@ class C10Service1TkV1AuthService(
 
                 val savedFileName = "${fileNameWithOutExtension}(${
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 }).$fileExtension"
 
                 // multipartFile 을 targetPath 에 저장
@@ -1490,7 +1490,7 @@ class C10Service1TkV1AuthService(
             // 확인 완료된 검증 요청 정보 삭제
             emailVerification.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1JoinTheMembershipWithEmailVerificationDataRepository.save(emailVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -1555,7 +1555,7 @@ class C10Service1TkV1AuthService(
         return C10Service1TkV1AuthController.Api16OutputVo(
             database1MemberRegisterPhoneNumberVerificationData.uid!!,
             database1MemberRegisterPhoneNumberVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
 
@@ -1731,7 +1731,7 @@ class C10Service1TkV1AuthService(
 
                 val savedFileName = "${fileNameWithOutExtension}(${
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 }).$fileExtension"
 
                 // multipartFile 을 targetPath 에 저장
@@ -1758,7 +1758,7 @@ class C10Service1TkV1AuthService(
             // 확인 완료된 검증 요청 정보 삭제
             phoneNumberVerification.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1JoinTheMembershipWithPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -1830,7 +1830,7 @@ class C10Service1TkV1AuthService(
 
                 expireWhen =
                     database1MemberRegisterOauth2VerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             }
 
             2 -> { // NAVER
@@ -1878,7 +1878,7 @@ class C10Service1TkV1AuthService(
 
                 expireWhen =
                     database1MemberRegisterOauth2VerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             }
 
             3 -> { // KAKAO TALK
@@ -1926,7 +1926,7 @@ class C10Service1TkV1AuthService(
 
                 expireWhen =
                     database1MemberRegisterOauth2VerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             }
 
             else -> {
@@ -1999,7 +1999,7 @@ class C10Service1TkV1AuthService(
 
                 expireWhen =
                     database1MemberRegisterOauth2VerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             }
 
             else -> {
@@ -2169,7 +2169,7 @@ class C10Service1TkV1AuthService(
 
                 val savedFileName = "${fileNameWithOutExtension}(${
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 }).$fileExtension"
 
                 // multipartFile 을 targetPath 에 저장
@@ -2196,7 +2196,7 @@ class C10Service1TkV1AuthService(
             // 확인 완료된 검증 요청 정보 삭제
             oauth2Verification.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1JoinTheMembershipWithOauth2VerificationDataRepository.save(oauth2Verification)
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -2272,7 +2272,7 @@ class C10Service1TkV1AuthService(
         for (tokenInfo in tokenInfoList) {
             tokenInfo.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
             database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
@@ -2329,7 +2329,7 @@ class C10Service1TkV1AuthService(
         return C10Service1TkV1AuthController.Api22OutputVo(
             database1MemberFindPasswordEmailVerificationData.uid!!,
             database1MemberFindPasswordEmailVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
 
@@ -2460,7 +2460,7 @@ class C10Service1TkV1AuthService(
             // 확인 완료된 검증 요청 정보 삭제
             emailVerification.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1FindPasswordWithEmailVerificationDataRepository.save(emailVerification)
 
             // 모든 토큰 비활성화 처리
@@ -2474,7 +2474,7 @@ class C10Service1TkV1AuthService(
             for (tokenInfo in tokenInfoList) {
                 tokenInfo.rowDeleteDateStr =
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
                 database1Service1LogInTokenInfoRepository.save(tokenInfo)
             }
@@ -2539,7 +2539,7 @@ class C10Service1TkV1AuthService(
         return C10Service1TkV1AuthController.Api25OutputVo(
             database1MemberFindPasswordPhoneNumberVerificationData.uid!!,
             database1MemberFindPasswordPhoneNumberVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
 
@@ -2671,7 +2671,7 @@ class C10Service1TkV1AuthService(
             // 확인 완료된 검증 요청 정보 삭제
             phoneNumberVerification.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1FindPasswordWithPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
             // 모든 토큰 비활성화 처리
@@ -2685,7 +2685,7 @@ class C10Service1TkV1AuthService(
             for (tokenInfo in tokenInfoList) {
                 tokenInfo.rowDeleteDateStr =
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
                 database1Service1LogInTokenInfoRepository.save(tokenInfo)
             }
@@ -2879,7 +2879,7 @@ class C10Service1TkV1AuthService(
         return C10Service1TkV1AuthController.Api32OutputVo(
             database1MemberRegisterEmailVerificationData.uid!!,
             database1MemberRegisterEmailVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
 
@@ -3007,7 +3007,7 @@ class C10Service1TkV1AuthService(
             // 확인 완료된 검증 요청 정보 삭제
             emailVerification.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1AddEmailVerificationDataRepository.save(emailVerification)
 
             if (inputVo.frontEmail) {
@@ -3090,7 +3090,7 @@ class C10Service1TkV1AuthService(
             // 이메일 지우기
             myEmailVo.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1MemberEmailDataRepository.save(
                 myEmailVo
             )
@@ -3177,7 +3177,7 @@ class C10Service1TkV1AuthService(
         return C10Service1TkV1AuthController.Api36OutputVo(
             database1MemberAddPhoneNumberVerificationData.uid!!,
             database1MemberAddPhoneNumberVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
 
@@ -3306,7 +3306,7 @@ class C10Service1TkV1AuthService(
             // 확인 완료된 검증 요청 정보 삭제
             phoneNumberVerification.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1AddPhoneNumberVerificationDataRepository.save(phoneNumberVerification)
 
             if (inputVo.frontPhoneNumber) {
@@ -3389,7 +3389,7 @@ class C10Service1TkV1AuthService(
             // 전화번호 지우기
             myPhoneVo.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1MemberPhoneDataRepository.save(
                 myPhoneVo
             )
@@ -3656,7 +3656,7 @@ class C10Service1TkV1AuthService(
             // 로그인 정보 지우기
             myOAuth2Vo.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1MemberOauth2LoginDataRepository.save(
                 myOAuth2Vo
             )
@@ -3691,7 +3691,7 @@ class C10Service1TkV1AuthService(
 
         // 회원탈퇴 처리
         memberData.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         database1Service1MemberDataRepository.save(
             memberData
         )
@@ -3701,7 +3701,7 @@ class C10Service1TkV1AuthService(
             database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
         for (email in emailList) {
             email.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1MemberEmailDataRepository.save(email)
         }
 
@@ -3710,7 +3710,7 @@ class C10Service1TkV1AuthService(
         for (memberRole in memberRoleList) {
             memberRole.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1MemberRoleDataRepository.save(memberRole)
         }
 
@@ -3719,7 +3719,7 @@ class C10Service1TkV1AuthService(
         for (memberSnsOauth2 in memberSnsOauth2List) {
             memberSnsOauth2.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1MemberOauth2LoginDataRepository.save(memberSnsOauth2)
         }
 
@@ -3728,7 +3728,7 @@ class C10Service1TkV1AuthService(
         for (memberPhone in memberPhoneList) {
             memberPhone.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1MemberPhoneDataRepository.save(memberPhone)
         }
 
@@ -3737,7 +3737,7 @@ class C10Service1TkV1AuthService(
         for (profile in profileData) {
             profile.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
             database1Service1MemberProfileDataRepository.save(profile)
         }
 
@@ -3754,7 +3754,7 @@ class C10Service1TkV1AuthService(
         for (tokenInfo in tokenInfoList) {
             tokenInfo.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
             database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
@@ -3929,7 +3929,7 @@ class C10Service1TkV1AuthService(
         // 프로필 비활성화
         profileData.rowDeleteDateStr =
             LocalDateTime.now().atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         database1Service1MemberProfileDataRepository.save(profileData)
 
         if (memberData.frontMemberProfileData?.uid == profileUid) {
@@ -3995,7 +3995,7 @@ class C10Service1TkV1AuthService(
 
         val savedFileName = "${fileNameWithOutExtension}(${
             LocalDateTime.now().atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSSSSS_z"))
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         }).$fileExtension"
 
         // multipartFile 을 targetPath 에 저장
