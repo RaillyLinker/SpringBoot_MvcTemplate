@@ -230,7 +230,7 @@ class C4Service1TkV1FileTestService(
     ////
     fun api5(httpServletResponse: HttpServletResponse, delayTimeSecond: Int): ResponseEntity<Resource>? {
         if (delayTimeSecond < 0) {
-            httpServletResponse.status = 500
+            httpServletResponse.status = HttpStatus.BAD_REQUEST.value()
             return null
         }
 

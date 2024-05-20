@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 
 // 민감한 정보를 지닌 actuator 접근 제한 필터
@@ -30,7 +31,7 @@ class ActuatorEndpointFilter(
         // 리퀘스트 URI (ex : /sample/test) 가 /actuator 로 시작되는지를 확인 후 블록
         if (httpServletRequest.requestURI.startsWith("/actuator") && clientAddressIp !in actuatorAllowIpList) {
             // status 404 반환 및 무동작
-            httpServletResponse.status = 404
+            httpServletResponse.status = HttpStatus.NOT_FOUND.value()
             return
         }
 
