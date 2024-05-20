@@ -14,10 +14,10 @@ import org.springframework.test.context.web.WebAppConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class) // @Order(1) 사용으로, 인자값의 숫자가 작은 함수부터 선행됨
 @ActiveProfiles("dev", "prod") // 빌드 서버에서 환경 구축을 하지 않기 위해 local 테스트는 하지 않음.
 class ApplicationTests {
-	@Test
-	@Order(1)
-	fun test1() {
-		// test 코드 작성
+    @Test
+    @Order(1)
+    fun test1() {
+        // test 코드 작성
 
-	}
+    }
 }
