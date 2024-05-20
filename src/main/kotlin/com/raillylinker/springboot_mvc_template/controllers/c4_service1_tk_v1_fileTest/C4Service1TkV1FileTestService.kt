@@ -77,6 +77,7 @@ class C4Service1TkV1FileTestService(
             saveDirectoryPath.resolve(savedFileName).normalize()
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
 
         return C4Service1TkV1FileTestController.Api1OutputVo("http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-temp/$savedFileName")
@@ -106,6 +107,7 @@ class C4Service1TkV1FileTestService(
             }
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             InputStreamResource(Files.newInputStream(serverFilePathObject)),
@@ -159,6 +161,7 @@ class C4Service1TkV1FileTestService(
 
         zipOutputStream.close()
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -190,6 +193,7 @@ class C4Service1TkV1FileTestService(
             CustomUtilObject.compressDirectoryToZip(sourceDir, sourceDir.name, zipOutputStream)
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -218,6 +222,7 @@ class C4Service1TkV1FileTestService(
 
         CustomUtilObject.unzipFile(filePathString, fileTargetPath)
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -233,6 +238,7 @@ class C4Service1TkV1FileTestService(
 
         val file: Resource = ClassPathResource("static/resource_c4_n5/client_image_test.jpg")
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             file,

@@ -65,6 +65,7 @@ class C6Service1TkV1TestService(
             inputVo.multipartFileList
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -91,6 +92,7 @@ class C6Service1TkV1TestService(
             inputVo.multipartFileList
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -115,6 +117,7 @@ class C6Service1TkV1TestService(
             )
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -133,6 +136,7 @@ class C6Service1TkV1TestService(
             inputVo.minColumnLength
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api4OutputVo(
             excelData?.size ?: 0,
@@ -172,6 +176,7 @@ class C6Service1TkV1TestService(
 
         ExcelFileUtilObject.writeExcel(file.outputStream(), inputExcelSheetDataMap)
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -209,6 +214,7 @@ class C6Service1TkV1TestService(
             savedImgFilePathMap
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             InputStreamResource(pdfByteArray.inputStream()),
@@ -322,6 +328,7 @@ class C6Service1TkV1TestService(
                 savedImgFilePathMap
             )
 
+            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return ResponseEntity<Resource>(
                 InputStreamResource(pdfByteArray.inputStream()),
@@ -371,6 +378,7 @@ class C6Service1TkV1TestService(
             }
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             InputStreamResource(Files.newInputStream(serverFilePathObject)),
@@ -390,6 +398,7 @@ class C6Service1TkV1TestService(
         // kafkaProducer1 에 토픽 메세지 발행
         kafkaProducer0.send(inputVo.topic, inputVo.message)
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -422,6 +431,7 @@ class C6Service1TkV1TestService(
         reader.close()
         inputStream.close()
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api8OutputVo(
             result
@@ -442,6 +452,7 @@ class C6Service1TkV1TestService(
         val fontName: String = ttf.name
         ttf.close()
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api9OutputVo(
             fontName
@@ -457,6 +468,7 @@ class C6Service1TkV1TestService(
         initializationVector: String,
         encryptionKey: String
     ): C6Service1TkV1TestController.Api10OutputVo? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api10OutputVo(
             CryptoUtilObject.encryptAES256(
@@ -477,6 +489,7 @@ class C6Service1TkV1TestService(
         initializationVector: String,
         encryptionKey: String
     ): C6Service1TkV1TestController.Api11OutputVo? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api11OutputVo(
             CryptoUtilObject.decryptAES256(
@@ -530,9 +543,11 @@ class C6Service1TkV1TestService(
                 buyerSignElement.append("<span>수정 완료</span>")
             }
 
+            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return doc.html()
         } else {
+            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return htmlString
         }

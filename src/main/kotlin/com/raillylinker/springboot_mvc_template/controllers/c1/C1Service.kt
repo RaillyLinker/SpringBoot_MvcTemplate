@@ -32,6 +32,7 @@ class C1Service(
             )
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }

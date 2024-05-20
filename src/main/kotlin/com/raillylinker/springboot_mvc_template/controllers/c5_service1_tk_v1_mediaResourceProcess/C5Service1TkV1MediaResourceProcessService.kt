@@ -59,6 +59,7 @@ class C5Service1TkV1MediaResourceProcessService(
             inputVo.imageType
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         httpServletResponse.setHeader("Content-Disposition", "attachment; filename=\"$fileName\"")
 
@@ -105,6 +106,7 @@ class C5Service1TkV1MediaResourceProcessService(
             ImageIO.write(bufferedImage.frameBufferedImage, "png", fileTargetPath.toFile())
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -151,6 +153,7 @@ class C5Service1TkV1MediaResourceProcessService(
             fileTargetPath.toFile().outputStream()
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -186,6 +189,7 @@ class C5Service1TkV1MediaResourceProcessService(
             inputVo.resizingHeight
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             InputStreamResource(ByteArrayInputStream(resizedImageByteArray)),

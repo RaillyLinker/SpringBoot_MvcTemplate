@@ -45,6 +45,7 @@ class C2Service1TkV1RequestTestService(
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
     fun api1(httpServletResponse: HttpServletResponse): String? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return activeProfile
     }
@@ -82,6 +83,7 @@ class C2Service1TkV1RequestTestService(
         queryParamStringList: List<String>,
         queryParamStringListNullable: List<String>?
     ): C2Service1TkV1RequestTestController.Api4OutputVo? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C2Service1TkV1RequestTestController.Api4OutputVo(
             queryParamString,
@@ -103,6 +105,7 @@ class C2Service1TkV1RequestTestService(
         httpServletResponse: HttpServletResponse,
         pathParamInt: Int
     ): C2Service1TkV1RequestTestController.Api5OutputVo? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C2Service1TkV1RequestTestController.Api5OutputVo(pathParamInt)
     }
@@ -113,6 +116,7 @@ class C2Service1TkV1RequestTestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C2Service1TkV1RequestTestController.Api6InputVo
     ): C2Service1TkV1RequestTestController.Api6OutputVo? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C2Service1TkV1RequestTestController.Api6OutputVo(
             inputVo.requestBodyString,
@@ -134,6 +138,7 @@ class C2Service1TkV1RequestTestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C2Service1TkV1RequestTestController.Api7InputVo
     ): C2Service1TkV1RequestTestController.Api7OutputVo? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C2Service1TkV1RequestTestController.Api7OutputVo(
             inputVo.requestFormString,
@@ -230,6 +235,7 @@ class C2Service1TkV1RequestTestService(
             )
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C2Service1TkV1RequestTestController.Api8OutputVo(
             inputVo.requestFormString,
@@ -330,6 +336,7 @@ class C2Service1TkV1RequestTestService(
             }
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C2Service1TkV1RequestTestController.Api9OutputVo(
             inputVo.requestFormString,
@@ -434,6 +441,7 @@ class C2Service1TkV1RequestTestService(
             )
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C2Service1TkV1RequestTestController.Api10OutputVo(
             inputJsonObject.requestFormString,
@@ -461,6 +469,7 @@ class C2Service1TkV1RequestTestService(
         errorType: C2Service1TkV1RequestTestController.Api12ErrorTypeEnum?
     ) {
         if (errorType == null) {
+            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
         } else {
             when (errorType) {
@@ -492,12 +501,14 @@ class C2Service1TkV1RequestTestService(
             Thread.sleep(100)  // 100ms마다 스레드를 잠들게 하여 CPU 사용률을 줄임
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
 
     ////
     fun api14(httpServletResponse: HttpServletResponse): String? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return "test Complete!"
     }
@@ -508,6 +519,7 @@ class C2Service1TkV1RequestTestService(
         val modelAndView = ModelAndView()
         modelAndView.viewName = "template_c2_n15/html_response_example"
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return modelAndView
     }
@@ -515,6 +527,7 @@ class C2Service1TkV1RequestTestService(
 
     ////
     fun api16(httpServletResponse: HttpServletResponse): Resource? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ByteArrayResource(
             byteArrayOf(
@@ -563,6 +576,7 @@ class C2Service1TkV1RequestTestService(
         // 반환값에 전해줄 FIS
         val fileInputStream = FileInputStream("$serverFileAbsolutePathString/$serverFileNameString")
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ByteArrayResource(FileCopyUtils.copyToByteArray(fileInputStream))
     }
@@ -580,6 +594,7 @@ class C2Service1TkV1RequestTestService(
         // 반환값에 전해줄 FIS
         val fileInputStream = FileInputStream("$serverFileAbsolutePathString/$serverFileNameString")
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ByteArrayResource(FileCopyUtils.copyToByteArray(fileInputStream))
     }
@@ -602,6 +617,7 @@ class C2Service1TkV1RequestTestService(
         }
 
         // 결과 대기 객체를 먼저 반환
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return deferredResult
     }
@@ -629,6 +645,7 @@ class C2Service1TkV1RequestTestService(
         api20SseEmitterWrapperMbr.emitterEventMapSemaphore.release()
         api20SseEmitterWrapperMbr.emitterMapSemaphore.release()
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return sseEmitter
     }
@@ -674,6 +691,7 @@ class C2Service1TkV1RequestTestService(
         api20SseEmitterWrapperMbr.emitterEventMapSemaphore.release()
         api20SseEmitterWrapperMbr.emitterMapSemaphore.release()
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -685,6 +703,7 @@ class C2Service1TkV1RequestTestService(
         inputVo: C2Service1TkV1RequestTestController.Api22InputVo
     ): C2Service1TkV1RequestTestController.Api22OutputVo? {
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C2Service1TkV1RequestTestController.Api22OutputVo(
             stringList,

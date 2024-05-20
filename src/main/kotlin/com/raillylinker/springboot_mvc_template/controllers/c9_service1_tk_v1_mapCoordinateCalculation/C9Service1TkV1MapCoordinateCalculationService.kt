@@ -63,6 +63,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
                 )
             )
         }
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -75,6 +76,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         latitude2: Double,
         longitude2: Double
     ): C9Service1TkV1MapCoordinateCalculationController.Api1OutputVo? {
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C9Service1TkV1MapCoordinateCalculationController.Api1OutputVo(
             MapCoordinateUtilObject.getDistanceMeterBetweenTwoLatLngCoordinate(
@@ -102,6 +104,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
             latLngCoordinate
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C9Service1TkV1MapCoordinateCalculationController.Api2OutputVo(
             centerCoordinate.first,
@@ -143,6 +146,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
             latLngCoordinate
         )
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo(
             coordinateList,
@@ -158,6 +162,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api4(httpServletResponse: HttpServletResponse) {
         database1TemplateTestMapRepository.deleteAll()
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -189,6 +194,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
             )
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C9Service1TkV1MapCoordinateCalculationController.Api5OutputVo(
             coordinateCalcResultList
@@ -224,6 +230,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
             )
         }
 
+        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C9Service1TkV1MapCoordinateCalculationController.Api6OutputVo(
             coordinateCalcResultList
