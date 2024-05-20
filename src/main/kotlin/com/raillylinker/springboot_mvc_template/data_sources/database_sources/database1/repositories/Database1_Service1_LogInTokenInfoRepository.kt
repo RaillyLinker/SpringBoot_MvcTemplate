@@ -13,11 +13,11 @@ interface Database1_Service1_LogInTokenInfoRepository :
     fun findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
         tokenType: String,
         accessToken: String,
-        rowDeleteDateStr :String
+        rowDeleteDateStr: String
     ): Database1_Service1_LogInTokenInfo?
 
     fun findAllByMemberDataAndRowDeleteDateStr(
         memberData: Database1_Service1_MemberData,
-        rowDeleteDateStr :String
+        rowDeleteDateStr: String
     ): List<Database1_Service1_LogInTokenInfo>
 }

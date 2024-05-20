@@ -112,6 +112,122 @@ class C10Service1TkV1AuthService(
         return result
     }
 
+
+    ////
+    fun api2Dot1(httpServletResponse: HttpServletResponse, authorization: String?): Map<String, Any>? {
+        if (authorization == null) {
+            // 인증 코드 미검증
+            return hashMapOf("result" to "Not Logged In : Test Success")
+        } else {
+            // 인증 코드 검증
+
+            // 타입과 토큰을 분리
+            val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
+            if (authorizationSplit.size < 2) {
+                return hashMapOf("result" to "Not Logged In : 올바르지 않은 Authorization Token")
+            }
+
+            // 타입으로 추정되는 문장이 존재할 때
+            // 타입 분리
+            val tokenType = authorizationSplit[0].trim() // 첫번째 단어는 토큰 타입
+            val jwtAccessToken = authorizationSplit[1].trim() // 앞의 타입을 자르고 남은 액세스 토큰
+
+            if (jwtAccessToken == "") {
+                return hashMapOf("result" to "Not Logged In : 올바르지 않은 Authorization Token")
+            }
+
+            when (tokenType.lowercase()) { // 타입 검증
+                "bearer" -> { // Bearer JWT 토큰 검증
+                    // 토큰 문자열 해석 가능여부 확인
+                    val accessTokenType: String? = try {
+                        JwtTokenUtilObject.getTokenType(jwtAccessToken)
+                    } catch (_: Exception) {
+                        null
+                    }
+
+                    if (accessTokenType == null || // 해석 불가능한 JWT 토큰
+                        accessTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
+                        JwtTokenUtilObject.getTokenUsage(
+                            jwtAccessToken,
+                            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                        ).lowercase() != "access" || // 토큰 용도가 다름
+                        // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
+                        JwtTokenUtilObject.getRemainSeconds(jwtAccessToken) > SecurityConfig.AuthTokenFilterService1Tk.ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
+                        JwtTokenUtilObject.getIssuer(jwtAccessToken) != SecurityConfig.AuthTokenFilterService1Tk.ISSUER || // 발행인 불일치
+                        !JwtTokenUtilObject.validateSignature(
+                            jwtAccessToken,
+                            SecurityConfig.AuthTokenFilterService1Tk.JWT_SECRET_KEY_STRING
+                        ) // 시크릿 검증이 무효 = 위변조 된 토큰
+                    ) {
+                        return hashMapOf("result" to "Not Logged In : 올바르지 않은 Authorization Token")
+                    }
+
+                    // 토큰 만료 검증
+                    val jwtRemainSeconds = JwtTokenUtilObject.getRemainSeconds(jwtAccessToken)
+
+                    if (jwtRemainSeconds <= 0L) {
+                        // 토큰이 만료됨
+                        return hashMapOf("result" to "Not Logged In : 토큰이 만료됨")
+                    }
+
+                    // 유저 탈퇴 여부 확인
+                    val memberUid = JwtTokenUtilObject.getMemberUid(
+                        jwtAccessToken,
+                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                        SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                    ).toLong()
+
+                    val memberData =
+                        database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+                            memberUid,
+                            "-"
+                        )
+
+                    if (memberData == null) {
+                        // 멤버 탈퇴
+                        return hashMapOf("result" to "Not Logged In : 탈퇴 처리된 회원")
+                    }
+
+                    // 로그아웃 여부 파악
+                    val tokenInfo =
+                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
+                            tokenType,
+                            jwtAccessToken,
+                            "-"
+                        )
+
+                    if (tokenInfo == null) {
+                        return hashMapOf("result" to "Not Logged In : 로그아웃 처리된 토큰")
+                    }
+
+                    // !!!패널티로 인한 접근 거부 와 같은 인증 / 인가 조건을 추가하려면 이곳에 추가하세요.!!!
+
+                    // 멤버의 권한 리스트를 조회 후 반환
+                    val memberRoleEntityList =
+                        database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+                            memberData,
+                            "-"
+                        )
+
+                    // 회원 권한 형식 변경
+                    val authorities: ArrayList<String> = ArrayList()
+                    for (memberRole in memberRoleEntityList) {
+                        authorities.add(memberRole.role)
+                    }
+
+                    // 회원 권한 비교가 필요하면 여기서 할 것.
+
+                    return hashMapOf("result" to "Member No.$memberUid : Test Success")
+                }
+
+                else -> {
+                    return hashMapOf("result" to "Not Logged In : 올바르지 않은 Authorization Token")
+                }
+            }
+        }
+    }
+
     ////
     fun api3(httpServletResponse: HttpServletResponse, authorization: String): Map<String, Any>? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
@@ -3265,7 +3381,7 @@ class C10Service1TkV1AuthService(
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
 
         if (phoneNumberVerification.rowDeleteDateStr != "-" ||
-            phoneNumberVerification.memberData.uid!! != memberUid.toLong() ||
+            phoneNumberVerification.memberData.uid!! != memberUid ||
             phoneNumberVerification.phoneNumber != inputVo.phoneNumber
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()

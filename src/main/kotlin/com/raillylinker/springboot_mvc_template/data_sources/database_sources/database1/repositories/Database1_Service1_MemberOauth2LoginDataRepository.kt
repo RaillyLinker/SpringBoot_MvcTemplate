@@ -13,28 +13,28 @@ interface Database1_Service1_MemberOauth2LoginDataRepository :
     fun findByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
         oauth2TypeCode: Byte,
         snsId: String,
-        rowDeleteDateStr :String
+        rowDeleteDateStr: String
     ): Database1_Service1_MemberOauth2LoginData?
 
     fun existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
         oauth2TypeCode: Byte,
         snsId: String,
-        rowDeleteDateStr :String
+        rowDeleteDateStr: String
     ): Boolean
 
     fun findAllByMemberDataAndRowDeleteDateStr(
         memberData: Database1_Service1_MemberData,
-        rowDeleteDateStr :String
+        rowDeleteDateStr: String
     ): List<Database1_Service1_MemberOauth2LoginData>
 
     fun findByUidAndMemberDataAndRowDeleteDateStr(
-        uid : Long,
+        uid: Long,
         memberData: Database1_Service1_MemberData,
-        rowDeleteDateStr :String
+        rowDeleteDateStr: String
     ): Database1_Service1_MemberOauth2LoginData?
 
     fun existsByMemberDataAndRowDeleteDateStr(
         memberData: Database1_Service1_MemberData,
-        rowDeleteDateStr :String
+        rowDeleteDateStr: String
     ): Boolean
 }

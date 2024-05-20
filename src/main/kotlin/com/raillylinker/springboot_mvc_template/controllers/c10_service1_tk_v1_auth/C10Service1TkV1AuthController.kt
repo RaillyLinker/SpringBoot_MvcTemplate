@@ -78,6 +78,29 @@ class C10Service1TkV1AuthController(
 
     ////
     @Operation(
+        summary = "N2.1 : 로그인 / 비로그인 진입 테스트 <>?",
+        description = "로그인 / 혹은 비로그인 모두 진입 가능하며, 로그인 여부를 코드에서 판단합니다.\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+    )
+    @GetMapping(
+        path = ["/for-logged-in-or-not"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api2Dot1(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        @RequestHeader("Authorization")
+        authorization: String?
+    ): Map<String, Any>? {
+        return service.api2Dot1(httpServletResponse, authorization)
+    }
+
+
+    ////
+    @Operation(
         summary = "N3 : ADMIN 권한 진입 테스트 <'ADMIN'>",
         description = "ADMIN 권한이 있어야 진입 가능\n\n" +
                 "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
