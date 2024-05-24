@@ -214,6 +214,15 @@ class C5Service1TkV1MediaResourceProcessService(
         httpServletResponse: HttpServletResponse,
         inputVo: C5Service1TkV1MediaResourceProcessController.Api5InputVo
     ) {
+        // 서명 이미지 생성 및 저장
+        val signBufferedImage = ImageProcessUtilObject.createSignatureImage(
+            inputVo.signatureText,
+            400,
+            100,
+            Color.BLACK,
+            Font("Serif", Font.PLAIN, 48)
+        )
+
         // 파일 저장 디렉토리 경로
         val saveDirectoryPathString = "./files/temp"
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
@@ -228,15 +237,8 @@ class C5Service1TkV1MediaResourceProcessService(
             }.png"
         ).normalize()
 
-        // 서명 이미지 생성 및 저장
-        ImageProcessUtilObject.createSignatureImage(
-            inputVo.signatureText,
-            fileTargetPath.toFile(),
-            400,
-            100,
-            Color.BLACK,
-            Font("Serif", Font.PLAIN, 48)
-        )
+        // 사인 이미지를 파일로 저장
+        ImageIO.write(signBufferedImage, "png", fileTargetPath.toFile())
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()

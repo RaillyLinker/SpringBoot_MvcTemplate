@@ -87,14 +87,14 @@ object ImageProcessUtilObject {
     fun createSignatureImage(
         // 서명화할 텍스트
         text: String,
-        // 서명 파일을 저장할 경로 파일
-        pngOutputFile: File,
         // 사인 이미지 사이즈
         signImageWidth: Int,
         signImageHeight: Int,
+        // 사인 텍스트 색상
         signColor : Color,
+        // 사인 텍스트 폰트
         signFont : Font
-    ) {
+    ) : BufferedImage {
         // 투명한 배경의 BufferedImage 생성
         val bufferedImage = BufferedImage(signImageWidth, signImageHeight, BufferedImage.TYPE_INT_ARGB)
         val g2d = bufferedImage.createGraphics()
@@ -122,7 +122,6 @@ object ImageProcessUtilObject {
         // 리소스 해제
         g2d.dispose()
 
-        // 이미지 파일로 저장 (PNG 형식)
-        ImageIO.write(bufferedImage, "png", pngOutputFile)
+        return bufferedImage
     }
 }
