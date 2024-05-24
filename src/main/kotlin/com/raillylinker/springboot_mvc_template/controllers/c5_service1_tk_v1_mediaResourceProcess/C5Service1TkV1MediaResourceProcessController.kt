@@ -138,4 +138,32 @@ class C5Service1TkV1MediaResourceProcessController(
         @JsonProperty("resizingHeight")
         val resizingHeight: Int
     )
+
+
+    ////
+    @Operation(
+        summary = "N5 : 서명 생성 테스트",
+        description = "입력받은 문자열을 투명 배경 서명 이미지로 만들어 files/temp 폴더에 저장\n\n" +
+                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+    )
+    @PostMapping(
+        path = ["/create-signature"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api5(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @RequestBody
+        inputVo: Api5InputVo
+    ) {
+        service.api5(httpServletResponse, inputVo)
+    }
+
+    data class Api5InputVo(
+        @Schema(description = "서명 문자", required = true, example = "홍길동")
+        @JsonProperty("signatureText")
+        val signatureText: String
+    )
 }

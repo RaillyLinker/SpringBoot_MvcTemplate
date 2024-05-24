@@ -1,6 +1,9 @@
 package com.raillylinker.springboot_mvc_template.custom_objects
 
+import java.awt.Color
+import java.awt.Font
 import java.awt.Image
+import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.*
 import java.nio.file.Files
@@ -78,5 +81,48 @@ object ImageProcessUtilObject {
             // 임시 파일 삭제
             tempFile.delete()
         }
+    }
+
+    // (문자열을 투명 배경 서명 이미지로 변경하는 함수)
+    fun createSignatureImage(
+        // 서명화할 텍스트
+        text: String,
+        // 서명 파일을 저장할 경로 파일
+        pngOutputFile: File,
+        // 사인 이미지 사이즈
+        signImageWidth: Int,
+        signImageHeight: Int,
+        signColor : Color,
+        signFont : Font
+    ) {
+        // 투명한 배경의 BufferedImage 생성
+        val bufferedImage = BufferedImage(signImageWidth, signImageHeight, BufferedImage.TYPE_INT_ARGB)
+        val g2d = bufferedImage.createGraphics()
+
+        // 안티앨리어싱 설정
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+
+        // 배경을 투명하게 설정
+        g2d.color = Color(0, 0, 0, 0)
+        g2d.fillRect(0, 0, signImageWidth, signImageHeight)
+
+        // 서명 텍스트 설정
+        g2d.color = signColor
+        g2d.font = signFont
+
+        // 텍스트의 크기를 계산하여 중앙에 배치
+        val fontMetrics = g2d.fontMetrics
+        val stringBounds = fontMetrics.getStringBounds(text, g2d)
+        val x = (signImageWidth - stringBounds.width.toInt()) / 2
+        val y = (signImageHeight - stringBounds.height.toInt()) / 2 + fontMetrics.ascent
+
+        // 텍스트 그리기
+        g2d.drawString(text, x, y)
+
+        // 리소스 해제
+        g2d.dispose()
+
+        // 이미지 파일로 저장 (PNG 형식)
+        ImageIO.write(bufferedImage, "png", pngOutputFile)
     }
 }

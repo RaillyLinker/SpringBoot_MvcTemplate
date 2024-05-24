@@ -14,6 +14,8 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import java.awt.Color
+import java.awt.Font
 import java.awt.image.BufferedImage
 import java.io.*
 import java.nio.charset.StandardCharsets
@@ -206,4 +208,37 @@ class C5Service1TkV1MediaResourceProcessService(
         )
     }
 
+
+    ////
+    fun api5(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C5Service1TkV1MediaResourceProcessController.Api5InputVo
+    ) {
+        // 파일 저장 디렉토리 경로
+        val saveDirectoryPathString = "./files/temp"
+        val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
+        // 파일 저장 디렉토리 생성
+        Files.createDirectories(saveDirectoryPath)
+
+        // 확장자 포함 파일명 생성
+        val fileTargetPath = saveDirectoryPath.resolve(
+            "signature_${
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            }.png"
+        ).normalize()
+
+        // 서명 이미지 생성 및 저장
+        ImageProcessUtilObject.createSignatureImage(
+            inputVo.signatureText,
+            fileTargetPath.toFile(),
+            400,
+            100,
+            Color.BLACK,
+            Font("Serif", Font.PLAIN, 48)
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
 }
