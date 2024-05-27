@@ -53,4 +53,3 @@ class MailConfig(
         return mailSender
     }
 }
-
