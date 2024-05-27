@@ -6,3 +6,5 @@
 - AWS S3 관련 함수 및 예시 추가
 
 - ks pay 관련 함수 및 예시 추가
+
+- Swagger api-result-code 및 설명을 개선하기
