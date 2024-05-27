@@ -3,7 +3,11 @@ package com.raillylinker.springboot_mvc_template.controllers.c3_service1_tk_v1_r
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType
@@ -26,10 +30,48 @@ class C3Service1TkV1RequestFromServerTestController(
     // <매핑 함수 공간>
     @Operation(
         summary = "N1 : 기본 요청 테스트",
-        description = "기본적인 Get 메소드 요청 테스트입니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "기본적인 Get 메소드 요청 테스트입니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/request-test"],
@@ -47,10 +89,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N2 : Redirect 테스트",
-        description = "Redirect 되었을 때의 응답 테스트입니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "Redirect 되었을 때의 응답 테스트입니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/redirect-to-blank"],
@@ -68,10 +148,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N3 : Forward 테스트",
-        description = "Forward 되었을 때의 응답 테스트입니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "Forward 되었을 때의 응답 테스트입니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/forward-to-blank"],
@@ -89,10 +207,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N4 : Get 요청 테스트 (Query Parameter)",
-        description = "Query 파라미터를 받는 Get 요청 테스트\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "Query 파라미터를 받는 Get 요청 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/get-request"],
@@ -151,10 +307,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N5 : Get 요청 테스트 (Path Parameter)",
-        description = "Path 파라미터를 받는 Get 요청 테스트\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "Path 파라미터를 받는 Get 요청 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/get-request-path-param"],
@@ -178,10 +372,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N6 : Post 요청 테스트 (Request Body, application/json)",
-        description = "application/json 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "application/json 형식의 Request Body 를 받는 Post 요청 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/post-request-application-json"],
@@ -240,10 +472,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N7 : Post 요청 테스트 (Request Body, x-www-form-urlencoded)",
-        description = "x-www-form-urlencoded 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "x-www-form-urlencoded 형식의 Request Body 를 받는 Post 요청 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/post-request-x-www-form-urlencoded"],
@@ -302,10 +572,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N8 : Post 요청 테스트 (Request Body, multipart/form-data)",
-        description = "multipart/form-data 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "multipart/form-data 형식의 Request Body 를 받는 Post 요청 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/post-request-multipart-form-data"],
@@ -365,10 +673,48 @@ class C3Service1TkV1RequestFromServerTestController(
     @Operation(
         summary = "N9 : Post 요청 테스트 (Request Body, multipart/form-data, MultipartFile List)",
         description = "multipart/form-data 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
-                "MultipartFile 파라미터를 List 로 받습니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+                "MultipartFile 파라미터를 List 로 받습니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/post-request-multipart-form-data2"],
@@ -428,10 +774,48 @@ class C3Service1TkV1RequestFromServerTestController(
     @Operation(
         summary = "N10 : Post 요청 테스트 (Request Body, multipart/form-data, with jsonString)",
         description = "multipart/form-data 형식의 Request Body 를 받는 Post 요청 테스트\n\n" +
-                "파일 외의 파라미터를 JsonString 형식으로 받습니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+                "파일 외의 파라미터를 JsonString 형식으로 받습니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/post-request-multipart-form-data-json"],
@@ -490,10 +874,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N11 : 에러 발생 테스트",
-        description = "요청시 에러가 발생했을 때의 테스트입니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "요청시 에러가 발생했을 때의 테스트입니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/generate-error"],
@@ -511,13 +933,51 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N12 : api-result-code 반환 테스트",
-        description = "api-result-code 가 Response Header 로 반환되는 테스트입니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n" +
-                "3 : errorType 을 A 로 보냈습니다.\n\n" +
-                "4 : errorType 을 B 로 보냈습니다.\n\n" +
-                "5 : errorType 을 C 로 보냈습니다.\n\n"
+        description = "api-result-code 가 Response Header 로 반환되는 테스트입니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : 네트워크 에러\n\n" +
+                                "2 : 서버 에러\n\n" +
+                                "3 : errorType 을 A 로 보냈습니다.\n\n" +
+                                "4 : errorType 을 B 로 보냈습니다.\n\n" +
+                                "5 : errorType 을 C 로 보냈습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/api-result-code-test"],
@@ -535,10 +995,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N13 : 응답 지연 발생 테스트",
-        description = "요청을 보내어 인위적으로 응답이 지연 되었을 때를 테스트합니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "요청을 보내어 인위적으로 응답이 지연 되었을 때를 테스트합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/time-delay-test"],
@@ -560,10 +1058,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N14 : text/string 형식 Response 받아오기",
-        description = "text/string 형식 Response 를 받아옵니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "text/string 형식 Response 를 받아옵니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/text-string-response"],
@@ -584,10 +1120,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N15 : text/html 형식 Response 받아오기",
-        description = "text/html 형식 Response 를 받아옵니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "text/html 형식 Response 를 받아옵니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/text-html-response"],
@@ -608,10 +1182,48 @@ class C3Service1TkV1RequestFromServerTestController(
     ////
     @Operation(
         summary = "N16 : DeferredResult Get 요청 테스트",
-        description = "결과 반환 지연 Get 메소드 요청 테스트\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 네트워크 에러\n\n" +
-                "2 : 서버 에러\n\n"
+        description = "결과 반환 지연 Get 메소드 요청 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/delayed-result-test"],
@@ -639,8 +1251,48 @@ class C3Service1TkV1RequestFromServerTestController(
     @Operation(
         summary = "N17 : SSE 구독 테스트",
         description = "SSE 구독 요청 테스트\n\n" +
-                "SSE 를 구독하여 백그라운드에서 실행합니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+                "SSE 를 구독하여 백그라운드에서 실행합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/sse-subscribe"],
@@ -662,8 +1314,48 @@ class C3Service1TkV1RequestFromServerTestController(
     @Operation(
         summary = "N18 : WebSocket 연결 테스트",
         description = "WebSocket 연결 요청 테스트\n\n" +
-                "WebSocket 을 연결 하여 백그라운드에서 실행합니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+                "WebSocket 을 연결 하여 백그라운드에서 실행합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 요청시 네트워크 에러가 발생하였습니다.\n\n" +
+                                "2 : API 요청시 서버 에러가 발생하였습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/websocket-connect"],

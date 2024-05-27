@@ -191,13 +191,23 @@ class SecurityConfig(
             // (JWT 발행자)
             const val ISSUER = "${ApplicationConstants.PACKAGE_NAME}.service1"
 
+            // (Swagger 에 표시될 401 api-result-code 설명)
+            // !!HTTP Status Code 가 401 일 때, 반환되는 api-result-code 에 대한 설명을 적으세요.!!
+            const val DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE =
+                "(Response Code 반환 원인) - Nullable\n\n" +
+                        "반환 안됨 : 인증 토큰을 입력하지 않았습니다.\n\n" +
+                        "1 : Request Header 에 Authorization 키로 넣어준 토큰이 올바르지 않습니다. (재 로그인 필요)\n\n" +
+                        "2 : Request Header 에 Authorization 키로 넣어준 토큰의 유효시간이 만료되었습니다. (Refresh Token 으로 재발급 필요)\n\n" +
+                        "3 : Request Header 에 Authorization 키로 넣어준 토큰의 멤버가 탈퇴 된 상태입니다. (다른 계정으로 재 로그인 필요)\n\n" +
+                        "4 : Request Header 에 Authorization 키로 넣어준 토큰이 로그아웃 처리된 상태입니다. (재 로그인 필요)"
+
             // (액세스 토큰 검증 함수)
             // !!!입력받은 토큰을 검증하여 결과 코드를 반환하도록 작성합니다.!!!
             /*
                 결과 코드
                 0 : 정상적인 토큰입니다.
-                1 : 올바르지 않은 Token 입니다.
-                2 : 토큰이 만료되었습니다.
+                1 : 토큰이 올바르지 않습니다.
+                2 : 토큰의 유효시간이 만료되었습니다.
              */
             fun verifyAccessToken(tokenType: String, accessToken: String): Int {
                 if (accessToken == "") {

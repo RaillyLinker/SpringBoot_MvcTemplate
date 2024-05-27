@@ -2,6 +2,8 @@ package com.raillylinker.springboot_mvc_template.controllers.c1
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType
@@ -21,8 +23,48 @@ class C1Controller(
     // <매핑 함수 공간>
     @Operation(
         summary = "N1 : 홈페이지",
-        description = "루트 홈페이지를 반환합니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+        description = "루트 홈페이지를 반환합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : 설명1\n\n" +
+//                                "2 : 설명2\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["", "/"],

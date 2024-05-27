@@ -1116,7 +1116,7 @@ class C10Service1TkV1AuthService(
                 if (jwtRefreshToken != tokenInfo.refreshToken) {
                     // 건내받은 토큰이 해당 액세스 토큰의 가용 토큰과 맞지 않음
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "3")
+                    httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
 

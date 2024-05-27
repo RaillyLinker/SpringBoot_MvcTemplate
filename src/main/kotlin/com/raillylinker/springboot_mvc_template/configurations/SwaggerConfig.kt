@@ -73,51 +73,18 @@ class SwaggerConfig(
                 operation
                     .responses
                     .addApiResponse(
-                        "204",
-                        ApiResponse()
-                            .description(
-                                "본문이 없습니다.\n\n" +
-                                        "Response Header 의 api-result-code 로 값 하나(리스트로 반환되지만 아이템은 하나. 예를들면 [1])가 반환됩니다.\n\n" +
-                                        "API 상세 설명 내용 참조."
-                            )
-//                            .content(
-//                                Content().addMediaType(
-//                                    "text/plain",
-//                                    MediaType().schema(
-//                                        ModelConverters.getInstance()
-//                                            .resolveAsResolvedSchema(AnnotatedType(String::class.java)).schema
-//                                    )
-//                                )
-//                            )
-                    )
-                    .addApiResponse(
                         "400",
                         ApiResponse()
-                            .description("클라이언트가 잘못된 값을 넘겨주었습니다.")
-                    )
-                    .addApiResponse(
-                        "401",
-                        ApiResponse()
                             .description(
-                                "인증되지 않은 접근입니다.\n\n" +
-                                        "Response Header 의 api-result-code 로 값 하나(리스트로 반환되지만 아이템은 하나. 예를들면 [1])가 반환되거나 안될 수 있습니다.\n\n" +
-                                        "null : Request Header 에 Authorization 키로 JWT 를 넣어줘야 합니다.\n\n" +
-                                        "1 : Request Header 에 Authorization 키로 넣어준 JWT 형식이 올바르지 않습니다. (재 로그인 필요)\n\n" +
-                                        "2 : Request Header 에 Authorization 키로 넣어준 JWT 가 만료되었습니다. (Refresh Token 으로 재발급 필요)\n\n" +
-                                        "3 : Request Header 에 Authorization 키로 넣어준 JWT 의 멤버가 탈퇴한 상태입니다.\n\n" +
-                                        "4 : Request Header 에 Authorization 키로 넣어준 JWT 가 로그아웃 되었습니다. (재 로그인 필요)\n\n"
+                                "클라이언트에서 전달한 Request 변수의 형식이 잘못되었습니다.\n\n" +
+                                        "입력 데이터를 다시 한번 확인해주세요"
                             )
-                    )
-                    .addApiResponse(
-                        "403",
-                        ApiResponse()
-                            .description("인가되지 않은 접근입니다.")
                     )
                     .addApiResponse(
                         "500",
                         ApiResponse()
                             .description(
-                                "서버 에러.\n\n" +
+                                "서버에서 런타임 에러가 발생하였습니다.\n\n" +
                                         "서버 개발자에게 에러 상황, 에러 로그 등의 정보를 알려주세요."
                             )
                     )

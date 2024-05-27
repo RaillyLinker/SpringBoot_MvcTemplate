@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.raillylinker.springboot_mvc_template.custom_objects.ImageProcessUtilObject
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.core.io.Resource
@@ -28,9 +32,47 @@ class C5Service1TkV1MediaResourceProcessController(
     @Operation(
         summary = "N1 : 정적 이미지 파일(지원 타입은 description 에 후술)을 업로드 하여 리사이징 후 다운",
         description = "multipart File 로 받은 이미지 파일을 업로드 하여 리사이징 후 다운\n\n" +
-                "지원 타입 : jpg, jpeg, bmp, png, gif(움직이지 않는 타입)\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 지원하는 파일이 아닙니다.\n\n"
+                "지원 타입 : jpg, jpeg, bmp, png, gif(움직이지 않는 타입)\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : multipartImageFile 이 지원하는 타입의 이미지 파일이 아닙니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @PostMapping(
         path = ["/resize-image"],
@@ -67,8 +109,48 @@ class C5Service1TkV1MediaResourceProcessController(
     ////
     @Operation(
         summary = "N2 : 서버에 저장된 움직이는 Gif 이미지 파일에서 프레임을 PNG 이미지 파일로 분리한 후 files/temps 폴더 안에 저장",
-        description = "서버에 저장된 움직이는 Gif 이미지 파일에서 프레임을 PNG 이미지 파일로 분리한 후 files/temps 폴더 안에 저장\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+        description = "서버에 저장된 움직이는 Gif 이미지 파일에서 프레임을 PNG 이미지 파일로 분리한 후 files/temps 폴더 안에 저장\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : 설명1\n\n" +
+//                                "2 : 설명2\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @PostMapping(
         path = ["/split-animated-gif"],
@@ -87,8 +169,48 @@ class C5Service1TkV1MediaResourceProcessController(
     ////
     @Operation(
         summary = "N3 : 서버에 저장된 움직이는 PNG 이미지 프레임들을 움직이는 Gif 파일로 병합 후 files/temps 폴더 안에 저장",
-        description = "서버에 저장된 움직이는 PNG 이미지 프레임들을 움직이는 Gif 파일로 병합 후 files/temps 폴더 안에 저장\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+        description = "서버에 저장된 움직이는 PNG 이미지 프레임들을 움직이는 Gif 파일로 병합 후 files/temps 폴더 안에 저장\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : 설명1\n\n" +
+//                                "2 : 설명2\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @PostMapping(
         path = ["/merge-images-to-animated-gif"],
@@ -107,9 +229,47 @@ class C5Service1TkV1MediaResourceProcessController(
     ////
     @Operation(
         summary = "N4 : 동적 GIF 이미지 파일을 업로드 하여 리사이징 후 다운",
-        description = "multipart File 로 받은 움직이는 GIF 이미지 파일을 업로드 하여 리사이징 후 다운\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-                "1 : 지원하는 파일이 아닙니다.\n\n"
+        description = "multipart File 로 받은 움직이는 GIF 이미지 파일을 업로드 하여 리사이징 후 다운\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : multipartImageFile 이 지원하는 타입의 이미지 파일이 아닙니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @PostMapping(
         path = ["/resize-gif-image"],
@@ -143,8 +303,48 @@ class C5Service1TkV1MediaResourceProcessController(
     ////
     @Operation(
         summary = "N5 : 서명 생성 테스트",
-        description = "입력받은 문자열을 투명 배경 서명 이미지로 만들어 files/temp 폴더에 저장\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+        description = "입력받은 문자열을 투명 배경 서명 이미지로 만들어 files/temp 폴더에 저장\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : 설명1\n\n" +
+//                                "2 : 설명2\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @PostMapping(
         path = ["/create-signature"],

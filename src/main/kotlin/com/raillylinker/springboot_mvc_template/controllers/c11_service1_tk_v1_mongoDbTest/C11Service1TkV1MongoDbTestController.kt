@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType
@@ -23,8 +25,48 @@ class C11Service1TkV1MongoDbTestController(
     // <매핑 함수 공간>
     @Operation(
         summary = "N1 : DB document 입력 테스트 API",
-        description = "테스트 테이블에 document 를 입력합니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+        description = "테스트 테이블에 document 를 입력합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : 설명1\n\n" +
+//                                "2 : 설명2\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @PostMapping(
         path = ["/test-document"],
@@ -77,8 +119,48 @@ class C11Service1TkV1MongoDbTestController(
     ////
     @Operation(
         summary = "N2 : DB Rows 삭제 테스트 API",
-        description = "테스트 테이블의 모든 Row 를 모두 삭제합니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+        description = "테스트 테이블의 모든 Row 를 모두 삭제합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : 설명1\n\n" +
+//                                "2 : 설명2\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @DeleteMapping(
         path = ["/test-document"],
@@ -98,8 +180,48 @@ class C11Service1TkV1MongoDbTestController(
     // todo : 행 존재 여부 확인
     @Operation(
         summary = "N3 : DB Row 삭제 테스트",
-        description = "테스트 테이블의 Row 하나를 삭제합니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+        description = "테스트 테이블의 Row 하나를 삭제합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : 설명1\n\n" +
+//                                "2 : 설명2\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @DeleteMapping(
         path = ["/test-document/{id}"],
@@ -121,8 +243,48 @@ class C11Service1TkV1MongoDbTestController(
     ////
     @Operation(
         summary = "N4 : DB Rows 조회 테스트",
-        description = "테스트 테이블의 모든 Rows 를 반환합니다.\n\n" +
-                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n"
+        description = "테스트 테이블의 모든 Rows 를 반환합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : 설명1\n\n" +
+//                                "2 : 설명2\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "401",
+//                content = [Content()],
+//                description = "인증되지 않은 접근입니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+//            ApiResponse(
+//                responseCode = "403",
+//                content = [Content()],
+//                description = "인가되지 않은 접근입니다."
+//            )
+        ]
     )
     @GetMapping(
         path = ["/test-document"],
@@ -176,9 +338,48 @@ class C11Service1TkV1MongoDbTestController(
 //    ////
 //    @Operation(
 //        summary = "N5 : DB 테이블의 random_num 컬럼 근사치 기준으로 정렬한 리스트 조회 API",
-//        description = "테이블의 row 중 random_num 컬럼과 num 파라미터의 값의 근사치로 정렬한 리스트 반환\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작"
+//        description = "테이블의 row 중 random_num 컬럼과 num 파라미터의 값의 근사치로 정렬한 리스트 반환\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+////            ApiResponse(
+////                responseCode = "204",
+////                content = [Content()],
+////                description = "Response Body 가 없습니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = "(Response Code 반환 원인) - Required\n\n" +
+////                                "1 : 설명1\n\n" +
+////                                "2 : 설명2\n\n",
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @GetMapping(
 //        path = ["/test-document/order-by-random-num-nearest"],
@@ -228,9 +429,48 @@ class C11Service1TkV1MongoDbTestController(
 //    ////
 //    @Operation(
 //        summary = "N6 : DB 테이블의 row_create_date 컬럼 근사치 기준으로 정렬한 리스트 조회 API",
-//        description = "테이블의 row 중 row_create_date 컬럼과 dateString 파라미터의 값의 근사치로 정렬한 리스트 반환\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작"
+//        description = "테이블의 row 중 row_create_date 컬럼과 dateString 파라미터의 값의 근사치로 정렬한 리스트 반환\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+////            ApiResponse(
+////                responseCode = "204",
+////                content = [Content()],
+////                description = "Response Body 가 없습니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = "(Response Code 반환 원인) - Required\n\n" +
+////                                "1 : 설명1\n\n" +
+////                                "2 : 설명2\n\n",
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @GetMapping(
 //        path = ["/rows/order-by-create-date-nearest"],
@@ -280,9 +520,48 @@ class C11Service1TkV1MongoDbTestController(
 //    ////
 //    @Operation(
 //        summary = "N7 : DB Rows 조회 테스트 (페이징)",
-//        description = "테스트 테이블의 Rows 를 페이징하여 반환합니다.\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작"
+//        description = "테스트 테이블의 Rows 를 페이징하여 반환합니다.\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+////            ApiResponse(
+////                responseCode = "204",
+////                content = [Content()],
+////                description = "Response Body 가 없습니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = "(Response Code 반환 원인) - Required\n\n" +
+////                                "1 : 설명1\n\n" +
+////                                "2 : 설명2\n\n",
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @GetMapping(
 //        path = ["/rows/paging"],
@@ -336,9 +615,48 @@ class C11Service1TkV1MongoDbTestController(
 //    @Operation(
 //        summary = "N8 : DB Rows 조회 테스트 (네이티브 쿼리 페이징)",
 //        description = "테스트 테이블의 Rows 를 네이티브 쿼리로 페이징하여 반환합니다.\n\n" +
-//                "num 을 기준으로 근사치 정렬도 수행합니다.\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작"
+//                "num 을 기준으로 근사치 정렬도 수행합니다.\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+////            ApiResponse(
+////                responseCode = "204",
+////                content = [Content()],
+////                description = "Response Body 가 없습니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = "(Response Code 반환 원인) - Required\n\n" +
+////                                "1 : 설명1\n\n" +
+////                                "2 : 설명2\n\n",
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @GetMapping(
 //        path = ["/rows/native-paging"],
@@ -397,10 +715,47 @@ class C11Service1TkV1MongoDbTestController(
 //    ////
 //    @Operation(
 //        summary = "N9 : DB Row 수정 테스트",
-//        description = "테스트 테이블의 Row 하나를 수정합니다.\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작\n\n" +
-//                "1 : testTableUid 에 해당하는 정보가 DB에 없음\n\n"
+//        description = "테스트 테이블의 Row 하나를 수정합니다.\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : testTableUid 에 해당하는 정보가 DB 에 존재하지 않습니다.\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @PatchMapping(
 //        path = ["/row/{testTableUid}"],
@@ -448,10 +803,47 @@ class C11Service1TkV1MongoDbTestController(
 //    ////
 //    @Operation(
 //        summary = "N10 : DB Row 수정 테스트 (네이티브 쿼리)",
-//        description = "테스트 테이블의 Row 하나를 네이티브 쿼리로 수정합니다.\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작\n\n" +
-//                "1 : testTableUid 에 해당하는 정보가 DB에 없음\n\n"
+//        description = "테스트 테이블의 Row 하나를 네이티브 쿼리로 수정합니다.\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+//            ApiResponse(
+//                responseCode = "204",
+//                content = [Content()],
+//                description = "Response Body 가 없습니다.\n\n" +
+//                        "Response Headers 를 확인하세요.",
+//                headers = [
+//                    Header(
+//                        name = "api-result-code",
+//                        description = "(Response Code 반환 원인) - Required\n\n" +
+//                                "1 : testTableUid 에 해당하는 정보가 DB 에 존재하지 않습니다.\n\n",
+//                        schema = Schema(type = "string")
+//                    )
+//                ]
+//            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @PatchMapping(
 //        path = ["/row/{testTableUid}/native-query"],
@@ -481,9 +873,48 @@ class C11Service1TkV1MongoDbTestController(
 //    ////
 //    @Operation(
 //        summary = "N11 : DB 정보 검색 테스트",
-//        description = "글 본문 내용중 searchKeyword 가 포함된 rows 를 검색하여 반환합니다.\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작"
+//        description = "글 본문 내용중 searchKeyword 가 포함된 rows 를 검색하여 반환합니다.\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+////            ApiResponse(
+////                responseCode = "204",
+////                content = [Content()],
+////                description = "Response Body 가 없습니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = "(Response Code 반환 원인) - Required\n\n" +
+////                                "1 : 설명1\n\n" +
+////                                "2 : 설명2\n\n",
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @GetMapping(
 //        path = ["/search-content"],
@@ -539,9 +970,48 @@ class C11Service1TkV1MongoDbTestController(
 //    ////
 //    @Operation(
 //        summary = "N12 : 트랜젝션 동작 테스트",
-//        description = "정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작"
+//        description = "정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+////            ApiResponse(
+////                responseCode = "204",
+////                content = [Content()],
+////                description = "Response Body 가 없습니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = "(Response Code 반환 원인) - Required\n\n" +
+////                                "1 : 설명1\n\n" +
+////                                "2 : 설명2\n\n",
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @PostMapping(
 //        path = ["/transaction-rollback-sample"],
@@ -560,9 +1030,48 @@ class C11Service1TkV1MongoDbTestController(
 //    ////
 //    @Operation(
 //        summary = "N13 : 트랜젝션 비동작 테스트",
-//        description = "트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작"
+//        description = "트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+////            ApiResponse(
+////                responseCode = "204",
+////                content = [Content()],
+////                description = "Response Body 가 없습니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = "(Response Code 반환 원인) - Required\n\n" +
+////                                "1 : 설명1\n\n" +
+////                                "2 : 설명2\n\n",
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @PostMapping(
 //        path = ["/no-transaction-exception-sample"],
@@ -582,9 +1091,48 @@ class C11Service1TkV1MongoDbTestController(
 //    @Operation(
 //        summary = "N14 : DB Rows 조회 테스트 (중복 없는 네이티브 쿼리 페이징)",
 //        description = "테스트 테이블의 Rows 를 네이티브 쿼리로 중복없이 페이징하여 반환합니다.\n\n" +
-//                "num 을 기준으로 근사치 정렬도 수행합니다.\n\n" +
-//                "(응답 코드 204 일 때 반환되는 api-result-code)\n\n" +
-//                "0 : 정상 동작"
+//                "num 을 기준으로 근사치 정렬도 수행합니다.\n\n"
+//    )
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//                description = "정상 동작"
+//            ),
+////            ApiResponse(
+////                responseCode = "204",
+////                content = [Content()],
+////                description = "Response Body 가 없습니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = "(Response Code 반환 원인) - Required\n\n" +
+////                                "1 : 설명1\n\n" +
+////                                "2 : 설명2\n\n",
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "401",
+////                content = [Content()],
+////                description = "인증되지 않은 접근입니다.\n\n" +
+////                        "Response Headers 를 확인하세요.",
+////                headers = [
+////                    Header(
+////                        name = "api-result-code",
+////                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+////                        schema = Schema(type = "string")
+////                    )
+////                ]
+////            ),
+////            ApiResponse(
+////                responseCode = "403",
+////                content = [Content()],
+////                description = "인가되지 않은 접근입니다."
+////            )
+//        ]
 //    )
 //    @GetMapping(
 //        path = ["/rows/native-paging-no-duplication"],
