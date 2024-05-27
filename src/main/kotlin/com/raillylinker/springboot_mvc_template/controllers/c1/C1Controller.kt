@@ -54,7 +54,7 @@ class C1Controller(
 //                headers = [
 //                    Header(
 //                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.UNAUTHORIZED_CODE_FOR_SWAGGER_DESCRIPTION,
+//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
 //                        schema = Schema(type = "string")
 //                    )
 //                ]
