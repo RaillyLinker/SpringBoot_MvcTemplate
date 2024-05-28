@@ -372,8 +372,8 @@ class C10Service1TkV1AuthController(
                     Header(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
-                                "1 : id 로 가입된 회원 정보가 없습니다.\n\n" +
-                                "2 : password 가 일치하지 않습니다.\n\n",
+                                "1 : 입력한 id 로 가입된 회원 정보가 없습니다.\n\n" +
+                                "2 : 입력한 password 가 일치하지 않습니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -1477,7 +1477,7 @@ class C10Service1TkV1AuthController(
                     Header(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
-                                "1 : 동일한 닉네임을 사용하는 회원이 데이터베이스에 존재합니다.\n\n",
+                                "1 : 동일한 닉네임을 사용하는 회원이 존재합니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -1547,7 +1547,7 @@ class C10Service1TkV1AuthController(
                     Header(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
-                                "1 : 동일한 이메일을 사용하는 회원이 데이터베이스에 존재합니다.\n\n",
+                                "1 : 동일한 이메일을 사용하는 회원이 존재합니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]

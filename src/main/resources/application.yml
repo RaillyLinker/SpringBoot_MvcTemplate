@@ -38,6 +38,16 @@ management:
     health:
       show-details: always # actuator/health 에 디테일 정보 반환
 
+cloud:
+  aws:
+    credentials:
+      access-key: InputYourAccessKey
+      secret-key: InputYourSecretKey
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
 customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
   # cors 경로 리스트 설정 (설정하지 않으면 모든 요청 허용)
   corsList: http://localhost:8081, http://127.0.0.1:8081

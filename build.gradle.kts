@@ -112,6 +112,9 @@ dependencies {
 
     // (JSOUP - HTML 태그 조작)
     implementation("org.jsoup:jsoup:1.17.2")
+
+    // (AWS)
+    implementation("io.awspring.cloud:spring-cloud-starter-aws:2.4.4")
 }
 
 tasks.withType<KotlinCompile> {

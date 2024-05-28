@@ -1,5 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c4_service1_tk_v1_fileTest
 
+import com.raillylinker.springboot_mvc_template.custom_dis.AwsS3UtilDi
 import com.raillylinker.springboot_mvc_template.custom_objects.CustomUtilObject
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
@@ -28,7 +29,10 @@ import java.util.zip.ZipOutputStream
 @Service
 class C4Service1TkV1FileTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
-    @Value("\${spring.profiles.active:default}") private var activeProfile: String
+    @Value("\${spring.profiles.active:default}") private var activeProfile: String,
+
+    // (AWS S3 유틸 객체)
+    private val awsS3UtilDi: AwsS3UtilDi
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -250,5 +254,90 @@ class C4Service1TkV1FileTestService(
             },
             HttpStatus.OK
         )
+    }
+
+
+    ////
+    fun api6(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C4Service1TkV1FileTestController.Api6InputVo
+    ): C4Service1TkV1FileTestController.Api6OutputVo? {
+        // 원본 파일명(with suffix)
+        val multiPartFileNameString = StringUtils.cleanPath(inputVo.multipartFile.originalFilename!!)
+
+        // 파일 확장자 구분 위치
+        val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
+
+        // 확장자가 없는 파일명
+        val fileNameWithOutExtension: String
+        // 확장자
+        val fileExtension: String
+
+        if (fileExtensionSplitIdx == -1) {
+            fileNameWithOutExtension = multiPartFileNameString
+            fileExtension = ""
+        } else {
+            fileNameWithOutExtension = multiPartFileNameString.substring(0, fileExtensionSplitIdx)
+            fileExtension =
+                multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
+        }
+
+        val savedFileName = "${fileNameWithOutExtension}(${
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+        }).$fileExtension"
+
+        val uploadedFileFullUrl: String = awsS3UtilDi.upload(
+            inputVo.multipartFile,
+            savedFileName,
+            if (activeProfile == "prod80") {
+                "petlogon-contract-prod/test"
+            } else {
+                "petlogon-contract-dev/test"
+            }
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+
+        return C4Service1TkV1FileTestController.Api6OutputVo(uploadedFileFullUrl)
+    }
+
+
+    ////
+    fun api7(
+        httpServletResponse: HttpServletResponse,
+        uploadFileName: String
+    ): C4Service1TkV1FileTestController.Api7OutputVo? {
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+
+        return C4Service1TkV1FileTestController.Api7OutputVo(
+            awsS3UtilDi.getTextFileString(
+                if (activeProfile == "prod80") {
+                    "petlogon-contract-prod/test"
+                } else {
+                    "petlogon-contract-dev/test"
+                },
+                uploadFileName
+            )
+        )
+    }
+
+
+    ////
+    fun api8(httpServletResponse: HttpServletResponse, deleteFileName: String) {
+        // AWS 파일 삭제
+        awsS3UtilDi.delete(
+            if (activeProfile == "prod80") {
+                "petlogon-contract-prod/test"
+            } else {
+                "petlogon-contract-dev/test"
+            },
+            deleteFileName
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
     }
 }
