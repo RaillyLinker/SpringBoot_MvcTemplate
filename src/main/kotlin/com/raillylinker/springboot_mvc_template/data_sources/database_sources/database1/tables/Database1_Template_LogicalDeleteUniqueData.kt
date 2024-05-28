@@ -13,7 +13,7 @@ import java.time.LocalDateTime
          변수에 단순하게 unique 를 걸어둔다면, 해당 행이 비활성 상태일 때에도, 새로운 행으로 동일한 값을 가질 수 없게 됩니다.
          이에, unique 를 적용할 변수와 더불어, 행의 삭제일을 나타내는 row_delete_date_str 변수를 같이 묶어 unique 를 걸어둠으로써,
          삭제시에는 row_delete_date_str 가 현재 시간으로 매번 달라지기에 문제가 없고,
-         생성시에는 행 활성화 상태를 뜻하는 row_delete_date_str 가 "/" 경우가 없다면 문제가 없게 됩니다.
+         생성시에는 기존 행들 중, 행 활성화 상태를 뜻하는 row_delete_date_str 가 "/" 인 경우가 없다면 문제가 없게 됩니다.
  */
 
 // 주의 : 낙관적 Lock (@Version) 사용시 Transaction 기능과 충돌이 있음

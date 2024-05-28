@@ -78,7 +78,7 @@ class SecurityConfig(
         // 본 시큐리티 필터가 관리할 주소 체계
         val securityUrlList = listOf(
             "/service1/tk/**",
-            "/service1-admin/tk/**"
+            "/service1-admin/tk/**" // 보통 Admin 관리 서비스는 동일 인증 체계에서 Role 로 구분하기에 예시에 추가했습니다.
         ) // 위 모든 경로에 적용
 
         val securityMatcher = http.securityMatcher(*securityUrlList.toTypedArray())
