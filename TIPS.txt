@@ -29,7 +29,7 @@
                 coverage_request
                 where
                 join_info_uid = join_info.uid and
-                row_delete_date_str='-' and
+                row_delete_date_str='/' and
                 reject_or_payment_date is NULL
             ) >0,
             TRUE,
