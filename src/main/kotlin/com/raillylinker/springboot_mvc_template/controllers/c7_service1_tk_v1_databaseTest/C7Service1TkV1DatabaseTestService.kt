@@ -69,7 +69,7 @@ class C7Service1TkV1DatabaseTestService(
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api2(httpServletResponse: HttpServletResponse, deleteLogically: Boolean) {
         if (deleteLogically) {
-            val entityList = database1TemplateTestRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("-")
+            val entityList = database1TemplateTestRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
             for (entity in entityList) {
                 entity.rowDeleteDateStr =
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -88,7 +88,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api3(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
-        val entity = database1TemplateTestRepository.findByUidAndRowDeleteDateStr(index, "-")
+        val entity = database1TemplateTestRepository.findByUidAndRowDeleteDateStr(index, "/")
 
         if (entity == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -113,7 +113,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api4(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api4OutputVo? {
         val resultEntityList =
-            database1TemplateTestRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("-")
+            database1TemplateTestRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
         val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api4OutputVo.TestEntityVo>()
         for (resultEntity in resultEntityList) {
             entityVoList.add(
@@ -133,7 +133,7 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         val logicalDeleteEntityVoList =
-            database1TemplateTestRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("-")
+            database1TemplateTestRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("/")
         val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api4OutputVo.TestEntityVo>()
         for (resultEntity in logicalDeleteEntityVoList) {
             logicalDeleteVoList.add(
@@ -244,7 +244,7 @@ class C7Service1TkV1DatabaseTestService(
     ): C7Service1TkV1DatabaseTestController.Api7OutputVo? {
         val pageable: Pageable = PageRequest.of(page - 1, pageElementsCount)
         val entityList = database1TemplateTestRepository.findAllByRowDeleteDateStrOrderByRowCreateDate(
-            "-",
+            "/",
             pageable
         )
 
@@ -321,9 +321,9 @@ class C7Service1TkV1DatabaseTestService(
         testTableUid: Long,
         inputVo: C7Service1TkV1DatabaseTestController.Api9InputVo
     ): C7Service1TkV1DatabaseTestController.Api9OutputVo? {
-        val oldEntity = database1TemplateTestRepository.findByUidAndRowDeleteDateStr(testTableUid, "-")
+        val oldEntity = database1TemplateTestRepository.findByUidAndRowDeleteDateStr(testTableUid, "/")
 
-        if (oldEntity == null || oldEntity.rowDeleteDateStr != "-") {
+        if (oldEntity == null || oldEntity.rowDeleteDateStr != "/") {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
@@ -361,9 +361,9 @@ class C7Service1TkV1DatabaseTestService(
         // !! 아래는 네이티브 쿼리로 수정하는 예시를 보인 것으로,
         // 이 경우에는 @UpdateTimestamp, @Version 기능이 자동 적용 되지 않습니다.
         // 고로 수정문은 jpa 를 사용하길 권장합니다. !!
-        val testEntity = database1TemplateTestRepository.findByUidAndRowDeleteDateStr(testTableUid, "-")
+        val testEntity = database1TemplateTestRepository.findByUidAndRowDeleteDateStr(testTableUid, "/")
 
-        if (testEntity == null || testEntity.rowDeleteDateStr != "-") {
+        if (testEntity == null || testEntity.rowDeleteDateStr != "/") {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             // 트랜젝션 커밋
@@ -491,7 +491,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     fun api15(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api15OutputVo? {
-        val count = database1TemplateTestRepository.countByRowDeleteDateStr("-")
+        val count = database1TemplateTestRepository.countByRowDeleteDateStr("/")
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -568,7 +568,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api19(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api19OutputVo? {
         val resultEntityList =
-            database1TemplateLogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("-")
+            database1TemplateLogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
         val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo>()
         for (resultEntity in resultEntityList) {
             entityVoList.add(
@@ -585,7 +585,7 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         val logicalDeleteEntityVoList =
-            database1TemplateLogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("-")
+            database1TemplateLogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("/")
         val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo>()
         for (resultEntity in logicalDeleteEntityVoList) {
             logicalDeleteVoList.add(
@@ -618,9 +618,9 @@ class C7Service1TkV1DatabaseTestService(
         inputVo: C7Service1TkV1DatabaseTestController.Api20InputVo
     ): C7Service1TkV1DatabaseTestController.Api20OutputVo? {
         val oldEntity =
-            database1TemplateLogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(testTableUid, "-")
+            database1TemplateLogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(testTableUid, "/")
 
-        if (oldEntity == null || oldEntity.rowDeleteDateStr != "-") {
+        if (oldEntity == null || oldEntity.rowDeleteDateStr != "/") {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
@@ -629,7 +629,7 @@ class C7Service1TkV1DatabaseTestService(
         val uniqueValueEntity =
             database1TemplateLogicalDeleteUniqueDataRepository.findByUniqueValueAndRowDeleteDateStr(
                 inputVo.uniqueValue,
-                "-"
+                "/"
             )
 
         if (uniqueValueEntity != null) {
@@ -659,7 +659,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api21(httpServletResponse: HttpServletResponse, index: Long) {
-        val entity = database1TemplateLogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(index, "-")
+        val entity = database1TemplateLogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(index, "/")
 
         if (entity == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -711,7 +711,7 @@ class C7Service1TkV1DatabaseTestService(
     ): C7Service1TkV1DatabaseTestController.Api23OutputVo? {
         val parentEntity = database1TemplateFkTestParentRepository.findByUidAndRowDeleteDateStr(
             parentUid,
-            "-"
+            "/"
         )
 
         if (parentEntity == null) {
@@ -744,7 +744,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api24(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api24OutputVo? {
         val resultEntityList =
-            database1TemplateFkTestParentRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("-")
+            database1TemplateFkTestParentRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
 
         val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo>()
         for (resultEntity in resultEntityList) {
@@ -754,7 +754,7 @@ class C7Service1TkV1DatabaseTestService(
             val childList =
                 database1TemplateFkTestOneToManyChildRepository.findAllByFkTestParentAndRowDeleteDateStrOrderByRowCreateDate(
                     resultEntity,
-                    "-"
+                    "/"
                 )
 
             for (childEntity in childList) {

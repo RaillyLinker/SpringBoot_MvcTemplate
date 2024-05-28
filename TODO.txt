@@ -5,4 +5,4 @@
 
 - ks pay 관련 함수 및 예시 추가
 
-- SpringSecurity 멀티 경로 적용 검증하기
+- SpringSecurity 멀티 경로 적용 검증완료 후 이 목록 지우기

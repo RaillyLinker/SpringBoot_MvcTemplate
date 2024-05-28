@@ -347,7 +347,7 @@ class SecurityConfig(
                     val memberData =
                         database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
                             memberUid,
-                            "-"
+                            "/"
                         )
 
                     if (memberData == null) {
@@ -364,7 +364,7 @@ class SecurityConfig(
                         database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
                             tokenType,
                             accessToken,
-                            "-"
+                            "/"
                         )
 
                     if (tokenInfo == null) {
@@ -382,7 +382,7 @@ class SecurityConfig(
                     val memberRoleEntityList =
                         database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                             memberData,
-                            "-"
+                            "/"
                         )
 
                     // 회원 권한 형식 변경

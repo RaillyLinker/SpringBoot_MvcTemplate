@@ -14,11 +14,8 @@ import java.util.*
 class ApplicationMain
 
 fun main(args: Array<String>) {
-    val classLogger: Logger = LoggerFactory.getLogger(ApplicationMain::class.java)
-
     // 서버 타임존 설정
     TimeZone.setDefault(TimeZone.getTimeZone(ApplicationConstants.SYSTEM_TIME_ZONE))
-    classLogger.info("적용된 시스템 타임존 : ${TimeZone.getDefault().id}")
 
     // 서버 실행
     runApplication<ApplicationMain>(*args)

@@ -168,7 +168,7 @@ class C10Service1TkV1AuthService(
                     val memberData =
                         database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
                             memberUid,
-                            "-"
+                            "/"
                         )
 
                     if (memberData == null) {
@@ -183,7 +183,7 @@ class C10Service1TkV1AuthService(
                         database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
                             tokenType,
                             accessToken,
-                            "-"
+                            "/"
                         )
 
                     if (tokenInfo == null) {
@@ -199,7 +199,7 @@ class C10Service1TkV1AuthService(
                     val memberRoleEntityList =
                         database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                             memberData,
-                            "-"
+                            "/"
                         )
 
                     // 회원 권한 형식 변경
@@ -260,7 +260,7 @@ class C10Service1TkV1AuthService(
                 // (정보 검증 로직 수행)
                 val member = database1Service1MemberDataRepository.findByNickNameAndRowDeleteDateStr(
                     inputVo.id,
-                    "-"
+                    "/"
                 )
 
                 if (member == null) { // 가입된 회원이 없음
@@ -275,7 +275,7 @@ class C10Service1TkV1AuthService(
                 // (정보 검증 로직 수행)
                 val memberEmail = database1Service1MemberEmailDataRepository.findByEmailAddressAndRowDeleteDateStr(
                     inputVo.id,
-                    "-"
+                    "/"
                 )
 
                 if (memberEmail == null) { // 가입된 회원이 없음
@@ -290,7 +290,7 @@ class C10Service1TkV1AuthService(
                 // (정보 검증 로직 수행)
                 val memberPhone = database1Service1MemberPhoneDataRepository.findByPhoneNumberAndRowDeleteDateStr(
                     inputVo.id,
-                    "-"
+                    "/"
                 )
 
                 if (memberPhone == null) { // 가입된 회원이 없음
@@ -310,7 +310,7 @@ class C10Service1TkV1AuthService(
 
         val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )
 
         if (member == null) { // 가입된 회원이 없음
@@ -331,7 +331,7 @@ class C10Service1TkV1AuthService(
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             member,
-            "-"
+            "/"
         )
 
         val roleList: ArrayList<String> = arrayListOf()
@@ -379,7 +379,7 @@ class C10Service1TkV1AuthService(
         )
 
         val profileData =
-            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
+            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "/")
         val myProfileList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo> = arrayListOf()
         for (profile in profileData) {
             myProfileList.add(
@@ -392,7 +392,7 @@ class C10Service1TkV1AuthService(
         }
 
         val emailEntityList =
-            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
+            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "/")
         val myEmailList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.EmailInfo> = arrayListOf()
         for (emailEntity in emailEntityList) {
             myEmailList.add(
@@ -405,7 +405,7 @@ class C10Service1TkV1AuthService(
         }
 
         val phoneEntityList =
-            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
+            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "/")
         val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo> = arrayListOf()
         for (phoneEntity in phoneEntityList) {
             myPhoneNumberList.add(
@@ -418,7 +418,7 @@ class C10Service1TkV1AuthService(
         }
 
         val oAuth2EntityList =
-            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "-")
+            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "/")
         val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
             myOAuth2List.add(
@@ -593,7 +593,7 @@ class C10Service1TkV1AuthService(
                     database1Service1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                         1,
                         response.body()!!.id!!,
-                        "-"
+                        "/"
                     )
             }
 
@@ -616,7 +616,7 @@ class C10Service1TkV1AuthService(
                     database1Service1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                         2,
                         response.body()!!.response.id,
-                        "-"
+                        "/"
                     )
             }
 
@@ -639,7 +639,7 @@ class C10Service1TkV1AuthService(
                     database1Service1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                         3,
                         response.body()!!.id.toString(),
-                        "-"
+                        "/"
                     )
             }
 
@@ -658,7 +658,7 @@ class C10Service1TkV1AuthService(
 
         val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             snsOauth2.memberData.uid!!,
-            "-"
+            "/"
         )
 
         if (member == null) { // 가입된 회원이 없음
@@ -670,7 +670,7 @@ class C10Service1TkV1AuthService(
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             snsOauth2.memberData,
-            "-"
+            "/"
         )
 
         val roleList: ArrayList<String> = arrayListOf()
@@ -720,7 +720,7 @@ class C10Service1TkV1AuthService(
         val profileData =
             database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 snsOauth2.memberData,
-                "-"
+                "/"
             )
         val myProfileList: ArrayList<C10Service1TkV1AuthController.Api7OutputVo.ProfileInfo> = arrayListOf()
         for (profile in profileData) {
@@ -736,7 +736,7 @@ class C10Service1TkV1AuthService(
         val emailEntityList =
             database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 snsOauth2.memberData,
-                "-"
+                "/"
             )
         val myEmailList: ArrayList<C10Service1TkV1AuthController.Api7OutputVo.EmailInfo> = arrayListOf()
         for (emailEntity in emailEntityList) {
@@ -752,7 +752,7 @@ class C10Service1TkV1AuthService(
         val phoneEntityList =
             database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 snsOauth2.memberData,
-                "-"
+                "/"
             )
         val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api7OutputVo.PhoneNumberInfo> = arrayListOf()
         for (phoneEntity in phoneEntityList) {
@@ -768,7 +768,7 @@ class C10Service1TkV1AuthService(
         val oAuth2EntityList =
             database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 snsOauth2.memberData,
-                "-"
+                "/"
             )
         val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api7OutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
@@ -829,7 +829,7 @@ class C10Service1TkV1AuthService(
                     database1Service1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                         4,
                         loginId,
-                        "-"
+                        "/"
                     )
             }
 
@@ -848,7 +848,7 @@ class C10Service1TkV1AuthService(
 
         val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             snsOauth2.memberData.uid!!,
-            "-"
+            "/"
         )
 
         if (member == null) { // 가입된 회원이 없음
@@ -860,7 +860,7 @@ class C10Service1TkV1AuthService(
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             snsOauth2.memberData,
-            "-"
+            "/"
         )
 
         val roleList: ArrayList<String> = arrayListOf()
@@ -910,7 +910,7 @@ class C10Service1TkV1AuthService(
         val profileData =
             database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 snsOauth2.memberData,
-                "-"
+                "/"
             )
         val myProfileList: ArrayList<C10Service1TkV1AuthController.Api7Dot1OutputVo.ProfileInfo> = arrayListOf()
         for (profile in profileData) {
@@ -926,7 +926,7 @@ class C10Service1TkV1AuthService(
         val emailEntityList =
             database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 snsOauth2.memberData,
-                "-"
+                "/"
             )
         val myEmailList: ArrayList<C10Service1TkV1AuthController.Api7Dot1OutputVo.EmailInfo> = arrayListOf()
         for (emailEntity in emailEntityList) {
@@ -942,7 +942,7 @@ class C10Service1TkV1AuthService(
         val phoneEntityList =
             database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 snsOauth2.memberData,
-                "-"
+                "/"
             )
         val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api7Dot1OutputVo.PhoneNumberInfo> = arrayListOf()
         for (phoneEntity in phoneEntityList) {
@@ -958,7 +958,7 @@ class C10Service1TkV1AuthService(
         val oAuth2EntityList =
             database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 snsOauth2.memberData,
-                "-"
+                "/"
             )
         val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api7Dot1OutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
@@ -1005,7 +1005,7 @@ class C10Service1TkV1AuthService(
         val tokenInfo = database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
             tokenType,
             token,
-            "-"
+            "/"
         )
 
         if (tokenInfo != null) {
@@ -1104,7 +1104,7 @@ class C10Service1TkV1AuthService(
                     database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
                         accessTokenType,
                         accessToken,
-                        "-"
+                        "/"
                     )
 
                 if (tokenInfo == null) {// jwtAccessToken 의 리프레시 토큰이 저장소에 없음
@@ -1123,7 +1123,7 @@ class C10Service1TkV1AuthService(
                 val memberInfo =
                     database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
                         accessTokenMemberUid.toLong(),
-                        "-"
+                        "/"
                     )!!
 
                 // 먼저 로그아웃 처리
@@ -1136,7 +1136,7 @@ class C10Service1TkV1AuthService(
                 val memberRoleList =
                     database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                         memberInfo,
-                        "-"
+                        "/"
                     )
 
                 val roleList: ArrayList<String> = arrayListOf()
@@ -1182,7 +1182,7 @@ class C10Service1TkV1AuthService(
                 val profileData =
                     database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                         memberInfo,
-                        "-"
+                        "/"
                     )
                 val myProfileList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo> = arrayListOf()
                 for (profile in profileData) {
@@ -1198,7 +1198,7 @@ class C10Service1TkV1AuthService(
                 val emailEntityList =
                     database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                         memberInfo,
-                        "-"
+                        "/"
                     )
                 val myEmailList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.EmailInfo> = arrayListOf()
                 for (emailEntity in emailEntityList) {
@@ -1214,7 +1214,7 @@ class C10Service1TkV1AuthService(
                 val phoneEntityList =
                     database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                         memberInfo,
-                        "-"
+                        "/"
                     )
                 val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo> =
                     arrayListOf()
@@ -1231,7 +1231,7 @@ class C10Service1TkV1AuthService(
                 val oAuth2EntityList =
                     database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                         memberInfo,
-                        "-"
+                        "/"
                     )
                 val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api9OutputVo.OAuth2Info>()
                 for (oAuth2Entity in oAuth2EntityList) {
@@ -1286,13 +1286,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // loginAccessToken 의 Iterable 가져오기
         val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
@@ -1317,7 +1317,7 @@ class C10Service1TkV1AuthService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api11OutputVo(
-            database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(nickName.trim(), "-")
+            database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(nickName.trim(), "/")
         )
     }
 
@@ -1333,10 +1333,10 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
-        if (database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(nickName, "-")) {
+        if (database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(nickName, "/")) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
@@ -1362,7 +1362,7 @@ class C10Service1TkV1AuthService(
         val isDatabase1MemberUserExists =
             database1Service1MemberEmailDataRepository.existsByEmailAddressAndRowDeleteDateStr(
                 inputVo.email,
-                "-"
+                "/"
             )
 
         if (isDatabase1MemberUserExists) { // 기존 회원 존재
@@ -1426,7 +1426,7 @@ class C10Service1TkV1AuthService(
 
         val emailVerification = emailVerificationOpt.get()
 
-        if (emailVerification.rowDeleteDateStr != "-" ||
+        if (emailVerification.rowDeleteDateStr != "/" ||
             emailVerification.emailAddress != email
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1468,7 +1468,7 @@ class C10Service1TkV1AuthService(
 
         val emailVerification = emailVerificationOpt.get()
 
-        if (emailVerification.rowDeleteDateStr != "-" ||
+        if (emailVerification.rowDeleteDateStr != "/" ||
             emailVerification.emailAddress != inputVo.email
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1490,7 +1490,7 @@ class C10Service1TkV1AuthService(
             val isUserExists =
                 database1Service1MemberEmailDataRepository.existsByEmailAddressAndRowDeleteDateStr(
                     inputVo.email,
-                    "-"
+                    "/"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1500,7 +1500,7 @@ class C10Service1TkV1AuthService(
 
             if (database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(
                     inputVo.nickName.trim(),
-                    "-"
+                    "/"
                 )
             ) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1631,7 +1631,7 @@ class C10Service1TkV1AuthService(
         val isDatabase1MemberUserExists =
             database1Service1MemberPhoneDataRepository.existsByPhoneNumberAndRowDeleteDateStr(
                 inputVo.phoneNumber,
-                "-"
+                "/"
             )
 
         if (isDatabase1MemberUserExists) { // 기존 회원 존재
@@ -1697,7 +1697,7 @@ class C10Service1TkV1AuthService(
 
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
 
-        if (phoneNumberVerification.rowDeleteDateStr != "-" ||
+        if (phoneNumberVerification.rowDeleteDateStr != "/" ||
             phoneNumberVerification.phoneNumber != phoneNumber
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1739,7 +1739,7 @@ class C10Service1TkV1AuthService(
 
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
 
-        if (phoneNumberVerification.rowDeleteDateStr != "-" ||
+        if (phoneNumberVerification.rowDeleteDateStr != "/" ||
             phoneNumberVerification.phoneNumber != inputVo.phoneNumber
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1761,7 +1761,7 @@ class C10Service1TkV1AuthService(
             val isUserExists =
                 database1Service1MemberPhoneDataRepository.existsByPhoneNumberAndRowDeleteDateStr(
                     inputVo.phoneNumber,
-                    "-"
+                    "/"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1771,7 +1771,7 @@ class C10Service1TkV1AuthService(
 
             if (database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(
                     inputVo.nickName.trim(),
-                    "-"
+                    "/"
                 )
             ) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1927,7 +1927,7 @@ class C10Service1TkV1AuthService(
                     database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                         1,
                         loginId,
-                        "-"
+                        "/"
                     )
 
                 if (isDatabase1MemberUserExists) { // 기존 회원 존재
@@ -1975,7 +1975,7 @@ class C10Service1TkV1AuthService(
                     database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                         2,
                         loginId,
-                        "-"
+                        "/"
                     )
 
                 if (isDatabase1MemberUserExists) { // 기존 회원 존재
@@ -2023,7 +2023,7 @@ class C10Service1TkV1AuthService(
                     database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                         3,
                         loginId,
-                        "-"
+                        "/"
                     )
 
                 if (isDatabase1MemberUserExists) { // 기존 회원 존재
@@ -2097,7 +2097,7 @@ class C10Service1TkV1AuthService(
                     database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                         4,
                         loginId,
-                        "-"
+                        "/"
                     )
 
                 if (isDatabase1MemberUserExists) { // 기존 회원 존재
@@ -2182,7 +2182,7 @@ class C10Service1TkV1AuthService(
 
         val oauth2Verification = oauth2VerificationOpt.get()
 
-        if (oauth2Verification.rowDeleteDateStr != "-" ||
+        if (oauth2Verification.rowDeleteDateStr != "/" ||
             oauth2Verification.oauth2TypeCode != oauth2TypeCode.toByte() ||
             oauth2Verification.oauth2Id != inputVo.oauth2Id
         ) {
@@ -2206,7 +2206,7 @@ class C10Service1TkV1AuthService(
                 database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                     inputVo.oauth2TypeCode.toByte(),
                     inputVo.oauth2Id,
-                    "-"
+                    "/"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2216,7 +2216,7 @@ class C10Service1TkV1AuthService(
 
             if (database1Service1MemberDataRepository.existsByNickNameAndRowDeleteDateStr(
                     inputVo.nickName.trim(),
-                    "-"
+                    "/"
                 )
             ) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2345,7 +2345,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         ).toLong()
-        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid, "-")!!
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid, "/")!!
 
         if (memberData.accountPassword == null) { // 기존 비번이 존재하지 않음
             if (inputVo.oldPassword != null) { // 비밀번호 불일치
@@ -2369,7 +2369,7 @@ class C10Service1TkV1AuthService(
             val oAuth2EntityList =
                 database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                     memberData,
-                    "-"
+                    "/"
                 )
 
             if (oAuth2EntityList.isEmpty()) {
@@ -2389,7 +2389,7 @@ class C10Service1TkV1AuthService(
         // loginAccessToken 의 Iterable 가져오기
         val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
@@ -2416,7 +2416,7 @@ class C10Service1TkV1AuthService(
         val isDatabase1MemberUserExists =
             database1Service1MemberEmailDataRepository.existsByEmailAddressAndRowDeleteDateStr(
                 inputVo.email,
-                "-"
+                "/"
             )
         if (!isDatabase1MemberUserExists) { // 회원 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2477,7 +2477,7 @@ class C10Service1TkV1AuthService(
 
         val emailVerification = emailVerificationOpt.get()
 
-        if (emailVerification.rowDeleteDateStr != "-" ||
+        if (emailVerification.rowDeleteDateStr != "/" ||
             emailVerification.emailAddress != email
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2519,7 +2519,7 @@ class C10Service1TkV1AuthService(
 
         val emailVerification = emailVerificationOpt.get()
 
-        if (emailVerification.rowDeleteDateStr != "-" ||
+        if (emailVerification.rowDeleteDateStr != "/" ||
             emailVerification.emailAddress != inputVo.email
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2542,7 +2542,7 @@ class C10Service1TkV1AuthService(
             val memberEmail =
                 database1Service1MemberEmailDataRepository.findByEmailAddressAndRowDeleteDateStr(
                     inputVo.email,
-                    "-"
+                    "/"
                 )
 
             if (memberEmail == null) {
@@ -2553,7 +2553,7 @@ class C10Service1TkV1AuthService(
 
             val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
                 memberEmail.memberData.uid!!,
-                "-"
+                "/"
             )
 
             if (member == null) {
@@ -2593,7 +2593,7 @@ class C10Service1TkV1AuthService(
             // loginAccessToken 의 Iterable 가져오기
             val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
                 member,
-                "-"
+                "/"
             )
 
             // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
@@ -2626,7 +2626,7 @@ class C10Service1TkV1AuthService(
         val isDatabase1MemberUserExists =
             database1Service1MemberPhoneDataRepository.existsByPhoneNumberAndRowDeleteDateStr(
                 inputVo.phoneNumber,
-                "-"
+                "/"
             )
         if (!isDatabase1MemberUserExists) { // 회원 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2689,7 +2689,7 @@ class C10Service1TkV1AuthService(
 
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
 
-        if (phoneNumberVerification.rowDeleteDateStr != "-" ||
+        if (phoneNumberVerification.rowDeleteDateStr != "/" ||
             phoneNumberVerification.phoneNumber != phoneNumber
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2731,7 +2731,7 @@ class C10Service1TkV1AuthService(
 
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
 
-        if (phoneNumberVerification.rowDeleteDateStr != "-" ||
+        if (phoneNumberVerification.rowDeleteDateStr != "/" ||
             phoneNumberVerification.phoneNumber != inputVo.phoneNumber
         ) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2754,7 +2754,7 @@ class C10Service1TkV1AuthService(
             val memberPhone =
                 database1Service1MemberPhoneDataRepository.findByPhoneNumberAndRowDeleteDateStr(
                     inputVo.phoneNumber,
-                    "-"
+                    "/"
                 )
 
             if (memberPhone == null) {
@@ -2765,7 +2765,7 @@ class C10Service1TkV1AuthService(
 
             val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
                 memberPhone.memberData.uid!!,
-                "-"
+                "/"
             )
 
             if (member == null) {
@@ -2806,7 +2806,7 @@ class C10Service1TkV1AuthService(
             // loginAccessToken 의 Iterable 가져오기
             val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
                 member,
-                "-"
+                "/"
             )
 
             // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
@@ -2842,13 +2842,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid.toLong(),
-            "-"
+            "/"
         )!!
 
         val emailEntityList =
             database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 memberData,
-                "-"
+                "/"
             )
         val emailList = ArrayList<C10Service1TkV1AuthController.Api29OutputVo.EmailInfo>()
         for (emailEntity in emailEntityList) {
@@ -2882,13 +2882,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid.toLong(),
-            "-"
+            "/"
         )!!
 
         val phoneEntityList =
             database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 memberData,
-                "-"
+                "/"
             )
         val phoneNumberList = ArrayList<C10Service1TkV1AuthController.Api30OutputVo.PhoneInfo>()
         for (phoneEntity in phoneEntityList) {
@@ -2922,13 +2922,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         val oAuth2EntityList =
             database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
                 memberData,
-                "-"
+                "/"
             )
         val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api31OutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
@@ -2964,14 +2964,14 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 입력 데이터 검증
         val isDatabase1MemberUserExists =
             database1Service1MemberEmailDataRepository.existsByEmailAddressAndRowDeleteDateStr(
                 inputVo.email,
-                "-"
+                "/"
             )
 
         if (isDatabase1MemberUserExists) { // 기존 회원 존재
@@ -3041,7 +3041,7 @@ class C10Service1TkV1AuthService(
 
         val emailVerification = emailVerificationOpt.get()
 
-        if (emailVerification.rowDeleteDateStr != "-" ||
+        if (emailVerification.rowDeleteDateStr != "/" ||
             emailVerification.memberData.uid!! != memberUid ||
             emailVerification.emailAddress != email
         ) {
@@ -3085,7 +3085,7 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         val emailVerificationOpt =
@@ -3099,7 +3099,7 @@ class C10Service1TkV1AuthService(
 
         val emailVerification = emailVerificationOpt.get()
 
-        if (emailVerification.rowDeleteDateStr != "-" ||
+        if (emailVerification.rowDeleteDateStr != "/" ||
             emailVerification.memberData.uid!! != memberUid ||
             emailVerification.emailAddress != inputVo.email
         ) {
@@ -3122,7 +3122,7 @@ class C10Service1TkV1AuthService(
             val isUserExists =
                 database1Service1MemberEmailDataRepository.existsByEmailAddressAndRowDeleteDateStr(
                     inputVo.email,
-                    "-"
+                    "/"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3178,13 +3178,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 내 계정에 등록된 모든 이메일 리스트 가져오기
         val myEmailList = database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         if (myEmailList.isEmpty()) {
@@ -3210,12 +3210,12 @@ class C10Service1TkV1AuthService(
 
         val isOauth2Exists = database1Service1MemberOauth2LoginDataRepository.existsByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         val isMemberPhoneExists = database1Service1MemberPhoneDataRepository.existsByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         if (isOauth2Exists ||
@@ -3263,14 +3263,14 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 입력 데이터 검증
         val isDatabase1MemberUserExists =
             database1Service1MemberPhoneDataRepository.existsByPhoneNumberAndRowDeleteDateStr(
                 inputVo.phoneNumber,
-                "-"
+                "/"
             )
 
         if (isDatabase1MemberUserExists) { // 기존 회원 존재
@@ -3344,7 +3344,7 @@ class C10Service1TkV1AuthService(
 
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
 
-        if (phoneNumberVerification.rowDeleteDateStr != "-" ||
+        if (phoneNumberVerification.rowDeleteDateStr != "/" ||
             phoneNumberVerification.memberData.uid!! != memberUid ||
             phoneNumberVerification.phoneNumber != phoneNumber
         ) {
@@ -3388,7 +3388,7 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         val phoneNumberVerificationOpt =
@@ -3402,7 +3402,7 @@ class C10Service1TkV1AuthService(
 
         val phoneNumberVerification = phoneNumberVerificationOpt.get()
 
-        if (phoneNumberVerification.rowDeleteDateStr != "-" ||
+        if (phoneNumberVerification.rowDeleteDateStr != "/" ||
             phoneNumberVerification.memberData.uid!! != memberUid ||
             phoneNumberVerification.phoneNumber != inputVo.phoneNumber
         ) {
@@ -3425,7 +3425,7 @@ class C10Service1TkV1AuthService(
             val isUserExists =
                 database1Service1MemberPhoneDataRepository.existsByPhoneNumberAndRowDeleteDateStr(
                     inputVo.phoneNumber,
-                    "-"
+                    "/"
                 )
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3481,13 +3481,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 내 계정에 등록된 모든 전화번호 리스트 가져오기
         val myPhoneList = database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         if (myPhoneList.isEmpty()) {
@@ -3513,12 +3513,12 @@ class C10Service1TkV1AuthService(
 
         val isOauth2Exists = database1Service1MemberOauth2LoginDataRepository.existsByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         val isMemberEmailExists = database1Service1MemberEmailDataRepository.existsByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         if (isOauth2Exists ||
@@ -3565,7 +3565,7 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         val snsTypeCode: Int
@@ -3641,7 +3641,7 @@ class C10Service1TkV1AuthService(
             database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                 snsTypeCode.toByte(),
                 snsId,
-                "-"
+                "/"
             )
 
         if (isDatabase1MemberUserExists) { // 이미 사용중인 SNS 인증
@@ -3679,7 +3679,7 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         val snsTypeCode: Int
@@ -3713,7 +3713,7 @@ class C10Service1TkV1AuthService(
             database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                 snsTypeCode.toByte(),
                 snsId,
-                "-"
+                "/"
             )
 
         if (isDatabase1MemberUserExists) { // 이미 사용중인 SNS 인증
@@ -3751,13 +3751,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 내 계정에 등록된 모든 인증 리스트 가져오기
         val myOAuth2List = database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         if (myOAuth2List.isEmpty()) {
@@ -3783,12 +3783,12 @@ class C10Service1TkV1AuthService(
 
         val isMemberEmailExists = database1Service1MemberEmailDataRepository.existsByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         val isMemberPhoneExists = database1Service1MemberPhoneDataRepository.existsByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         if (myOAuth2List.size > 1 ||
@@ -3829,7 +3829,7 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 회원탈퇴 처리
@@ -3841,7 +3841,7 @@ class C10Service1TkV1AuthService(
 
         // member_phone, member_email, member_role, member_sns_oauth2, member_profile 비활성화
         val emailList =
-            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
+            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
         for (email in emailList) {
             email.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
@@ -3849,7 +3849,7 @@ class C10Service1TkV1AuthService(
         }
 
         val memberRoleList =
-            database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
+            database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
         for (memberRole in memberRoleList) {
             memberRole.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -3858,7 +3858,7 @@ class C10Service1TkV1AuthService(
         }
 
         val memberSnsOauth2List =
-            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
+            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
         for (memberSnsOauth2 in memberSnsOauth2List) {
             memberSnsOauth2.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -3867,7 +3867,7 @@ class C10Service1TkV1AuthService(
         }
 
         val memberPhoneList =
-            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
+            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
         for (memberPhone in memberPhoneList) {
             memberPhone.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -3876,7 +3876,7 @@ class C10Service1TkV1AuthService(
         }
 
         val profileData =
-            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "-")
+            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
         for (profile in profileData) {
             profile.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -3890,7 +3890,7 @@ class C10Service1TkV1AuthService(
         // loginAccessToken 의 Iterable 가져오기
         val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
@@ -3920,12 +3920,12 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         val profileData = database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         val myProfileList: ArrayList<C10Service1TkV1AuthController.Api43OutputVo.ProfileInfo> = ArrayList()
@@ -3960,12 +3960,12 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         val profileData = database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         var myProfile: C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo? = null
@@ -3998,13 +3998,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 내 프로필 리스트 가져오기
         val profileDataList = database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         if (profileDataList.isEmpty()) {
@@ -4058,14 +4058,14 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 프로필 가져오기
         val profileData = database1Service1MemberProfileDataRepository.findByUidAndMemberDataAndRowDeleteDateStr(
             profileUid,
             memberData,
-            "-"
+            "/"
         )
 
         if (profileData == null) {
@@ -4106,7 +4106,7 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 저장된 프로필 이미지 파일을 다운로드 할 수 있는 URL
@@ -4230,12 +4230,12 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         val emailData = database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         var myEmail: C10Service1TkV1AuthController.Api49OutputVo.EmailInfo? = null
@@ -4268,13 +4268,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 내 이메일 리스트 가져오기
         val emailDataList = database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         if (emailDataList.isEmpty()) {
@@ -4330,12 +4330,12 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         val phoneNumberData = database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         var myPhone: C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo? = null
@@ -4368,13 +4368,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
             memberUid,
-            "-"
+            "/"
         )!!
 
         // 내 전화번호 리스트 가져오기
         val phoneNumberData = database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             memberData,
-            "-"
+            "/"
         )
 
         if (phoneNumberData.isEmpty()) {

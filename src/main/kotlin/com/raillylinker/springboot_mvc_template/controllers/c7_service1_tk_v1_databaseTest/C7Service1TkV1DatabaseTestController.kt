@@ -130,7 +130,7 @@ class C7Service1TkV1DatabaseTestController(
         )
         @JsonProperty("updateDate")
         val updateDate: String,
-        @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 _)", required = true, example = "-")
+        @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 /)", required = true, example = "/")
         @JsonProperty("deleteDate")
         val deleteDate: String
     )
@@ -364,7 +364,7 @@ class C7Service1TkV1DatabaseTestController(
             )
             @JsonProperty("updateDate")
             val updateDate: String,
-            @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 _)", required = true, example = "-")
+            @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 /)", required = true, example = "/")
             @JsonProperty("deleteDate")
             val deleteDate: String
         )
@@ -1657,7 +1657,7 @@ class C7Service1TkV1DatabaseTestController(
         )
         @JsonProperty("updateDate")
         val updateDate: String,
-        @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 _)", required = true, example = "-")
+        @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 /)", required = true, example = "/")
         @JsonProperty("deleteDate")
         val deleteDate: String
     )
@@ -1753,7 +1753,7 @@ class C7Service1TkV1DatabaseTestController(
             )
             @JsonProperty("updateDate")
             val updateDate: String,
-            @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 _)", required = true, example = "-")
+            @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 /)", required = true, example = "/")
             @JsonProperty("deleteDate")
             val deleteDate: String
         )
