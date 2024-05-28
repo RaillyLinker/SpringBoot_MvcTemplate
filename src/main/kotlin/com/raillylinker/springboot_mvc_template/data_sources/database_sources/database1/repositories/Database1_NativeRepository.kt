@@ -40,7 +40,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             FROM 
             template.test_data AS test_data 
             WHERE 
-            test_data.row_delete_date_str = '-' 
+            test_data.row_delete_date_str = '/' 
             ORDER BY 
             distance
             """
@@ -75,7 +75,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             FROM 
             template.test_data AS test_data 
             WHERE 
-            test_data.row_delete_date_str = '-' 
+            test_data.row_delete_date_str = '/' 
             ORDER BY 
             timeDiffMicroSec
             """
@@ -110,7 +110,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             FROM 
             template.test_data AS test_data 
             WHERE 
-            test_data.row_delete_date_str = '-' 
+            test_data.row_delete_date_str = '/' 
             ORDER BY 
             distance
             """,
@@ -120,7 +120,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             FROM 
             template.test_data AS test_data 
             WHERE 
-            test_data.row_delete_date_str = '-'
+            test_data.row_delete_date_str = '/'
             """
     )
     fun forC7N8(
@@ -176,7 +176,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             template.test_data AS test_data 
             WHERE 
             REPLACE(test_data.content, ' ', '') LIKE REPLACE(CONCAT('%',:searchKeyword,'%'), ' ', '') AND 
-            test_data.row_delete_date_str = '-' 
+            test_data.row_delete_date_str = '/' 
             ORDER BY 
             test_data.row_create_date DESC
             """,
@@ -187,7 +187,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             template.test_data AS test_data 
             WHERE 
             REPLACE(test_data.content, ' ', '') LIKE REPLACE(CONCAT('%',:searchKeyword,'%'), ' ', '') AND 
-            test_data.row_delete_date_str = '-'
+            test_data.row_delete_date_str = '/'
             """
     )
     fun forC7N11(
@@ -293,7 +293,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
                     uid = :lastItemUid
                 )
             ) AND 
-            rowNumTable.rowDeleteDateStr = '-' 
+            rowNumTable.rowDeleteDateStr = '/' 
             LIMIT :pageElementsCount
             """
     )
@@ -328,7 +328,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             FROM 
             template.test_data AS test_data 
             WHERE 
-            test_data.row_delete_date_str = '-'
+            test_data.row_delete_date_str = '/'
             """
     )
     fun forC7N14I1(): Long
@@ -343,7 +343,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             FROM 
             template.test_data AS test_data 
             WHERE 
-            test_data.row_delete_date_str = '-'
+            test_data.row_delete_date_str = '/'
             """
     )
     fun forC7N16(): Long
@@ -363,7 +363,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             FROM 
             template.test_data AS test_data 
             WHERE 
-            test_data.row_delete_date_str = '-' AND 
+            test_data.row_delete_date_str = '/' AND 
             test_data.uid = :testTableUid
             """
     )
