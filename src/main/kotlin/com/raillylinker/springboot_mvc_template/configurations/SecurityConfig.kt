@@ -76,95 +76,91 @@ class SecurityConfig(
     fun securityFilterChainService1Tk(http: HttpSecurity): SecurityFilterChain {
         // !!!시큐리티 필터 추가시 수정!!!
         // 본 시큐리티 필터가 관리할 주소 체계
-        val securityUrl = "/service1/tk/**" // /service1/tk/** 의 모든 경로에 적용
+        val securityUrlList = listOf(
+            "/service1/tk/**",
+            "/service1-admin/tk/**"
+        ) // 위 모든 경로에 적용
+
+        val securityMatcher = http.securityMatcher(*securityUrlList.toTypedArray())
 
         // sameOrigin 에서 iframe 허용
-//        http.headers { headersConfigurer ->
+//        securityMatcher.headers { headersConfigurer ->
 //            headersConfigurer.frameOptions { frameOptionsConfig ->
 //                frameOptionsConfig.sameOrigin()
 //            }
 //        }
 
-        http.securityMatcher(securityUrl)
-            .cors {}
+        securityMatcher.cors {}
 
         // (사이즈간 위조 요청(Cross site Request forgery) 방지 설정)
         // csrf 설정시 POST, PUT, DELETE 요청으로부터 보호하며 csrf 토큰이 포함되어야 요청을 받아들이게 됨
         // Rest API 에선 Token 이 요청의 위조 방지 역할을 하기에 비활성화
-        http.securityMatcher(securityUrl)
-            .csrf { csrfCustomizer ->
-                csrfCustomizer.disable()
-            }
+        securityMatcher.csrf { csrfCustomizer ->
+            csrfCustomizer.disable()
+        }
 
-        http.securityMatcher(securityUrl)
-            .httpBasic { httpBasicCustomizer ->
-                httpBasicCustomizer.disable()
-            }
+        securityMatcher.httpBasic { httpBasicCustomizer ->
+            httpBasicCustomizer.disable()
+        }
 
         // Token 인증을 위한 세션 비활성화
-        http.securityMatcher(securityUrl)
-            .sessionManagement { sessionManagementCustomizer ->
-                sessionManagementCustomizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            }
+        securityMatcher.sessionManagement { sessionManagementCustomizer ->
+            sessionManagementCustomizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        }
 
         // (Token 인증 검증 필터 연결)
         // API 요청마다 헤더로 들어오는 인증 토큰 유효성을 검증
-        http.securityMatcher(securityUrl)
-            .addFilterBefore(
-                // !!!시큐리티 필터 추가시 수정!!!
-                AuthTokenFilterService1Tk(
-                    securityUrl,
-                    database1Service1MemberDataRepository,
-                    database1Service1MemberRoleDataRepository,
-                    database1Service1LogInTokenInfoRepository
-                ),
-                UsernamePasswordAuthenticationFilter::class.java
-            )
+        securityMatcher.addFilterBefore(
+            // !!!시큐리티 필터 추가시 수정!!!
+            AuthTokenFilterService1Tk(
+                securityUrlList,
+                database1Service1MemberDataRepository,
+                database1Service1MemberRoleDataRepository,
+                database1Service1LogInTokenInfoRepository
+            ),
+            UsernamePasswordAuthenticationFilter::class.java
+        )
 
         // 스프링 시큐리티 기본 로그인 화면 비활성화
-        http.securityMatcher(securityUrl)
-            .formLogin { formLoginCustomizer ->
-                formLoginCustomizer.disable()
-            }
+        securityMatcher.formLogin { formLoginCustomizer ->
+            formLoginCustomizer.disable()
+        }
 
         // 스프링 시큐리티 기본 로그아웃 비활성화
-        http.securityMatcher(securityUrl)
-            .logout { logoutCustomizer ->
-                logoutCustomizer.disable()
-            }
+        securityMatcher.logout { logoutCustomizer ->
+            logoutCustomizer.disable()
+        }
 
         // 예외처리
-        http.securityMatcher(securityUrl)
-            .exceptionHandling { exceptionHandlingCustomizer ->
-                // 비인증(Security Context 에 멤버 정보가 없음) 처리
-                exceptionHandlingCustomizer.authenticationEntryPoint { _, response, _ -> // Http Status 401
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: UnAuthorized")
-                }
-                // 비인가(멤버 권한이 충족되지 않음) 처리
-                exceptionHandlingCustomizer.accessDeniedHandler { _, response, _ -> // Http Status 403
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error: Forbidden")
-                }
+        securityMatcher.exceptionHandling { exceptionHandlingCustomizer ->
+            // 비인증(Security Context 에 멤버 정보가 없음) 처리
+            exceptionHandlingCustomizer.authenticationEntryPoint { _, response, _ -> // Http Status 401
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: UnAuthorized")
             }
+            // 비인가(멤버 권한이 충족되지 않음) 처리
+            exceptionHandlingCustomizer.accessDeniedHandler { _, response, _ -> // Http Status 403
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error: Forbidden")
+            }
+        }
 
         // (API 요청 제한)
         // 기본적으로 모두 Open
-        http.securityMatcher(securityUrl)
-            .authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
-                authorizeHttpRequestsCustomizer.anyRequest().permitAll()
-                /*
-                    본 서버 접근 보안은 블랙 리스트 방식을 사용합니다.
-                    일반적으로 모든 요청을 허용하며, 인증/인가가 필요한 부분에는,
-                    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-                    위와 같은 어노테이션을 접근 통제하고자 하는 API 위에 달아주면 인증 필터가 동작하게 됩니다.
-                 */
-            }
+        securityMatcher.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
+            authorizeHttpRequestsCustomizer.anyRequest().permitAll()
+            /*
+                본 서버 접근 보안은 블랙 리스트 방식을 사용합니다.
+                일반적으로 모든 요청을 허용하며, 인증/인가가 필요한 부분에는,
+                @PreAuthorize("isAuthenticated() and (hasRole('ROLE_DEVELOPER') or hasRole('ROLE_ADMIN'))")
+                위와 같은 어노테이션을 접근 통제하고자 하는 API 위에 달아주면 인증 필터가 동작하게 됩니다.
+             */
+        }
 
         return http.build()
     }
 
     // 인증 토큰 검증 필터 - API 요청마다 검증 실행
     class AuthTokenFilterService1Tk(
-        private val filterPattern: String,
+        private val filterPatternList: List<String>,
         private val database1Service1MemberDataRepository: Database1_Service1_MemberDataRepository,
         private val database1Service1MemberRoleDataRepository: Database1_Service1_MemberRoleDataRepository,
         private val database1Service1LogInTokenInfoRepository: Database1_Service1_LogInTokenInfoRepository
@@ -271,8 +267,16 @@ class SecurityConfig(
             filterChain: FilterChain
         ) {
             // 패턴에 매치되는지 확인
-            val pattern = AntPathRequestMatcher(filterPattern)
-            if (!pattern.matches(request)) {
+            var patternMatch = false
+
+            for (filterPattern in filterPatternList) {
+                if (AntPathRequestMatcher(filterPattern).matches(request)) {
+                    patternMatch = true
+                    break
+                }
+            }
+
+            if (!patternMatch) {
                 // 이 필터를 실행해야 할 패턴이 아님.
 
                 // 다음 필터 실행
