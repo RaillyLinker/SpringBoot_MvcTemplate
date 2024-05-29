@@ -1,4 +1,4 @@
-[Template Code]
+[Coding Tips]
 - Swagger ApiResponses 작성 예시
     각 API 별, HTTP Status Code 들에 대한 설명을 Swagger 에서 표현하려면,
     아래 코드 형식으로 API 함수 위에 어노테이션을 달아주세요.

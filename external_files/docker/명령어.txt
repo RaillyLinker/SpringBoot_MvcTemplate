@@ -1,25 +1,28 @@
 [도커 설명]
 springboot 서버 프로그램 실행
 
-[Dockerfile]
-(이미지 빌드)
-> docker image build --pull=true -f Dockerfile-Server-Dev -t raillylinker/SpringBoot_MvcTemplate:latest .
-or
-> docker image build --pull=true -f Dockerfile-Server-Prod -t raillylinker/SpringBoot_MvcTemplate:latest .
+[도커 컨테이너 및 이미지 이름]
+springboot_mvc_template
 
 (컨테이너 중단)
-> docker container stop SpringBoot_MvcTemplate
+> docker container stop springboot_mvc_template
 
 (컨테이너 파기)
-> docker container rm SpringBoot_MvcTemplate
+> docker container rm springboot_mvc_template
+
+[Dockerfile]
+(이미지 빌드)
+> docker image build --pull=true -f Dockerfile-Server-Dev -t raillylinker/springboot_mvc_template:latest .
+or
+> docker image build --pull=true -f Dockerfile-Server-Prod -t raillylinker/springboot_mvc_template:latest .
 
 (컨테이너 생성 및 실행)
-> docker container run -d -e TZ=Asia/Seoul --rm -p8083:8083 --name SpringBoot_MvcTemplate raillylinker/SpringBoot_MvcTemplate:latest
+> docker container run -d -e TZ=Asia/Seoul --rm -p8080:8080 --name springboot_mvc_template raillylinker/springboot_mvc_template:latest
 or
-> docker container run -d -e TZ=Asia/Seoul --rm -p80:80 --name SpringBoot_MvcTemplate raillylinker/SpringBoot_MvcTemplate:latest
+> docker container run -d -e TZ=Asia/Seoul --rm -p80:80 --name springboot_mvc_template raillylinker/springboot_mvc_template:latest
 
 (사용하지 않는 모든 이미지 삭제)
 > docker image prune -af
 
 (컨테이너 명령창 띄우기)
-> docker container exec -it SpringBoot_MvcTemplate sh
+> docker container exec -it springboot_mvc_template sh
