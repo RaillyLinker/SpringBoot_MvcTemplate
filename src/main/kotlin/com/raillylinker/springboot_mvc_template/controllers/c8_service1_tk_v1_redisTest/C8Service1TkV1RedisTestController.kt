@@ -44,40 +44,7 @@ class C8Service1TkV1RedisTestController(
             ApiResponse(
                 responseCode = "200",
                 description = "정상 동작"
-            ),
-//            ApiResponse(
-//                responseCode = "204",
-//                content = [Content()],
-//                description = "Response Body 가 없습니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = "(Response Code 반환 원인) - Required\n\n" +
-//                                "1 : 설명1\n\n" +
-//                                "2 : 설명2\n\n",
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @PostMapping(
@@ -131,25 +98,7 @@ class C8Service1TkV1RedisTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -194,40 +143,7 @@ class C8Service1TkV1RedisTestController(
             ApiResponse(
                 responseCode = "200",
                 description = "정상 동작"
-            ),
-//            ApiResponse(
-//                responseCode = "204",
-//                content = [Content()],
-//                description = "Response Body 가 없습니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = "(Response Code 반환 원인) - Required\n\n" +
-//                                "1 : 설명1\n\n" +
-//                                "2 : 설명2\n\n",
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -293,25 +209,7 @@ class C8Service1TkV1RedisTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @DeleteMapping(
@@ -341,40 +239,7 @@ class C8Service1TkV1RedisTestController(
             ApiResponse(
                 responseCode = "200",
                 description = "정상 동작"
-            ),
-//            ApiResponse(
-//                responseCode = "204",
-//                content = [Content()],
-//                description = "Response Body 가 없습니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = "(Response Code 반환 원인) - Required\n\n" +
-//                                "1 : 설명1\n\n" +
-//                                "2 : 설명2\n\n",
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @DeleteMapping(
@@ -403,40 +268,7 @@ class C8Service1TkV1RedisTestController(
             ApiResponse(
                 responseCode = "200",
                 description = "정상 동작"
-            ),
-//            ApiResponse(
-//                responseCode = "204",
-//                content = [Content()],
-//                description = "Response Body 가 없습니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = "(Response Code 반환 원인) - Required\n\n" +
-//                                "1 : 설명1\n\n" +
-//                                "2 : 설명2\n\n",
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @PostMapping(
@@ -478,40 +310,7 @@ class C8Service1TkV1RedisTestController(
             ApiResponse(
                 responseCode = "200",
                 description = "정상 동작"
-            ),
-//            ApiResponse(
-//                responseCode = "204",
-//                content = [Content()],
-//                description = "Response Body 가 없습니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = "(Response Code 반환 원인) - Required\n\n" +
-//                                "1 : 설명1\n\n" +
-//                                "2 : 설명2\n\n",
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @PostMapping(

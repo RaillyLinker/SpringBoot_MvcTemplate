@@ -52,25 +52,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -111,25 +93,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -170,25 +134,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -229,25 +175,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -329,25 +257,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -394,25 +304,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -494,25 +386,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -594,25 +468,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -695,25 +551,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -796,25 +634,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -896,25 +716,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -958,25 +760,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -1017,25 +801,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -1080,25 +846,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -1142,25 +890,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -1204,25 +934,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -1273,25 +985,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
@@ -1336,25 +1030,7 @@ class C3Service1TkV1RequestFromServerTestController(
                         schema = Schema(type = "string")
                     )
                 ]
-            ),
-//            ApiResponse(
-//                responseCode = "401",
-//                content = [Content()],
-//                description = "인증되지 않은 접근입니다.\n\n" +
-//                        "Response Headers 를 확인하세요.",
-//                headers = [
-//                    Header(
-//                        name = "api-result-code",
-//                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
-//                        schema = Schema(type = "string")
-//                    )
-//                ]
-//            ),
-//            ApiResponse(
-//                responseCode = "403",
-//                content = [Content()],
-//                description = "인가되지 않은 접근입니다."
-//            )
+            )
         ]
     )
     @GetMapping(
