@@ -27,12 +27,6 @@ interface Database1_Service1_MemberOauth2LoginDataRepository :
         rowDeleteDateStr: String
     ): List<Database1_Service1_MemberOauth2LoginData>
 
-    fun findByUidAndMemberDataAndRowDeleteDateStr(
-        uid: Long,
-        memberData: Database1_Service1_MemberData,
-        rowDeleteDateStr: String
-    ): Database1_Service1_MemberOauth2LoginData?
-
     fun existsByMemberDataAndRowDeleteDateStr(
         memberData: Database1_Service1_MemberData,
         rowDeleteDateStr: String

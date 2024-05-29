@@ -24,12 +24,6 @@ interface Database1_Service1_MemberPhoneDataRepository : JpaRepository<Database1
         rowDeleteDateStr: String
     ): List<Database1_Service1_MemberPhoneData>
 
-    fun findByUidAndMemberDataAndRowDeleteDateStr(
-        uid: Long,
-        memberData: Database1_Service1_MemberData,
-        rowDeleteDateStr: String
-    ): Database1_Service1_MemberPhoneData?
-
     fun existsByMemberDataAndRowDeleteDateStr(
         memberData: Database1_Service1_MemberData,
         rowDeleteDateStr: String
