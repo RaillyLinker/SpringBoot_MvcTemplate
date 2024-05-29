@@ -13,5 +13,4 @@ interface Database1_Service1_MemberRoleDataRepository : JpaRepository<Database1_
         memberData: Database1_Service1_MemberData,
         rowDeleteDateStr: String
     ): List<Database1_Service1_MemberRoleData>
-
 }

@@ -47,4 +47,5 @@ class Database1_Service1_FindPasswordWithEmailVerificationData(
 
     // ---------------------------------------------------------------------------------------------
     // <중첩 클래스 공간>
+
 }

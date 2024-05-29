@@ -31,7 +31,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-
 @Service
 class C6Service1TkV1TestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
@@ -250,7 +249,8 @@ class C6Service1TkV1TestService(
             if (inputVo.fontFiles != null) {
                 for (fontFile in inputVo.fontFiles) {
                     // 파일 저장 기본 디렉토리 경로
-                    val saveDirectoryPath: Path = Paths.get("./by_product_files/uploads/fonts").toAbsolutePath().normalize()
+                    val saveDirectoryPath: Path =
+                        Paths.get("./by_product_files/uploads/fonts").toAbsolutePath().normalize()
 
                     // 파일 저장 기본 디렉토리 생성
                     Files.createDirectories(saveDirectoryPath)

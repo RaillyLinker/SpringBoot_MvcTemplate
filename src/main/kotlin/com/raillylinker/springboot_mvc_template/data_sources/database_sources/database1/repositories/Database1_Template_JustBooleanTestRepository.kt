@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface Database1_Template_JustBooleanTestRepository : JpaRepository<Database1_Template_JustBooleanTest, Long> {
-
 }

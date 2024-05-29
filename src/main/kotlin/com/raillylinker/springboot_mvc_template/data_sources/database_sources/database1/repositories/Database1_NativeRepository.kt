@@ -653,5 +653,4 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
         var latitude: Double
         var longitude: Double
     }
-
 }

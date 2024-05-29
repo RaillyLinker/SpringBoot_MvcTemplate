@@ -47,5 +47,4 @@ interface Database1_Template_TestsRepository : JpaRepository<Database1_Template_
     """
     )
     fun findAllByContentOrderByRowCreateDateJpql(@Param("content") content: String): List<Database1_Template_TestData>
-
 }

@@ -85,5 +85,4 @@ object AppleOAuthHelperUtilObject {
         val snsId: String,
         val email: String?
     )
-
 }

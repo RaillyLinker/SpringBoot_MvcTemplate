@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface Database1_Template_TestMapRepository : JpaRepository<Database1_Template_TestMap, Long> {
-
 }

@@ -23,5 +23,4 @@ interface Database1_Service1_MemberDataRepository : JpaRepository<Database1_Serv
         nickName: String,
         rowDeleteDateStr: String
     ): Database1_Service1_MemberData?
-
 }

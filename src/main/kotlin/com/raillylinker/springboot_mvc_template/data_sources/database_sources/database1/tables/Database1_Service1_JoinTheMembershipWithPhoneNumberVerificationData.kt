@@ -47,4 +47,5 @@ class Database1_Service1_JoinTheMembershipWithPhoneNumberVerificationData(
 
     // ---------------------------------------------------------------------------------------------
     // <중첩 클래스 공간>
+
 }

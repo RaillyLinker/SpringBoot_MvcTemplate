@@ -29,6 +29,5 @@ class WebSocketStompService(
 
         // 이렇게 @SendTo 함수 결과값으로 메세지를 전달할 수도 있습니다.
         return WebSocketStompController.TopicVo("$inputVo : @SendTo Test")
-
     }
 }

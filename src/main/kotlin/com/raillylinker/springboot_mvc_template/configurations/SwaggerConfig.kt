@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
 import java.util.function.Consumer
 
-
 @Configuration
 class SwaggerConfig(
     // (버전 정보)

@@ -351,7 +351,4 @@ class C9Service1TkV1MapCoordinateCalculationController(
             val longitude: Double
         )
     }
-
-
-    ////
 }
