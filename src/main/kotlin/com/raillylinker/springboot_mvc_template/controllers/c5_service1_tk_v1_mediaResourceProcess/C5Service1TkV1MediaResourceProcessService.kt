@@ -89,7 +89,7 @@ class C5Service1TkV1MediaResourceProcessService(
             .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
         // 파일 저장 디렉토리 경로
-        val saveDirectoryPathString = "./files/temp/$timeString"
+        val saveDirectoryPathString = "./by_product_files/test/$timeString"
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
         // 파일 저장 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
@@ -130,7 +130,7 @@ class C5Service1TkV1MediaResourceProcessService(
             )
         }
 
-        val saveDirectoryPathString = "./files/temp"
+        val saveDirectoryPathString = "./by_product_files/test"
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
         // 파일 저장 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
@@ -224,7 +224,7 @@ class C5Service1TkV1MediaResourceProcessService(
         )
 
         // 파일 저장 디렉토리 경로
-        val saveDirectoryPathString = "./files/temp"
+        val saveDirectoryPathString = "./by_product_files/test"
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
         // 파일 저장 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)

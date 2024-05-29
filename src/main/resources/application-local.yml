@@ -17,8 +17,8 @@ spring:
       client:
         # !!!Spring Admin 정보 설정!!!
         url: http://127.0.0.1:8081 # spring admin server url
-        username: adminId # spring admin server Security Id
-        password: adminPw # spring admin server Security Pw
+        username: InputYourAdminId # spring admin server Security Id
+        password: InputYourAdminPw # spring admin server Security Pw
         instance:
           name: Springboot MVC Template (Local) # spring admin UI 에서 보여질 이름 설정
           service-url: http://127.0.0.1:8080 # 현 프로젝트가 실행될 위치의 URL
@@ -77,7 +77,7 @@ datasource-mongodb: # MongoDB 추가 (하위 요소를 추가하고 MongoDbConfi
 
 logging:
   file:
-    name: ./logs/currentLog_local.log # Spring Admin Server 에 전달할 로그 파일 경로
+    name: ./by_product_files/logs/currentLog_local.log # Spring Admin Server 에 전달할 로그 파일 경로
   level:
     org.springframework.r2dbc.core: DEBUG # R2DBC 로깅 설정
     org.springframework.data.mongodb: DEBUG # mongoDB 로깅 설정

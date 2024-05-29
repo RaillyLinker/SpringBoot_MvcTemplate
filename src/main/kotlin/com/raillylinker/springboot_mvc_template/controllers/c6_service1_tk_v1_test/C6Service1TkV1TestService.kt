@@ -148,7 +148,7 @@ class C6Service1TkV1TestService(
     ////
     fun api5(httpServletResponse: HttpServletResponse) {
         // 파일 저장 디렉토리 경로
-        val saveDirectoryPathString = "./files/temp"
+        val saveDirectoryPathString = "./by_product_files/test"
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
         // 파일 저장 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
@@ -250,7 +250,7 @@ class C6Service1TkV1TestService(
             if (inputVo.fontFiles != null) {
                 for (fontFile in inputVo.fontFiles) {
                     // 파일 저장 기본 디렉토리 경로
-                    val saveDirectoryPath: Path = Paths.get("./files/uploads/fonts").toAbsolutePath().normalize()
+                    val saveDirectoryPath: Path = Paths.get("./by_product_files/uploads/fonts").toAbsolutePath().normalize()
 
                     // 파일 저장 기본 디렉토리 생성
                     Files.createDirectories(saveDirectoryPath)
@@ -288,7 +288,7 @@ class C6Service1TkV1TestService(
                         ttf.close()
 
                         val fontFileUrl =
-                            "http://127.0.0.1:${serverProperties.port}${controllerBasicMapping ?: ""}/files/uploads/fonts/$ttfName.$fileExtension"
+                            "http://127.0.0.1:${serverProperties.port}${controllerBasicMapping ?: ""}/by_product_files/uploads/fonts/$ttfName.$fileExtension"
 
                         savedFontFileNameMap["$fileNameWithOutExtension.$fileExtension"] = fontFileUrl
                     }
@@ -358,9 +358,9 @@ class C6Service1TkV1TestService(
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
-        // 파일 절대 경로 및 파일명 (프로젝트 루트 경로에 있는 files/temp 폴더를 기준으로 함)
+        // 파일 절대 경로 및 파일명 (프로젝트 루트 경로에 있는 by_product_files/test 폴더를 기준으로 함)
         val serverFilePathObject =
-            Paths.get("$projectRootAbsolutePathString/files/uploads/fonts/$fileName")
+            Paths.get("$projectRootAbsolutePathString/by_product_files/uploads/fonts/$fileName")
 
         when {
             Files.isDirectory(serverFilePathObject) -> {
@@ -410,7 +410,7 @@ class C6Service1TkV1TestService(
         val javaEnv = javaEnvironmentPath ?: "java"
 
         // JAR 파일 실행 명령어 설정
-        val javaJarPb = ProcessBuilder(javaEnv, "-jar", "./samples/JarExample/Counter.jar")
+        val javaJarPb = ProcessBuilder(javaEnv, "-jar", "./external_files/samples/JarExample/Counter.jar")
         javaJarPb.directory(File(".")) // 현재 작업 디렉토리 설정
 
         // 프로세스 시작

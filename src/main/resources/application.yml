@@ -55,18 +55,19 @@ customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
   smtp: # SMTP 설정
     host: smtp.gmail.com # SMTP 호스트
     port: 587 # SMTP 포트
-    senderName: contact@test.com # SMTP 계정 아이디
-    senderPassword: test # SMTP 계정 비밀번호
+    senderName: InputYourEmailId@test.com # SMTP 계정 아이디
+    senderPassword: InputYourSenderPassword # SMTP 계정 비밀번호
     timeOutMillis: 10000 # 타임아웃 밀리초
 
   naverSms: # Naver SMS 설정
-    accessKey: test
-    secretKey: test
+    accessKey: InputYourAccessKey
+    secretKey: InputYourSecretKey
     serviceId: ncp:sms:kr:test:test
     phoneNumber: test
 
   swagger: # Swagger 문서 설정
     documentVersion: 1.0.0
+    # !!!Swagger 문서 타이틀!!!
     documentTitle: SpringBoot MVC Template APIs
     documentDescription:
       |

@@ -55,6 +55,7 @@ class C2Service1TkV1RequestTestController(
         return service.api1(httpServletResponse)
     }
 
+
     ////
     @Operation(
         summary = "N2 : 요청 Redirect 테스트 API",
@@ -80,6 +81,7 @@ class C2Service1TkV1RequestTestController(
         return service.api2(httpServletResponse)
     }
 
+
     ////
     @Operation(
         summary = "N3 : 요청 Forward 테스트 API",
@@ -104,6 +106,7 @@ class C2Service1TkV1RequestTestController(
     ): ModelAndView? {
         return service.api3(httpServletResponse)
     }
+
 
     ////
     @Operation(
@@ -224,6 +227,7 @@ class C2Service1TkV1RequestTestController(
         @JsonProperty("queryParamStringListNullable")
         val queryParamStringListNullable: List<String>?
     )
+
 
     ////
     @Operation(
@@ -1103,7 +1107,7 @@ class C2Service1TkV1RequestTestController(
     @Operation(
         summary = "N17 : 비디오 스트리밍 샘플",
         description = "비디오 스트리밍 샘플\n\n" +
-                "테스트는 프로젝트 파일 경로의 samples/html_file_sample 안의 video-streaming.html 파일을 사용하세요.\n\n"
+                "테스트는 프로젝트 파일 경로의 external_files/samples/html_file_sample 안의 video-streaming.html 파일을 사용하세요.\n\n"
     )
     @ApiResponses(
         value = [
@@ -1140,7 +1144,7 @@ class C2Service1TkV1RequestTestController(
     @Operation(
         summary = "N18 : 오디오 스트리밍 샘플",
         description = "오디오 스트리밍 샘플\n\n" +
-                "테스트는 프로젝트 파일 경로의 samples/html_file_sample 안의 audio-streaming.html 파일을 사용하세요.\n\n"
+                "테스트는 프로젝트 파일 경로의 external_files/samples/html_file_sample 안의 audio-streaming.html 파일을 사용하세요.\n\n"
     )
     @ApiResponses(
         value = [
@@ -1204,7 +1208,7 @@ class C2Service1TkV1RequestTestController(
                 "!주의점! : 로깅 필터와 충돌되므로, 꼭 요청 헤더에는 Accept:text/event-stream 를 넣어서 요청을 해야함 (이것으로 SSE 요청임을 필터가 확인함)\n\n" +
                 "테스트는, CMD 를 열고, \n\n" +
                 "    >>> curl -N --http2 -H \"Accept:text/event-stream\" http://127.0.0.1:8080/service1/tk/v1/request-test/sse-test/subscribe\n\n" +
-                "혹은, 프로젝트 파일 경로의 samples/html_file_sample 안의 sse-test.html 파일을 사용하세요. (cors 설정 필요)\n\n"
+                "혹은, 프로젝트 파일 경로의 external_files/samples/html_file_sample 안의 sse-test.html 파일을 사용하세요. (cors 설정 필요)\n\n"
     )
     @ApiResponses(
         value = [

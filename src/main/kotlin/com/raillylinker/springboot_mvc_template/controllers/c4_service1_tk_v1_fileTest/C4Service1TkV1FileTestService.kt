@@ -45,7 +45,7 @@ class C4Service1TkV1FileTestService(
         inputVo: C4Service1TkV1FileTestController.Api1InputVo
     ): C4Service1TkV1FileTestController.Api1OutputVo? {
         // 파일 저장 기본 디렉토리 경로
-        val saveDirectoryPath: Path = Paths.get("./files/temp").toAbsolutePath().normalize()
+        val saveDirectoryPath: Path = Paths.get("./by_product_files/test").toAbsolutePath().normalize()
 
         // 파일 저장 기본 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
@@ -84,16 +84,16 @@ class C4Service1TkV1FileTestService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
 
-        return C4Service1TkV1FileTestController.Api1OutputVo("http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-temp/$savedFileName")
+        return C4Service1TkV1FileTestController.Api1OutputVo("http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/$savedFileName")
     }
 
     fun api2(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
-        // 파일 절대 경로 및 파일명 (프로젝트 루트 경로에 있는 files/temp 폴더를 기준으로 함)
+        // 파일 절대 경로 및 파일명 (프로젝트 루트 경로에 있는 by_product_files/test 폴더를 기준으로 함)
         val serverFilePathObject =
-            Paths.get("$projectRootAbsolutePathString/files/temp/$fileName")
+            Paths.get("$projectRootAbsolutePathString/by_product_files/test/$fileName")
 
         when {
             Files.isDirectory(serverFilePathObject) -> {
@@ -140,7 +140,7 @@ class C4Service1TkV1FileTestService(
         )
 
         // 파일 저장 디렉토리 경로
-        val saveDirectoryPathString = "./files/temp"
+        val saveDirectoryPathString = "./by_product_files/test"
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
         // 파일 저장 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
@@ -179,7 +179,7 @@ class C4Service1TkV1FileTestService(
         val sourceDir = File("$projectRootAbsolutePathString/src/main/resources/static/resource_c4_n3")
 
         // 파일 저장 디렉토리 경로
-        val saveDirectoryPathString = "./files/temp"
+        val saveDirectoryPathString = "./by_product_files/test"
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
         // 파일 저장 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
@@ -210,7 +210,7 @@ class C4Service1TkV1FileTestService(
             "$projectRootAbsolutePathString/src/main/resources/static/resource_c4_n4/test.zip"
 
         // 파일 저장 디렉토리 경로
-        val saveDirectoryPathString = "./files/temp"
+        val saveDirectoryPathString = "./by_product_files/test"
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
         // 파일 저장 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)

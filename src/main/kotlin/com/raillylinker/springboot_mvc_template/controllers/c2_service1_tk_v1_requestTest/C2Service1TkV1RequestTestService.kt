@@ -22,11 +22,9 @@ import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -161,7 +159,7 @@ class C2Service1TkV1RequestTestService(
         inputVo: C2Service1TkV1RequestTestController.Api8InputVo
     ): C2Service1TkV1RequestTestController.Api8OutputVo? {
         // 파일 저장 기본 디렉토리 경로
-        val saveDirectoryPath: Path = Paths.get("./files/temp").toAbsolutePath().normalize()
+        val saveDirectoryPath: Path = Paths.get("./by_product_files/test").toAbsolutePath().normalize()
 
         // 파일 저장 기본 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
@@ -258,7 +256,7 @@ class C2Service1TkV1RequestTestService(
         inputVo: C2Service1TkV1RequestTestController.Api9InputVo
     ): C2Service1TkV1RequestTestController.Api9OutputVo? {
         // 파일 저장 기본 디렉토리 경로
-        val saveDirectoryPath: Path = Paths.get("./files/temp").toAbsolutePath().normalize()
+        val saveDirectoryPath: Path = Paths.get("./by_product_files/test").toAbsolutePath().normalize()
 
         // 파일 저장 기본 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
@@ -366,7 +364,7 @@ class C2Service1TkV1RequestTestService(
         )
 
         // 파일 저장 기본 디렉토리 경로
-        val saveDirectoryPath: Path = Paths.get("./files/temp").toAbsolutePath().normalize()
+        val saveDirectoryPath: Path = Paths.get("./by_product_files/test").toAbsolutePath().normalize()
 
         // 파일 저장 기본 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)

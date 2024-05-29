@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!--로그 파일 저장 위치-->
-    <property name="LOGS_PATH" value="./logs"/>
+    <property name="LOGS_PATH" value="./by_product_files/logs"/>
 
     <!--local 프로필 환경-->
     <springProfile name="local">

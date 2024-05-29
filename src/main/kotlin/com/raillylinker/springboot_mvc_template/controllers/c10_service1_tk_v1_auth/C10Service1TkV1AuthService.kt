@@ -1552,7 +1552,7 @@ class C10Service1TkV1AuthService(
                 //----------------------------------------------------------------------------------------------------------
                 // 프로필 이미지를 서버 스토리지에 저장할 때 사용하는 방식
                 // 파일 저장 기본 디렉토리 경로
-                val saveDirectoryPath: Path = Paths.get("./files/member/profile").toAbsolutePath().normalize()
+                val saveDirectoryPath: Path = Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
 
                 // 파일 저장 기본 디렉토리 생성
                 Files.createDirectories(saveDirectoryPath)
@@ -1824,7 +1824,7 @@ class C10Service1TkV1AuthService(
                 //----------------------------------------------------------------------------------------------------------
                 // 프로필 이미지를 서버 스토리지에 저장할 때 사용하는 방식
                 // 파일 저장 기본 디렉토리 경로
-                val saveDirectoryPath: Path = Paths.get("./files/member/profile").toAbsolutePath().normalize()
+                val saveDirectoryPath: Path = Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
 
                 // 파일 저장 기본 디렉토리 생성
                 Files.createDirectories(saveDirectoryPath)
@@ -2265,7 +2265,7 @@ class C10Service1TkV1AuthService(
                 //----------------------------------------------------------------------------------------------------------
                 // 프로필 이미지를 서버 스토리지에 저장할 때 사용하는 방식
                 // 파일 저장 기본 디렉토리 경로
-                val saveDirectoryPath: Path = Paths.get("./files/member/profile").toAbsolutePath().normalize()
+                val saveDirectoryPath: Path = Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
 
                 // 파일 저장 기본 디렉토리 생성
                 Files.createDirectories(saveDirectoryPath)
@@ -4117,7 +4117,7 @@ class C10Service1TkV1AuthService(
         //----------------------------------------------------------------------------------------------------------
         // 프로필 이미지를 서버 스토리지에 저장할 때 사용하는 방식
         // 파일 저장 기본 디렉토리 경로
-        val saveDirectoryPath: Path = Paths.get("./files/member/profile").toAbsolutePath().normalize()
+        val saveDirectoryPath: Path = Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
 
         // 파일 저장 기본 디렉토리 생성
         Files.createDirectories(saveDirectoryPath)
@@ -4182,9 +4182,9 @@ class C10Service1TkV1AuthService(
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
-        // 파일 절대 경로 및 파일명 (프로젝트 루트 경로에 있는 files/temp 폴더를 기준으로 함)
+        // 파일 절대 경로 및 파일명
         val serverFilePathObject =
-            Paths.get("$projectRootAbsolutePathString/files/member/profile/$fileName")
+            Paths.get("$projectRootAbsolutePathString/by_product_files/member/profile/$fileName")
 
         when {
             Files.isDirectory(serverFilePathObject) -> {

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
     (kafka 환경이 구성되지 않았을 때 경고 메시지가 계속 발생하기에 주석처리를 한 상태)
     테스트를 하고 싶다면, 도커를 설치하고,
     cmd 를 열어,
-    프로젝트 폴더 내의 samples/docker_sample/kafka-docker 로 이동 후,
+    프로젝트 폴더 내의 external_files/samples/docker_sample/kafka-docker 로 이동 후,
     명령어.txt 에 적힌 명령어를 입력하여 카프카를 실행시킬 수 있습니다.
     !!!
  */

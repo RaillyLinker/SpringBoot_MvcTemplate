@@ -231,7 +231,7 @@ class C6Service1TkV1TestController(
     ////
     @Operation(
         summary = "N5 : 액셀 파일 쓰기",
-        description = "받은 데이터를 기반으로 액셀 파일을 만들어 files/temp 폴더에 저장\n\n"
+        description = "받은 데이터를 기반으로 액셀 파일을 만들어 by_product_files/test 폴더에 저장\n\n"
     )
     @ApiResponses(
         value = [
@@ -365,8 +365,8 @@ class C6Service1TkV1TestController(
 
     ////
     @Operation(
-        summary = "N6.2 : files/uploads/fonts 폴더에서 파일 다운받기",
-        description = "files/uploads/fonts 경로의 파일을 다운로드\n\n"
+        summary = "N6.2 : by_product_files/uploads/fonts 폴더에서 파일 다운받기",
+        description = "by_product_files/uploads/fonts 경로의 파일을 다운로드\n\n"
     )
     @ApiResponses(
         value = [
@@ -391,7 +391,7 @@ class C6Service1TkV1TestController(
         ]
     )
     @GetMapping(
-        path = ["/files/uploads/fonts/{fileName}"],
+        path = ["/by_product_files/uploads/fonts/{fileName}"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
@@ -399,7 +399,7 @@ class C6Service1TkV1TestController(
     fun api6Dot2(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @Parameter(name = "fileName", description = "files/temp 폴더 안의 파일명", example = "sample.txt")
+        @Parameter(name = "fileName", description = "by_product_files/test 폴더 안의 파일명", example = "sample.txt")
         @PathVariable("fileName")
         fileName: String
     ): ResponseEntity<Resource>? {

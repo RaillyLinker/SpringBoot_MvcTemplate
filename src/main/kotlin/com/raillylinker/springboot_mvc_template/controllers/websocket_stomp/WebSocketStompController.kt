@@ -6,7 +6,7 @@ import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.stereotype.Controller
 
 // [WebSocket STOMP 컨트롤러]
-// api1 은 samples/html_file_sample/websocket-stomp.html 파일로 테스트 가능
+// api1 은 external_files/samples/html_file_sample/websocket-stomp.html 파일로 테스트 가능
 @Controller
 class WebSocketStompController(
     private val service: WebSocketStompService

@@ -29,8 +29,8 @@ class C4Service1TkV1FileTestController(
     // ---------------------------------------------------------------------------------------------
     // <매핑 함수 공간>
     @Operation(
-        summary = "N1 : files/temp 폴더로 파일 업로드",
-        description = "multipart File 을 하나 업로드하여 서버의 files/temp 폴더에 저장\n\n"
+        summary = "N1 : by_product_files/test 폴더로 파일 업로드",
+        description = "multipart File 을 하나 업로드하여 서버의 by_product_files/test 폴더에 저장\n\n"
     )
     @ApiResponses(
         value = [
@@ -41,7 +41,7 @@ class C4Service1TkV1FileTestController(
         ]
     )
     @PostMapping(
-        path = ["/upload-to-temp"],
+        path = ["/upload-to-server"],
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
@@ -65,7 +65,7 @@ class C4Service1TkV1FileTestController(
     data class Api1OutputVo(
         @Schema(
             description = "파일 다운로드 경로", required = true,
-            example = "http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-temp/file.txt"
+            example = "http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/file.txt"
         )
         @JsonProperty("fileDownloadFullUrl")
         val fileDownloadFullUrl: String
@@ -74,8 +74,8 @@ class C4Service1TkV1FileTestController(
 
     ////
     @Operation(
-        summary = "N2 : files/temp 폴더에서 파일 다운받기",
-        description = "업로드 API 를 사용하여 files/temp 로 업로드한 파일을 다운로드\n\n"
+        summary = "N2 : by_product_files/test 폴더에서 파일 다운받기",
+        description = "업로드 API 를 사용하여 by_product_files/test 로 업로드한 파일을 다운로드\n\n"
     )
     @ApiResponses(
         value = [
@@ -100,7 +100,7 @@ class C4Service1TkV1FileTestController(
         ]
     )
     @GetMapping(
-        path = ["/download-from-temp/{fileName}"],
+        path = ["/download-from-server/{fileName}"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
@@ -108,7 +108,7 @@ class C4Service1TkV1FileTestController(
     fun api2(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @Parameter(name = "fileName", description = "files/temp 폴더 안의 파일명", example = "sample.txt")
+        @Parameter(name = "fileName", description = "by_product_files/test 폴더 안의 파일명", example = "sample.txt")
         @PathVariable("fileName")
         fileName: String
     ): ResponseEntity<Resource>? {
@@ -119,7 +119,7 @@ class C4Service1TkV1FileTestController(
     ////
     @Operation(
         summary = "N3 : 파일 리스트 zip 압축 테스트",
-        description = "파일들을 zip 타입으로 압축하여 files/temp 폴더에 저장\n\n"
+        description = "파일들을 zip 타입으로 압축하여 by_product_files/test 폴더에 저장\n\n"
     )
     @ApiResponses(
         value = [
@@ -146,7 +146,7 @@ class C4Service1TkV1FileTestController(
     ////
     @Operation(
         summary = "N3.1 : 폴더 zip 압축 테스트",
-        description = "폴더를 통째로 zip 타입으로 압축하여 files/temp 폴더에 저장\n\n"
+        description = "폴더를 통째로 zip 타입으로 압축하여 by_product_files/test 폴더에 저장\n\n"
     )
     @ApiResponses(
         value = [
@@ -173,7 +173,7 @@ class C4Service1TkV1FileTestController(
     ////
     @Operation(
         summary = "N4 : zip 압축 파일 해제 테스트",
-        description = "zip 압축 파일을 해제하여 files/temp 폴더에 저장\n\n"
+        description = "zip 압축 파일을 해제하여 by_product_files/test 폴더에 저장\n\n"
     )
     @ApiResponses(
         value = [
@@ -265,7 +265,7 @@ class C4Service1TkV1FileTestController(
     data class Api6OutputVo(
         @Schema(
             description = "파일 다운로드 경로", required = true,
-            example = "http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-temp/file.txt"
+            example = "http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/file.txt"
         )
         @JsonProperty("fileDownloadFullUrl")
         val fileDownloadFullUrl: String

@@ -3833,8 +3833,8 @@ class C10Service1TkV1AuthController(
 
     ////
     @Operation(
-        summary = "N48 : files/member/profile 폴더에서 파일 다운받기",
-        description = "프로필 이미지를 files/member/profile 위치에 저장했을 때 파일을 가져오기 위한 API 로,\n\n" +
+        summary = "N48 : by_product_files/member/profile 폴더에서 파일 다운받기",
+        description = "프로필 이미지를 by_product_files/member/profile 위치에 저장했을 때 파일을 가져오기 위한 API 로,\n\n" +
                 "AWS 나 다른 Storage 서비스를 사용해도 좋습니다.\n\n"
     )
     @ApiResponses(
@@ -3868,7 +3868,7 @@ class C10Service1TkV1AuthController(
     fun api48(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @Parameter(name = "fileName", description = "files/member/profile 폴더 안의 파일명", example = "test.jpg")
+        @Parameter(name = "fileName", description = "by_product_files/member/profile 폴더 안의 파일명", example = "test.jpg")
         @PathVariable("fileName")
         fileName: String
     ): ResponseEntity<Resource>? {

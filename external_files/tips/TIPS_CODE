@@ -1,5 +1,6 @@
-[TIPS_TEMP]
-- 본 파일은 코딩시 참고용으로 쓰일 정보들을 저장한 파일입니다.
+[TIPS_CODE]
+- 본 파일은 코딩 관련 팁을 모아둔 파일입니다.
+    개발시 참고 용도로 사용하세요.
 
 - Swagger ApiResponses 작성 예시
     각 API 별, HTTP Status Code 들에 대한 설명을 Swagger 에서 표현하려면,

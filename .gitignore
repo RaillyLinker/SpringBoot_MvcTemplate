@@ -37,6 +37,4 @@ out/
 .vscode/
 
 ### Developer Choice ###
-/logs/**
-/files/**
-/temps/**
+/by_product_files/**

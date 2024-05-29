@@ -90,8 +90,8 @@ class C5Service1TkV1MediaResourceProcessController(
 
     ////
     @Operation(
-        summary = "N2 : 서버에 저장된 움직이는 Gif 이미지 파일에서 프레임을 PNG 이미지 파일로 분리한 후 files/temps 폴더 안에 저장",
-        description = "서버에 저장된 움직이는 Gif 이미지 파일에서 프레임을 PNG 이미지 파일로 분리한 후 files/temps 폴더 안에 저장\n\n"
+        summary = "N2 : 서버에 저장된 움직이는 Gif 이미지 파일에서 프레임을 PNG 이미지 파일로 분리한 후 by_product_files/test 폴더 안에 저장",
+        description = "서버에 저장된 움직이는 Gif 이미지 파일에서 프레임을 PNG 이미지 파일로 분리한 후 by_product_files/test 폴더 안에 저장\n\n"
     )
     @ApiResponses(
         value = [
@@ -117,8 +117,8 @@ class C5Service1TkV1MediaResourceProcessController(
 
     ////
     @Operation(
-        summary = "N3 : 서버에 저장된 움직이는 PNG 이미지 프레임들을 움직이는 Gif 파일로 병합 후 files/temps 폴더 안에 저장",
-        description = "서버에 저장된 움직이는 PNG 이미지 프레임들을 움직이는 Gif 파일로 병합 후 files/temps 폴더 안에 저장\n\n"
+        summary = "N3 : 서버에 저장된 움직이는 PNG 이미지 프레임들을 움직이는 Gif 파일로 병합 후 by_product_files/test 폴더 안에 저장",
+        description = "서버에 저장된 움직이는 PNG 이미지 프레임들을 움직이는 Gif 파일로 병합 후 by_product_files/test 폴더 안에 저장\n\n"
     )
     @ApiResponses(
         value = [
@@ -201,7 +201,7 @@ class C5Service1TkV1MediaResourceProcessController(
     ////
     @Operation(
         summary = "N5 : 서명 생성 테스트",
-        description = "입력받은 문자열을 투명 배경 서명 이미지로 만들어 files/temp 폴더에 저장\n\n"
+        description = "입력받은 문자열을 투명 배경 서명 이미지로 만들어 by_product_files/test 폴더에 저장\n\n"
     )
     @ApiResponses(
         value = [
