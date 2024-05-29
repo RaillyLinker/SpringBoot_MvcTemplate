@@ -27,13 +27,14 @@ spring:
     # JPA 데이터베이스 플랫폼 지정
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
+      # 스키마, 테이블명 UpperCase 허용
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
       # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
       # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
       # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
       # ********* 주의 : DDL 은 그냥 DB 에서 만집시다!!!!!! *********
-      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
-      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
-      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
       # 데이터베이스 초기화 전략
       # none - 엔티티가 변경되더라도 데이터베이스를 변경하지 않는다.
       # update - 엔티티의 변경된 부분만 적용한다.
@@ -42,9 +43,9 @@ spring:
       # create-drop - create 와 동일하다. 하지만 종료시에도 모두 drop 한다.
       # 개발 환경에서는 보통 update 모드를 사용하고 운영환경에서는 none 또는 validate 모드를 사용
       ddl-auto: validate
-      # 스키마, 테이블명 UpperCase 허용
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+      # ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
 
 # JPA DataSource 설정
 datasource:
