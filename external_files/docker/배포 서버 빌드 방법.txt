@@ -18,7 +18,7 @@
 
 (5. 컨테이너 생성 및 실행)
 - 불러온 raillylinker/server_prod:latest 이미지를 실행하여 서버로서 정상 동작하는지 확인
-> docker container run -d -e TZ=Asia/Seoul --rm -p80:80 --name server_prod raillylinker/server_prod:latest
+> docker container run -v ${PWD}\service_logs:/docker_shared_server/server_project/by_product_files/logs -d -e TZ=Asia/Seoul --rm -p80:80 --name server_prod raillylinker/server_prod:latest
 
 (6. 컨테이너 명령창 띄우기)
 > docker container exec -it server_prod sh
