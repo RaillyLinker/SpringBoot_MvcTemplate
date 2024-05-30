@@ -53,6 +53,7 @@ datasource:
   database1: # DB 추가
     # 데이터베이스 접속 경로
     # !!!serverTimezone 설정을 데이터베이스의 타임존 설정과 일치시켜주세요.!!!
+    # 로컬 DB 접속은 localhost 를 사용하고, 도커에서 로컬 DB 접속시엔 host.docker.internal 를 사용하세요.
     jdbcUrl: jdbc:mysql://localhost:3306/template?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&autoReconnect=true
     # 데이터베이스의 사용자명
     username: test
