@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.util.StringUtils
 import java.awt.Color
 import java.awt.Font
 import java.awt.image.BufferedImage
@@ -44,14 +45,37 @@ class C5Service1TkV1MediaResourceProcessService(
     ): ResponseEntity<Resource>? {
         // 이미지 파일의 확장자 확인
         val allowedExtensions = setOf("jpg", "jpeg", "bmp", "png", "gif")
-        val fileName = inputVo.multipartImageFile.originalFilename
-        val fileExtension = fileName?.split(".")?.lastOrNull()?.lowercase(Locale.getDefault())
+
+        // 원본 파일명(with suffix)
+        val multiPartFileNameString = StringUtils.cleanPath(inputVo.multipartImageFile.originalFilename!!)
+
+        // 파일 확장자 구분 위치
+        val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
+
+        // 확장자가 없는 파일명
+        val fileNameWithOutExtension: String
+        // 확장자
+        val fileExtension: String
+
+        if (fileExtensionSplitIdx == -1) {
+            fileNameWithOutExtension = multiPartFileNameString
+            fileExtension = ""
+        } else {
+            fileNameWithOutExtension = multiPartFileNameString.substring(0, fileExtensionSplitIdx)
+            fileExtension =
+                multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
+        }
 
         if (fileExtension !in allowedExtensions) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
+
+        val resultFileName = "${fileNameWithOutExtension}(${
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+        }).${inputVo.imageType.typeStr}"
 
         // 이미지 리사이징
         val resizedImage = ImageProcessUtilObject.resizeImage(
@@ -63,7 +87,7 @@ class C5Service1TkV1MediaResourceProcessService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        httpServletResponse.setHeader("Content-Disposition", "attachment; filename=\"$fileName\"")
+        httpServletResponse.setHeader("Content-Disposition", "attachment; filename=\"$resultFileName\"")
 
         return ResponseEntity<Resource>(
             ByteArrayResource(resizedImage),
