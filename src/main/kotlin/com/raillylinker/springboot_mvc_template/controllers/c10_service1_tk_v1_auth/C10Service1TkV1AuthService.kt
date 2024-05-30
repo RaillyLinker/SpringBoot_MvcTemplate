@@ -254,7 +254,7 @@ class C10Service1TkV1AuthService(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api5InputVo
     ): C10Service1TkV1AuthController.Api5OutputVo? {
-        val memberUid: Long
+        val memberData: Database1_Service1_MemberData
         when (inputVo.loginTypeCode) {
             0 -> { // 닉네임
                 // (정보 검증 로직 수행)
@@ -268,7 +268,7 @@ class C10Service1TkV1AuthService(
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
-                memberUid = member.uid!!
+                memberData = member
             }
 
             1 -> { // 이메일
@@ -283,7 +283,7 @@ class C10Service1TkV1AuthService(
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
-                memberUid = memberEmail.memberData.uid!!
+                memberData = memberEmail.memberData
             }
 
             2 -> { // 전화번호
@@ -298,7 +298,7 @@ class C10Service1TkV1AuthService(
                     httpServletResponse.setHeader("api-result-code", "1")
                     return null
                 }
-                memberUid = memberPhone.memberData.uid!!
+                memberData = memberPhone.memberData
             }
 
             else -> {
@@ -308,19 +308,8 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-            memberUid,
-            "/"
-        )
-
-        if (member == null) { // 가입된 회원이 없음
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "1")
-            return null
-        }
-
-        if (member.accountPassword == null || // 페스워드는 아직 만들지 않음
-            !passwordEncoder.matches(inputVo.password, member.accountPassword!!) // 패스워드 불일치
+        if (memberData.accountPassword == null || // 페스워드는 아직 만들지 않음
+            !passwordEncoder.matches(inputVo.password, memberData.accountPassword!!) // 패스워드 불일치
         ) {
             // 두 상황 모두 비밀번호 찾기를 하면 해결이 됨
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -330,7 +319,7 @@ class C10Service1TkV1AuthService(
 
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-            member,
+            memberData,
             "/"
         )
 
@@ -340,7 +329,7 @@ class C10Service1TkV1AuthService(
         }
 
         // (토큰 생성 로직 수행)
-        val memberUidString: String = memberUid.toString()
+        val memberUidString: String = memberData.uid!!.toString()
 
         // 멤버 고유번호로 엑세스 토큰 생성
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
@@ -368,7 +357,7 @@ class C10Service1TkV1AuthService(
 
         database1Service1LogInTokenInfoRepository.save(
             Database1_Service1_LogInTokenInfo(
-                member,
+                memberData,
                 "Bearer",
                 LocalDateTime.now(),
                 jwtAccessToken,
@@ -379,46 +368,46 @@ class C10Service1TkV1AuthService(
         )
 
         val profileData =
-            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "/")
+            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
         val myProfileList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo> = arrayListOf()
         for (profile in profileData) {
             myProfileList.add(
                 C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
-                    profile.uid == member.frontMemberProfileData?.uid
+                    profile.uid == memberData.frontMemberProfileData?.uid
                 )
             )
         }
 
         val emailEntityList =
-            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "/")
+            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
         val myEmailList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.EmailInfo> = arrayListOf()
         for (emailEntity in emailEntityList) {
             myEmailList.add(
                 C10Service1TkV1AuthController.Api5OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
-                    emailEntity.uid == member.frontMemberEmailData?.uid
+                    emailEntity.uid == memberData.frontMemberEmailData?.uid
                 )
             )
         }
 
         val phoneEntityList =
-            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "/")
+            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
         val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo> = arrayListOf()
         for (phoneEntity in phoneEntityList) {
             myPhoneNumberList.add(
                 C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
-                    phoneEntity.uid == member.frontMemberPhoneData?.uid
+                    phoneEntity.uid == memberData.frontMemberPhoneData?.uid
                 )
             )
         }
 
         val oAuth2EntityList =
-            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(member, "/")
+            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
         val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
             myOAuth2List.add(
@@ -433,8 +422,8 @@ class C10Service1TkV1AuthService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5OutputVo(
-            memberUid,
-            member.nickName,
+            memberData.uid!!,
+            memberData.nickName,
             roleList,
             "Bearer",
             jwtAccessToken,
@@ -447,7 +436,7 @@ class C10Service1TkV1AuthService(
             myProfileList,
             myEmailList,
             myPhoneNumberList,
-            member.accountPassword == null
+            memberData.accountPassword == null
         )
     }
 
@@ -656,17 +645,6 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-            snsOauth2.memberData.uid!!,
-            "/"
-        )
-
-        if (member == null) { // 가입된 회원이 없음
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "2")
-            return null
-        }
-
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             snsOauth2.memberData,
@@ -674,8 +652,8 @@ class C10Service1TkV1AuthService(
         )
 
         val roleList: ArrayList<String> = arrayListOf()
-        for (userRole in memberRoleList) {
-            roleList.add(userRole.role)
+        for (memberRole in memberRoleList) {
+            roleList.add(memberRole.role)
         }
 
         // (토큰 생성 로직 수행)
@@ -707,7 +685,7 @@ class C10Service1TkV1AuthService(
 
         database1Service1LogInTokenInfoRepository.save(
             Database1_Service1_LogInTokenInfo(
-                member,
+                snsOauth2.memberData,
                 "Bearer",
                 LocalDateTime.now(),
                 jwtAccessToken,
@@ -728,7 +706,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
-                    profile.uid == member.frontMemberProfileData?.uid
+                    profile.uid == snsOauth2.memberData.frontMemberProfileData?.uid
                 )
             )
         }
@@ -744,7 +722,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
-                    emailEntity.uid == member.frontMemberEmailData?.uid
+                    emailEntity.uid == snsOauth2.memberData.frontMemberEmailData?.uid
                 )
             )
         }
@@ -760,7 +738,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7OutputVo.PhoneNumberInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
-                    phoneEntity.uid == member.frontMemberPhoneData?.uid
+                    phoneEntity.uid == snsOauth2.memberData.frontMemberPhoneData?.uid
                 )
             )
         }
@@ -785,7 +763,7 @@ class C10Service1TkV1AuthService(
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api7OutputVo(
             snsOauth2.memberData.uid!!,
-            member.nickName,
+            snsOauth2.memberData.nickName,
             roleList,
             "Bearer",
             jwtAccessToken,
@@ -798,7 +776,7 @@ class C10Service1TkV1AuthService(
             myProfileList,
             myEmailList,
             myPhoneNumberList,
-            member.accountPassword == null
+            snsOauth2.memberData.accountPassword == null
         )
     }
 
@@ -846,17 +824,6 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-            snsOauth2.memberData.uid!!,
-            "/"
-        )
-
-        if (member == null) { // 가입된 회원이 없음
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "2")
-            return null
-        }
-
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
             snsOauth2.memberData,
@@ -897,7 +864,7 @@ class C10Service1TkV1AuthService(
 
         database1Service1LogInTokenInfoRepository.save(
             Database1_Service1_LogInTokenInfo(
-                member,
+                snsOauth2.memberData,
                 "Bearer",
                 LocalDateTime.now(),
                 jwtAccessToken,
@@ -918,7 +885,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7Dot1OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
-                    profile.uid == member.frontMemberProfileData?.uid
+                    profile.uid == snsOauth2.memberData.frontMemberProfileData?.uid
                 )
             )
         }
@@ -934,7 +901,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7Dot1OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
-                    emailEntity.uid == member.frontMemberEmailData?.uid
+                    emailEntity.uid == snsOauth2.memberData.frontMemberEmailData?.uid
                 )
             )
         }
@@ -950,7 +917,7 @@ class C10Service1TkV1AuthService(
                 C10Service1TkV1AuthController.Api7Dot1OutputVo.PhoneNumberInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
-                    phoneEntity.uid == member.frontMemberPhoneData?.uid
+                    phoneEntity.uid == snsOauth2.memberData.frontMemberPhoneData?.uid
                 )
             )
         }
@@ -975,7 +942,7 @@ class C10Service1TkV1AuthService(
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api7Dot1OutputVo(
             snsOauth2.memberData.uid!!,
-            member.nickName,
+            snsOauth2.memberData.nickName,
             roleList,
             "Bearer",
             jwtAccessToken,
@@ -988,7 +955,7 @@ class C10Service1TkV1AuthService(
             myProfileList,
             myEmailList,
             myPhoneNumberList,
-            member.accountPassword == null
+            snsOauth2.memberData.accountPassword == null
         )
     }
 
@@ -1027,15 +994,6 @@ class C10Service1TkV1AuthService(
         inputVo: C10Service1TkV1AuthController.Api9InputVo,
         httpServletResponse: HttpServletResponse
     ): C10Service1TkV1AuthController.Api9OutputVo? {
-        // 타입과 토큰을 분리
-        val refreshTokenInputSplit = inputVo.refreshToken.split(" ") // ex : ["Bearer", "qwer1234"]
-        if (refreshTokenInputSplit.size < 2) {
-            // 올바르지 않은 Token
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "1")
-            return null
-        }
-
         // 저장된 현재 인증된 멤버의 리프레시 토큰 가져오기
         val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
         val accessTokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
@@ -1046,6 +1004,15 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
+
+        // 타입과 토큰을 분리
+        val refreshTokenInputSplit = inputVo.refreshToken.split(" ") // ex : ["Bearer", "qwer1234"]
+        if (refreshTokenInputSplit.size < 2) {
+            // 올바르지 않은 Token
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return null
+        }
 
         // 타입 분리
         val tokenType = refreshTokenInputSplit[0].trim() // 첫번째 단어는 토큰 타입
@@ -1120,12 +1087,6 @@ class C10Service1TkV1AuthService(
                     return null
                 }
 
-                val memberInfo =
-                    database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-                        accessTokenMemberUid.toLong(),
-                        "/"
-                    )!!
-
                 // 먼저 로그아웃 처리
                 tokenInfo.rowDeleteDateStr =
                     LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -1135,7 +1096,7 @@ class C10Service1TkV1AuthService(
                 // 멤버의 권한 리스트를 조회 후 반환
                 val memberRoleList =
                     database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                        memberInfo,
+                        tokenInfo.memberData,
                         "/"
                     )
 
@@ -1169,7 +1130,7 @@ class C10Service1TkV1AuthService(
 
                 database1Service1LogInTokenInfoRepository.save(
                     Database1_Service1_LogInTokenInfo(
-                        memberInfo,
+                        tokenInfo.memberData,
                         "Bearer",
                         LocalDateTime.now(),
                         newJwtAccessToken,
@@ -1181,7 +1142,7 @@ class C10Service1TkV1AuthService(
 
                 val profileData =
                     database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                        memberInfo,
+                        tokenInfo.memberData,
                         "/"
                     )
                 val myProfileList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo> = arrayListOf()
@@ -1190,14 +1151,14 @@ class C10Service1TkV1AuthService(
                         C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo(
                             profile.uid!!,
                             profile.imageFullUrl,
-                            profile.uid == memberInfo.frontMemberProfileData?.uid
+                            profile.uid == tokenInfo.memberData.frontMemberProfileData?.uid
                         )
                     )
                 }
 
                 val emailEntityList =
                     database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                        memberInfo,
+                        tokenInfo.memberData,
                         "/"
                     )
                 val myEmailList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.EmailInfo> = arrayListOf()
@@ -1206,14 +1167,14 @@ class C10Service1TkV1AuthService(
                         C10Service1TkV1AuthController.Api9OutputVo.EmailInfo(
                             emailEntity.uid!!,
                             emailEntity.emailAddress,
-                            emailEntity.uid == memberInfo.frontMemberEmailData?.uid
+                            emailEntity.uid == tokenInfo.memberData.frontMemberEmailData?.uid
                         )
                     )
                 }
 
                 val phoneEntityList =
                     database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                        memberInfo,
+                        tokenInfo.memberData,
                         "/"
                     )
                 val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo> =
@@ -1223,14 +1184,14 @@ class C10Service1TkV1AuthService(
                         C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo(
                             phoneEntity.uid!!,
                             phoneEntity.phoneNumber,
-                            phoneEntity.uid == memberInfo.frontMemberPhoneData?.uid
+                            phoneEntity.uid == tokenInfo.memberData.frontMemberPhoneData?.uid
                         )
                     )
                 }
 
                 val oAuth2EntityList =
                     database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                        memberInfo,
+                        tokenInfo.memberData,
                         "/"
                     )
                 val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api9OutputVo.OAuth2Info>()
@@ -1247,8 +1208,8 @@ class C10Service1TkV1AuthService(
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 return C10Service1TkV1AuthController.Api9OutputVo(
-                    memberInfo.uid!!,
-                    memberInfo.nickName,
+                    tokenInfo.memberData.uid!!,
+                    tokenInfo.memberData.nickName,
                     roleList,
                     "Bearer",
                     newJwtAccessToken,
@@ -1261,7 +1222,7 @@ class C10Service1TkV1AuthService(
                     myProfileList,
                     myEmailList,
                     myPhoneNumberList,
-                    memberInfo.accountPassword == null
+                    tokenInfo.memberData.accountPassword == null
                 )
             }
 
@@ -1442,9 +1403,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        val codeMatched = emailVerification.verificationSecret == verificationCode
-
-        if (codeMatched) { // 코드 일치
+        if (emailVerification.verificationSecret == verificationCode) { // 코드 일치
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
         } else { // 코드 불일치
@@ -1484,9 +1443,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        val codeMatched = emailVerification.verificationSecret == inputVo.verificationCode
-
-        if (codeMatched) { // 코드 일치
+        if (emailVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             val isUserExists =
                 database1Service1MemberEmailDataRepository.existsByEmailAddressAndRowDeleteDateStr(
                     inputVo.email,
@@ -1508,7 +1465,7 @@ class C10Service1TkV1AuthService(
                 return
             }
 
-            val password: String? = passwordEncoder.encode(inputVo.password) // 비밀번호 암호화
+            val password = passwordEncoder.encode(inputVo.password)!! // 비밀번호 암호화
 
             // 회원가입
             val database1MemberUser = database1Service1MemberDataRepository.save(
@@ -1552,7 +1509,8 @@ class C10Service1TkV1AuthService(
                 //----------------------------------------------------------------------------------------------------------
                 // 프로필 이미지를 서버 스토리지에 저장할 때 사용하는 방식
                 // 파일 저장 기본 디렉토리 경로
-                val saveDirectoryPath: Path = Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
+                val saveDirectoryPath: Path =
+                    Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
 
                 // 파일 저장 기본 디렉토리 생성
                 Files.createDirectories(saveDirectoryPath)
@@ -1713,9 +1671,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        val codeMatched = phoneNumberVerification.verificationSecret == verificationCode
-
-        if (codeMatched) { // 코드 일치
+        if (phoneNumberVerification.verificationSecret == verificationCode) { // 코드 일치
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
         } else { // 코드 불일치
@@ -1755,9 +1711,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        val codeMatched = phoneNumberVerification.verificationSecret == inputVo.verificationCode
-
-        if (codeMatched) { // 코드 일치
+        if (phoneNumberVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             val isUserExists =
                 database1Service1MemberPhoneDataRepository.existsByPhoneNumberAndRowDeleteDateStr(
                     inputVo.phoneNumber,
@@ -1779,7 +1733,7 @@ class C10Service1TkV1AuthService(
                 return
             }
 
-            val password: String? = passwordEncoder.encode(inputVo.password) // 비밀번호 암호화
+            val password: String = passwordEncoder.encode(inputVo.password)!! // 비밀번호 암호화
 
             // 회원가입
             val database1MemberUser = database1Service1MemberDataRepository.save(
@@ -1824,7 +1778,8 @@ class C10Service1TkV1AuthService(
                 //----------------------------------------------------------------------------------------------------------
                 // 프로필 이미지를 서버 스토리지에 저장할 때 사용하는 방식
                 // 파일 저장 기본 디렉토리 경로
-                val saveDirectoryPath: Path = Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
+                val saveDirectoryPath: Path =
+                    Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
 
                 // 파일 저장 기본 디렉토리 생성
                 Files.createDirectories(saveDirectoryPath)
@@ -2199,9 +2154,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        val codeMatched = oauth2Verification.verificationSecret == inputVo.verificationCode
-
-        if (codeMatched) { // 코드 일치
+        if (oauth2Verification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             val isUserExists =
                 database1Service1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
                     inputVo.oauth2TypeCode.toByte(),
@@ -2265,7 +2218,8 @@ class C10Service1TkV1AuthService(
                 //----------------------------------------------------------------------------------------------------------
                 // 프로필 이미지를 서버 스토리지에 저장할 때 사용하는 방식
                 // 파일 저장 기본 디렉토리 경로
-                val saveDirectoryPath: Path = Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
+                val saveDirectoryPath: Path =
+                    Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
 
                 // 파일 저장 기본 디렉토리 생성
                 Files.createDirectories(saveDirectoryPath)
@@ -2535,9 +2489,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        val codeMatched = emailVerification.verificationSecret == inputVo.verificationCode
-
-        if (codeMatched) { // 코드 일치
+        if (emailVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             // 입력 데이터 검증
             val memberEmail =
                 database1Service1MemberEmailDataRepository.findByEmailAddressAndRowDeleteDateStr(
@@ -2551,21 +2503,10 @@ class C10Service1TkV1AuthService(
                 return
             }
 
-            val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-                memberEmail.memberData.uid!!,
-                "/"
-            )
-
-            if (member == null) {
-                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                httpServletResponse.setHeader("api-result-code", "4")
-                return
-            }
-
             // 랜덤 비번 생성 후 세팅
             val newPassword = String.format("%09d", Random().nextInt(999999999)) // 랜덤 9자리 숫자
-            member.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
-            database1Service1MemberDataRepository.save(member)
+            memberEmail.memberData.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
+            database1Service1MemberDataRepository.save(memberEmail.memberData)
 
             // 생성된 비번 이메일 전송
             emailSenderUtilDi.sendThymeLeafHtmlMail(
@@ -2592,7 +2533,7 @@ class C10Service1TkV1AuthService(
             // 모든 토큰 비활성화 처리
             // loginAccessToken 의 Iterable 가져오기
             val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
-                member,
+                memberEmail.memberData,
                 "/"
             )
 
@@ -2747,9 +2688,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        val codeMatched = phoneNumberVerification.verificationSecret == inputVo.verificationCode
-
-        if (codeMatched) { // 코드 일치
+        if (phoneNumberVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             // 입력 데이터 검증
             val memberPhone =
                 database1Service1MemberPhoneDataRepository.findByPhoneNumberAndRowDeleteDateStr(
@@ -2763,21 +2702,10 @@ class C10Service1TkV1AuthService(
                 return
             }
 
-            val member = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-                memberPhone.memberData.uid!!,
-                "/"
-            )
-
-            if (member == null) {
-                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                httpServletResponse.setHeader("api-result-code", "4")
-                return
-            }
-
             // 랜덤 비번 생성 후 세팅
             val newPassword = String.format("%09d", Random().nextInt(999999999)) // 랜덤 9자리 숫자
-            member.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
-            database1Service1MemberDataRepository.save(member)
+            memberPhone.memberData.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
+            database1Service1MemberDataRepository.save(memberPhone.memberData)
 
             val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
 
@@ -2805,7 +2733,7 @@ class C10Service1TkV1AuthService(
             // 모든 토큰 비활성화 처리
             // loginAccessToken 의 Iterable 가져오기
             val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
-                member,
+                memberPhone.memberData,
                 "/"
             )
 
@@ -3116,9 +3044,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        val codeMatched = emailVerification.verificationSecret == inputVo.verificationCode
-
-        if (codeMatched) { // 코드 일치
+        if (emailVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             val isUserExists =
                 database1Service1MemberEmailDataRepository.existsByEmailAddressAndRowDeleteDateStr(
                     inputVo.email,
@@ -3361,9 +3287,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        val codeMatched = phoneNumberVerification.verificationSecret == verificationCode
-
-        if (codeMatched) { // 코드 일치
+        if (phoneNumberVerification.verificationSecret == verificationCode) { // 코드 일치
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
         } else { // 코드 불일치
@@ -3832,13 +3756,6 @@ class C10Service1TkV1AuthService(
             "/"
         )!!
 
-        // 회원탈퇴 처리
-        memberData.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-        database1Service1MemberDataRepository.save(
-            memberData
-        )
-
         // member_phone, member_email, member_role, member_sns_oauth2, member_profile 비활성화
         val emailList =
             database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
@@ -3884,7 +3801,6 @@ class C10Service1TkV1AuthService(
             database1Service1MemberProfileDataRepository.save(profile)
         }
 
-
         // !!!회원과 관계된 처리!!
 
         // loginAccessToken 의 Iterable 가져오기
@@ -3901,6 +3817,13 @@ class C10Service1TkV1AuthService(
 
             database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
+
+        // 회원탈퇴 처리
+        memberData.rowDeleteDateStr = LocalDateTime.now().atZone(ZoneId.systemDefault())
+            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+        database1Service1MemberDataRepository.save(
+            memberData
+        )
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()

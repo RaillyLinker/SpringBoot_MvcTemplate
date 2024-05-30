@@ -1268,6 +1268,7 @@ class C10Service1TkV1AuthController(
         )
     }
 
+
     ////
     @Operation(
         summary = "N13 : 이메일 회원가입 본인 인증 이메일 발송",

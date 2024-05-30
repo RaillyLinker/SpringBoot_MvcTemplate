@@ -352,7 +352,7 @@ class C7Service1TkV1DatabaseTestController(
         @Parameter(
             name = "dateString",
             description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
-            example = "2024_05_02_T_15_14_49_552222"
+            example = "2024_05_02_T_15_14_49_552"
         )
         @RequestParam("dateString")
         dateString: String
@@ -615,7 +615,7 @@ class C7Service1TkV1DatabaseTestController(
         @Schema(
             description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222"
+            example = "2024_05_02_T_15_14_49_552"
         )
         @JsonProperty("dateString")
         val dateString: String
@@ -707,7 +707,7 @@ class C7Service1TkV1DatabaseTestController(
         @Schema(
             description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
             required = true,
-            example = "2024_05_02_T_15_14_49_552222"
+            example = "2024_05_02_T_15_14_49_552"
         )
         @JsonProperty("dateString")
         val dateString: String
