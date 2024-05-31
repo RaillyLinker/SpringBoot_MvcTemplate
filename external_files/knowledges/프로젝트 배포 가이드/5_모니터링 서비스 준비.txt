@@ -146,14 +146,14 @@
     5. 도커 이미지 파일 전달 및 실행
         앞서 생성했던 spring_admin.tar 파일을 EC2 에 전달해줍니다.
 
-        >> scp -i "{pem 키 파일}" "{전송할 파일}" {아이디@전송할 서버주소}:"{저장될 서버의 디렉토리}"
+        >> scp -i "{pem 키 파일}" "{전송할 파일}" {아이디@전송할 서버주소}:{저장될 서버의 디렉토리}
 
         위와 같은 형태의 명령어를 실행시키면 됩니다.
 
         전달이 완료되어 EC2 인스턴스 SSH 에서 해당 파일을 확인했다면,
 
-        >> sudo docker container stop server_dev
-        >> sudo docker container rm server_dev
+        >> sudo docker container stop spring_admin
+        >> sudo docker container rm spring_admin
         >> sudo docker image prune -af
 
         위 명령어로 기존에 진행중일 수도 있는 도커 컨테이너 및 이미지를 제거하고,

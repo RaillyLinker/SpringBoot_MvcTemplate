@@ -2,21 +2,12 @@
 - 실질적으로 오픈할 서비스 서버를 만들어보겠습니다.
     방법론은 동일하므로, 앞으로 새로운 서비스를 만들 때는 이것을 참고하여 배포하면 됩니다.
 
-- 가이드 설명글 2번을 참고하여, 도커 이미지 .tar 파일이 준비되었다고 생각하고 진행하겠습니다.
-    개발 이미지, 배포 이미지 두개 전부 준비해주세요.
-
-- tar 파일을 만들기 전에 주의할 점은,
-    Springboot application.yml 설정 안에,
-    데이터베이스 주소를 앞서 가이드 설명글 4번에서 생성한 RDS 정보로 변경해야 하고,
-    admin client 설정 역시 앞서 가이드 설명글 5번에서 생성한 Admin 정보로 변경해야합니다.
-
 - 아래 글에서는 일단 수동 배포 방식을 알려드리는데,
     서버 접속 테스트 이후에는 앞으로 CI/CD 를 사용하여 배포를 자동화 할 것입니다.
     해당 글은 다음 글에 젠킨스 설치를 설명하며 정리하겠습니다.
 
 - AWS EC2 에 배포하기
-    1. AWS EC2 에, 앞서 준비된 jar 파일들을 배포하려면,
-        AWS 콘솔에서 EC2 항목으로 이동한 후,
+    1. AWS 콘솔에서 EC2 항목으로 이동한 후,
         인스턴스를 하나 만들어줄 것입니다.(서비스 이름은 스스로 결정하세요.)
         이 인스턴스 하나에 배포 서비스, 개발 서비스로, 서비스 2개를 올릴 것입니다.
 
@@ -41,17 +32,15 @@
         그 자체로 유지비용의 요금이 발생합니다.
 
     3. 접속 보안 설정
-        본 인스턴스는 말 그대로 개발자만 접속이 가능해야 하는 서버로,
-        SSH 포트인 22 번 포트와, 각 개발자 툴 서비스 포트를 개발자 위치에만 공개해 두어야 합니다.
+        SSH 포트인 22 번 포트는 개발자 위치에만 공개해 두어야 합니다.
 
         보안 그룹 - 인바운드 규칙 - 인바운드 규칙 편집
 
         으로 이동하고,
 
         앞서 가이드 4번 글에서 했던대로, 허용할 포트와 ip 를 설정할 때,
-        SSH 의 22 번 포트와,
-        개발 서버의 8080, 배포 서버의 80 포트를 현재 내 ip 에만 설정하고,
-        추후에 접속 위치가 바뀔 때마다 수정하도록 합시다.
+        SSH 의 22 번 포트와 개발 서버의 8080, 배포 서버의 80 포트를 현재 내 ip 에만 설정하고,
+        추후에 수정하도록 합시다.
 
     4. OpenSSH 접속 및 기본 설정
         커맨드창을 열고,
@@ -138,14 +127,45 @@
         도커 실행 상태 확인
         >> sudo systemctl status docker
 
-    5. 도커 이미지 파일 전달 및 실행
-        앞서 생성했던 spring_admin.tar 파일을 EC2 에 전달해줍니다.
+        이제 도커를 이용한 서비스 실행 환경이 준비된 것입니다.
 
-        >> scp -i "{pem 키 파일}" "{전송할 파일}" {아이디@전송할 서버주소}:"{저장될 서버의 디렉토리}"
+    5. 스프링 프로젝트 도커 이미지 파일 생성
+        원하는 스프링 부트 프로젝트는 본 프로젝트를 기반으로 만들어졌다고 가정하겠습니다.
+
+        가이드 설명글 2번을 참고하여 도커 이미지 .tar 파일을 생성합니다.
+        개발 이미지, 배포 이미지 두개 전부 준비해주세요.
+
+        tar 파일을 만들기 전에 주의할 점은,
+        Springboot application.yml 설정 안에,
+
+        spring.boot.admin 부분,
+        datasource 부분,
+        custonConfig.actuatorAllowIpList 부분,
+        custonConfig.loggingDenyIpList 부분
+
+        위 부분을 앞서 준비된 정보로 갱신하고 빌드를 해야합니다.
+
+        데이터베이스 설정에, 앞서 생성한 AWS RDS 주소를 사용한다면,
+        본 서버의 요청을 RDS 가 허용해야 하기에,
+        AWS 보안 설정으로 가서 데이터베이스의 인바운드 설정에 서버의 IP 를 허용하도록 설정하세요.
+
+    6. 도커 이미지 파일 전달
+        앞서 생성했던 .tar 파일 2개를 EC2 에 전달해줍니다.
+
+        >> scp -i "{pem 키 파일}" "{전송할 파일}" {아이디@전송할 서버주소}:{저장될 서버의 디렉토리}
 
         위와 같은 형태의 명령어를 실행시키면 됩니다.
 
+        ubuntu 에는, /home/ubuntu/dev 디렉토리에 server_dev.tar 파일을,
+        /home/ubuntu/prod 디렉토리에 server_prod.tar 파일을 저장하도록 하였습니다.
+
         전달이 완료되어 EC2 인스턴스 SSH 에서 해당 파일을 확인했다면,
+
+    7. 개발 서버 실행
+        cd 명령어로 /home/ubuntu/dev 위치로 이동하고,
+
+        >> mkdir service_logs
+        위 명령어로 서버 프로그램 로그파일을 저장할 위치를 만들어주고,
 
         >> sudo docker container stop server_dev
         >> sudo docker container rm server_dev
@@ -153,9 +173,28 @@
 
         위 명령어로 기존에 진행중일 수도 있는 도커 컨테이너 및 이미지를 제거하고,
 
-        >> sudo docker load -i spring_admin.tar
-        >> sudo docker container run -d -e TZ=Asia/Seoul --rm -p8081:8081 --name spring_admin raillylinker/spring_admin:latest
+        >> sudo docker load -i server_dev.tar
+        >> sudo docker container run -v /home/ubuntu/dev/service_logs:/app/by_product_files/logs -d -e TZ=Asia/Seoul --rm -p8080:8080 --name server_dev raillylinker/server_dev:latest
 
         위 명령어로 이미지 컨테이너를 실행시키면 됩니다.
 
-        이제 해당 서버의 8081 서버로 접속하여 SpringAdmin 이 잘 동작하는지를 확인만 하면 완성입니다.
+        이제 해당 서버의 8080 서버로 접속하여 Dev 서비스가 잘 동작하는지를 확인만 하면 완성입니다.
+
+    8. 배포 서버 실행
+        cd 명령어로 /home/ubuntu/prod 위치로 이동하고,
+
+        >> mkdir service_logs
+        위 명령어로 서버 프로그램 로그파일을 저장할 위치를 만들어주고,
+
+        >> sudo docker container stop server_prod
+        >> sudo docker container rm server_prod
+        >> sudo docker image prune -af
+
+        위 명령어로 기존에 진행중일 수도 있는 도커 컨테이너 및 이미지를 제거하고,
+
+        >> sudo docker load -i server_prod.tar
+        >> sudo docker container run -v /home/ubuntu/prod/service_logs:/app/by_product_files/logs -d -e TZ=Asia/Seoul --rm -p80:80 --name server_prod raillylinker/server_prod:latest
+
+        위 명령어로 이미지 컨테이너를 실행시키면 됩니다.
+
+        이제 해당 서버의 80 서버로 접속하여 Prod 서비스가 잘 동작하는지를 확인만 하면 완성입니다.
