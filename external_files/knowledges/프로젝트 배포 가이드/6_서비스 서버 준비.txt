@@ -164,8 +164,8 @@
     7. 개발 서버 실행
         cd 명령어로 /home/ubuntu/dev 위치로 이동하고,
 
-        >> mkdir service_logs
-        위 명령어로 서버 프로그램 로그파일을 저장할 위치를 만들어주고,
+        >> mkdir by_product_files
+        위 명령어로 로그파일처럼 서버 프로그램에서 생성되는 파일들을 저장할 위치를 만들어주고,
 
         >> sudo docker container stop server_dev
         >> sudo docker container rm server_dev
@@ -174,7 +174,7 @@
         위 명령어로 기존에 진행중일 수도 있는 도커 컨테이너 및 이미지를 제거하고,
 
         >> sudo docker load -i server_dev.tar
-        >> sudo docker container run -v /home/ubuntu/dev/service_logs:/app/by_product_files/logs -d -e TZ=Asia/Seoul --rm -p8080:8080 --name server_dev raillylinker/server_dev:latest
+        >> sudo docker container run -v /home/ubuntu/dev/by_product_files:/app/by_product_files -d -e TZ=Asia/Seoul --rm -p8080:8080 --name server_dev raillylinker/server_dev:latest
 
         위 명령어로 이미지 컨테이너를 실행시키면 됩니다.
 
@@ -183,8 +183,8 @@
     8. 배포 서버 실행
         cd 명령어로 /home/ubuntu/prod 위치로 이동하고,
 
-        >> mkdir service_logs
-        위 명령어로 서버 프로그램 로그파일을 저장할 위치를 만들어주고,
+        >> mkdir by_product_files
+        위 명령어로 로그파일처럼 서버 프로그램에서 생성되는 파일들을 저장할 위치를 만들어주고,
 
         >> sudo docker container stop server_prod
         >> sudo docker container rm server_prod
@@ -193,7 +193,7 @@
         위 명령어로 기존에 진행중일 수도 있는 도커 컨테이너 및 이미지를 제거하고,
 
         >> sudo docker load -i server_prod.tar
-        >> sudo docker container run -v /home/ubuntu/prod/service_logs:/app/by_product_files/logs -d -e TZ=Asia/Seoul --rm -p80:80 --name server_prod raillylinker/server_prod:latest
+        >> sudo docker container run -v /home/ubuntu/prod/by_product_files:/app/by_product_files -d -e TZ=Asia/Seoul --rm -p80:80 --name server_prod raillylinker/server_prod:latest
 
         위 명령어로 이미지 컨테이너를 실행시키면 됩니다.
 
