@@ -164,3 +164,25 @@
         위 명령어로 이미지 컨테이너를 실행시키면 됩니다.
 
         이제 해당 서버의 8081 서버로 접속하여 SpringAdmin 이 잘 동작하는지를 확인만 하면 완성입니다.
+
+- 추후 정보 전달을 위한 문서화를 합시다.
+    가이드 3번 글에서 만든 ServerInfo 폴더 안에,
+    AWS EC2 petlogon-developer-tools.txt 파일을 만들고,
+    이 안에,
+
+
+    [petlogon-developer-tools]
+    - 이 EC2 서버는 개발자 툴을 위한 서버입니다.
+
+    키페어 파일 : developer.pem
+    OS : Ubuntu Server 24.04 LTS (HVM) - (t2.small)
+    접속 ip :
+    OpenSSH 접속 명령어 : ssh -i "developer.pem" ubuntu@
+
+    (Spring Admin)
+    포트 : 8081
+    Admin id :
+    Admin pw :
+
+
+    위와 같은 형식으로 문서를 작성하면 됩니다.
