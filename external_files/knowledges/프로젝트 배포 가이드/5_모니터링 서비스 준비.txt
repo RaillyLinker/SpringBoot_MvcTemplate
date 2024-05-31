@@ -167,7 +167,7 @@
 
 - 추후 정보 전달을 위한 문서화를 합시다.
     가이드 3번 글에서 만든 ServerInfo 폴더 안에,
-    AWS EC2 developer-tools.txt 파일을 만들고,
+    "AWS EC2 developer-tools.txt" 파일을 만들고,
     이 안에,
 
 
