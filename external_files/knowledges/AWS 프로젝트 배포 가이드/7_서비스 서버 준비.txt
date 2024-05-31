@@ -218,7 +218,7 @@
     OS : Ubuntu Server 24.04 LTS (HVM) - (t2.small)
     접속 ip :
     OpenSSH 접속 명령어 : ssh -i "petlogon-developer.pem" ubuntu@
-    Git Project : 
+    Git Project :
 
     (Service Dev)
     포트 : 8080
