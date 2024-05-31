@@ -28,8 +28,8 @@
 
 (5. 컨테이너 생성 및 실행)
 - 불러온 raillylinker/server_dev:latest 이미지를 실행하여 서버로서 정상 동작하는지 확인
-- -v 옵션의 ${PWD}\service_logs 부분은 도커 컨테이너 바깥의 로컬 저장소에, 로그 파일을 저장하길 원하는 위치를 지정하세요.
-> docker container run -v ${PWD}/service_logs:/app/by_product_files/logs -d -e TZ=Asia/Seoul --rm -p8080:8080 --name server_dev raillylinker/server_dev:latest
+- -v 옵션의 ${PWD}/by_product_files 부분은 도커 컨테이너 바깥의 로컬 저장소에, 로그 파일 및 그외 서비스 생성 파일들을 저장하길 원하는 위치를 지정하세요.
+> docker container run -v ${PWD}/by_product_files:/app/by_product_files -d -e TZ=Asia/Seoul --rm -p8080:8080 --name server_dev raillylinker/server_dev:latest
 
 (6. 컨테이너 명령창 띄우기)
 > docker container exec -it server_dev sh
