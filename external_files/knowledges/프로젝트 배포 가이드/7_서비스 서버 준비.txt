@@ -1,33 +1,19 @@
-[모니터링 서비스 준비]
-- 서버 상태 확인을 위해 모니터링 툴은 필수라 생각합시다.
-    여기서는 Spring Admin 을 사용할 것이고,
-    본 프로젝트는 Spring Admin Client 가 적용된 상태입니다.
+[서비스 서버 준비]
+- 실질적으로 오픈할 서비스 서버를 만들어보겠습니다.
+    방법론은 동일하므로, 앞으로 새로운 서비스를 만들 때는 이것을 참고하여 배포하면 됩니다.
 
-- 준비
-    1. https://github.com/RaillyLinker/SpringBoot_SpringAdmin
-        위 레포지토리에서 Spring Admin Server 프로젝트를 가져오세요.
-        이것을 기반으로 설명할 것입니다.
-
-    2. application.yml 에 어드민 설정을 합시다.
-        server.port : 포트 번호를 설정합니다. 여기서는 8081 포트로 설정했습니다.
-        spring.boot.admin.notify : Spring Admin 의 경고 메시지를 받을 이메일 주소를 입력합니다.
-        security : 본 서비스를 사용할 계정의 아이디와 비밀번호를 설정합니다.
-        mail : notify 에서 사용할 SMTP 정보를 입력합니다.
-
-    3. external_files/docker 위치의 "빌드 방법.txt" 파일에 적혀있는 설명대로 진행합니다.
-        결과물로, spring_admin.tar 파일이 생성되면,
-        이것을 도커로 실행만 시키면 되므로 Spring Admin 배포 준비는 끝입니다.
+- 본 설명글에서는 일단 수동 배포 방식을 알려드리는데,
+    서버 접속 테스트 이후에는 앞으로 CI/CD 를 사용하여 배포를 자동화 할 것입니다.
+    배포 자동화 설명은 다음 설명글에 젠킨스 설치를 방식과 함께 정리합니다.
 
 - AWS EC2 에 배포하기
-    1. AWS EC2 에, 앞서 준비된 jar 파일을 배포하려면,
-        AWS 콘솔에서 EC2 항목으로 이동한 후,
-        developer-tools
-        라는 인스턴스를 만들어줄 것입니다.
-        이 인스턴스에는 CI/CD 툴, 모니터링 툴 등의 개발자에게 필요한 서비스를 올려놓을 용도입니다.
+    1. AWS 콘솔에서 EC2 항목으로 이동한 후,
+        인스턴스를 하나 만들어줄 것입니다.(서비스 이름은 스스로 결정하세요.)
+        이 인스턴스 하나에 배포 서비스, 개발 서비스로, 서비스 2개를 올릴 것입니다.
 
         인스턴스 시작 버튼을 누르고,
-        이름은 developer-tools, 이미지는 ubuntu Ubuntu Server 24.04 LTS (HVM), SSD Volume Type,
-        인스턴스 유형은 t2.small(이정도는 되어야 젠킨스를 돌릴 수 있음), 키페어는 가이드 3번 글에서 만든 키페어를 선택하고,
+        이미지는 ubuntu Ubuntu Server 24.04 LTS (HVM), SSD Volume Type,
+        인스턴스 유형은 t2.small, 키페어는 가이드 3번 글에서 만든 키페어를 선택하고,
         보안그룹 생성, 스토리지 구성은 30GiB 범용 SSD gp3
 
         위와 같이 생성합니다.
@@ -46,17 +32,21 @@
         그 자체로 유지비용의 요금이 발생합니다.
 
     3. 접속 보안 설정
-        본 인스턴스는 말 그대로 개발자만 접속이 가능해야 하는 서버로,
-        SSH 포트인 22 번 포트와, 각 개발자 툴 서비스 포트를 개발자 위치에만 공개해 두어야 합니다.
+        SSH 포트인 22 번 포트는 개발자 위치에만 공개해 두어야 합니다.
 
         보안 그룹 - 인바운드 규칙 - 인바운드 규칙 편집
 
         으로 이동하고,
 
-        앞서 가이드 4번 글에서 했던대로, 허용할 포트와 ip 를 설정할 때,
-        SSH 의 22 번 포트와,
-        어드민 서버의 8081 포트를 현재 내 ip 에만 설정하고,
-        추후에 접속 위치가 바뀔 때마다 수정하도록 합시다.
+        앞서 가이드 5번 글에서 했던대로, 허용할 포트와 ip 를 설정할 때,
+        SSH 의 22 번 포트를 현재 내 ip 에만 설정하세요.
+
+        개발 서버의 8080, 배포 서버의 80 포트는 적절하게 개방하면 되는데,
+        개발 서버는 스웨거 문서를 오픈할 것이므로, 개발자들의 ip 에만 개방하고,
+        배포 서버는 전체 개방을 하면 됩니다.
+
+        앞서 가이드 설명글 6번 글에서 SpringAdmin 을 설정했다면,
+        해당 모니터링 서버에서도 상태 확인을 위해 접근이 필요하므로 IP 허용을 추가해줍시다.
 
     4. OpenSSH 접속 및 기본 설정
         커맨드창을 열고,
@@ -143,46 +133,99 @@
         도커 실행 상태 확인
         >> sudo systemctl status docker
 
-    5. 도커 이미지 파일 전달 및 실행
-        앞서 생성했던 spring_admin.tar 파일을 EC2 에 전달해줍니다.
+        이제 도커를 이용한 서비스 실행 환경이 준비된 것입니다.
+
+    5. 스프링 프로젝트 도커 이미지 파일 생성
+        원하는 스프링 부트 프로젝트는 본 프로젝트를 기반으로 만들어졌다고 가정하겠습니다.
+
+        가이드 설명글 2번을 참고하여 도커 이미지 .tar 파일을 생성합니다.
+        개발 이미지, 배포 이미지 두개 전부 준비해주세요.
+
+        tar 파일을 만들기 전에 주의할 점은,
+        Springboot application.yml 설정 안에,
+
+        spring.boot.admin 부분,
+        datasource 부분,
+        custonConfig.actuatorAllowIpList 부분,
+        custonConfig.loggingDenyIpList 부분
+
+        위 부분을 앞서 준비된 정보로 갱신하고 빌드를 해야합니다.
+
+        데이터베이스 설정에, 앞서 생성한 AWS RDS 주소를 사용한다면,
+        본 서버의 요청을 RDS 가 허용해야 하기에,
+        AWS 보안 설정으로 가서 데이터베이스의 인바운드 설정에 서버의 IP 를 허용하도록 설정하세요.
+
+    6. 도커 이미지 파일 전달
+        앞서 생성했던 .tar 파일 2개를 EC2 에 전달해줍니다.
 
         >> scp -i "{pem 키 파일}" "{전송할 파일}" {아이디@전송할 서버주소}:{저장될 서버의 디렉토리}
 
         위와 같은 형태의 명령어를 실행시키면 됩니다.
 
+        ubuntu 에는, /home/ubuntu/dev 디렉토리에 server_dev.tar 파일을,
+        /home/ubuntu/prod 디렉토리에 server_prod.tar 파일을 저장하도록 하였습니다.
+
         전달이 완료되어 EC2 인스턴스 SSH 에서 해당 파일을 확인했다면,
 
-        >> sudo docker container stop spring_admin
-        >> sudo docker container rm spring_admin
+    7. 개발 서버 실행
+        cd 명령어로 /home/ubuntu/dev 위치로 이동하고,
+
+        >> mkdir by_product_files
+        위 명령어로 로그파일처럼 서버 프로그램에서 생성되는 파일들을 저장할 위치를 만들어주고,
+
+        >> sudo docker container stop server_dev
+        >> sudo docker container rm server_dev
         >> sudo docker image prune -af
 
         위 명령어로 기존에 진행중일 수도 있는 도커 컨테이너 및 이미지를 제거하고,
 
-        >> sudo docker load -i spring_admin.tar
-        >> sudo docker container run -d -e TZ=Asia/Seoul --rm -p8081:8081 --name spring_admin raillylinker/spring_admin:latest
+        >> sudo docker load -i server_dev.tar
+        >> sudo docker container run -v /home/ubuntu/dev/by_product_files:/app/by_product_files -d -e TZ=Asia/Seoul --rm -p8080:8080 --name server_dev raillylinker/server_dev:latest
 
         위 명령어로 이미지 컨테이너를 실행시키면 됩니다.
 
-        이제 해당 서버의 8081 서버로 접속하여 SpringAdmin 이 잘 동작하는지를 확인만 하면 완성입니다.
+        이제 해당 서버의 8080 서버로 접속하여 Dev 서비스가 잘 동작하는지를 확인만 하면 완성입니다.
+
+    8. 배포 서버 실행
+        cd 명령어로 /home/ubuntu/prod 위치로 이동하고,
+
+        >> mkdir by_product_files
+        위 명령어로 로그파일처럼 서버 프로그램에서 생성되는 파일들을 저장할 위치를 만들어주고,
+
+        >> sudo docker container stop server_prod
+        >> sudo docker container rm server_prod
+        >> sudo docker image prune -af
+
+        위 명령어로 기존에 진행중일 수도 있는 도커 컨테이너 및 이미지를 제거하고,
+
+        >> sudo docker load -i server_prod.tar
+        >> sudo docker container run -v /home/ubuntu/prod/by_product_files:/app/by_product_files -d -e TZ=Asia/Seoul --rm -p80:80 --name server_prod raillylinker/server_prod:latest
+
+        위 명령어로 이미지 컨테이너를 실행시키면 됩니다.
+
+        이제 해당 서버의 80 서버로 접속하여 Prod 서비스가 잘 동작하는지를 확인만 하면 완성입니다.
 
 - 추후 정보 전달을 위한 문서화를 합시다.
     가이드 3번 글에서 만든 ServerInfo 폴더 안에,
-    "AWS EC2 developer-tools.txt" 파일을 만들고,
+    "AWS EC2 server.txt" 파일을 만들고,
     이 안에,
 
 
-    [developer-tools]
-    - 이 EC2 서버는 개발자 툴을 위한 서버입니다.
+    [server]
+    - 이 EC2 서버는 server 서비스를 위한 서버입니다.
 
     키페어 파일 : developer.pem
     OS : Ubuntu Server 24.04 LTS (HVM) - (t2.small)
     접속 ip :
-    OpenSSH 접속 명령어 : ssh -i "developer.pem" ubuntu@
+    OpenSSH 접속 명령어 : ssh -i "petlogon-developer.pem" ubuntu@
 
-    (Spring Admin)
-    포트 : 8081
-    Admin id :
-    Admin pw :
+    (Service Dev)
+    포트 : 8080
+    로그 파일 위치 : /home/ubuntu/dev/by_product_files/logs
+
+    (Service Prod)
+    포트 : 80
+    로그 파일 위치 : /home/ubuntu/prod/by_product_files/logs
 
 
     위와 같은 형식으로 문서를 작성하면 됩니다.
