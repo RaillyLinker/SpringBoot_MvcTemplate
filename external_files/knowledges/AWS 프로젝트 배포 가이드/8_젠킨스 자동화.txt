@@ -1,0 +1,26 @@
+[젠킨스 자동화]
+- 앞서 서비스 서버 배포까지 완료하였습니다.
+    그런데, 수정사항이 있을 때마다 처리하기에는 번거로운 프로세스입니다.
+    이번에는 젠킨스를 사용하여, Git 에 Push 를 올릴 때마다 자동으로 빌드 및 배포가 이루어지도록 할 것입니다.
+
+- AWS EC2 에 배포하기
+    1. 앞서 가이드 6번 글에서 모니터링 서비스를 준비하며 developer-tools 서버를 만들었으니,
+        해당 서버에서 포트 번호만 8082 로 다르게 실행시키겠습니다.
+
+    2. SSH 로 서버에 접속후,
+        >> sudo docker run -itd --name jenkins_container -p 8082:8080 -v ~/Desktop/jenkins_home:/var/jenkins_home -u root jenkins/jenkins:lts
+        이것을 입력하기만 하면 설치 끝입니다.
+
+        서버 보안 관리의 인바운드 설정에서 8082 포트에 접속 가능하게 열어주고,
+        해당 포트로 접속하여 젠킨스가 실행되는지 확인하세요.
+
+    3. 접속이 잘 되는 것을 확인하였다면,
+        젠킨스 화면에
+        please copy the password from either location and paste it below
+        라고, 비밀번호를 입력하라고 하는데,
+        이 비밀번호는,
+        앞서 -v 옵션으로 만들어진 ~/Desktop 폴더 안에 있는데,
+        >> sudo cat ~/Desktop/jenkins_home/secrets/initialAdminPassword
+        위 명령어로 조회를 하면 비밀번호가 나오니 이것을 입력하면 됩니다.
+
+        다음으로 나오는 화면에서 Install suggested plugins 를 눌러 기본 플러그인을 설치하면 초기 세팅이 끝납니다.
