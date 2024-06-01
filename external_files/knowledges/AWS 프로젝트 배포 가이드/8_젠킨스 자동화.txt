@@ -23,4 +23,32 @@
         >> sudo cat ~/Desktop/jenkins_home/secrets/initialAdminPassword
         위 명령어로 조회를 하면 비밀번호가 나오니 이것을 입력하면 됩니다.
 
-        다음으로 나오는 화면에서 Install suggested plugins 를 눌러 기본 플러그인을 설치하면 초기 세팅이 끝납니다.
+        다음으로 나오는 화면에서 Install suggested plugins 를 눌러 기본 플러그인을 설치하고,
+        접속시 사용할 아이디와 비밀번호를 입력하면 초기 세팅이 끝납니다.
+
+    4. 여기까지 하여, 정보를 문서화하겠습니다.
+        동일한 서버를 사용하므로, 가이드 6번글에서 작성했던,
+        "AWS EC2 developer-tools.txt" 파일을 열고,
+
+
+        [developer-tools]
+        - 이 EC2 서버는 개발자 툴을 위한 서버입니다.
+
+        키페어 파일 : developer.pem
+        OS : Ubuntu Server 24.04 LTS (HVM) - (t2.small)
+        접속 ip :
+        OpenSSH 접속 명령어 : ssh -i "developer.pem" ubuntu@
+
+        (Spring Admin)
+        포트 : 8081
+        Admin id :
+        Admin pw :
+
+        (Jenkins)
+        포트 : 8082
+        admin pw :
+        user id :
+        user pw :
+
+
+        위와 같은 형식으로 Jenkins 정보를 추가하면 됩니다.
