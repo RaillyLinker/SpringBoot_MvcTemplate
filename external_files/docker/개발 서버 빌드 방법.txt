@@ -6,7 +6,7 @@
 
 - Gradle 빌드를 수행합니다.
 > chmod +x ./gradlew
-> ./gradlew build -x test
+> ./gradlew build
 
 - 여기까지 실행되면 build/libs 디렉토리 안에, springboot_mvc_template-0.0.1-SNAPSHOT.jar 파일이 생성됩니다.
 
