@@ -155,22 +155,9 @@
         본 서버의 요청을 RDS 가 허용해야 하기에,
         AWS 보안 설정으로 가서 데이터베이스의 인바운드 설정에 서버의 IP 를 허용하도록 설정하세요.
 
-        주의할 점으로, 동일 VPN 내의 데이터베이스인 경우에는,
+        동일 VPN 내의 데이터베이스인 경우에는,
         외부에서 접근하기 위한 퍼블릭 IP 를 허용하는 것이 아니라,
-        내부의 프라이빗 IP 를 허용해야 합니다.
-
-        퍼블릭 IP 는 앞서 설정한 탄력적 IP 주소이고,
-        프라이빗 IP 는,
-
-        >> ifconfig | grep 'inet ' | grep -v '127.0.0.1'
-
-        위와 같이 입력했을 때,
-
-        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
-        inet 172.22.22.22  netmask 255.255.240.0  broadcast 172.33.33.33
-
-        이렇게 나왔다고 하면,
-        172.22.22.22 이것을 허용해야 합니다.
+        내부의 프라이빗 IP 를 허용해야 하는 것을 주의합시다.
 
     6. 도커 이미지 파일 전달
         앞서 생성했던 .tar 파일 2개를 EC2 에 전달해줍니다.
@@ -234,18 +221,19 @@
     키페어 파일 : developer.pem
     OS : Ubuntu Server 24.04 LTS (HVM) - (t2.small)
     접속 ip :
+    Vpc :
+    프라이빗 IP :
     OpenSSH 접속 명령어 : ssh -i "petlogon-developer.pem" ubuntu@
     Git Project :
+    도메인 주소 :
 
     (Service Dev)
     포트 : 8080
     로그 파일 위치 : /home/ubuntu/dev/by_product_files/logs
-    도메인 주소 :
 
     (Service Prod)
     포트 : 80
     로그 파일 위치 : /home/ubuntu/prod/by_product_files/logs
-    도메인 주소 :
 
 
     위와 같은 형식으로 문서를 작성하면 됩니다.

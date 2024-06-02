@@ -177,6 +177,8 @@
     키페어 파일 : developer.pem
     OS : Ubuntu Server 24.04 LTS (HVM) - (t2.small)
     접속 ip :
+    Vpc :
+    프라이빗 IP :
     OpenSSH 접속 명령어 : ssh -i "developer.pem" ubuntu@
 
     (Spring Admin)
@@ -186,3 +188,19 @@
 
 
     위와 같은 형식으로 문서를 작성하면 됩니다.
+
+    위에서 프라이빗 IP는, EC2 정보를 보거나,
+    SSH 접속해서
+    >> ifconfig | grep 'inet ' | grep -v '127.0.0.1'
+
+    위와 같이 입력했을 때,
+
+    inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+    inet 172.22.22.22  netmask 255.255.240.0  broadcast 172.33.33.33
+
+    이렇게 나왔다고 하면,
+    172.22.22.22 이렇게 나오는 주소로,
+
+    동일 VPC 내에서 사용하는 IP 입니다.
+
+    보안 설정에서 인바운드 설정시에, 동일 VPC 를 사용하는 경우에는 외부 IP 가 아니라 프라이빗 IP 를 설정해야 하는 것을 주의하세요.
