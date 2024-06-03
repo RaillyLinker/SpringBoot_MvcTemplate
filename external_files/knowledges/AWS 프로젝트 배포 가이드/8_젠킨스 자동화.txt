@@ -374,9 +374,9 @@
 
         Exec Command 에,
 
+        sudo docker container stop server_dev
         sudo docker image prune -af
         sudo docker load -i /home/ubuntu/dev/server_dev.tar
-        sudo docker container stop server_dev
         sudo docker container run -v /home/ubuntu/dev/by_product_files:/app/by_product_files -d -e TZ=Asia/Seoul --rm -p8080:8080 --name server_dev raillylinker/server_dev:latest
 
         이렇게 입력하고
@@ -501,9 +501,9 @@
 
         Exec Command 에,
 
+        sudo docker container stop server_prod
         sudo docker image prune -af
         sudo docker load -i /home/ubuntu/prod/server_prod.tar
-        sudo docker container stop server_prod
         sudo docker container run -v /home/ubuntu/prod/by_product_files:/app/by_product_files -d -e TZ=Asia/Seoul --rm -p80:80 --name server_prod raillylinker/server_prod:latest
 
         이렇게 입력하고
