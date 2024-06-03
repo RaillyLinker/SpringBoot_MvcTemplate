@@ -12,17 +12,6 @@ spring:
       maxFileSize: 50MB
       maxRequestSize: 50MB
 
-  boot:
-    admin:
-      client:
-        # !!!Spring Admin 정보 설정!!!
-        url: http://127.0.0.1:8081 # spring admin server url
-        username: InputYourAdminId # spring admin server Security Id
-        password: InputYourAdminPw # spring admin server Security Pw
-        instance:
-          name: Springboot MVC Template (Dev) # spring admin UI 에서 보여질 이름 설정
-          service-url: http://127.0.0.1:8080 # 현 프로젝트가 실행될 위치의 URL
-
   jpa:
     # JPA 데이터베이스 플랫폼 지정
     database-platform: org.hibernate.dialect.MySQL8Dialect
@@ -88,7 +77,7 @@ springdoc:
     enabled: true # Swagger 문서 공개 여부
 
 customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
-  # Actuator 정보 접근 허용 IP 리스트 (Spring Admin IP를 추가하세요)
+  # Actuator 정보 접근 허용 IP 리스트
   actuatorAllowIpList: 127.0.0.1, 127.0.0.3
-  # Logging Filter 의 로깅 대상에서 제외할 IP 리스트 (Spring Admin IP를 추가하세요)
+  # Logging Filter 의 로깅 대상에서 제외할 IP 리스트
   loggingDenyIpList: 127.0.0.2

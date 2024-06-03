@@ -28,7 +28,7 @@ springdoc: # swaggerdoc 설정
   cache:
     disabled: true
 
-# spring admin 용 actuator 설정
+# actuator 설정
 management:
   endpoints:
     web:

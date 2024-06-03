@@ -96,9 +96,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security:3.2.5")
     testImplementation("org.springframework.security:spring-security-test:6.2.4")
 
-    // (Spring Admin Client)
-    // : Spring Actuator 포함
-    implementation("de.codecentric:spring-boot-admin-starter-client:3.2.3")
+    // (Spring Actuator)
+    // : 서버 모니터링 정보
+    implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.0")
 
     // (MongoDB)
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.5")

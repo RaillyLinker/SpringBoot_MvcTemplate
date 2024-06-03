@@ -42,8 +42,6 @@ class C6Service1TkV1TestService(
     private val naverSmsUtilDi: NaverSmsUtilDi,
     @Qualifier("kafkaProducer0") private val kafkaProducer0: KafkaTemplate<String, Any>,
 
-    @Value("\${spring.boot.admin.client.instance.service-url}") private var serviceUrl: String,
-
     private var serverProperties: ServerProperties,
     private val resourceLoader: ResourceLoader
 ) {
