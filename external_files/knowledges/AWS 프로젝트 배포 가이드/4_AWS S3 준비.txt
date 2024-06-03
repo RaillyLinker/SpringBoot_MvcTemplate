@@ -56,3 +56,25 @@
         이것을 복사해서 정책에 붙여넣고 저장하면 됩니다.
 
         CORS 설정도 필요하다면 편집하면 됩니다.
+
+- 추후 정보 전달을 위한 문서화를 합시다.
+    가이드 3번 글에서 만든 ServerInfo 폴더 안에,
+    S3 정보.txt 파일을 만들고,
+    이 안에,
+
+
+    [Aws S3]
+
+    (service-dev)
+    - 개발 서비스 파일 저장용 버킷
+    - 기본 URL : https://service-dev.s3.ap-west-12.amazonaws.com/
+
+    - /test/pdf : 테스트 pdf 파일을 저장 (파일명 규칙은 {yyyy_MM_dd_HH_mm_ss}.pdf)
+
+    (service-prod)
+    - 배포 서비스 파일 저장용 버킷
+    - 기본 URL : https://service-prod.s3.ap-west-12.amazonaws.com/
+
+
+    위와 같이 작성합니다.
+    () 는 버킷별로 나누고, 그 안에 각 버킷별 하위 디렉토리 종류와 설명을 추가해나가면 됩니다.

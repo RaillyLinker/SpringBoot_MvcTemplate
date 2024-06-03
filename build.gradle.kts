@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
-    kotlin("jvm") version "1.9.23"
-    kotlin("plugin.spring") version "1.9.23"
+    id("org.springframework.boot") version "3.3.0"
+    id("io.spring.dependency-management") version "1.1.5"
+    kotlin("jvm") version "1.9.24"
+    kotlin("plugin.spring") version "1.9.24"
 
     // 추가
-    kotlin("plugin.allopen") version "1.9.23" // allOpen 에 지정한 어노테이션으로 만든 클래스에 open 키워드를 적용
-    kotlin("plugin.noarg") version "1.9.23" // noArg 에 지정한 어노테이션으로 만든 클래스에 자동으로 no-arg 생성자를 생성
+    kotlin("plugin.allopen") version "1.9.24" // allOpen 에 지정한 어노테이션으로 만든 클래스에 open 키워드를 적용
+    kotlin("plugin.noarg") version "1.9.24" // noArg 에 지정한 어노테이션으로 만든 클래스에 자동으로 no-arg 생성자를 생성
 }
 
 group = "com.raillylinker"
@@ -24,17 +24,17 @@ repositories {
 
 dependencies {
     // (기본)
-    implementation("org.springframework.boot:spring-boot-starter:3.2.5")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.23")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:3.2.5")
+    implementation("org.springframework.boot:spring-boot-starter:3.3.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.0.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:3.3.0")
 
     // (Spring Starter Web)
     // : 스프링 부트 웹 개발
-    implementation("org.springframework.boot:spring-boot-starter-web:3.2.5")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.3.0")
 
     // (ThymeLeaf)
     // : 웹 뷰 라이브러리
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.2.5")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.3.0")
 
     // (Swagger)
     // : API 자동 문서화
@@ -42,7 +42,7 @@ dependencies {
 
     // (GSON)
     // : Json - Object 라이브러리
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.11.0")
 
     // (OkHttp3)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
@@ -55,11 +55,11 @@ dependencies {
 
     // (WebSocket)
     // : 웹소켓
-    implementation("org.springframework.boot:spring-boot-starter-websocket:3.2.5")
+    implementation("org.springframework.boot:spring-boot-starter-websocket:3.3.0")
 
     // (Spring email)
     // : 스프링 이메일 발송
-    implementation("org.springframework.boot:spring-boot-starter-mail:3.2.5")
+    implementation("org.springframework.boot:spring-boot-starter-mail:3.3.0")
 
     // (Excel File Read Write)
     // : 액셀 파일 입출력 라이브러리
@@ -69,21 +69,21 @@ dependencies {
 
     // (HTML 2 PDF)
     // : HTML -> PDF 변환 라이브러리
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:9.7.2")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:9.8.0")
 
     // (Kafka)
-    implementation("org.springframework.kafka:spring-kafka:3.1.4")
+    implementation("org.springframework.kafka:spring-kafka:3.2.0")
 
     // (JPA)
     // : DB ORM
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.5")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.17.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.3.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.17.1")
     implementation("org.hibernate:hibernate-validator:8.0.1.Final")
-    implementation("com.mysql:mysql-connector-j:8.3.0") // MySQL
+    implementation("com.mysql:mysql-connector-j:8.4.0") // MySQL
 
     // (Redis)
     // : 메모리 키 값 데이터 구조 스토어
-    implementation("org.springframework.boot:spring-boot-starter-data-redis:3.2.5")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:3.3.0")
 
     // (JWT)
     // : JWT 인증 토큰 라이브러리
@@ -93,15 +93,15 @@ dependencies {
 
     // (Spring Security)
     // : 스프링 부트 보안
-    implementation("org.springframework.boot:spring-boot-starter-security:3.2.5")
-    testImplementation("org.springframework.security:spring-security-test:6.2.4")
+    implementation("org.springframework.boot:spring-boot-starter-security:3.3.0")
+    testImplementation("org.springframework.security:spring-security-test:6.3.0")
 
     // (Spring Actuator)
     // : 서버 모니터링 정보
     implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.0")
 
     // (MongoDB)
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.5")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.3.0")
 
     // (ORM 관련 라이브러리)
     // WebSocket STOMP Controller 에서 입력값 매핑시 사용됨
