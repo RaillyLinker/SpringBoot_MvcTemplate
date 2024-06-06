@@ -1,0 +1,40 @@
+- 도커 실행
+>> docker-compose -f mongodb-compose.yml up
+
+- mongodb1 컨테이너에 터미널 접속
+
+- 레플리카 설정
+>> mongosh
+>> rs.initiate({
+     _id: "rs0",
+     members: [
+       { _id: 0, host: "mongodb1:27017" },
+       { _id: 1, host: "mongodb2:27018" },
+       { _id: 2, host: "mongodb3:27019" }
+     ]
+   })
+
+// 출력데이터
+{ ok: 1 }
+
+- 레플리카 상태 확인
+>> rs.status()
+
+// 출력 데이터
+{
+  set: 'rs0',
+  ...
+}
+
+- 호스트 설정
+>> apt-get update
+>> apt-get install vim
+>> vi /etc/hosts
+
+아래쪽에
+
+127.0.0.1       mongodb1
+127.0.0.1       mongodb2
+127.0.0.1       mongodb3
+
+이것을 추가하고 저장해줍니다.

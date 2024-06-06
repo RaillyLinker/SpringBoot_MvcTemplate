@@ -63,7 +63,7 @@ datasource-redis: # Redis 추가 (하위 요소를 추가하고 RedisConfig 에 
 # MongoDB DataSource 설정
 datasource-mongodb: # MongoDB 추가 (하위 요소를 추가하고 MongoDbConfig 에 객체 추가)
   mongoDb1:
-    uri: mongodb://127.0.0.1:27017/testDatabase
+    uri: mongodb://127.0.0.1:27017/db
 
 logging:
   file:

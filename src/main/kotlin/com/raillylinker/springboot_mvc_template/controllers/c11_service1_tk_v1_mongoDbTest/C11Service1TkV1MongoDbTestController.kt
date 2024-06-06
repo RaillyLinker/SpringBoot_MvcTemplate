@@ -12,6 +12,14 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
+/*
+    !!!
+    테스트를 하고 싶다면, 도커를 설치하고,
+    cmd 를 열어,
+    프로젝트 폴더 내의 external_files/samples/docker_sample/mongodb-replicaset-docker 로 이동 후,
+    명령어.txt 에 적힌 명령어를 입력하여 Mongodb 를 실행시킬 수 있습니다.
+    !!!
+ */
 @Tag(name = "/service1/tk/v1/mongodb-test APIs", description = "C11 : MongoDB 에 대한 테스트 API 컨트롤러")
 @Controller
 @RequestMapping("/service1/tk/v1/mongodb-test")
