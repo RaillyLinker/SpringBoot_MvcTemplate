@@ -1,6 +1,4 @@
 [TODO]
-- 로깅 필터에 multipart 의 raw 데이터가 아닌 데이터들을 표시하기 및 더 알아보기 쉽게 개선
-
 - ks pay 관련 함수 및 예시 추가
 
 - Swagger API UI 커스터마이징
