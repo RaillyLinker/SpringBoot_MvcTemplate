@@ -5,3 +5,5 @@
 https://junuuu.tistory.com/968
 
 - HTTPS 설정 및 도메인 설정 / 서브 도메인 설정 방법을 배포 가이드에 추가
+
+- SC 예시 추가
