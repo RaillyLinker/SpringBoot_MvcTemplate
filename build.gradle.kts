@@ -99,6 +99,7 @@ dependencies {
     // (Spring Actuator)
     // : 서버 모니터링 정보
     implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.0")
+    runtimeOnly ("io.micrometer:micrometer-registry-prometheus:1.13.0")
 
     // (MongoDB)
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.3.0")
