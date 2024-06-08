@@ -466,16 +466,16 @@
 
         chmod +x ./gradlew
         ./gradlew build
-        docker image build --pull=true -f "./external_files/docker/Dockerfile-Server-Dev" -t raillylinker/server_dev:latest .
-        docker save -o "./external_files/docker/server_dev.tar" raillylinker/server_dev:latest
+        docker image build --pull=true -f "./external_files/docker/server_docker/Dockerfile-Server-Dev" -t raillylinker/server_dev:latest .
+        docker save -o "./external_files/docker/server_docker/server_dev.tar" raillylinker/server_dev:latest
         docker image prune -af
-        scp -o "StrictHostKeyChecking=no" -i /var/jenkins_home/ssh_keys/petlogon-developer.pem ./external_files/docker/server_dev.tar ubuntu@{서버주소}:/home/ubuntu/dev
+        scp -o "StrictHostKeyChecking=no" -i /var/jenkins_home/ssh_keys/petlogon-developer.pem ./external_files/docker/server_docker/server_dev.tar ubuntu@{서버주소}:/home/ubuntu/dev
 
         위와 같이 입력해주세요.
 
         설명하자면,
         첫번째, 두번째 줄은, Springboot 프로젝트를 빌드해서 jar 파일을 만드는 것이고,
-        세번째 줄은, external_files/docker 안의 도커 파일로 도커 이미지 빌드를 하는 것이며,
+        세번째 줄은, external_files/docker/server_docker 안의 도커 파일로 도커 이미지 빌드를 하는 것이며,
         네번째 줄은, 이미지를 파일로 저장하는 것이고,
         다섯번째 줄은, 도커 이미지를 제거하는 것이고,
         마지막 줄은, 만들어진 도커 이미지를, 배포올릴 서비스 서버에 전달하는 것입니다.
@@ -592,17 +592,17 @@
 
         chmod +x ./gradlew
         ./gradlew build
-        docker image build --pull=true -f "./external_files/docker/Dockerfile-Server-Prod" -t raillylinker/server_prod:latest .
-        docker save -o "./external_files/docker/server_prod.tar" raillylinker/server_prod:latest
+        docker image build --pull=true -f "./external_files/docker/server_docker/Dockerfile-Server-Prod" -t raillylinker/server_prod:latest .
+        docker save -o "./external_files/docker/server_docker/server_prod.tar" raillylinker/server_prod:latest
         docker image prune -af
-        scp -o "StrictHostKeyChecking=no" -i /var/jenkins_home/ssh_keys/petlogon-developer.pem ./external_files/docker/server_prod.tar ubuntu@172.31.12.235:/home/ubuntu/prod
+        scp -o "StrictHostKeyChecking=no" -i /var/jenkins_home/ssh_keys/petlogon-developer.pem ./external_files/docker/server_docker/server_prod.tar ubuntu@172.31.12.235:/home/ubuntu/prod
 
 
         위와 같이 입력해주세요.
 
         설명하자면,
         첫번째, 두번째 줄은, Springboot 프로젝트를 빌드해서 jar 파일을 만드는 것이고,
-        세번째 줄은, external_files/docker 안의 도커 파일로 도커 이미지 빌드를 하는 것이며,
+        세번째 줄은, external_files/docker/server_docker 안의 도커 파일로 도커 이미지 빌드를 하는 것이며,
         네번째 줄은, 이미지를 파일로 저장하는 것이고,
         다섯번째 줄은, 도커 이미지를 제거하는 것이고,
         마지막 줄은, 만들어진 도커 이미지를, 배포올릴 서비스 서버에 전달하는 것입니다.

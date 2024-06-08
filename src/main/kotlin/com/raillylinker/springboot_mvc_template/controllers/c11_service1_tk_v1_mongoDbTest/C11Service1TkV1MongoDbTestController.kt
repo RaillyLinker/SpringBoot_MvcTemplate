@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
     !!!
     테스트를 하고 싶다면, 도커를 설치하고,
     cmd 를 열어,
-    프로젝트 폴더 내의 external_files/samples/docker_sample/mongodb-replicaset-docker 로 이동 후,
+    프로젝트 폴더 내의 external_files/docker/mongodb_docker 로 이동 후,
     명령어.txt 에 적힌 명령어를 입력하여 Mongodb 를 실행시킬 수 있습니다.
     !!!
  */
