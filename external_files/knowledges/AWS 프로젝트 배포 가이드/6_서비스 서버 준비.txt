@@ -227,10 +227,12 @@
     (Service Dev)
     포트 : 8080
     로그 파일 위치 : /home/ubuntu/dev/by_product_files/logs
+        http://127.0.0.1:8080/actuator/logfile
 
     (Service Prod)
     포트 : 80
     로그 파일 위치 : /home/ubuntu/prod/by_product_files/logs
+        http://127.0.0.1:80/actuator/logfile
 
 
     위와 같은 형식으로 문서를 작성하면 됩니다.
