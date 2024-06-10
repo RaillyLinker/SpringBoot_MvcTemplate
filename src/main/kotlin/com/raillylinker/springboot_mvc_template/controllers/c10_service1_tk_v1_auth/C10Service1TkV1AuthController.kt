@@ -551,7 +551,7 @@ class C10Service1TkV1AuthController(
         httpServletResponse: HttpServletResponse,
         @RequestBody
         inputVo: Api7InputVo
-    ): Api7OutputVo? {
+    ): Api5OutputVo? {
         return service.api7(httpServletResponse, inputVo)
     }
 
@@ -572,132 +572,6 @@ class C10Service1TkV1AuthController(
         @JsonProperty("oauth2AccessToken")
         val oauth2AccessToken: String
     )
-
-    data class Api7OutputVo(
-        @Schema(description = "멤버 고유값", required = true, example = "1")
-        @JsonProperty("memberUid")
-        val memberUid: Long,
-
-        @Schema(description = "닉네임", required = true, example = "홍길동")
-        @JsonProperty("nickName")
-        val nickName: String,
-
-        @Schema(
-            description = "권한 리스트 (관리자 : ROLE_ADMIN, 개발자 : ROLE_DEVELOPER)",
-            required = true,
-            example = "[\"ROLE_ADMIN\", \"ROLE_DEVELOPER\"]"
-        )
-        @JsonProperty("roleList")
-        val roleList: List<String>,
-
-        @Schema(description = "인증 토큰 타입", required = true, example = "Bearer")
-        @JsonProperty("tokenType")
-        val tokenType: String,
-
-        @Schema(description = "엑세스 토큰", required = true, example = "kljlkjkfsdlwejoe")
-        @JsonProperty("accessToken")
-        val accessToken: String,
-
-        @Schema(description = "리프레시 토큰", required = true, example = "cxfdsfpweiijewkrlerw")
-        @JsonProperty("refreshToken")
-        val refreshToken: String,
-
-        @Schema(
-            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
-            required = true,
-            example = "2024_05_02_T_15_14_49_552_KST"
-        )
-        @JsonProperty("accessTokenExpireWhen")
-        val accessTokenExpireWhen: String,
-
-        @Schema(
-            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
-            required = true,
-            example = "2024_05_02_T_15_14_49_552_KST"
-        )
-        @JsonProperty("refreshTokenExpireWhen")
-        val refreshTokenExpireWhen: String,
-
-        @Schema(description = "내가 등록한 OAuth2 정보 리스트", required = true)
-        @JsonProperty("myOAuth2List")
-        val myOAuth2List: List<OAuth2Info>,
-
-        @Schema(description = "내가 등록한 Profile 정보 리스트", required = true)
-        @JsonProperty("myProfileList")
-        val myProfileList: List<ProfileInfo>,
-
-        @Schema(description = "내가 등록한 이메일 정보 리스트", required = true)
-        @JsonProperty("myEmailList")
-        val myEmailList: List<EmailInfo>,
-
-        @Schema(description = "내가 등록한 전화번호 정보 리스트", required = true)
-        @JsonProperty("myPhoneNumberList")
-        val myPhoneNumberList: List<PhoneNumberInfo>,
-
-        @Schema(
-            description = "계정 로그인 비밀번호 설정 Null 여부 (OAuth2 만으로 회원가입한 경우는 비밀번호가 없으므로 true)",
-            required = true,
-            example = "true"
-        )
-        @JsonProperty("authPasswordIsNull")
-        val authPasswordIsNull: Boolean
-    ) {
-        @Schema(description = "OAuth2 정보")
-        data class OAuth2Info(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(
-                description = "OAuth2 (1 : Google, 2 : Naver, 3 : Kakao, 4 : Apple)",
-                required = true,
-                example = "1"
-            )
-            @JsonProperty("oauth2TypeCode")
-            val oauth2TypeCode: Int,
-            @Schema(description = "oAuth2 고유값 아이디", required = true, example = "asdf1234")
-            @JsonProperty("oauth2Id")
-            val oauth2Id: String
-        )
-
-        @Schema(description = "Profile 정보")
-        data class ProfileInfo(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(description = "프로필 이미지 Full URL", required = true, example = "https://profile-image.com/1.jpg")
-            @JsonProperty("imageFullUrl")
-            val imageFullUrl: String,
-            @Schema(description = "대표 프로필 여부", required = true, example = "true")
-            @JsonProperty("isFront")
-            val isFront: Boolean
-        )
-
-        @Schema(description = "이메일 정보")
-        data class EmailInfo(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(description = "이메일 주소", required = true, example = "test@gmail.com")
-            @JsonProperty("emailAddress")
-            val emailAddress: String,
-            @Schema(description = "대표 이메일 여부", required = true, example = "true")
-            @JsonProperty("isFront")
-            val isFront: Boolean
-        )
-
-        @Schema(description = "전화번호 정보")
-        data class PhoneNumberInfo(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(description = "전화번호", required = true, example = "82)010-6222-6461")
-            @JsonProperty("phoneNumber")
-            val phoneNumber: String,
-            @Schema(description = "대표 전화번호 여부", required = true, example = "true")
-            @JsonProperty("isFront")
-            val isFront: Boolean
-        )
-    }
 
     ////
     @Operation(
@@ -738,7 +612,7 @@ class C10Service1TkV1AuthController(
         httpServletResponse: HttpServletResponse,
         @RequestBody
         inputVo: Api7Dot1InputVo
-    ): Api7Dot1OutputVo? {
+    ): Api5OutputVo? {
         return service.api7Dot1(httpServletResponse, inputVo)
     }
 
@@ -759,132 +633,6 @@ class C10Service1TkV1AuthController(
         @JsonProperty("oauth2IdToken")
         val oauth2IdToken: String
     )
-
-    data class Api7Dot1OutputVo(
-        @Schema(description = "멤버 고유값", required = true, example = "1")
-        @JsonProperty("memberUid")
-        val memberUid: Long,
-
-        @Schema(description = "닉네임", required = true, example = "홍길동")
-        @JsonProperty("nickName")
-        val nickName: String,
-
-        @Schema(
-            description = "권한 리스트 (관리자 : ROLE_ADMIN, 개발자 : ROLE_DEVELOPER)",
-            required = true,
-            example = "[\"ROLE_ADMIN\", \"ROLE_DEVELOPER\"]"
-        )
-        @JsonProperty("roleList")
-        val roleList: List<String>,
-
-        @Schema(description = "인증 토큰 타입", required = true, example = "Bearer")
-        @JsonProperty("tokenType")
-        val tokenType: String,
-
-        @Schema(description = "엑세스 토큰", required = true, example = "kljlkjkfsdlwejoe")
-        @JsonProperty("accessToken")
-        val accessToken: String,
-
-        @Schema(description = "리프레시 토큰", required = true, example = "cxfdsfpweiijewkrlerw")
-        @JsonProperty("refreshToken")
-        val refreshToken: String,
-
-        @Schema(
-            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
-            required = true,
-            example = "2024_05_02_T_15_14_49_552_KST"
-        )
-        @JsonProperty("accessTokenExpireWhen")
-        val accessTokenExpireWhen: String,
-
-        @Schema(
-            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
-            required = true,
-            example = "2024_05_02_T_15_14_49_552_KST"
-        )
-        @JsonProperty("refreshTokenExpireWhen")
-        val refreshTokenExpireWhen: String,
-
-        @Schema(description = "내가 등록한 OAuth2 정보 리스트", required = true)
-        @JsonProperty("myOAuth2List")
-        val myOAuth2List: List<OAuth2Info>,
-
-        @Schema(description = "내가 등록한 Profile 정보 리스트", required = true)
-        @JsonProperty("myProfileList")
-        val myProfileList: List<ProfileInfo>,
-
-        @Schema(description = "내가 등록한 이메일 정보 리스트", required = true)
-        @JsonProperty("myEmailList")
-        val myEmailList: List<EmailInfo>,
-
-        @Schema(description = "내가 등록한 전화번호 정보 리스트", required = true)
-        @JsonProperty("myPhoneNumberList")
-        val myPhoneNumberList: List<PhoneNumberInfo>,
-
-        @Schema(
-            description = "계정 로그인 비밀번호 설정 Null 여부 (OAuth2 만으로 회원가입한 경우는 비밀번호가 없으므로 true)",
-            required = true,
-            example = "true"
-        )
-        @JsonProperty("authPasswordIsNull")
-        val authPasswordIsNull: Boolean
-    ) {
-        @Schema(description = "OAuth2 정보")
-        data class OAuth2Info(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(
-                description = "OAuth2 (1 : Google, 2 : Naver, 3 : Kakao, 4 : Apple)",
-                required = true,
-                example = "1"
-            )
-            @JsonProperty("oauth2TypeCode")
-            val oauth2TypeCode: Int,
-            @Schema(description = "oAuth2 고유값 아이디", required = true, example = "asdf1234")
-            @JsonProperty("oauth2Id")
-            val oauth2Id: String
-        )
-
-        @Schema(description = "Profile 정보")
-        data class ProfileInfo(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(description = "프로필 이미지 Full URL", required = true, example = "https://profile-image.com/1.jpg")
-            @JsonProperty("imageFullUrl")
-            val imageFullUrl: String,
-            @Schema(description = "대표 프로필 여부", required = true, example = "true")
-            @JsonProperty("isFront")
-            val isFront: Boolean
-        )
-
-        @Schema(description = "이메일 정보")
-        data class EmailInfo(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(description = "이메일 주소", required = true, example = "test@gmail.com")
-            @JsonProperty("emailAddress")
-            val emailAddress: String,
-            @Schema(description = "대표 이메일 여부", required = true, example = "true")
-            @JsonProperty("isFront")
-            val isFront: Boolean
-        )
-
-        @Schema(description = "전화번호 정보")
-        data class PhoneNumberInfo(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(description = "전화번호", required = true, example = "82)010-6222-6461")
-            @JsonProperty("phoneNumber")
-            val phoneNumber: String,
-            @Schema(description = "대표 전화번호 여부", required = true, example = "true")
-            @JsonProperty("isFront")
-            val isFront: Boolean
-        )
-    }
 
 
     ////
@@ -971,7 +719,7 @@ class C10Service1TkV1AuthController(
         authorization: String?,
         @RequestBody
         inputVo: Api9InputVo
-    ): Api9OutputVo? {
+    ): Api5OutputVo? {
         return service.api9(authorization!!, inputVo, httpServletResponse)
     }
 
@@ -980,132 +728,6 @@ class C10Service1TkV1AuthController(
         @JsonProperty("refreshToken")
         val refreshToken: String
     )
-
-    data class Api9OutputVo(
-        @Schema(description = "멤버 고유값", required = true, example = "1")
-        @JsonProperty("memberUid")
-        val memberUid: Long,
-
-        @Schema(description = "닉네임", required = true, example = "홍길동")
-        @JsonProperty("nickName")
-        val nickName: String,
-
-        @Schema(
-            description = "권한 리스트 (관리자 : ROLE_ADMIN, 개발자 : ROLE_DEVELOPER)",
-            required = true,
-            example = "[\"ROLE_ADMIN\", \"ROLE_DEVELOPER\"]"
-        )
-        @JsonProperty("roleList")
-        val roleList: List<String>,
-
-        @Schema(description = "인증 토큰 타입", required = true, example = "Bearer")
-        @JsonProperty("tokenType")
-        val tokenType: String,
-
-        @Schema(description = "엑세스 토큰", required = true, example = "kljlkjkfsdlwejoe")
-        @JsonProperty("accessToken")
-        val accessToken: String,
-
-        @Schema(description = "리프레시 토큰", required = true, example = "cxfdsfpweiijewkrlerw")
-        @JsonProperty("refreshToken")
-        val refreshToken: String,
-
-        @Schema(
-            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
-            required = true,
-            example = "2024_05_02_T_15_14_49_552_KST"
-        )
-        @JsonProperty("accessTokenExpireWhen")
-        val accessTokenExpireWhen: String,
-
-        @Schema(
-            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
-            required = true,
-            example = "2024_05_02_T_15_14_49_552_KST"
-        )
-        @JsonProperty("refreshTokenExpireWhen")
-        val refreshTokenExpireWhen: String,
-
-        @Schema(description = "내가 등록한 OAuth2 정보 리스트", required = true)
-        @JsonProperty("myOAuth2List")
-        val myOAuth2List: List<OAuth2Info>,
-
-        @Schema(description = "내가 등록한 Profile 정보 리스트", required = true)
-        @JsonProperty("myProfileList")
-        val myProfileList: List<ProfileInfo>,
-
-        @Schema(description = "내가 등록한 이메일 정보 리스트", required = true)
-        @JsonProperty("myEmailList")
-        val myEmailList: List<EmailInfo>,
-
-        @Schema(description = "내가 등록한 전화번호 정보 리스트", required = true)
-        @JsonProperty("myPhoneNumberList")
-        val myPhoneNumberList: List<PhoneNumberInfo>,
-
-        @Schema(
-            description = "계정 로그인 비밀번호 설정 Null 여부 (OAuth2 만으로 회원가입한 경우는 비밀번호가 없으므로 true)",
-            required = true,
-            example = "true"
-        )
-        @JsonProperty("authPasswordIsNull")
-        val authPasswordIsNull: Boolean
-    ) {
-        @Schema(description = "OAuth2 정보")
-        data class OAuth2Info(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(
-                description = "OAuth2 (1 : Google, 2 : Naver, 3 : Kakao, 4 : Apple)",
-                required = true,
-                example = "1"
-            )
-            @JsonProperty("oauth2TypeCode")
-            val oauth2TypeCode: Int,
-            @Schema(description = "oAuth2 고유값 아이디", required = true, example = "asdf1234")
-            @JsonProperty("oauth2Id")
-            val oauth2Id: String
-        )
-
-        @Schema(description = "Profile 정보")
-        data class ProfileInfo(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(description = "프로필 이미지 Full URL", required = true, example = "https://profile-image.com/1.jpg")
-            @JsonProperty("imageFullUrl")
-            val imageFullUrl: String,
-            @Schema(description = "대표 프로필 여부", required = true, example = "true")
-            @JsonProperty("isFront")
-            val isFront: Boolean
-        )
-
-        @Schema(description = "이메일 정보")
-        data class EmailInfo(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(description = "이메일 주소", required = true, example = "test@gmail.com")
-            @JsonProperty("emailAddress")
-            val emailAddress: String,
-            @Schema(description = "대표 이메일 여부", required = true, example = "true")
-            @JsonProperty("isFront")
-            val isFront: Boolean
-        )
-
-        @Schema(description = "전화번호 정보")
-        data class PhoneNumberInfo(
-            @Schema(description = "행 고유값", required = true, example = "1")
-            @JsonProperty("uid")
-            val uid: Long,
-            @Schema(description = "전화번호", required = true, example = "82)010-6222-6461")
-            @JsonProperty("phoneNumber")
-            val phoneNumber: String,
-            @Schema(description = "대표 전화번호 여부", required = true, example = "true")
-            @JsonProperty("isFront")
-            val isFront: Boolean
-        )
-    }
 
 
     ////

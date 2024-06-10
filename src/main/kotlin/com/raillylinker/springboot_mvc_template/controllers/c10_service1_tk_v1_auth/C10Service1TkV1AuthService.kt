@@ -558,7 +558,7 @@ class C10Service1TkV1AuthService(
     fun api7(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api7InputVo
-    ): C10Service1TkV1AuthController.Api7OutputVo? {
+    ): C10Service1TkV1AuthController.Api5OutputVo? {
         val snsOauth2: Database1_Service1_MemberOauth2LoginData?
 
         // (정보 검증 로직 수행)
@@ -700,10 +700,10 @@ class C10Service1TkV1AuthService(
                 snsOauth2.memberData,
                 "/"
             )
-        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api7OutputVo.ProfileInfo> = arrayListOf()
+        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo> = arrayListOf()
         for (profile in profileData) {
             myProfileList.add(
-                C10Service1TkV1AuthController.Api7OutputVo.ProfileInfo(
+                C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
                     profile.uid == snsOauth2.memberData.frontMemberProfileData?.uid
@@ -716,10 +716,10 @@ class C10Service1TkV1AuthService(
                 snsOauth2.memberData,
                 "/"
             )
-        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api7OutputVo.EmailInfo> = arrayListOf()
+        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.EmailInfo> = arrayListOf()
         for (emailEntity in emailEntityList) {
             myEmailList.add(
-                C10Service1TkV1AuthController.Api7OutputVo.EmailInfo(
+                C10Service1TkV1AuthController.Api5OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
                     emailEntity.uid == snsOauth2.memberData.frontMemberEmailData?.uid
@@ -732,10 +732,10 @@ class C10Service1TkV1AuthService(
                 snsOauth2.memberData,
                 "/"
             )
-        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api7OutputVo.PhoneNumberInfo> = arrayListOf()
+        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo> = arrayListOf()
         for (phoneEntity in phoneEntityList) {
             myPhoneNumberList.add(
-                C10Service1TkV1AuthController.Api7OutputVo.PhoneNumberInfo(
+                C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
                     phoneEntity.uid == snsOauth2.memberData.frontMemberPhoneData?.uid
@@ -748,10 +748,10 @@ class C10Service1TkV1AuthService(
                 snsOauth2.memberData,
                 "/"
             )
-        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api7OutputVo.OAuth2Info>()
+        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
             myOAuth2List.add(
-                C10Service1TkV1AuthController.Api7OutputVo.OAuth2Info(
+                C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info(
                     oAuth2Entity.uid!!,
                     oAuth2Entity.oauth2TypeCode.toInt(),
                     oAuth2Entity.oauth2Id
@@ -761,7 +761,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api7OutputVo(
+        return C10Service1TkV1AuthController.Api5OutputVo(
             snsOauth2.memberData.uid!!,
             snsOauth2.memberData.nickName,
             roleList,
@@ -786,7 +786,7 @@ class C10Service1TkV1AuthService(
     fun api7Dot1(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api7Dot1InputVo
-    ): C10Service1TkV1AuthController.Api7Dot1OutputVo? {
+    ): C10Service1TkV1AuthController.Api5OutputVo? {
         val snsOauth2: Database1_Service1_MemberOauth2LoginData?
 
         // (정보 검증 로직 수행)
@@ -879,10 +879,10 @@ class C10Service1TkV1AuthService(
                 snsOauth2.memberData,
                 "/"
             )
-        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api7Dot1OutputVo.ProfileInfo> = arrayListOf()
+        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo> = arrayListOf()
         for (profile in profileData) {
             myProfileList.add(
-                C10Service1TkV1AuthController.Api7Dot1OutputVo.ProfileInfo(
+                C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
                     profile.uid == snsOauth2.memberData.frontMemberProfileData?.uid
@@ -895,10 +895,10 @@ class C10Service1TkV1AuthService(
                 snsOauth2.memberData,
                 "/"
             )
-        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api7Dot1OutputVo.EmailInfo> = arrayListOf()
+        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.EmailInfo> = arrayListOf()
         for (emailEntity in emailEntityList) {
             myEmailList.add(
-                C10Service1TkV1AuthController.Api7Dot1OutputVo.EmailInfo(
+                C10Service1TkV1AuthController.Api5OutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
                     emailEntity.uid == snsOauth2.memberData.frontMemberEmailData?.uid
@@ -911,10 +911,10 @@ class C10Service1TkV1AuthService(
                 snsOauth2.memberData,
                 "/"
             )
-        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api7Dot1OutputVo.PhoneNumberInfo> = arrayListOf()
+        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo> = arrayListOf()
         for (phoneEntity in phoneEntityList) {
             myPhoneNumberList.add(
-                C10Service1TkV1AuthController.Api7Dot1OutputVo.PhoneNumberInfo(
+                C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
                     phoneEntity.uid == snsOauth2.memberData.frontMemberPhoneData?.uid
@@ -927,10 +927,10 @@ class C10Service1TkV1AuthService(
                 snsOauth2.memberData,
                 "/"
             )
-        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api7Dot1OutputVo.OAuth2Info>()
+        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
             myOAuth2List.add(
-                C10Service1TkV1AuthController.Api7Dot1OutputVo.OAuth2Info(
+                C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info(
                     oAuth2Entity.uid!!,
                     oAuth2Entity.oauth2TypeCode.toInt(),
                     oAuth2Entity.oauth2Id
@@ -940,7 +940,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api7Dot1OutputVo(
+        return C10Service1TkV1AuthController.Api5OutputVo(
             snsOauth2.memberData.uid!!,
             snsOauth2.memberData.nickName,
             roleList,
@@ -993,7 +993,7 @@ class C10Service1TkV1AuthService(
         authorization: String,
         inputVo: C10Service1TkV1AuthController.Api9InputVo,
         httpServletResponse: HttpServletResponse
-    ): C10Service1TkV1AuthController.Api9OutputVo? {
+    ): C10Service1TkV1AuthController.Api5OutputVo? {
         // 저장된 현재 인증된 멤버의 리프레시 토큰 가져오기
         val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
         val accessTokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
@@ -1145,10 +1145,10 @@ class C10Service1TkV1AuthService(
                         tokenInfo.memberData,
                         "/"
                     )
-                val myProfileList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo> = arrayListOf()
+                val myProfileList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo> = arrayListOf()
                 for (profile in profileData) {
                     myProfileList.add(
-                        C10Service1TkV1AuthController.Api9OutputVo.ProfileInfo(
+                        C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo(
                             profile.uid!!,
                             profile.imageFullUrl,
                             profile.uid == tokenInfo.memberData.frontMemberProfileData?.uid
@@ -1161,10 +1161,10 @@ class C10Service1TkV1AuthService(
                         tokenInfo.memberData,
                         "/"
                     )
-                val myEmailList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.EmailInfo> = arrayListOf()
+                val myEmailList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.EmailInfo> = arrayListOf()
                 for (emailEntity in emailEntityList) {
                     myEmailList.add(
-                        C10Service1TkV1AuthController.Api9OutputVo.EmailInfo(
+                        C10Service1TkV1AuthController.Api5OutputVo.EmailInfo(
                             emailEntity.uid!!,
                             emailEntity.emailAddress,
                             emailEntity.uid == tokenInfo.memberData.frontMemberEmailData?.uid
@@ -1177,11 +1177,11 @@ class C10Service1TkV1AuthService(
                         tokenInfo.memberData,
                         "/"
                     )
-                val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo> =
+                val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo> =
                     arrayListOf()
                 for (phoneEntity in phoneEntityList) {
                     myPhoneNumberList.add(
-                        C10Service1TkV1AuthController.Api9OutputVo.PhoneNumberInfo(
+                        C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo(
                             phoneEntity.uid!!,
                             phoneEntity.phoneNumber,
                             phoneEntity.uid == tokenInfo.memberData.frontMemberPhoneData?.uid
@@ -1194,10 +1194,10 @@ class C10Service1TkV1AuthService(
                         tokenInfo.memberData,
                         "/"
                     )
-                val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api9OutputVo.OAuth2Info>()
+                val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info>()
                 for (oAuth2Entity in oAuth2EntityList) {
                     myOAuth2List.add(
-                        C10Service1TkV1AuthController.Api9OutputVo.OAuth2Info(
+                        C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info(
                             oAuth2Entity.uid!!,
                             oAuth2Entity.oauth2TypeCode.toInt(),
                             oAuth2Entity.oauth2Id
@@ -1207,7 +1207,7 @@ class C10Service1TkV1AuthService(
 
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
-                return C10Service1TkV1AuthController.Api9OutputVo(
+                return C10Service1TkV1AuthController.Api5OutputVo(
                     tokenInfo.memberData.uid!!,
                     tokenInfo.memberData.nickName,
                     roleList,
