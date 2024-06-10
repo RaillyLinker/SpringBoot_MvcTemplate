@@ -5,4 +5,5 @@
 
 - SC 예시 추가 - payment 예시도 같이
 
-- 변수를 외부 파일로 빼기(접근 ip 설정 등의 설정은 외부 파일로 빼서 파일 변경 가능하도록)
+- customConfig 변수중 런타임 변경이 필요한 customConfig.actuatorAllowIpList, customConfig.loggingDenyIpList 를 외부 파일로 빼기
+    (서버 시작시 해당 정보를 가져와 메모리에 저장하고, 파일 변경 후 새로운 설정을 적용하려면 특정 api 를 실행시키면 메모리 데이터 갱신)
