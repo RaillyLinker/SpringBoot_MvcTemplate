@@ -367,76 +367,17 @@ class C10Service1TkV1AuthService(
             )
         )
 
-        val profileData =
-            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
-        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo> = arrayListOf()
-        for (profile in profileData) {
-            myProfileList.add(
-                C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo(
-                    profile.uid!!,
-                    profile.imageFullUrl,
-                    profile.uid == memberData.frontMemberProfileData?.uid
-                )
-            )
-        }
-
-        val emailEntityList =
-            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
-        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.EmailInfo> = arrayListOf()
-        for (emailEntity in emailEntityList) {
-            myEmailList.add(
-                C10Service1TkV1AuthController.Api5OutputVo.EmailInfo(
-                    emailEntity.uid!!,
-                    emailEntity.emailAddress,
-                    emailEntity.uid == memberData.frontMemberEmailData?.uid
-                )
-            )
-        }
-
-        val phoneEntityList =
-            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
-        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo> = arrayListOf()
-        for (phoneEntity in phoneEntityList) {
-            myPhoneNumberList.add(
-                C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo(
-                    phoneEntity.uid!!,
-                    phoneEntity.phoneNumber,
-                    phoneEntity.uid == memberData.frontMemberPhoneData?.uid
-                )
-            )
-        }
-
-        val oAuth2EntityList =
-            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
-        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info>()
-        for (oAuth2Entity in oAuth2EntityList) {
-            myOAuth2List.add(
-                C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info(
-                    oAuth2Entity.uid!!,
-                    oAuth2Entity.oauth2TypeCode.toInt(),
-                    oAuth2Entity.oauth2Id
-                )
-            )
-        }
-
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5OutputVo(
             memberData.uid!!,
-            memberData.nickName,
-            roleList,
             "Bearer",
             jwtAccessToken,
             jwtRefreshToken,
             accessTokenExpireWhen.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
             refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-            myOAuth2List,
-            myProfileList,
-            myEmailList,
-            myPhoneNumberList,
-            memberData.accountPassword == null
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
 
@@ -695,88 +636,17 @@ class C10Service1TkV1AuthService(
             )
         )
 
-        val profileData =
-            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                snsOauth2.memberData,
-                "/"
-            )
-        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo> = arrayListOf()
-        for (profile in profileData) {
-            myProfileList.add(
-                C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo(
-                    profile.uid!!,
-                    profile.imageFullUrl,
-                    profile.uid == snsOauth2.memberData.frontMemberProfileData?.uid
-                )
-            )
-        }
-
-        val emailEntityList =
-            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                snsOauth2.memberData,
-                "/"
-            )
-        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.EmailInfo> = arrayListOf()
-        for (emailEntity in emailEntityList) {
-            myEmailList.add(
-                C10Service1TkV1AuthController.Api5OutputVo.EmailInfo(
-                    emailEntity.uid!!,
-                    emailEntity.emailAddress,
-                    emailEntity.uid == snsOauth2.memberData.frontMemberEmailData?.uid
-                )
-            )
-        }
-
-        val phoneEntityList =
-            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                snsOauth2.memberData,
-                "/"
-            )
-        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo> = arrayListOf()
-        for (phoneEntity in phoneEntityList) {
-            myPhoneNumberList.add(
-                C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo(
-                    phoneEntity.uid!!,
-                    phoneEntity.phoneNumber,
-                    phoneEntity.uid == snsOauth2.memberData.frontMemberPhoneData?.uid
-                )
-            )
-        }
-
-        val oAuth2EntityList =
-            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                snsOauth2.memberData,
-                "/"
-            )
-        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info>()
-        for (oAuth2Entity in oAuth2EntityList) {
-            myOAuth2List.add(
-                C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info(
-                    oAuth2Entity.uid!!,
-                    oAuth2Entity.oauth2TypeCode.toInt(),
-                    oAuth2Entity.oauth2Id
-                )
-            )
-        }
-
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5OutputVo(
             snsOauth2.memberData.uid!!,
-            snsOauth2.memberData.nickName,
-            roleList,
             "Bearer",
             jwtAccessToken,
             jwtRefreshToken,
             accessTokenExpireWhen.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
             refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-            myOAuth2List,
-            myProfileList,
-            myEmailList,
-            myPhoneNumberList,
-            snsOauth2.memberData.accountPassword == null
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
 
@@ -874,88 +744,17 @@ class C10Service1TkV1AuthService(
             )
         )
 
-        val profileData =
-            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                snsOauth2.memberData,
-                "/"
-            )
-        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo> = arrayListOf()
-        for (profile in profileData) {
-            myProfileList.add(
-                C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo(
-                    profile.uid!!,
-                    profile.imageFullUrl,
-                    profile.uid == snsOauth2.memberData.frontMemberProfileData?.uid
-                )
-            )
-        }
-
-        val emailEntityList =
-            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                snsOauth2.memberData,
-                "/"
-            )
-        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.EmailInfo> = arrayListOf()
-        for (emailEntity in emailEntityList) {
-            myEmailList.add(
-                C10Service1TkV1AuthController.Api5OutputVo.EmailInfo(
-                    emailEntity.uid!!,
-                    emailEntity.emailAddress,
-                    emailEntity.uid == snsOauth2.memberData.frontMemberEmailData?.uid
-                )
-            )
-        }
-
-        val phoneEntityList =
-            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                snsOauth2.memberData,
-                "/"
-            )
-        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo> = arrayListOf()
-        for (phoneEntity in phoneEntityList) {
-            myPhoneNumberList.add(
-                C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo(
-                    phoneEntity.uid!!,
-                    phoneEntity.phoneNumber,
-                    phoneEntity.uid == snsOauth2.memberData.frontMemberPhoneData?.uid
-                )
-            )
-        }
-
-        val oAuth2EntityList =
-            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                snsOauth2.memberData,
-                "/"
-            )
-        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info>()
-        for (oAuth2Entity in oAuth2EntityList) {
-            myOAuth2List.add(
-                C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info(
-                    oAuth2Entity.uid!!,
-                    oAuth2Entity.oauth2TypeCode.toInt(),
-                    oAuth2Entity.oauth2Id
-                )
-            )
-        }
-
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5OutputVo(
             snsOauth2.memberData.uid!!,
-            snsOauth2.memberData.nickName,
-            roleList,
             "Bearer",
             jwtAccessToken,
             jwtRefreshToken,
             accessTokenExpireWhen.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
             refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-            myOAuth2List,
-            myProfileList,
-            myEmailList,
-            myPhoneNumberList,
-            snsOauth2.memberData.accountPassword == null
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
 
@@ -1140,89 +939,17 @@ class C10Service1TkV1AuthService(
                     )
                 )
 
-                val profileData =
-                    database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                        tokenInfo.memberData,
-                        "/"
-                    )
-                val myProfileList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo> = arrayListOf()
-                for (profile in profileData) {
-                    myProfileList.add(
-                        C10Service1TkV1AuthController.Api5OutputVo.ProfileInfo(
-                            profile.uid!!,
-                            profile.imageFullUrl,
-                            profile.uid == tokenInfo.memberData.frontMemberProfileData?.uid
-                        )
-                    )
-                }
-
-                val emailEntityList =
-                    database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                        tokenInfo.memberData,
-                        "/"
-                    )
-                val myEmailList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.EmailInfo> = arrayListOf()
-                for (emailEntity in emailEntityList) {
-                    myEmailList.add(
-                        C10Service1TkV1AuthController.Api5OutputVo.EmailInfo(
-                            emailEntity.uid!!,
-                            emailEntity.emailAddress,
-                            emailEntity.uid == tokenInfo.memberData.frontMemberEmailData?.uid
-                        )
-                    )
-                }
-
-                val phoneEntityList =
-                    database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                        tokenInfo.memberData,
-                        "/"
-                    )
-                val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo> =
-                    arrayListOf()
-                for (phoneEntity in phoneEntityList) {
-                    myPhoneNumberList.add(
-                        C10Service1TkV1AuthController.Api5OutputVo.PhoneNumberInfo(
-                            phoneEntity.uid!!,
-                            phoneEntity.phoneNumber,
-                            phoneEntity.uid == tokenInfo.memberData.frontMemberPhoneData?.uid
-                        )
-                    )
-                }
-
-                val oAuth2EntityList =
-                    database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                        tokenInfo.memberData,
-                        "/"
-                    )
-                val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info>()
-                for (oAuth2Entity in oAuth2EntityList) {
-                    myOAuth2List.add(
-                        C10Service1TkV1AuthController.Api5OutputVo.OAuth2Info(
-                            oAuth2Entity.uid!!,
-                            oAuth2Entity.oauth2TypeCode.toInt(),
-                            oAuth2Entity.oauth2Id
-                        )
-                    )
-                }
-
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 return C10Service1TkV1AuthController.Api5OutputVo(
                     tokenInfo.memberData.uid!!,
-                    tokenInfo.memberData.nickName,
-                    roleList,
                     "Bearer",
                     newJwtAccessToken,
                     newRefreshToken,
                     accessTokenExpireWhen.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
                     refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-                    myOAuth2List,
-                    myProfileList,
-                    myEmailList,
-                    myPhoneNumberList,
-                    tokenInfo.memberData.accountPassword == null
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 )
             }
 
@@ -1267,6 +994,101 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
+    }
+
+
+    ////
+    fun api10Dot1(
+        httpServletResponse: HttpServletResponse,
+        authorization: String
+    ): C10Service1TkV1AuthController.Api10Dot1OutputVo? {
+        val memberUid = JwtTokenUtilObject.getMemberUid(
+            authorization.split(" ")[1].trim(),
+            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+            SecurityConfig.AuthTokenFilterService1Tk.JWT_CLAIMS_AES256_ENCRYPTION_KEY
+        ).toLong()
+
+        val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
+            memberUid,
+            "/"
+        )!!
+
+        // 멤버의 권한 리스트를 조회 후 반환
+        val memberRoleList = database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
+            memberData,
+            "/"
+        )
+
+        val roleList: ArrayList<String> = arrayListOf()
+        for (userRole in memberRoleList) {
+            roleList.add(userRole.role)
+        }
+
+        val profileData =
+            database1Service1MemberProfileDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
+        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.ProfileInfo> = arrayListOf()
+        for (profile in profileData) {
+            myProfileList.add(
+                C10Service1TkV1AuthController.Api10Dot1OutputVo.ProfileInfo(
+                    profile.uid!!,
+                    profile.imageFullUrl,
+                    profile.uid == memberData.frontMemberProfileData?.uid
+                )
+            )
+        }
+
+        val emailEntityList =
+            database1Service1MemberEmailDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
+        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.EmailInfo> = arrayListOf()
+        for (emailEntity in emailEntityList) {
+            myEmailList.add(
+                C10Service1TkV1AuthController.Api10Dot1OutputVo.EmailInfo(
+                    emailEntity.uid!!,
+                    emailEntity.emailAddress,
+                    emailEntity.uid == memberData.frontMemberEmailData?.uid
+                )
+            )
+        }
+
+        val phoneEntityList =
+            database1Service1MemberPhoneDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
+        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.PhoneNumberInfo> =
+            arrayListOf()
+        for (phoneEntity in phoneEntityList) {
+            myPhoneNumberList.add(
+                C10Service1TkV1AuthController.Api10Dot1OutputVo.PhoneNumberInfo(
+                    phoneEntity.uid!!,
+                    phoneEntity.phoneNumber,
+                    phoneEntity.uid == memberData.frontMemberPhoneData?.uid
+                )
+            )
+        }
+
+        val oAuth2EntityList =
+            database1Service1MemberOauth2LoginDataRepository.findAllByMemberDataAndRowDeleteDateStr(memberData, "/")
+        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.OAuth2Info>()
+        for (oAuth2Entity in oAuth2EntityList) {
+            myOAuth2List.add(
+                C10Service1TkV1AuthController.Api10Dot1OutputVo.OAuth2Info(
+                    oAuth2Entity.uid!!,
+                    oAuth2Entity.oauth2TypeCode.toInt(),
+                    oAuth2Entity.oauth2Id
+                )
+            )
+        }
+
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C10Service1TkV1AuthController.Api10Dot1OutputVo(
+            memberData.nickName,
+            roleList,
+            myOAuth2List,
+            myProfileList,
+            myEmailList,
+            myPhoneNumberList,
+            memberData.accountPassword == null
+        )
     }
 
 
