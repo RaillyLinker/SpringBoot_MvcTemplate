@@ -4,6 +4,3 @@
 - HTTPS 설정 및 도메인 설정 / 서브 도메인 설정 방법을 배포 가이드에 추가
 
 - SC 예시 추가 - payment 예시도 같이
-
-- customConfig 변수중 런타임 변경이 필요한 customConfig.actuatorAllowIpList, customConfig.loggingDenyIpList 를 외부 파일로 빼기
-    (서버 시작시 해당 정보를 가져와 메모리에 저장하고, 파일 변경 후 새로운 설정을 적용하려면 특정 api 를 실행시키면 메모리 데이터 갱신)

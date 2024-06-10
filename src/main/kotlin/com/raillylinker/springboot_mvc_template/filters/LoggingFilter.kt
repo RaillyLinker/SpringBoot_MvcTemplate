@@ -1,5 +1,6 @@
 package com.raillylinker.springboot_mvc_template.filters
 
+import com.raillylinker.springboot_mvc_template.custom_objects.RuntimeConfigObject
 import jakarta.servlet.AsyncEvent
 import jakarta.servlet.AsyncListener
 import jakarta.servlet.FilterChain
@@ -7,7 +8,6 @@ import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
@@ -23,10 +23,7 @@ import java.time.LocalDateTime
 // (Request / Response 별 로깅 필터)
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class LoggingFilter(
-    @Value("\${customConfig.loggingDenyIpList:}#{T(java.util.Collections).emptyList()}")
-    private var loggingDenyIpList: List<String>
-) : OncePerRequestFilter() {
+class LoggingFilter : OncePerRequestFilter() {
     // <멤버 변수 공간>
     private val classLogger = LoggerFactory.getLogger(this::class.java)
 
@@ -54,7 +51,7 @@ class LoggingFilter(
         // 요청자 Ip (ex : 127.0.0.1)
         val clientAddressIp = request.remoteAddr
 
-        if (clientAddressIp in loggingDenyIpList) {
+        if (clientAddressIp in RuntimeConfigObject.runtimeConfigVo.loggingDenyIpList) {
             filterChain.doFilter(request, response)
             return
         }

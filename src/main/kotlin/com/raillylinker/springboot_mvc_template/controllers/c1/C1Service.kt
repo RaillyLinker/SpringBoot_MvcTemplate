@@ -1,5 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
+import com.raillylinker.springboot_mvc_template.custom_objects.RuntimeConfigObject
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -40,4 +41,10 @@ class C1Service(
     data class Api1ViewModel(
         val env: String
     )
+
+
+    ////
+    fun api2(httpServletResponse: HttpServletResponse) {
+        RuntimeConfigObject.loadFromConfigFile()
+    }
 }
