@@ -470,6 +470,7 @@
         docker save -o "./external_files/docker/server_docker/server_dev.tar" raillylinker/server_dev:latest
         docker image prune -af
         scp -o "StrictHostKeyChecking=no" -i /var/jenkins_home/ssh_keys/petlogon-developer.pem ./external_files/docker/server_docker/server_dev.tar ubuntu@{서버주소}:/home/ubuntu/dev
+        rm ./external_files/docker/server_dev.tar
 
         위와 같이 입력해주세요.
 
@@ -596,7 +597,7 @@
         docker save -o "./external_files/docker/server_docker/server_prod.tar" raillylinker/server_prod:latest
         docker image prune -af
         scp -o "StrictHostKeyChecking=no" -i /var/jenkins_home/ssh_keys/petlogon-developer.pem ./external_files/docker/server_docker/server_prod.tar ubuntu@172.31.12.235:/home/ubuntu/prod
-
+        rm ./external_files/docker/server_prod.tar
 
         위와 같이 입력해주세요.
 
