@@ -605,8 +605,9 @@ class C10Service1TkV1AuthController(
                     Header(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
-                                "1 : 유효하지 않은 Refresh Token 입니다.\n\n" +
-                                "2 : Refresh Token 이 만료되었습니다.\n\n",
+                                "1 : 올바르지 않은 Authorization Token 입니다.\n\n" +
+                                "2 : 유효하지 않은 Refresh Token 입니다.\n\n" +
+                                "3 : Refresh Token 이 만료되었습니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -628,7 +629,7 @@ class C10Service1TkV1AuthController(
         @RequestBody
         inputVo: Api9InputVo
     ): Api5OutputVo? {
-        return service.api9(authorization!!, inputVo, httpServletResponse)
+        return service.api9(authorization, inputVo, httpServletResponse)
     }
 
     data class Api9InputVo(

@@ -789,14 +789,41 @@ class C10Service1TkV1AuthService(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api9(
-        authorization: String,
+        authorization: String?,
         inputVo: C10Service1TkV1AuthController.Api9InputVo,
         httpServletResponse: HttpServletResponse
     ): C10Service1TkV1AuthController.Api5OutputVo? {
+        if (authorization == null) {
+            // 올바르지 않은 Authorization Token
+            httpServletResponse.setHeader("api-result-code", "1")
+            httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
+            return null
+        }
+
         // 저장된 현재 인증된 멤버의 리프레시 토큰 가져오기
         val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
+        if (authorizationSplit.size < 2) {
+            // 올바르지 않은 Authorization Token
+            httpServletResponse.setHeader("api-result-code", "1")
+            httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
+            return null
+        }
+
         val accessTokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
         val accessToken = authorizationSplit[1].trim() // (ex : "abcd1234")
+
+        // 토큰 검증
+        val tokenVerificationCode =
+            SecurityConfig.AuthTokenFilterService1Tk.verifyAccessToken(accessTokenType, accessToken)
+
+        when (tokenVerificationCode) {
+            1 -> {
+                // 올바르지 않은 Authorization Token
+                httpServletResponse.setHeader("api-result-code", "1")
+                httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
+                return null
+            }
+        }
 
         val accessTokenMemberUid = JwtTokenUtilObject.getMemberUid(
             accessToken,
@@ -809,7 +836,7 @@ class C10Service1TkV1AuthService(
         if (refreshTokenInputSplit.size < 2) {
             // 올바르지 않은 Token
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "1")
+            httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
 
@@ -820,7 +847,7 @@ class C10Service1TkV1AuthService(
         if (jwtRefreshToken == "") {
             // 토큰이 비어있음 (올바르지 않은 Authorization Token)
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "1")
+            httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
 
@@ -855,14 +882,14 @@ class C10Service1TkV1AuthService(
                     ) != accessTokenMemberUid // 리프레시 토큰의 멤버 고유번호와 액세스 토큰 멤버 고유번호가 다를시
                 ) {
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "1")
+                    httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
 
                 if (JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) <= 0L) {
                     // 리플레시 토큰 만료
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "2")
+                    httpServletResponse.setHeader("api-result-code", "3")
                     return null
                 }
 
@@ -882,7 +909,7 @@ class C10Service1TkV1AuthService(
                 if (jwtRefreshToken != tokenInfo.refreshToken) {
                     // 건내받은 토큰이 해당 액세스 토큰의 가용 토큰과 맞지 않음
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "1")
+                    httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
 
@@ -956,7 +983,7 @@ class C10Service1TkV1AuthService(
             else -> {
                 // 지원하지 않는 토큰 타입 (올바르지 않은 Authorization Token)
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                httpServletResponse.setHeader("api-result-code", "1")
+                httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         }
