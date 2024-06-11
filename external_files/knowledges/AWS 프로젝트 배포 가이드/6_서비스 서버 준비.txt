@@ -208,7 +208,7 @@
 
 - 본 프로젝트는 actuator 를 사용하여 logback 의 로그 파일에 접근이 가능합니다.
     다만, 본 프로젝트에서는 actuator 에 대한 접근을 함부로 할 수 없도록 접근을 막아둔 상태입니다.
-    actuator 로그를 확인하기 위해선 프로젝트가 실행중인 서버에 접속하고 dev 혹은 prod 디렉토리 안의 by_product_files/runtime_config.json
+    actuator 로그를 확인하기 위해선 프로젝트가 실행중인 서버에 접속하고 dev 혹은 prod 디렉토리 안의 by_product_files/configs/runtime_config.json
     파일을,
 
     >> sudo vi runtime_config.json

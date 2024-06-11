@@ -49,7 +49,7 @@ class C1Controller(
     ////
     @Operation(
         summary = "N2 : 런타임 설정 파일 데이터 반영",
-        description = "by_product_files 의 runtime_config.json 파일 내의 설정 데이터를 프로젝트에 반영합니다.\n\n"
+        description = "by_product_files/configs/runtime_config.json 파일 내의 설정 데이터를 프로젝트에 반영합니다.\n\n"
     )
     @ApiResponses(
         value = [
