@@ -60,7 +60,7 @@ class C1Controller(
         ]
     )
     @GetMapping(
-        path = ["/runtime-configs"],
+        path = ["/runtime-config"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )
