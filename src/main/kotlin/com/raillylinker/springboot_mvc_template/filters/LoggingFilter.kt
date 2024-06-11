@@ -51,7 +51,7 @@ class LoggingFilter : OncePerRequestFilter() {
         // 요청자 Ip (ex : 127.0.0.1)
         val clientAddressIp = request.remoteAddr
 
-        if (clientAddressIp in RuntimeConfigObject.runtimeConfigVo.loggingDenyIpList) {
+        if (clientAddressIp in RuntimeConfigObject.runtimeConfig.loggingDenyIpList) {
             filterChain.doFilter(request, response)
             return
         }

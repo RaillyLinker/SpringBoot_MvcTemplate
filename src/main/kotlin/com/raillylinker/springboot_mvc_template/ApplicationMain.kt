@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
     TimeZone.setDefault(TimeZone.getTimeZone(ApplicationConstants.SYSTEM_TIME_ZONE))
 
     // 런타임 설정 가져오기
-    RuntimeConfigObject.loadFromConfigFile()
+    RuntimeConfigObject.loadRuntimeConfig()
 
     // 서버 실행
     runApplication<ApplicationMain>(*args)

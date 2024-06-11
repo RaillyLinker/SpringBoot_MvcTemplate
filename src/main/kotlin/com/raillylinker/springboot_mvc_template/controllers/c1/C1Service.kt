@@ -45,6 +45,6 @@ class C1Service(
 
     ////
     fun api2(httpServletResponse: HttpServletResponse) {
-        RuntimeConfigObject.loadFromConfigFile()
+        RuntimeConfigObject.loadRuntimeConfig()
     }
 }
