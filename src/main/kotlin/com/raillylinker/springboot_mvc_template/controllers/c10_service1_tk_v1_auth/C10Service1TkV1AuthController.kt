@@ -685,7 +685,7 @@ class C10Service1TkV1AuthController(
 
     ////
     @Operation(
-        summary = "N10.1 : 회원 정보 가져오기",
+        summary = "N10.1 : 회원 정보 가져오기 <>",
         description = "회원 정보 반환\n\n" +
                 "바뀔 가능성이 없는 회원 정보는 로그인시 반환되며,\n\n" +
                 "이 API 에서는 변경 가능성이 있는 회원 정보를 반환합니다.\n\n"
