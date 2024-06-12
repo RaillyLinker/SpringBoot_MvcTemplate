@@ -1,4 +1,8 @@
 [Coding Conventions]
+- external_files/notice 디렉토리는, 개발자들 사이에 공유해야할 사항을 적는 텍스트 파일을 모아두는 디렉토리이며,
+    coding_conventions.txt 파일은 코딩 규칙을,
+    TO_DO.txt 파일은 프로젝트 단위로 처리해야 하는 작업을 공지하고 확인하면 됩니다.
+
 - src 와 동일한 위치의 외곽 디렉토리 중,
     by_product_files 라는 디렉토리는 프로젝트 런타임에 생성되는 파일을 저장하는 디렉토리입니다.
     동일 위치의 external_files 라는 디렉토리는 개발자가 임의로 넣어주는 파일들 저장하는 디렉토리입니다.
@@ -10,6 +14,6 @@
 - 본 프로젝트에서 자동 로깅 필터는 multipart/form-data 형식의 Request Body 는 로깅하지 않습니다.
     이 경우에는 수동으로 로깅 처리를 해주세요.
 
-- 런타임에 재빌드 없이 바꿀 수 있는 종류의 설정 데이터는 custom_objects/RuntimeConfigObject 안에 설정되어 있으며,
-    런타임에 이 설정을 변경하려면, by_product_files/configs/runtime_config.json 파일 안에서 값을 변경하고,
+- 런타임에 재빌드 없이 바꿀 수 있는 종류의 설정 데이터는 ApplicationRuntimeConfigs 안에 설정되어 있으며,
+    런타임에 이 설정을 변경하려면 파일, 데이터베이스 등의 각 위치의 값을 변경하고,
     C1-N2 API 를 실행시키면 바로 적용이 됩니다.
