@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.filters
 
-import com.raillylinker.springboot_mvc_template.custom_objects.RuntimeConfigObject
+import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
@@ -26,7 +26,7 @@ class ActuatorEndpointFilter : Filter {
         val clientAddressIp = httpServletRequest.remoteAddr
 
         // 리퀘스트 URI (ex : /sample/test) 가 /actuator 로 시작되는지를 확인 후 블록
-        if (httpServletRequest.requestURI.startsWith("/actuator") && clientAddressIp !in RuntimeConfigObject.runtimeConfig.actuatorAllowIpList) {
+        if (httpServletRequest.requestURI.startsWith("/actuator") && clientAddressIp !in ApplicationRuntimeConfigs.runtimeConfig.actuatorAllowIpList) {
             // status 404 반환 및 무동작
             httpServletResponse.status = HttpStatus.NOT_FOUND.value()
             return

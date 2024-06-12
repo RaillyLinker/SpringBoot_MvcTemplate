@@ -1,6 +1,5 @@
 package com.raillylinker.springboot_mvc_template
 
-import com.raillylinker.springboot_mvc_template.custom_objects.RuntimeConfigObject
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.scheduling.annotation.EnableAsync
@@ -17,7 +16,7 @@ fun main(args: Array<String>) {
     TimeZone.setDefault(TimeZone.getTimeZone(ApplicationConstants.SYSTEM_TIME_ZONE))
 
     // 런타임 설정 가져오기
-    RuntimeConfigObject.loadRuntimeConfig()
+    ApplicationRuntimeConfigs.loadRuntimeConfig()
 
     // 서버 실행
     runApplication<ApplicationMain>(*args)

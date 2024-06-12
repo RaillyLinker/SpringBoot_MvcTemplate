@@ -1,4 +1,4 @@
-package com.raillylinker.springboot_mvc_template.custom_objects
+package com.raillylinker.springboot_mvc_template
 
 import com.google.gson.Gson
 import java.nio.file.Files
@@ -6,7 +6,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 // [런타임에 변경 가능한 설정 정보를 모아둔 Object]
-object RuntimeConfigObject {
+object ApplicationRuntimeConfigs {
     // (설정 파일 저장 디렉토리 경로)
     private val saveDirectoryPath: Path = Paths.get("./by_product_files/configs").toAbsolutePath().normalize()
 
