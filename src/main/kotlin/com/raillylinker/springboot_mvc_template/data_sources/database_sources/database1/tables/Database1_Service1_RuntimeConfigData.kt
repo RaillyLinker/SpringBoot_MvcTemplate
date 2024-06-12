@@ -1,7 +1,6 @@
 package com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables
 
 import jakarta.persistence.*
-import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.Comment
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -9,11 +8,11 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(
-    name = "service1_runtime_config_data",
+    name = "runtime_config_data",
     catalog = "service1"
 )
 @Comment("Service1 의 런타임 변경 가능 설정 정보를 저장하는 테이블. 첫번째 행의 데이터만 유효합니다.")
-class Database1_Service1_Service1RuntimeConfigData(
+class Database1_Service1_RuntimeConfigData(
     @Column(name = "auth_jwt_secret_key_string", nullable = false, columnDefinition = "VARCHAR(100)")
     @Comment("계정 설정 - JWT 비밀키")
     var authJwtSecretKeyString: String,

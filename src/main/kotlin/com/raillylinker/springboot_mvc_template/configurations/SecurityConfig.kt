@@ -203,15 +203,15 @@ class SecurityConfig(
                             accessTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
                             JwtTokenUtilObject.getTokenUsage(
                                 accessToken,
-                                ApplicationRuntimeConfigs.service1RuntimeConfig.authJwtClaimsAes256InitializationVector,
-                                ApplicationRuntimeConfigs.service1RuntimeConfig.authJwtClaimsAes256EncryptionKey
+                                ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
+                                ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
                             ).lowercase() != "access" || // 토큰 용도가 다름
                             // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
-                            JwtTokenUtilObject.getRemainSeconds(accessToken) > ApplicationRuntimeConfigs.service1RuntimeConfig.authJwtAccessTokenExpirationTimeSec ||
-                            JwtTokenUtilObject.getIssuer(accessToken) != ApplicationRuntimeConfigs.service1RuntimeConfig.authJwtIssuer || // 발행인 불일치
+                            JwtTokenUtilObject.getRemainSeconds(accessToken) > ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtAccessTokenExpirationTimeSec ||
+                            JwtTokenUtilObject.getIssuer(accessToken) != ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer || // 발행인 불일치
                             !JwtTokenUtilObject.validateSignature(
                                 accessToken,
-                                ApplicationRuntimeConfigs.service1RuntimeConfig.authJwtSecretKeyString
+                                ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
                             ) // 시크릿 검증이 무효 = 위변조 된 토큰
                         ) {
                             // 올바르지 않은 Authorization Token
@@ -319,8 +319,8 @@ class SecurityConfig(
                     // 유저 탈퇴 여부 확인
                     val memberUid = JwtTokenUtilObject.getMemberUid(
                         accessToken,
-                        ApplicationRuntimeConfigs.service1RuntimeConfig.authJwtClaimsAes256InitializationVector,
-                        ApplicationRuntimeConfigs.service1RuntimeConfig.authJwtClaimsAes256EncryptionKey
+                        ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
+                        ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
                     ).toLong()
 
                     val memberData =

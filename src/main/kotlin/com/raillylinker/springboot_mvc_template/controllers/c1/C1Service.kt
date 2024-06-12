@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
 import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_Service1RuntimeConfigDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_RuntimeConfigDataRepository
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,7 +16,7 @@ class C1Service(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     // (Database1 Repository)
-    private val database1Service1Service1RuntimeConfigDataRepository: Database1_Service1_Service1RuntimeConfigDataRepository
+    private val database1Service1Service1RuntimeConfigDataRepository: Database1_Service1_RuntimeConfigDataRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -49,12 +49,12 @@ class C1Service(
 
     ////
     fun api2(httpServletResponse: HttpServletResponse) {
-        ApplicationRuntimeConfigs.loadRuntimeConfig()
+        ApplicationRuntimeConfigs.loadRuntimeConfigFile()
     }
 
 
     ////
     fun api2Dot1(httpServletResponse: HttpServletResponse) {
-        ApplicationRuntimeConfigs.loadService1RuntimeConfig(database1Service1Service1RuntimeConfigDataRepository)
+        ApplicationRuntimeConfigs.loadService1RuntimeConfigDb(database1Service1Service1RuntimeConfigDataRepository)
     }
 }

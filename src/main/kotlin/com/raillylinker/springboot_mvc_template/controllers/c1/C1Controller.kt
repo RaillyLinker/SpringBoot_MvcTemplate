@@ -48,8 +48,8 @@ class C1Controller(
 
     ////
     @Operation(
-        summary = "N2 : 런타임 설정 파일 데이터 반영",
-        description = "범용 런타임 설정 데이터를 프로젝트에 반영합니다.\n\n"
+        summary = "N2 : 범용 런타임 설정 파일 데이터 반영",
+        description = "파일로 저장되는 범용 런타임 설정 데이터를 프로젝트에 반영합니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -76,7 +76,7 @@ class C1Controller(
     ////
     @Operation(
         summary = "N2.1 : service1 런타임 설정 데이터 반영",
-        description = "service1 런타임 설정 데이터를 프로젝트에 반영합니다.\n\n"
+        description = "service1 데이터베이스에 저장되는 런타임 설정 데이터를 프로젝트에 반영합니다.\n\n"
     )
     @ApiResponses(
         value = [

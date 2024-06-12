@@ -1,18 +1,21 @@
 package com.raillylinker.springboot_mvc_template
 
 import com.google.gson.Gson
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_Service1RuntimeConfigDataRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_Service1RuntimeConfigData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_RuntimeConfigDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_RuntimeConfigData
 import java.nio.file.Files
 import java.nio.file.Paths
 
 // [런타임에 변경 가능한 설정 정보를 모아둔 Object]
+// 이곳에 저장되어 있는 각 public 전역변수들은 런타임에 변경 가능한 설정 데이터를 의미합니다.
+// 그러한 용도로 사용하도록 개발하시고,
+// 런타임 설정 변경을 하시려면 각 데이터 소스(파일, 데이터베이스, etc...)의 데이터를 수정하신 후, load 함수를 사용하여 설정 데이터를 갱신하면 됩니다.
 object ApplicationRuntimeConfigs {
     // (런타임 설정 데이터)
     // 범용적인 런타임 설정 데이터는 이곳에 있습니다.
-    var runtimeConfig: RuntimeConfig =
+    var runtimeConfigFile: RuntimeConfigFile =
         // 설정 파일이 없을 때의 초기 설정
-        RuntimeConfig(
+        RuntimeConfigFile(
             // Actuator 정보 접근 허용 IP 리스트
             arrayListOf(
                 "127.0.0.1",
@@ -25,9 +28,8 @@ object ApplicationRuntimeConfigs {
             )
         )
 
-
     // (설정 데이터 불러오기)
-    fun loadRuntimeConfig() {
+    fun loadRuntimeConfigFile() {
         // (설정 파일 저장 디렉토리 경로)
         val saveDirectoryPath = Paths.get("./by_product_files/configs").toAbsolutePath().normalize()
 
@@ -40,16 +42,16 @@ object ApplicationRuntimeConfigs {
         // (configFilePath 설정 정보 가져오기)
         if (Files.exists(runtimeConfigFilePath)) {
             // 설정 파일이 존재 -> 변수에 할당
-            runtimeConfig = Gson().fromJson(Files.readString(runtimeConfigFilePath), RuntimeConfig::class.java)
+            runtimeConfigFile = Gson().fromJson(Files.readString(runtimeConfigFilePath), RuntimeConfigFile::class.java)
         } else {
             // 설정 파일이 존재하지 않음
             // 설정 파일에 현재 변수의 데이터 저장
-            Files.write(runtimeConfigFilePath, Gson().toJson(runtimeConfig).toByteArray())
+            Files.write(runtimeConfigFilePath, Gson().toJson(runtimeConfigFile).toByteArray())
         }
     }
 
     // (설정 데이터 VO)
-    data class RuntimeConfig(
+    data class RuntimeConfigFile(
         // Actuator 정보 접근 허용 IP 리스트
         val actuatorAllowIpList: List<String>,
 
@@ -61,9 +63,9 @@ object ApplicationRuntimeConfigs {
     // -----------------------------------------------------------------------------------------------------------------
     // (service1 런타임 설정 데이터)
     // service1 의 런타임 설정 데이터는 이곳에 있습니다.
-    var service1RuntimeConfig: Service1RuntimeConfig =
+    var service1RuntimeConfigDb: Service1RuntimeConfigDb =
         // 설정 파일이 없을 때의 초기 설정
-        Service1RuntimeConfig(
+        Service1RuntimeConfigDb(
             // 계정 설정 - JWT 비밀키
             "123456789abcdefghijklmnopqrstuvw",
             // 계정 설정 - JWT AccessToken 유효기간(초)
@@ -78,30 +80,29 @@ object ApplicationRuntimeConfigs {
             "com.raillylinker.springboot_mvc_template.service1"
         )
 
-
     // (설정 데이터 불러오기)
-    fun loadService1RuntimeConfig(
-        database1Service1Service1RuntimeConfigDataRepository: Database1_Service1_Service1RuntimeConfigDataRepository
+    fun loadService1RuntimeConfigDb(
+        database1Service1Service1RuntimeConfigDataRepository: Database1_Service1_RuntimeConfigDataRepository
     ) {
         val entityList = database1Service1Service1RuntimeConfigDataRepository.findAll()
 
         if (entityList.isEmpty()) {
             // 기존에 저장된 데이터가 없음 -> 데이터 새로 만들기
             database1Service1Service1RuntimeConfigDataRepository.save(
-                Database1_Service1_Service1RuntimeConfigData(
-                    service1RuntimeConfig.authJwtSecretKeyString,
-                    service1RuntimeConfig.authJwtAccessTokenExpirationTimeSec,
-                    service1RuntimeConfig.authJwtRefreshTokenExpirationTimeSec,
-                    service1RuntimeConfig.authJwtClaimsAes256InitializationVector,
-                    service1RuntimeConfig.authJwtClaimsAes256EncryptionKey,
-                    service1RuntimeConfig.authJwtIssuer
+                Database1_Service1_RuntimeConfigData(
+                    service1RuntimeConfigDb.authJwtSecretKeyString,
+                    service1RuntimeConfigDb.authJwtAccessTokenExpirationTimeSec,
+                    service1RuntimeConfigDb.authJwtRefreshTokenExpirationTimeSec,
+                    service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
+                    service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey,
+                    service1RuntimeConfigDb.authJwtIssuer
                 )
             )
         } else {
             // 기존에 데이터가 있음 -> 첫번째 행 데이터를 사용하기
             val chosenEntity = entityList[0]
 
-            service1RuntimeConfig = Service1RuntimeConfig(
+            service1RuntimeConfigDb = Service1RuntimeConfigDb(
                 chosenEntity.authJwtSecretKeyString,
                 chosenEntity.authJwtAccessTokenExpirationTimeSec,
                 chosenEntity.authJwtRefreshTokenExpirationTimeSec,
@@ -113,7 +114,7 @@ object ApplicationRuntimeConfigs {
     }
 
     // (설정 데이터 VO)
-    data class Service1RuntimeConfig(
+    data class Service1RuntimeConfigDb(
         // 계정 설정 - JWT 비밀키
         var authJwtSecretKeyString: String,
         // 계정 설정 - JWT AccessToken 유효기간(초)
