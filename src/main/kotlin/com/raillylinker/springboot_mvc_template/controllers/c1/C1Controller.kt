@@ -49,7 +49,7 @@ class C1Controller(
     ////
     @Operation(
         summary = "N2 : 런타임 설정 파일 데이터 반영",
-        description = "by_product_files/configs/runtime_config.json 파일 내의 설정 데이터를 프로젝트에 반영합니다.\n\n"
+        description = "범용 런타임 설정 데이터를 프로젝트에 반영합니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -70,5 +70,32 @@ class C1Controller(
         httpServletResponse: HttpServletResponse
     ) {
         service.api2(httpServletResponse)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N2.1 : service1 런타임 설정 데이터 반영",
+        description = "service1 런타임 설정 데이터를 프로젝트에 반영합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/service1-runtime-config"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api2Dot1(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api2Dot1(httpServletResponse)
     }
 }

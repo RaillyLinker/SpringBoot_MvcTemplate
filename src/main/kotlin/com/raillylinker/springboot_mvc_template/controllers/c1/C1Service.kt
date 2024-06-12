@@ -1,6 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
 import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_Service1RuntimeConfigDataRepository
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -12,7 +13,10 @@ import org.springframework.web.servlet.ModelAndView
 @Service
 class C1Service(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
-    @Value("\${spring.profiles.active:default}") private var activeProfile: String
+    @Value("\${spring.profiles.active:default}") private var activeProfile: String,
+
+    // (Database1 Repository)
+    private val database1Service1Service1RuntimeConfigDataRepository: Database1_Service1_Service1RuntimeConfigDataRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -46,5 +50,11 @@ class C1Service(
     ////
     fun api2(httpServletResponse: HttpServletResponse) {
         ApplicationRuntimeConfigs.loadRuntimeConfig()
+    }
+
+
+    ////
+    fun api2Dot1(httpServletResponse: HttpServletResponse) {
+        ApplicationRuntimeConfigs.loadService1RuntimeConfig(database1Service1Service1RuntimeConfigDataRepository)
     }
 }
