@@ -89,38 +89,32 @@ class C10Service1TkV1AuthService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1(httpServletResponse: HttpServletResponse): Map<String, Any>? {
-        val result: MutableMap<String, Any> = HashMap()
-        result["result"] = externalAccessAddress
-
+    fun api1(httpServletResponse: HttpServletResponse): String? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return result
+        return externalAccessAddress
     }
 
 
     ////
-    fun api2(httpServletResponse: HttpServletResponse, authorization: String): Map<String, Any>? {
+    fun api2(httpServletResponse: HttpServletResponse, authorization: String): String? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
-
-        val result: MutableMap<String, Any> = HashMap()
-        result["result"] = "Member No.$memberUid : Test Success"
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return result
+        return "Member No.$memberUid : Test Success"
     }
 
 
     ////
-    fun api2Dot1(httpServletResponse: HttpServletResponse, authorization: String?): Map<String, Any>? {
+    fun api2Dot1(httpServletResponse: HttpServletResponse, authorization: String?): String? {
         if (authorization == null) {
             // 인증 코드 미검증
-            return hashMapOf("result" to "Not Logged In : Test Success")
+            return "Not Logged In : Test Success"
         } else {
             // 인증 코드 검증
 
@@ -162,8 +156,8 @@ class C10Service1TkV1AuthService(
                     // 유저 탈퇴 여부 확인
                     val memberUid = JwtTokenUtilObject.getMemberUid(
                         accessToken,
-                        ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-                        ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+                        ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+                        ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
                     ).toLong()
 
                     val memberData =
@@ -211,42 +205,36 @@ class C10Service1TkV1AuthService(
 
                     // 회원 권한 비교가 필요하면 여기서 할 것.
 
-                    return hashMapOf("result" to "Member No.$memberUid : Test Success")
+                    return "Member No.$memberUid : Test Success"
                 }
             }
         }
     }
 
     ////
-    fun api3(httpServletResponse: HttpServletResponse, authorization: String): Map<String, Any>? {
+    fun api3(httpServletResponse: HttpServletResponse, authorization: String): String? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
-
-        val result: MutableMap<String, Any> = HashMap()
-        result["result"] = "Member No.$memberUid : Test Success"
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return result
+        return "Member No.$memberUid : Test Success"
     }
 
     ////
-    fun api4(httpServletResponse: HttpServletResponse, authorization: String): Map<String, Any>? {
+    fun api4(httpServletResponse: HttpServletResponse, authorization: String): String? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
-
-        val result: MutableMap<String, Any> = HashMap()
-        result["result"] = "Member No.$memberUid : Test Success"
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return result
+        return "Member No.$memberUid : Test Success"
     }
 
     ////
@@ -335,11 +323,11 @@ class C10Service1TkV1AuthService(
         // 멤버 고유번호로 엑세스 토큰 생성
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtAccessTokenExpirationTimeSec,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtAccessTokenExpirationTimeSec,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
         )
 
         val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtAccessToken)
@@ -347,11 +335,11 @@ class C10Service1TkV1AuthService(
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
             memberUidString,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtRefreshTokenExpirationTimeSec,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtRefreshTokenExpirationTimeSec,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
         )
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
@@ -604,11 +592,11 @@ class C10Service1TkV1AuthService(
 
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtAccessTokenExpirationTimeSec,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtAccessTokenExpirationTimeSec,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
         )
 
         val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtAccessToken)
@@ -616,11 +604,11 @@ class C10Service1TkV1AuthService(
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
             memberUidString,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtRefreshTokenExpirationTimeSec,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtRefreshTokenExpirationTimeSec,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
         )
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
@@ -712,11 +700,11 @@ class C10Service1TkV1AuthService(
 
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtAccessTokenExpirationTimeSec,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtAccessTokenExpirationTimeSec,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
         )
 
         val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtAccessToken)
@@ -724,11 +712,11 @@ class C10Service1TkV1AuthService(
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
             memberUidString,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtRefreshTokenExpirationTimeSec,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtRefreshTokenExpirationTimeSec,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
         )
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
@@ -828,8 +816,8 @@ class C10Service1TkV1AuthService(
 
         val accessTokenMemberUid = JwtTokenUtilObject.getMemberUid(
             accessToken,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         )
 
         // 타입과 토큰을 분리
@@ -866,20 +854,20 @@ class C10Service1TkV1AuthService(
                     refreshTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아닐 때
                     JwtTokenUtilObject.getTokenUsage(
                         jwtRefreshToken,
-                        ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-                        ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+                        ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+                        ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
                     ).lowercase() != "refresh" || // 토큰 타입이 Refresh 토큰이 아닐 때
                     // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
-                    JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) > ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtRefreshTokenExpirationTimeSec ||
-                    JwtTokenUtilObject.getIssuer(jwtRefreshToken) != ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer || // 발행인이 다를 때
+                    JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) > ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtRefreshTokenExpirationTimeSec ||
+                    JwtTokenUtilObject.getIssuer(jwtRefreshToken) != ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer || // 발행인이 다를 때
                     !JwtTokenUtilObject.validateSignature(
                         jwtRefreshToken,
-                        ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
+                        ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
                     ) || // 시크릿 검증이 유효하지 않을 때 = 위변조된 토큰
                     JwtTokenUtilObject.getMemberUid(
                         jwtRefreshToken,
-                        ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-                        ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+                        ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+                        ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
                     ) != accessTokenMemberUid // 리프레시 토큰의 멤버 고유번호와 액세스 토큰 멤버 고유번호가 다를시
                 ) {
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -935,22 +923,22 @@ class C10Service1TkV1AuthService(
                 // 새 토큰 생성 및 로그인 처리
                 val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
                     accessTokenMemberUid,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtAccessTokenExpirationTimeSec,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtAccessTokenExpirationTimeSec,
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey,
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer,
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
                 )
 
                 val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newJwtAccessToken)
 
                 val newRefreshToken = JwtTokenUtilObject.generateRefreshToken(
                     accessTokenMemberUid,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtRefreshTokenExpirationTimeSec,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtIssuer,
-                    ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtSecretKeyString
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtRefreshTokenExpirationTimeSec,
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey,
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer,
+                    ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
                 )
 
                 val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newRefreshToken)
@@ -996,8 +984,8 @@ class C10Service1TkV1AuthService(
     fun api10(authorization: String, httpServletResponse: HttpServletResponse) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -1032,8 +1020,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api10Dot1OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -1138,8 +1126,8 @@ class C10Service1TkV1AuthService(
     fun api12(httpServletResponse: HttpServletResponse, authorization: String, nickName: String) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -2146,8 +2134,8 @@ class C10Service1TkV1AuthService(
     ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(memberUid, "/")!!
 
@@ -2614,8 +2602,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api29OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         )
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -2654,8 +2642,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api30OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         )
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -2694,8 +2682,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api31OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -2736,8 +2724,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api32OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -2805,8 +2793,8 @@ class C10Service1TkV1AuthService(
     ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val emailVerificationOpt = database1Service1AddEmailVerificationDataRepository.findById(verificationUid)
@@ -2857,8 +2845,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api34OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -2948,8 +2936,8 @@ class C10Service1TkV1AuthService(
     ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3033,8 +3021,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api36OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3105,8 +3093,8 @@ class C10Service1TkV1AuthService(
     ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val phoneNumberVerificationOpt =
@@ -3156,8 +3144,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api38OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3249,8 +3237,8 @@ class C10Service1TkV1AuthService(
     ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3333,8 +3321,8 @@ class C10Service1TkV1AuthService(
     ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3447,8 +3435,8 @@ class C10Service1TkV1AuthService(
     ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3519,8 +3507,8 @@ class C10Service1TkV1AuthService(
     ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3597,8 +3585,8 @@ class C10Service1TkV1AuthService(
     ) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3687,8 +3675,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api43OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3727,8 +3715,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api44OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3765,8 +3753,8 @@ class C10Service1TkV1AuthService(
     fun api45(httpServletResponse: HttpServletResponse, authorization: String, profileUid: Long?) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3825,8 +3813,8 @@ class C10Service1TkV1AuthService(
     fun api46(authorization: String, httpServletResponse: HttpServletResponse, profileUid: Long) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3873,8 +3861,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api47OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -3997,8 +3985,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api49OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -4035,8 +4023,8 @@ class C10Service1TkV1AuthService(
     fun api50(httpServletResponse: HttpServletResponse, authorization: String, emailUid: Long?) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -4097,8 +4085,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api51OutputVo? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
@@ -4135,8 +4123,8 @@ class C10Service1TkV1AuthService(
     fun api52(httpServletResponse: HttpServletResponse, authorization: String, phoneNumberUid: Long?) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256InitializationVector,
-            ApplicationRuntimeConfigs.service1RuntimeConfigDb.authJwtClaimsAes256EncryptionKey
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
+            ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
         ).toLong()
 
         val memberData = database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(

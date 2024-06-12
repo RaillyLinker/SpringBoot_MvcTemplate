@@ -48,13 +48,19 @@ class C1Service(
 
 
     ////
-    fun api2(httpServletResponse: HttpServletResponse) {
-        ApplicationRuntimeConfigs.loadRuntimeConfigFile()
+    fun api2(httpServletResponse: HttpServletResponse): ApplicationRuntimeConfigs.RuntimeConfigFile {
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return ApplicationRuntimeConfigs.loadRuntimeConfigFile()
     }
 
 
     ////
-    fun api2Dot1(httpServletResponse: HttpServletResponse) {
-        ApplicationRuntimeConfigs.loadService1RuntimeConfigDb(database1Service1Service1RuntimeConfigDataRepository)
+    fun api2Dot1(httpServletResponse: HttpServletResponse): ApplicationRuntimeConfigs.RuntimeConfigDbService1 {
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return ApplicationRuntimeConfigs.loadRuntimeConfigDbService1(
+            database1Service1Service1RuntimeConfigDataRepository
+        )
     }
 }

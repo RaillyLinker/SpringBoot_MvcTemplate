@@ -13,7 +13,7 @@ import java.util.*
 @EnableAsync // 스케쥴러의 Async 사용 설정
 @SpringBootApplication
 class ApplicationMain(
-    private val database1Service1Service1RuntimeConfigDataRepository: Database1_Service1_RuntimeConfigDataRepository
+    private val database1Service1RuntimeConfigDataRepository: Database1_Service1_RuntimeConfigDataRepository
 ) {
     @Bean
     fun init() = CommandLineRunner {
@@ -22,8 +22,8 @@ class ApplicationMain(
 
         // 런타임 설정 가져오기
         ApplicationRuntimeConfigs.loadRuntimeConfigFile()
-        ApplicationRuntimeConfigs.loadService1RuntimeConfigDb(
-            database1Service1Service1RuntimeConfigDataRepository
+        ApplicationRuntimeConfigs.loadRuntimeConfigDbService1(
+            database1Service1RuntimeConfigDataRepository
         )
     }
 }

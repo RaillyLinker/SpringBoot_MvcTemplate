@@ -1,5 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
+import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -49,7 +50,7 @@ class C1Controller(
     ////
     @Operation(
         summary = "N2 : 범용 런타임 설정 파일 데이터 반영",
-        description = "파일로 저장되는 범용 런타임 설정 데이터를 프로젝트에 반영합니다.\n\n"
+        description = "파일로 저장되는 범용 런타임 설정 데이터를 프로젝트에 반영하고 현재 적용된 값을 가져옵니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -62,21 +63,21 @@ class C1Controller(
     @GetMapping(
         path = ["/runtime-config"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.ALL_VALUE]
+        produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
     fun api2(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ) {
-        service.api2(httpServletResponse)
+    ): ApplicationRuntimeConfigs.RuntimeConfigFile {
+        return service.api2(httpServletResponse)
     }
 
 
     ////
     @Operation(
         summary = "N2.1 : service1 런타임 설정 데이터 반영",
-        description = "service1 데이터베이스에 저장되는 런타임 설정 데이터를 프로젝트에 반영합니다.\n\n"
+        description = "service1 데이터베이스에 저장되는 런타임 설정 데이터를 프로젝트에 반영하고 현재 적용된 값을 가져옵니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -95,7 +96,7 @@ class C1Controller(
     fun api2Dot1(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ) {
-        service.api2Dot1(httpServletResponse)
+    ): ApplicationRuntimeConfigs.RuntimeConfigDbService1 {
+        return service.api2Dot1(httpServletResponse)
     }
 }

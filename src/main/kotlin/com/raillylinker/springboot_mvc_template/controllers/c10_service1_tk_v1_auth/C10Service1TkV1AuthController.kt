@@ -59,7 +59,7 @@ class C10Service1TkV1AuthController(
     fun api1(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Map<String, Any>? {
+    ): String? {
         return service.api1(httpServletResponse)
     }
 
@@ -103,7 +103,7 @@ class C10Service1TkV1AuthController(
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Map<String, Any>? {
+    ): String? {
         return service.api2(httpServletResponse, authorization!!)
     }
 
@@ -146,7 +146,7 @@ class C10Service1TkV1AuthController(
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Map<String, Any>? {
+    ): String? {
         return service.api2Dot1(httpServletResponse, authorization)
     }
 
@@ -195,7 +195,7 @@ class C10Service1TkV1AuthController(
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Map<String, Any>? {
+    ): String? {
         return service.api3(httpServletResponse, authorization!!)
     }
 
@@ -244,7 +244,7 @@ class C10Service1TkV1AuthController(
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Map<String, Any>? {
+    ): String? {
         return service.api4(httpServletResponse, authorization!!)
     }
 
