@@ -612,7 +612,7 @@ class C6Service1TkV1TestController(
     fun api11(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @Parameter(name = "encryptedText", description = "복호화 하려는 암호문", example = "testString")
+        @Parameter(name = "encryptedText", description = "복호화 하려는 암호문", example = "DwH1WCA3Bzqf6xq+udBI1Q==")
         @RequestParam("encryptedText")
         encryptedText: String,
         @Parameter(name = "alg", description = "암호화 알고리즘", example = "AES_CBC_PKCS5")
