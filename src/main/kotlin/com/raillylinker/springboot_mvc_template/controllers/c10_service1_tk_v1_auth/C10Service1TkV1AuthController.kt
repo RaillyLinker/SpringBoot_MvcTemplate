@@ -109,6 +109,10 @@ class C10Service1TkV1AuthController(
 
 
     ////
+    // 주의 : 아래와 같이 로그인/비로그인 시의 결과를 달리하고 싶으면,
+    //     차라리 API 를 2개로 나누는 것이 더 좋습니다.
+    //     이유는, Service 코드에서 보이는 것처럼,
+    //     SpringSecurity 의 도움을 받지 않는다면 코드가 지저분해지기 때문이죠.
     @Operation(
         summary = "N2.1 : 로그인 / 비로그인 진입 테스트 <>?",
         description = "로그인 / 혹은 비로그인 모두 진입 가능하며, 로그인 여부를 코드에서 판단합니다.\n\n"
