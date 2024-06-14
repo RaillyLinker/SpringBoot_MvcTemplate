@@ -90,7 +90,7 @@ class C1Controller(
     @GetMapping(
         path = ["/service1-runtime-config"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.ALL_VALUE]
+        produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
     fun api2Dot1(
