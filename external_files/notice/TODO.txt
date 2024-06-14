@@ -1,4 +1,15 @@
 [TODO]
-- C10 코드 검증 완료됨. 남은 것은 기능 테스트
+- 아래 목록 검증
+external_files/docker/server_docker
+Knowledges
+Configurations/MailConfig
+Configurations/securityConfig
+C4
+C6
+C7
+C10
+custom_dis
+custom_objects/JwtTokenUtilObject
+data_sources/database_sources
 
 - SC 예시 추가 - payment 예시도 같이
