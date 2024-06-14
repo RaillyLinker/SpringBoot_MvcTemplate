@@ -5,14 +5,7 @@
 
 - 레플리카 설정
 >> mongosh
->> rs.initiate({
-     _id: "rs0",
-     members: [
-       { _id: 0, host: "mongodb1:27017" },
-       { _id: 1, host: "mongodb2:27018" },
-       { _id: 2, host: "mongodb3:27019" }
-     ]
-   })
+>> rs.initiate({_id: "rs0", members: [{ _id: 0, host: "mongodb1:27017" },{ _id: 1, host: "mongodb2:27018" },{ _id: 2, host: "mongodb3:27019" }]})
 
 // 출력데이터
 { ok: 1 }
@@ -25,6 +18,10 @@
   set: 'rs0',
   ...
 }
+출력 데이터를 확인하여 stateStr 이 PRIMARY 로 된 주소를 Springboot application.yml 안의 mongodb 접속 주소 설정으로 넣어주어야 합니다.
+
+- 몽고DB 입력창 나가기
+>> exit
 
 - 호스트 설정
 >> apt-get update
