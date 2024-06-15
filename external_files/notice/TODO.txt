@@ -1,15 +1,11 @@
 [TODO]
+- mail 과 sms 계정이 없을 때 회원 기능을 테스트 가능하도록 수정
+C10 검증
+
 - 아래 목록 검증
-external_files/docker/server_docker
-Knowledges
 Configurations/MailConfig
-Configurations/securityConfig
-C4
+custom_dis/EmailSenderUtilDi
+custom_dis/NaverSmsUtilDi
 C6
-C7
-C10
-custom_dis
-custom_objects/JwtTokenUtilObject
-data_sources/database_sources
 
 - SC 예시 추가 - payment 예시도 같이
