@@ -45,9 +45,9 @@ datasource:
     # 로컬 DB 접속은 localhost 를 사용하고, 도커에서 로컬 DB 접속시엔 host.docker.internal 를 사용하세요.
     jdbcUrl: jdbc:mysql://localhost:3306/template?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&autoReconnect=true
     # 데이터베이스의 사용자명
-    username: test
+    username: root
     # 데이터베이스의 패스워드
-    password: test1234!
+    password: todo1234!
     # 데이터베이스 접속시 사용하는 드라이버
     driverClassName: com.mysql.cj.jdbc.Driver
     data: classpath:sql/data-h2.sql
