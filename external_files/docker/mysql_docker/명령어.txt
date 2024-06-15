@@ -1,0 +1,3 @@
+docker-compose -f mysql-compose.yml up
+
+- init/init.sql 에는 도커 생성시 실행할 SQL 을 작성하세요.

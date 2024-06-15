@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql:8.0
+    platform: linux/x86_64
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: todo1234!
+      MYSQL_DATABASE: mysqldb
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test1234!
+      TZ: Asia/Seoul
+    volumes:
+      - C:/Users/raill/Downloads/tmp/mysql/data:/var/lib/mysql
+      - C:/Users/raill/Downloads/tmp/mysql/config:/etc/mysql/conf.d
+      - ./mysql_db/init:/docker-entrypoint-initdb.d
