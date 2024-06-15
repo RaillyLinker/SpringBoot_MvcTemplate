@@ -1,3 +1,6 @@
-docker-compose -f mysql-compose.yml up
+- compose 파일에 적혀있는 ./mysql_db/init 외의 볼륨 설정의 경로를 자신이 원하는 위치로 변경해주세요.
+
+- 도커 컨테이너 실행 명령어 (커맨드창에서 본 디렉토리 경로로 이동하여 입력하세요.)
+>> docker-compose -f mysql-compose.yml up
 
 - init/init.sql 에는 도커 생성시 실행할 SQL 을 작성하세요.
