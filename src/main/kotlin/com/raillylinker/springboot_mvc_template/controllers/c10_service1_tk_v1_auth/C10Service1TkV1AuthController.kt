@@ -53,7 +53,7 @@ class C10Service1TkV1AuthController(
     @GetMapping(
         path = ["/for-no-logged-in"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @ResponseBody
     fun api1(
@@ -93,7 +93,7 @@ class C10Service1TkV1AuthController(
     @GetMapping(
         path = ["/for-logged-in"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
@@ -141,7 +141,7 @@ class C10Service1TkV1AuthController(
     @GetMapping(
         path = ["/for-logged-in-or-not"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @ResponseBody
     fun api2Dot1(
@@ -189,7 +189,7 @@ class C10Service1TkV1AuthController(
     @GetMapping(
         path = ["/for-admin"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_ADMIN'))")
     @ResponseBody
@@ -238,7 +238,7 @@ class C10Service1TkV1AuthController(
     @GetMapping(
         path = ["/for-developer"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_DEVELOPER') or hasRole('ROLE_ADMIN'))")
     @ResponseBody
