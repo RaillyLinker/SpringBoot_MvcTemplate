@@ -239,7 +239,7 @@
         github integration : github의 webhook 을 사용하기 위한 플러그인
         post build task : 빌드 로그를 판단하여’ script 혹은 shell 을 실행할 수 있게 하는 플러그인
         publish over ssh : 다른 EC2에 접속하여 작업을 가능하게 해주는 플러그인
-        Gitlab plugin : 깃랩 계정 사용 플러그인
+        Gitlab : 깃랩 계정 사용 플러그인
 
         설치후 재시작을합니다.
 
@@ -320,7 +320,7 @@
 
         Test Configuration을 클릭하여 연결을 확인합니다.
 
-        배포 서버에서 젠킨스 아이피를 허용한 상태여야 하는 것을 주의합시다.
+        배포 서버에서 젠킨스 아이피(같은 VPC 라면 private ip)를 허용한 상태여야 하는 것을 주의합시다.
 
         System 설정은 끝났으니, 하단에 저장 버튼을 눌러줍시다.
 
