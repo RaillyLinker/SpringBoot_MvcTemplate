@@ -146,19 +146,7 @@
 
         명령어로 젠킨스 컨테이너 안에 들어가서,
 
-        >> apt-get update && \
-           apt-get -y install apt-transport-https \
-                ca-certificates \
-                curl \
-                gnupg2 \
-                software-properties-common && \
-           curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && \
-           add-apt-repository \
-              "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
-              $(lsb_release -cs) \
-              stable" && \
-           apt-get update && \
-           apt-get -y install docker-ce
+        >> apt-get update && apt-get -y install apt-transport-https ca-certificates curl gnupg2 software-properties-common && curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable" && apt-get update && apt-get -y install docker-ce
 
         위 명령어를 입력하여 도커를 설치한 후,
 
