@@ -28,7 +28,7 @@
     모니터링 소스 엔진을 고르는 것으로, 앞서 실행시킨 Prometheus 를 선택합니다.
     Connection 에는 Prometheus 접속 주소를 입력하는데,
 
-    http://host.docker.internal:9090
+    http://prometheus:9090
 
     같은 도커 내에서 실행시켰으므로 위와 같이 작성하면 됩니다.
 
