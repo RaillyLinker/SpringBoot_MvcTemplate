@@ -1,9 +1,2 @@
 [TODO]
-- 아래 목록 검증
-    Configurations/MailConfig
-    custom_dis/EmailSenderUtilDi
-    custom_dis/NaverSmsUtilDi
-    C6
-    C10 검증
-
 - SC 예시 추가 - payment 예시도 같이
