@@ -51,6 +51,7 @@
         로 각 이미지를 load 해주세요.
 
     6. 각 이미지를 컨테이너로 실행시켜줍니다.
+        >> sudo docker network create monitoring-network
         >> sudo docker run -d --name prometheus --network monitoring-network -p 9090:9090 -v /home/ubuntu/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:latest --config.file=/etc/prometheus/prometheus.yml
         >> sudo docker run -d --name grafana --network monitoring-network -p 3000:3000 grafana/grafana:latest
 
