@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 // [JWT 토큰 유틸]
 object JwtTokenUtilObject {
@@ -168,11 +169,9 @@ object JwtTokenUtilObject {
         // 발행자
         claimsMap["iss"] = issuer
 
-        // 액세스 토큰은 초단위를 사용합니다.
-        // 초 단위로도 겹칠 경우가 있을 수 있는데,
-        // 이는 만료 되지도 않은 토큰을 밀리초 단위로 요청하는 클라이언트의 오용이므로 오히려 클라이언트 측에 수정을 요구해야 합니다.
         claimsMap["iat"] = Instant.now().epochSecond
         claimsMap["exp"] = Instant.now().epochSecond + expireTimeSec
+        claimsMap["cd"] = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSSSSS"))
 
         jwtBuilder.claims().empty().add(claimsMap)
 
