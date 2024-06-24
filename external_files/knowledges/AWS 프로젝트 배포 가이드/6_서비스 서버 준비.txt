@@ -217,12 +217,8 @@
 
 - 본 프로젝트는 actuator 를 사용하여 logback 의 로그 파일에 접근이 가능합니다.
     다만, 본 프로젝트에서는 actuator 에 대한 접근을 함부로 할 수 없도록 접근을 막아둔 상태입니다.
-    actuator 로그를 확인하기 위해선 프로젝트가 실행중인 서버에 접속하고 dev 혹은 prod 디렉토리 안의 by_product_files/configs/runtime_config.json
-    파일을,
-
-    >> sudo vi runtime_config.json
-
-    이렇게 열어서, actuatorAllowIpList 안에 접근하고자하는 위치의 IP 를 입력후,
+    actuator 로그를 확인하기 위해선 ApplicationRuntimeConfigs 안의 내용을 파악하여,
+    런타임 설정용 데이터베이스 테이블에 접근하고 actuator 허용 아이피 설정 값에 IP 를 입력한 후,
     C1-N2 API 를 실행시켜주면 접근 허용이 반영됩니다.
 
     /actuator/logfile
