@@ -12,7 +12,7 @@ import java.time.LocalDateTime
     name = "runtime_config_data_for_actuator_allow_ip",
     catalog = "service1",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["runtime_config_data_uid", "ip_string", "row_delete_date_str"])
+        UniqueConstraint(columnNames = ["runtime_config_data_uid", "ip_string"])
     ]
 )
 @Comment("Service1 의 런타임 변경 가능 설정 정보 중 Actuator 정보 접근 허용 IP")
