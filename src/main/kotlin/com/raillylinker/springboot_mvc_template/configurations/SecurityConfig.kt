@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
-import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
+import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfig
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_LogInTokenInfoRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_MemberDataRepository
@@ -203,15 +203,15 @@ class SecurityConfig(
                             accessTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
                             JwtTokenUtilObject.getTokenUsage(
                                 accessToken,
-                                ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
-                                ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
+                                ApplicationRuntimeConfig.runtimeConfigData.authJwtClaimsAes256InitializationVector,
+                                ApplicationRuntimeConfig.runtimeConfigData.authJwtClaimsAes256EncryptionKey
                             ).lowercase() != "access" || // 토큰 용도가 다름
                             // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
-                            JwtTokenUtilObject.getRemainSeconds(accessToken) > ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtAccessTokenExpirationTimeSec ||
-                            JwtTokenUtilObject.getIssuer(accessToken) != ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtIssuer || // 발행인 불일치
+                            JwtTokenUtilObject.getRemainSeconds(accessToken) > ApplicationRuntimeConfig.runtimeConfigData.authJwtAccessTokenExpirationTimeSec ||
+                            JwtTokenUtilObject.getIssuer(accessToken) != ApplicationRuntimeConfig.runtimeConfigData.authJwtIssuer || // 발행인 불일치
                             !JwtTokenUtilObject.validateSignature(
                                 accessToken,
-                                ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtSecretKeyString
+                                ApplicationRuntimeConfig.runtimeConfigData.authJwtSecretKeyString
                             ) // 시크릿 검증이 무효 = 위변조 된 토큰
                         ) {
                             // 올바르지 않은 Authorization Token
@@ -319,8 +319,8 @@ class SecurityConfig(
                     // 유저 탈퇴 여부 확인
                     val memberUid = JwtTokenUtilObject.getMemberUid(
                         accessToken,
-                        ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256InitializationVector,
-                        ApplicationRuntimeConfigs.runtimeConfigDbService1.authJwtClaimsAes256EncryptionKey
+                        ApplicationRuntimeConfig.runtimeConfigData.authJwtClaimsAes256InitializationVector,
+                        ApplicationRuntimeConfig.runtimeConfigData.authJwtClaimsAes256EncryptionKey
                     ).toLong()
 
                     val memberData =

@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.filters
 
-import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
+import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfig
 import jakarta.servlet.AsyncEvent
 import jakarta.servlet.AsyncListener
 import jakarta.servlet.FilterChain
@@ -51,7 +51,15 @@ class LoggingFilter : OncePerRequestFilter() {
         // 요청자 Ip (ex : 127.0.0.1)
         val clientAddressIp = request.remoteAddr
 
-        if (clientAddressIp in ApplicationRuntimeConfigs.runtimeConfigFile.loggingDenyIpList) {
+        var loggingDeny = false
+        for (loggingDenyIp in ApplicationRuntimeConfig.runtimeConfigData.loggingDenyIpList) {
+            if (loggingDenyIp.ipString == clientAddressIp) {
+                loggingDeny = true
+                break
+            }
+        }
+
+        if (loggingDeny) {
             filterChain.doFilter(request, response)
             return
         }

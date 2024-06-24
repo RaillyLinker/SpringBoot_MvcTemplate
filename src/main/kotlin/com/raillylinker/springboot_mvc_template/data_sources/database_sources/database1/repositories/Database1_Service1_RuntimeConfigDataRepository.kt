@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface Database1_Service1_RuntimeConfigDataRepository :
     JpaRepository<Database1_Service1_RuntimeConfigData, Long> {
+    fun findAllByOrderByUid(): List<Database1_Service1_RuntimeConfigData>
 }
