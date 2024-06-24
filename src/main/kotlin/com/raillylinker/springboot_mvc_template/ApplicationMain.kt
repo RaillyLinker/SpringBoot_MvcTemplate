@@ -25,7 +25,7 @@ class ApplicationMain(
         TimeZone.setDefault(TimeZone.getTimeZone(ApplicationConstants.SYSTEM_TIME_ZONE))
 
         // 런타임 설정 가져오기
-        ApplicationRuntimeConfig.loadRuntimeConfigData(
+        ApplicationRuntimeConfigs.loadRuntimeConfigData(
             database1Service1RuntimeConfigDataRepository,
             database1Service1RuntimeConfigDataForActuatorAllowIpRepository,
             database1Service1RuntimeConfigDataForLoggingDenyIpRepository

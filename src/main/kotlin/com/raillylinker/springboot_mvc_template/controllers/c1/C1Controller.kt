@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
-import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfig
+import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -69,7 +69,7 @@ class C1Controller(
     fun api2(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): ApplicationRuntimeConfig.RuntimeConfigData {
+    ): ApplicationRuntimeConfigs.RuntimeConfigData {
         return service.api2(httpServletResponse)
     }
 }

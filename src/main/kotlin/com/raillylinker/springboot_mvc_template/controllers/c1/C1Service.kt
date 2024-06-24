@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
-import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfig
+import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_RuntimeConfigDataForActuatorAllowIpRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_RuntimeConfigDataForLoggingDenyIpRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_RuntimeConfigDataRepository
@@ -52,10 +52,10 @@ class C1Service(
 
 
     ////
-    fun api2(httpServletResponse: HttpServletResponse): ApplicationRuntimeConfig.RuntimeConfigData {
+    fun api2(httpServletResponse: HttpServletResponse): ApplicationRuntimeConfigs.RuntimeConfigData {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return ApplicationRuntimeConfig.loadRuntimeConfigData(
+        return ApplicationRuntimeConfigs.loadRuntimeConfigData(
             database1Service1Service1RuntimeConfigDataRepository,
             database1Service1RuntimeConfigDataForActuatorAllowIpRepository,
             database1Service1RuntimeConfigDataForLoggingDenyIpRepository

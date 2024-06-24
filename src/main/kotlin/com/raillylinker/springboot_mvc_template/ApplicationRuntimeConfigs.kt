@@ -16,7 +16,7 @@ import com.raillylinker.springboot_mvc_template.data_sources.database_sources.da
 
     !!!런타임 설정을 추가한다면, 아래에 추가, ApplicationMain 에서 load, C1 에 런타임 로딩 API 를 추가 해주면 됩니다.!!!
  */
-object ApplicationRuntimeConfig {
+object ApplicationRuntimeConfigs {
     // (런타임 설정 데이터)
     var runtimeConfigData: RuntimeConfigData =
         // !!!설정 파일이 없을 때의 초기 설정!!!
