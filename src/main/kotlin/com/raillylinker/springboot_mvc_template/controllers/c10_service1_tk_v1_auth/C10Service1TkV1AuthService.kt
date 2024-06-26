@@ -1456,7 +1456,7 @@ class C10Service1TkV1AuthService(
         // 전화번호 (ex : "01000000000")
         val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
 
-        naverSmsUtilDi.sendSms(
+        val sendSmsResult = naverSmsUtilDi.sendSms(
             NaverSmsUtilDi.SendSmsInputVo(
                 "SMS",
                 countryCode,
@@ -1464,6 +1464,10 @@ class C10Service1TkV1AuthService(
                 "[Springboot Mvc Project Template - 회원가입] 인증번호 [${verificationCode}]"
             )
         )
+
+        if (!sendSmsResult) {
+            throw Exception()
+        }
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -2433,7 +2437,7 @@ class C10Service1TkV1AuthService(
         // 전화번호 (ex : "01000000000")
         val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
 
-        naverSmsUtilDi.sendSms(
+        val sendSmsResult = naverSmsUtilDi.sendSms(
             NaverSmsUtilDi.SendSmsInputVo(
                 "SMS",
                 countryCode,
@@ -2441,6 +2445,10 @@ class C10Service1TkV1AuthService(
                 "[Springboot Mvc Project Template - 비밀번호 찾기] 인증번호 [${verificationCode}]"
             )
         )
+
+        if (!sendSmsResult) {
+            throw Exception()
+        }
 
         return C10Service1TkV1AuthController.Api25OutputVo(
             database1MemberFindPasswordPhoneNumberVerificationData.uid!!,
@@ -2553,7 +2561,7 @@ class C10Service1TkV1AuthService(
             // 전화번호 (ex : "01000000000")
             val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
 
-            naverSmsUtilDi.sendSms(
+            val sendSmsResult = naverSmsUtilDi.sendSms(
                 NaverSmsUtilDi.SendSmsInputVo(
                     "SMS",
                     countryCode,
@@ -2561,6 +2569,10 @@ class C10Service1TkV1AuthService(
                     "[Springboot Mvc Project Template - 새 비밀번호] $newPassword"
                 )
             )
+
+            if (!sendSmsResult) {
+                throw Exception()
+            }
 
             // 확인 완료된 검증 요청 정보 삭제
             phoneNumberVerification.rowDeleteDateStr =
@@ -3064,7 +3076,7 @@ class C10Service1TkV1AuthService(
         // 전화번호 (ex : "01000000000")
         val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
 
-        naverSmsUtilDi.sendSms(
+        val sendSmsResult = naverSmsUtilDi.sendSms(
             NaverSmsUtilDi.SendSmsInputVo(
                 "SMS",
                 countryCode,
@@ -3072,6 +3084,10 @@ class C10Service1TkV1AuthService(
                 "[Springboot Mvc Project Template - 전화번호 추가] 인증번호 [${verificationCode}]"
             )
         )
+
+        if (!sendSmsResult) {
+            throw Exception()
+        }
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()

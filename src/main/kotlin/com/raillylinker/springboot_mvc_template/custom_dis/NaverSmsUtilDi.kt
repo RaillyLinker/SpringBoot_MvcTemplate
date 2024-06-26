@@ -27,41 +27,48 @@ class NaverSmsUtilDi(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun sendSms(inputVo: SendSmsInputVo) {
+    fun sendSms(inputVo: SendSmsInputVo): Boolean {
         val time = System.currentTimeMillis()
-
-        // timeStamp 시그니쳐 생성
-        val message = StringBuilder()
-            .append("POST")
-            .append(" ")
-            .append("/sms/v2/services/$serviceId/messages")
-            .append("\n")
-            .append(time.toString())
-            .append("\n")
-            .append(accessKey)
-            .toString()
-        val mac = Mac.getInstance("HmacSHA256")
-        mac.init(SecretKeySpec(secretKey.toByteArray(charset("UTF-8")), "HmacSHA256"))
-
-        networkRetrofit2.sensApigwNtrussComRequestApi.postSmsV2ServicesNaverSmsServiceIdMessages(
+        val responseObj = networkRetrofit2.sensApigwNtrussComRequestApi.postSmsV2ServicesNaverSmsServiceIdMessages(
             serviceId,
             time.toString(),
             accessKey,
-            Base64.encodeBase64String(mac.doFinal(message.toByteArray(charset("UTF-8")))),
+            Base64.encodeBase64String(
+                Mac.getInstance("HmacSHA256").apply {
+                    this.init(SecretKeySpec(secretKey.toByteArray(charset("UTF-8")), "HmacSHA256"))
+                }.doFinal(
+                    StringBuilder()
+                        .append("POST")
+                        .append(" ")
+                        .append("/sms/v2/services/$serviceId/messages")
+                        .append("\n")
+                        .append(time.toString())
+                        .append("\n")
+                        .append(accessKey)
+                        .toString().toByteArray(charset("UTF-8"))
+                )
+            ),
             SensApigwNtrussComRequestApi.PostSmsV2ServicesNaverSmsServiceIdMessagesInputVO(
                 inputVo.messageType,
-                "COMM",
+                null,
                 inputVo.countryCode,
                 phoneNumber,
+                null,
                 inputVo.content,
                 listOf(
                     SensApigwNtrussComRequestApi.PostSmsV2ServicesNaverSmsServiceIdMessagesInputVO.MessageVo(
                         inputVo.phoneNumber,
-                        inputVo.content
+                        null,
+                        null
                     )
-                )
+                ),
+                null,
+                null,
+                null
             )
         ).execute()
+
+        return responseObj.code() == 202
     }
 
 

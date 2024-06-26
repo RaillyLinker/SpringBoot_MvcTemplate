@@ -105,7 +105,7 @@ class C6Service1TkV1TestService(
         val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
 
         // SMS 전송
-        naverSmsUtilDi.sendSms(
+        val sendSmsResult = naverSmsUtilDi.sendSms(
             NaverSmsUtilDi.SendSmsInputVo(
                 "SMS",
                 countryCode,
@@ -113,6 +113,10 @@ class C6Service1TkV1TestService(
                 inputVo.smsMessage
             )
         )
+
+        if (!sendSmsResult) {
+            throw Exception()
+        }
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
