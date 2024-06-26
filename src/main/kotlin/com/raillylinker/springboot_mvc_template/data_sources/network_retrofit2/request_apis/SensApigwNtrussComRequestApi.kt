@@ -109,4 +109,49 @@ interface SensApigwNtrussComRequestApi {
         @Expose
         var statusName: String
     )
+
+    // (Naver SMS 파일 발송)
+    // postSmsV2ServicesNaverSmsServiceIdMessages API 에서 파일을 전송하기 전에,
+    // 이것을 실행하여 fileId 를 발급받아서 전송하면 됩니다.
+    // https://api.ncloud-docs.com/docs/ai-application-service-sens-smsv2
+    @POST("sms/v2/services/{naverSmsServiceId}/files")
+    @Headers("Content-Type: application/json")
+    fun postSmsV2ServicesNaverSmsServiceIdFiles(
+        // 프로젝트 등록 시 발급받은 서비스 아이디
+        @Path("naverSmsServiceId") naverSmsServiceId: String,
+        // 1970년 1월 1일 00:00:00 협정 세계시(UTC)부터의 경과 시간을 밀리초(Millisecond)로 나타냄
+        // API Gateway 서버와 시간 차가 5분 이상 나는 경우 유효하지 않은 요청으로 간주
+        @Header("x-ncp-apigw-timestamp") xNcpApigwTimestamp: String,
+        // 포탈 또는 Sub Account에서 발급받은 Access Key ID
+        @Header("x-ncp-iam-access-key") xNcpIamAccessKey: String,
+        // 위 예제의 Body를 Access Key Id와 맵핑되는 SecretKey로 암호화한 서명, HMAC 암호화 알고리즘은 HmacSHA256 사용
+        @Header("x-ncp-apigw-signature-v2") xNcpApigwSignatureV2: String,
+        @Body inputVo: PostSmsV2ServicesNaverSmsServiceIdFilesInputVO
+    ): Call<PostSmsV2ServicesNaverSmsServiceIdFilesOutputVO?>
+
+    data class PostSmsV2ServicesNaverSmsServiceIdFilesInputVO(
+        // 파일 이름, .jpg, .jpeg 확장자를 가진 파일 이름, 최대 40자
+        @SerializedName("fileName")
+        @Expose
+        var fileName: String,
+        // 파일 바디, .jpg, .jpeg 이미지를 Base64로 인코딩한 값, 원 파일 기준 최대 300Kbyte, 해상도 최대 1500 * 1440
+        @SerializedName("fileBody")
+        @Expose
+        var fileBody: String
+    )
+
+    data class PostSmsV2ServicesNaverSmsServiceIdFilesOutputVO(
+        // 파일 아이디, MMS 메시지 발송 시 활용
+        @SerializedName("fileId")
+        @Expose
+        var fileId: String,
+        // 파일 업로드 시간 yyyy-MM-dd'T'HH:mm:ss.SSS
+        @SerializedName("createTime")
+        @Expose
+        var createTime: String,
+        // 파일 만료 시간 yyyy-MM-dd'T'HH:mm:ss.SSS
+        @SerializedName("expireTime")
+        @Expose
+        var expireTime: String
+    )
 }
