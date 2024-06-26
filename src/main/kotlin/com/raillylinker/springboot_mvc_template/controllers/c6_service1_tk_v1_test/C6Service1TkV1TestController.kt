@@ -170,6 +170,51 @@ class C6Service1TkV1TestController(
 
     ////
     @Operation(
+        summary = "N3.1 : Naver API AlimTalk 발송 샘플",
+        description = "Naver API 를 사용한 AlimTalk 발송 샘플\n\n" +
+                "Service 에서 사용하는 Naver AlimTalk 발송 유틸 내의 개인정보를 변경해야 사용 가능\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/naver-alim-talk-sample"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api3Dot1(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @RequestBody
+        inputVo: Api3Dot1InputVo
+    ) {
+        return service.api3Dot1(httpServletResponse, inputVo)
+    }
+
+    data class Api3Dot1InputVo(
+        @Schema(description = "카카오톡 채널명 ((구)플러스친구 아이디)", required = true, example = "@test")
+        @JsonProperty("plusFriendId")
+        val plusFriendId: String,
+        @Schema(description = "템플릿 코드", required = true, example = "AAA1111")
+        @JsonProperty("templateCode")
+        val templateCode: String,
+        @Schema(description = "SMS 수신측 휴대전화 번호", required = true, example = "82)010-1111-1111")
+        @JsonProperty("phoneNumber")
+        val phoneNumber: String,
+        @Schema(description = "메세지(템플릿에 등록한 문장과 동일해야 됩니다.)", required = true, example = "테스트 메세지 발송입니다.")
+        @JsonProperty("message")
+        val message: String
+    )
+
+
+    ////
+    @Operation(
         summary = "N4 : 액셀 파일을 받아서 해석 후 데이터 반환",
         description = "액셀 파일을 받아서 해석 후 데이터 반환\n\n"
     )

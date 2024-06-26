@@ -18,7 +18,9 @@ class NaverSmsUtilDi(
     @Value("\${customConfig.naverSms.serviceId}")
     private var serviceId: String,
     @Value("\${customConfig.naverSms.phoneNumber}")
-    private var phoneNumber: String
+    private var phoneNumber: String,
+    @Value("\${customConfig.naverSms.alimTalkServiceId}")
+    private var alimTalkServiceId: String
 ) {
     // <멤버 변수 공간>
     // Retrofit2 요청 객체
@@ -156,7 +158,7 @@ class NaverSmsUtilDi(
             )
         }
         val responseObj = networkRetrofit2.sensApigwNtrussComRequestApi.postAlimtalkV2ServicesNaverSmsServiceIdMessages(
-            serviceId,
+            alimTalkServiceId,
             time.toString(),
             accessKey,
             Base64.encodeBase64String(
@@ -166,7 +168,7 @@ class NaverSmsUtilDi(
                     StringBuilder()
                         .append("POST")
                         .append(" ")
-                        .append("/sms/v2/services/$serviceId/messages")
+                        .append("/alimtalk/v2/services/$alimTalkServiceId/messages")
                         .append("\n")
                         .append(time.toString())
                         .append("\n")
@@ -238,7 +240,7 @@ class NaverSmsUtilDi(
             val phoneNumber: String,
             // 알림톡 강조표시 내용, 강조 표기 유형의 템플릿에서만 사용 가능
             val title: String?,
-            // 문자 본문
+            // 문자 본문 (템플릿에 등록한 문장과 동일해야합니다.)
             val content: String,
             // 알림톡 헤더 내용, 아이템 리스트 유형의 템플릿에서만 사용 가능, 16 bytes 미만 까지 입력 가능
             val headerContent: String?,

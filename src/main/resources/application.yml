@@ -64,6 +64,7 @@ customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
     secretKey: InputYourSecretKey
     serviceId: ncp:sms:kr:test:test
     phoneNumber: test
+    alimTalkServiceId: ncp:kkobizmsg:kr:test:test
 
   swagger: # Swagger 문서 설정
     documentVersion: 1.0.0

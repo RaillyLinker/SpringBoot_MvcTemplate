@@ -124,6 +124,43 @@ class C6Service1TkV1TestService(
 
 
     ////
+    fun api3Dot1(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api3Dot1InputVo) {
+        val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
+
+        // 국가 코드 (ex : 82)
+        val countryCode = phoneNumberSplit[0]
+
+        // 전화번호 (ex : "01000000000")
+        val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
+
+        // SMS 전송
+        naverSmsUtilDi.sendAlimTalk(
+            NaverSmsUtilDi.SendAlimTalkInputVo(
+                inputVo.plusFriendId,
+                inputVo.templateCode,
+                arrayListOf(
+                    NaverSmsUtilDi.SendAlimTalkInputVo.MessageVo(
+                        countryCode,
+                        phoneNumber,
+                        null,
+                        inputVo.message,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    )
+                )
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
+
+
+    ////
     fun api4(
         httpServletResponse: HttpServletResponse,
         inputVo: C6Service1TkV1TestController.Api4InputVo
