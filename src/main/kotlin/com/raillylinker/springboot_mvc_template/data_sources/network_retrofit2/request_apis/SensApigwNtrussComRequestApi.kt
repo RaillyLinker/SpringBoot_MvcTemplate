@@ -324,11 +324,11 @@ interface SensApigwNtrussComRequestApi {
                 // Failover SMS 메시지 Type, SMS 또는 LMS, 기본: content 길이에 따라 자동 적용(90 bytes 이하 SMS, 초과 LMS)
                 @SerializedName("type")
                 @Expose
-                var type: String,
+                var type: String?,
                 // Failover SMS 발신번호, 기본: Failover 설정 시 선택한 발신번호, 승인되지 않은 발신번호 사용시 Failover 동작 안함
                 @SerializedName("from")
                 @Expose
-                var from: String,
+                var from: String?,
                 // Failover SMS 제목, LMS type으로 동작할 때 사용, 기본: 카카오톡 채널명
                 @SerializedName("subject")
                 @Expose

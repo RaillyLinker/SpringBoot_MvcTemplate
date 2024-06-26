@@ -148,8 +148,13 @@ class C6Service1TkV1TestService(
                         null,
                         null,
                         null,
-                        null,
-                        null
+                        true,
+                        NaverSmsUtilDi.SendAlimTalkInputVo.MessageVo.FailOverConfigVo(
+                            null,
+                            null,
+                            null,
+                            "카카오 실패시의 SMS 발송 메시지입니다."
+                        )
                     )
                 )
             )
