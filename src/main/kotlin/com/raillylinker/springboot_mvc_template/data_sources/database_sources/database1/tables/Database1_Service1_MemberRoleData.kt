@@ -12,7 +12,7 @@ import java.time.LocalDateTime
     name = "member_role_data",
     catalog = "service1",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["member_uid", "role", "row_delete_date_str"])
+        UniqueConstraint(columnNames = ["member_uid", "role"])
     ]
 )
 @Comment("회원 권한 정보 테이블")
@@ -41,11 +41,6 @@ class Database1_Service1_MemberRoleData(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
-
-    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(50)")
-    @ColumnDefault("'/'")
-    @Comment("행 삭제일(yyyy_MM_dd_T_HH_mm_ss_SSS_z, 삭제되지 않았다면 /)")
-    var rowDeleteDateStr: String = "/"
 
 
     // ---------------------------------------------------------------------------------------------

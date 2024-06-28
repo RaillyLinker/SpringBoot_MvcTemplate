@@ -9,8 +9,5 @@ import org.springframework.stereotype.Repository
 // : 함수 작성 명명법에 따라 데이터베이스 SQL 동작을 자동지원
 @Repository
 interface Database1_Service1_MemberRoleDataRepository : JpaRepository<Database1_Service1_MemberRoleData, Long> {
-    fun findAllByMemberDataAndRowDeleteDateStr(
-        memberData: Database1_Service1_MemberData,
-        rowDeleteDateStr: String
-    ): List<Database1_Service1_MemberRoleData>
+    fun findAllByMemberData(memberData: Database1_Service1_MemberData): List<Database1_Service1_MemberRoleData>
 }

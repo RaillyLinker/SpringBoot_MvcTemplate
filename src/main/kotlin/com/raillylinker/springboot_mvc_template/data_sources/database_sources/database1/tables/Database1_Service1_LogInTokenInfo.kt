@@ -12,10 +12,10 @@ import java.time.LocalDateTime
     name = "login_token_info",
     catalog = "service1",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["token_type", "access_token", "row_delete_date_str"])
+        UniqueConstraint(columnNames = ["token_type", "access_token"])
     ]
 )
-@Comment("토큰 발행 정보 테이블 : 로그인, 로그아웃 기록 역할도 겸함")
+@Comment("토큰 발행 정보 테이블")
 class Database1_Service1_LogInTokenInfo(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_uid", nullable = false)
@@ -61,11 +61,6 @@ class Database1_Service1_LogInTokenInfo(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
-
-    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(50)")
-    @ColumnDefault("'/'")
-    @Comment("행 삭제일(yyyy_MM_dd_T_HH_mm_ss_SSS_z, 삭제되지 않았다면 /)")
-    var rowDeleteDateStr: String = "/"
 
 
     // ---------------------------------------------------------------------------------------------

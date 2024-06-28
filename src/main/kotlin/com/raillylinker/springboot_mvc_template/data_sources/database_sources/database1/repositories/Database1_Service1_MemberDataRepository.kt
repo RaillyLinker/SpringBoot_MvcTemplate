@@ -3,24 +3,12 @@ package com.raillylinker.springboot_mvc_template.data_sources.database_sources.d
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_MemberData
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import java.time.LocalDateTime
 
 // (JPA 레포지토리)
 // : 함수 작성 명명법에 따라 데이터베이스 SQL 동작을 자동지원
 @Repository
 interface Database1_Service1_MemberDataRepository : JpaRepository<Database1_Service1_MemberData, Long> {
-    fun existsByNickNameAndRowDeleteDateStr(
-        nickName: String,
-        rowDeleteDateStr: String
-    ): Boolean
+    fun existsByNickName(nickName: String): Boolean
 
-    fun findByUidAndRowDeleteDateStr(
-        uid: Long,
-        rowDeleteDateStr: String
-    ): Database1_Service1_MemberData?
-
-    fun findByNickNameAndRowDeleteDateStr(
-        nickName: String,
-        rowDeleteDateStr: String
-    ): Database1_Service1_MemberData?
+    fun findByNickName(nickName: String): Database1_Service1_MemberData?
 }

@@ -39,11 +39,6 @@ class Database1_Service1_FindPasswordWithEmailVerificationData(
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
 
-    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(50)")
-    @ColumnDefault("'/'")
-    @Comment("행 삭제일(yyyy_MM_dd_T_HH_mm_ss_SSS_z, 삭제되지 않았다면 /)")
-    var rowDeleteDateStr: String = "/"
-
 
     // ---------------------------------------------------------------------------------------------
     // <중첩 클래스 공간>

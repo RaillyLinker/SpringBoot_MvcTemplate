@@ -10,25 +10,11 @@ import org.springframework.stereotype.Repository
 @Repository
 interface Database1_Service1_MemberOauth2LoginDataRepository :
     JpaRepository<Database1_Service1_MemberOauth2LoginData, Long> {
-    fun findByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
-        oauth2TypeCode: Byte,
-        snsId: String,
-        rowDeleteDateStr: String
-    ): Database1_Service1_MemberOauth2LoginData?
+    fun findByOauth2TypeCodeAndOauth2Id(oauth2TypeCode: Byte, snsId: String): Database1_Service1_MemberOauth2LoginData?
 
-    fun existsByOauth2TypeCodeAndOauth2IdAndRowDeleteDateStr(
-        oauth2TypeCode: Byte,
-        snsId: String,
-        rowDeleteDateStr: String
-    ): Boolean
+    fun existsByOauth2TypeCodeAndOauth2Id(oauth2TypeCode: Byte, snsId: String): Boolean
 
-    fun findAllByMemberDataAndRowDeleteDateStr(
-        memberData: Database1_Service1_MemberData,
-        rowDeleteDateStr: String
-    ): List<Database1_Service1_MemberOauth2LoginData>
+    fun findAllByMemberData(memberData: Database1_Service1_MemberData): List<Database1_Service1_MemberOauth2LoginData>
 
-    fun existsByMemberDataAndRowDeleteDateStr(
-        memberData: Database1_Service1_MemberData,
-        rowDeleteDateStr: String
-    ): Boolean
+    fun existsByMemberData(memberData: Database1_Service1_MemberData): Boolean
 }

@@ -323,13 +323,9 @@ class SecurityConfig(
                         ApplicationRuntimeConfigs.runtimeConfigData.authJwtClaimsAes256EncryptionKey
                     ).toLong()
 
-                    val memberData =
-                        database1Service1MemberDataRepository.findByUidAndRowDeleteDateStr(
-                            memberUid,
-                            "/"
-                        )
+                    val memberDataOpt = database1Service1MemberDataRepository.findById(memberUid)
 
-                    if (memberData == null) {
+                    if (memberDataOpt.isEmpty) {
                         // 멤버 탈퇴
                         response.setHeader("api-result-code", "3")
 
@@ -338,13 +334,11 @@ class SecurityConfig(
                         return
                     }
 
+                    val memberData = memberDataOpt.get()
+
                     // 로그아웃 여부 파악
                     val tokenInfo =
-                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
-                            tokenType,
-                            accessToken,
-                            "/"
-                        )
+                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessToken(tokenType, accessToken)
 
                     if (tokenInfo == null) {
                         // 로그아웃된 토큰
@@ -358,11 +352,7 @@ class SecurityConfig(
                     // !!!패널티로 인한 접근 거부 와 같은 인증 / 인가 조건을 추가하려면 이곳에 추가하세요.!!!
 
                     // 멤버의 권한 리스트를 조회 후 반환
-                    val memberRoleEntityList =
-                        database1Service1MemberRoleDataRepository.findAllByMemberDataAndRowDeleteDateStr(
-                            memberData,
-                            "/"
-                        )
+                    val memberRoleEntityList = database1Service1MemberRoleDataRepository.findAllByMemberData(memberData)
 
                     // 회원 권한 형식 변경
                     val authorities: ArrayList<GrantedAuthority> = ArrayList()
