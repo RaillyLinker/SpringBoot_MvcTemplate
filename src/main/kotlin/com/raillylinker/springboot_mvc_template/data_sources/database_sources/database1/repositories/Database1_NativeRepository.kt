@@ -397,10 +397,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
             INNER JOIN 
             template.fk_test_parent AS fk_test_parent 
             ON 
-            fk_test_parent.row_delete_date_str = '/' AND 
-            fk_test_parent.uid = fk_test_many_to_one_child.fk_test_parent_uid 
-            WHERE 
-            fk_test_many_to_one_child.row_delete_date_str = '/'
+            fk_test_parent.uid = fk_test_many_to_one_child.fk_test_parent_uid
             """
     )
     fun forC7N24Dot1(): List<ForC7N24Dot1OutputVo>
@@ -547,8 +544,6 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
                     fk_test_many_to_one_child2.fk_test_parent_uid 
                     FROM 
                     template.fk_test_many_to_one_child AS fk_test_many_to_one_child2 
-                    WHERE 
-                    fk_test_many_to_one_child2.row_delete_date_str = '/' 
                     GROUP BY 
                     fk_test_many_to_one_child2.fk_test_parent_uid
                 ) AS latest_fk_test_many_to_one_child 
@@ -557,9 +552,7 @@ interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData
                 latest_fk_test_many_to_one_child.max_row_create_date = fk_test_many_to_one_child1.row_create_date 
             ) AS fk_test_many_to_one_child 
             ON 
-            fk_test_many_to_one_child.fk_test_parent_uid = fk_test_parent.uid 
-            WHERE 
-            fk_test_parent.row_delete_date_str = '/'
+            fk_test_many_to_one_child.fk_test_parent_uid = fk_test_parent.uid
             """
     )
     fun forC7N27(): List<ForC7N27OutputVo>

@@ -25,7 +25,7 @@ import java.time.LocalDateTime
         UniqueConstraint(columnNames = ["unique_value", "row_delete_date_str"])
     ]
 )
-@Comment("테스트 정보 테이블")
+@Comment("논리적 삭제 유니크 제약 테스트 테이블")
 class Database1_Template_LogicalDeleteUniqueData(
     @Column(name = "unique_value", nullable = false, columnDefinition = "INT")
     @Comment("유니크 값")

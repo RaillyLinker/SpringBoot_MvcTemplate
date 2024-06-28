@@ -6,12 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface Database1_Template_FkTestParentRepository : JpaRepository<Database1_Template_FkTestParent, Long> {
-    fun findByUidAndRowDeleteDateStr(
-        uid: Long,
-        rowDeleteDateStr: String
-    ): Database1_Template_FkTestParent?
-
-    fun findAllByRowDeleteDateStrOrderByRowCreateDate(
-        rowDeleteDateStr: String
-    ): List<Database1_Template_FkTestParent>
+    fun findAllByOrderByRowCreateDate(): List<Database1_Template_FkTestParent>
 }

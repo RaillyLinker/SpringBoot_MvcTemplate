@@ -709,16 +709,15 @@ class C7Service1TkV1DatabaseTestService(
         parentUid: Long,
         inputVo: C7Service1TkV1DatabaseTestController.Api23InputVo
     ): C7Service1TkV1DatabaseTestController.Api23OutputVo? {
-        val parentEntity = database1TemplateFkTestParentRepository.findByUidAndRowDeleteDateStr(
-            parentUid,
-            "/"
-        )
+        val parentEntityOpt = database1TemplateFkTestParentRepository.findById(parentUid)
 
-        if (parentEntity == null) {
+        if (parentEntityOpt.isEmpty) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return null
         }
+
+        val parentEntity = parentEntityOpt.get()
 
         val result = database1TemplateFkTestOneToManyChildRepository.save(
             Database1_Template_FkTestManyToOneChild(
@@ -744,7 +743,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api24(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api24OutputVo? {
         val resultEntityList =
-            database1TemplateFkTestParentRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
+            database1TemplateFkTestParentRepository.findAllByOrderByRowCreateDate()
 
         val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo>()
         for (resultEntity in resultEntityList) {
@@ -752,10 +751,7 @@ class C7Service1TkV1DatabaseTestService(
                 arrayListOf()
 
             val childList =
-                database1TemplateFkTestOneToManyChildRepository.findAllByFkTestParentAndRowDeleteDateStrOrderByRowCreateDate(
-                    resultEntity,
-                    "/"
-                )
+                database1TemplateFkTestOneToManyChildRepository.findAllByFkTestParentOrderByRowCreateDate(resultEntity)
 
             for (childEntity in childList) {
                 childEntityVoList.add(
