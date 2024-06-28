@@ -1,3 +1,4 @@
 [TODO]
 - SC 예시 추가 - payment 예시도 같이
 - 논리적 삭제가 아닌 물리적 삭제 처리하기, 논리적 삭제시에는 클리너가 필요
+- JpaRepository 에서 findByFieldNameNot 의 예시 추가
