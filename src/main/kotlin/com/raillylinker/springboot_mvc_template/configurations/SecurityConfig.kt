@@ -338,7 +338,10 @@ class SecurityConfig(
 
                     // 로그아웃 여부 파악
                     val tokenInfo =
-                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessToken(tokenType, accessToken)
+                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
+                            tokenType, accessToken,
+                            "/"
+                        )
 
                     if (tokenInfo == null) {
                         // 로그아웃된 토큰

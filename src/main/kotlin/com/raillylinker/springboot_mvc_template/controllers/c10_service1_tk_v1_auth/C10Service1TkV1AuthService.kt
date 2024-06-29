@@ -175,9 +175,10 @@ class C10Service1TkV1AuthService(
 
                     // 로그아웃 여부 파악
                     val tokenInfo =
-                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessToken(
+                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
                             tokenType,
-                            accessToken
+                            accessToken,
+                            "/"
                         )
 
                     if (tokenInfo == null) {
@@ -730,10 +731,17 @@ class C10Service1TkV1AuthService(
         // 해당 멤버의 토큰 발행 정보 삭제
         val tokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
 
-        val tokenInfo = database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessToken(tokenType, token)
+        val tokenInfo = database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
+            tokenType,
+            token,
+            "/"
+        )
 
         if (tokenInfo != null) {
-            database1Service1LogInTokenInfoRepository.deleteById(tokenInfo.uid!!)
+            tokenInfo.rowDeleteDateStr =
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -849,9 +857,10 @@ class C10Service1TkV1AuthService(
                 }
 
                 val tokenInfo =
-                    database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessToken(
+                    database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
                         accessTokenType,
-                        accessToken
+                        accessToken,
+                        "/"
                     )
 
                 if (tokenInfo == null) {// jwtAccessToken 의 리프레시 토큰이 저장소에 없음
@@ -868,7 +877,10 @@ class C10Service1TkV1AuthService(
                 }
 
                 // 먼저 로그아웃 처리
-                database1Service1LogInTokenInfoRepository.deleteById(tokenInfo.uid!!)
+                tokenInfo.rowDeleteDateStr =
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                database1Service1LogInTokenInfoRepository.save(tokenInfo)
 
                 // 멤버의 권한 리스트를 조회 후 반환
                 val memberRoleList =
@@ -950,11 +962,17 @@ class C10Service1TkV1AuthService(
         val memberData = database1Service1MemberDataRepository.findById(memberUid).get()
 
         // loginAccessToken 의 Iterable 가져오기
-        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberData(memberData)
+        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+            memberData,
+            "/"
+        )
 
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
         for (tokenInfo in tokenInfoList) {
-            database1Service1LogInTokenInfoRepository.deleteById(tokenInfo.uid!!)
+            tokenInfo.rowDeleteDateStr =
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -2069,11 +2087,17 @@ class C10Service1TkV1AuthService(
 
         // 모든 토큰 비활성화 처리
         // loginAccessToken 의 Iterable 가져오기
-        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberData(memberData)
+        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+            memberData,
+            "/"
+        )
 
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
         for (tokenInfo in tokenInfoList) {
-            database1Service1LogInTokenInfoRepository.deleteById(tokenInfo.uid!!)
+            tokenInfo.rowDeleteDateStr =
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -2238,11 +2262,18 @@ class C10Service1TkV1AuthService(
 
             // 모든 토큰 비활성화 처리
             // loginAccessToken 의 Iterable 가져오기
-            val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberData(memberEmail.memberData)
+            val tokenInfoList =
+                database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+                    memberEmail.memberData,
+                    "/"
+                )
 
             // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
             for (tokenInfo in tokenInfoList) {
-                database1Service1LogInTokenInfoRepository.deleteById(tokenInfo.uid!!)
+                tokenInfo.rowDeleteDateStr =
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                database1Service1LogInTokenInfoRepository.save(tokenInfo)
             }
 
             httpServletResponse.setHeader("api-result-code", "")
@@ -2425,11 +2456,18 @@ class C10Service1TkV1AuthService(
 
             // 모든 토큰 비활성화 처리
             // loginAccessToken 의 Iterable 가져오기
-            val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberData(memberPhone.memberData)
+            val tokenInfoList =
+                database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+                    memberPhone.memberData,
+                    "/"
+                )
 
             // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
             for (tokenInfo in tokenInfoList) {
-                database1Service1LogInTokenInfoRepository.deleteById(tokenInfo.uid!!)
+                tokenInfo.rowDeleteDateStr =
+                    LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                database1Service1LogInTokenInfoRepository.save(tokenInfo)
             }
 
             httpServletResponse.setHeader("api-result-code", "")
@@ -3356,11 +3394,17 @@ class C10Service1TkV1AuthService(
         // !!!회원과 관계된 처리!!
 
         // loginAccessToken 의 Iterable 가져오기
-        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberData(memberData)
+        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+            memberData,
+            "/"
+        )
 
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
         for (tokenInfo in tokenInfoList) {
-            database1Service1LogInTokenInfoRepository.deleteById(tokenInfo.uid!!)
+            tokenInfo.rowDeleteDateStr =
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            database1Service1LogInTokenInfoRepository.save(tokenInfo)
         }
 
         // 회원탈퇴 처리

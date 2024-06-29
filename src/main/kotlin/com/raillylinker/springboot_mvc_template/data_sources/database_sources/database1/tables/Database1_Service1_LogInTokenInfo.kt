@@ -15,7 +15,7 @@ import java.time.LocalDateTime
         UniqueConstraint(columnNames = ["token_type", "access_token"])
     ]
 )
-@Comment("토큰 발행 정보 테이블")
+@Comment("토큰 발행 정보 테이블 (로그인 히스토리 역할 병행)")
 class Database1_Service1_LogInTokenInfo(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_uid", nullable = false)
@@ -61,6 +61,11 @@ class Database1_Service1_LogInTokenInfo(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
+
+    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(50)")
+    @ColumnDefault("'/'")
+    @Comment("행 삭제일(yyyy_MM_dd_T_HH_mm_ss_SSS_z, 삭제되지 않았다면 /)")
+    var rowDeleteDateStr: String = "/"
 
 
     // ---------------------------------------------------------------------------------------------

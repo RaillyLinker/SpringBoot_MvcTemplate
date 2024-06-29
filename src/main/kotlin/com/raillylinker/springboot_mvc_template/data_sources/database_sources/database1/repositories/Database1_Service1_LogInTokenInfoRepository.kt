@@ -10,12 +10,14 @@ import org.springframework.stereotype.Repository
 @Repository
 interface Database1_Service1_LogInTokenInfoRepository :
     JpaRepository<Database1_Service1_LogInTokenInfo, Long> {
-    fun findByTokenTypeAndAccessToken(
+    fun findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
         tokenType: String,
-        accessToken: String
+        accessToken: String,
+        rowDeleteDateStr: String
     ): Database1_Service1_LogInTokenInfo?
 
-    fun findAllByMemberData(
-        memberData: Database1_Service1_MemberData
+    fun findAllByMemberDataAndRowDeleteDateStr(
+        memberData: Database1_Service1_MemberData,
+        rowDeleteDateStr: String
     ): List<Database1_Service1_LogInTokenInfo>
 }
