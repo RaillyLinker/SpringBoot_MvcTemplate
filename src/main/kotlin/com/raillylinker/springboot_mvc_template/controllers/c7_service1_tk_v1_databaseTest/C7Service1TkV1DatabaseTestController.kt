@@ -1811,4 +1811,93 @@ class C7Service1TkV1DatabaseTestController(
             )
         }
     }
+
+
+    ////
+    @Operation(
+        summary = "N28 : 외래키 자식 테이블 Row 삭제 테스트",
+        description = "외래키 자식 테이블의 Row 하나를 삭제합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : index 에 해당하는 데이터가 데이터베이스에 존재하지 않습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            )
+        ]
+    )
+    @DeleteMapping(
+        path = ["/fk-child/{index}"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api28(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "index", description = "글 인덱스", example = "1")
+        @PathVariable("index")
+        index: Long
+    ) {
+        service.api28(httpServletResponse, index)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N29 : 외래키 부모 테이블 Row 삭제 테스트 (Cascade 기능 확인)",
+        description = "외래키 부모 테이블의 Row 하나를 삭제합니다.\n\n" +
+                "Cascade 설정을 했으므로 부모 테이블이 삭제되면 해당 부모 테이블을 참조중인 다른 모든 자식 테이블들이 삭제되어야 합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : index 에 해당하는 데이터가 데이터베이스에 존재하지 않습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            )
+        ]
+    )
+    @DeleteMapping(
+        path = ["/fk-parent/{index}"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api29(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "index", description = "글 인덱스", example = "1")
+        @PathVariable("index")
+        index: Long
+    ) {
+        service.api29(httpServletResponse, index)
+    }
 }

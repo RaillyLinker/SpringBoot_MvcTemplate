@@ -3364,48 +3364,14 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findById(memberUid).get()
 
-        // member_phone, member_email, member_role, member_sns_oauth2, member_profile 비활성화
-        val emailList = database1Service1MemberEmailDataRepository.findAllByMemberData(memberData)
-        for (email in emailList) {
-            database1Service1MemberEmailDataRepository.deleteById(email.uid!!)
-        }
-
-        val memberRoleList = database1Service1MemberRoleDataRepository.findAllByMemberData(memberData)
-        for (memberRole in memberRoleList) {
-            database1Service1MemberRoleDataRepository.deleteById(memberRole.uid!!)
-        }
-
-        val memberSnsOauth2List = database1Service1MemberOauth2LoginDataRepository.findAllByMemberData(memberData)
-        for (memberSnsOauth2 in memberSnsOauth2List) {
-            database1Service1MemberOauth2LoginDataRepository.deleteById(memberSnsOauth2.uid!!)
-        }
-
-        val memberPhoneList = database1Service1MemberPhoneDataRepository.findAllByMemberData(memberData)
-        for (memberPhone in memberPhoneList) {
-            database1Service1MemberPhoneDataRepository.deleteById(memberPhone.uid!!)
-        }
-
-        val profileData = database1Service1MemberProfileDataRepository.findAllByMemberData(memberData)
-        for (profile in profileData) {
-            database1Service1MemberProfileDataRepository.deleteById(profile.uid!!)
-            // !!!프로필 이미지 파일 삭제하세요!!!
-        }
+        // member_phone, member_email, member_role, member_sns_oauth2, member_profile, loginAccessToken 비활성화
 
         // !!!회원과 관계된 처리!!
-
-        // loginAccessToken 의 Iterable 가져오기
-        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
-            memberData,
-            "/"
-        )
-
-        // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
-        for (tokenInfo in tokenInfoList) {
-            tokenInfo.rowDeleteDateStr =
-                LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-            database1Service1LogInTokenInfoRepository.save(tokenInfo)
-        }
+        // cascade 설정이 되어있으므로 memberData 를 참조중인 테이블은 자동으로 삭제됩니다. 파일같은 경우에는 수동으로 처리하세요.
+//        val profileData = database1Service1MemberProfileDataRepository.findAllByMemberData(memberData)
+//        for (profile in profileData) {
+//            // !!!프로필 이미지 파일 삭제하세요!!!
+//        }
 
         // 회원탈퇴 처리
         database1Service1MemberDataRepository.deleteById(memberData.uid!!)

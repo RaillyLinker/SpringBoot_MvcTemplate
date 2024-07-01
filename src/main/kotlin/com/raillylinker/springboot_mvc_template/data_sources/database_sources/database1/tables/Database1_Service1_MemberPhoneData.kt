@@ -42,6 +42,9 @@ class Database1_Service1_MemberPhoneData(
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
 
+    @OneToMany(mappedBy = "frontMemberPhoneData", fetch = FetchType.LAZY)
+    var memberDataList: MutableList<Database1_Service1_MemberData> = mutableListOf()
+
 
     // ---------------------------------------------------------------------------------------------
     // <중첩 클래스 공간>

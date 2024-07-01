@@ -1,7 +1,6 @@
 package com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables
 
 import jakarta.persistence.*
-import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.Comment
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -55,6 +54,31 @@ class Database1_Service1_MemberData(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
+
+    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var memberRoleDataList: MutableList<Database1_Service1_MemberRoleData> = mutableListOf()
+
+    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var memberProfileDataList: MutableList<Database1_Service1_MemberProfileData> = mutableListOf()
+
+    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var memberPhoneDataList: MutableList<Database1_Service1_MemberPhoneData> = mutableListOf()
+
+    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var memberOauth2LoginDataList: MutableList<Database1_Service1_MemberOauth2LoginData> = mutableListOf()
+
+    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var memberEmailDataList: MutableList<Database1_Service1_MemberEmailData> = mutableListOf()
+
+    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var logInTokenInfoList: MutableList<Database1_Service1_LogInTokenInfo> = mutableListOf()
+
+    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var addPhoneNumberVerificationDataList: MutableList<Database1_Service1_AddPhoneNumberVerificationData> =
+        mutableListOf()
+
+    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var addEmailVerificationDataList: MutableList<Database1_Service1_AddEmailVerificationData> = mutableListOf()
 
 
     // ---------------------------------------------------------------------------------------------

@@ -976,4 +976,40 @@ class C7Service1TkV1DatabaseTestService(
             entityVoList
         )
     }
+
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api28(httpServletResponse: HttpServletResponse, index: Long) {
+        val entityOpt = database1TemplateFkTestOneToManyChildRepository.findById(index)
+
+        if (entityOpt.isEmpty) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
+        database1TemplateFkTestOneToManyChildRepository.deleteById(index)
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
+
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api29(httpServletResponse: HttpServletResponse, index: Long) {
+        val entityOpt = database1TemplateFkTestParentRepository.findById(index)
+
+        if (entityOpt.isEmpty) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
+        database1TemplateFkTestParentRepository.deleteById(index)
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
 }
