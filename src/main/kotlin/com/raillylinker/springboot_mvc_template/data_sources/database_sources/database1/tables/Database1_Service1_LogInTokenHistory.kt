@@ -1,7 +1,6 @@
 package com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables
 
 import jakarta.persistence.*
-import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.Comment
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -9,14 +8,14 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(
-    name = "login_token_info",
+    name = "login_token_history",
     catalog = "service1",
     uniqueConstraints = [
         UniqueConstraint(columnNames = ["token_type", "access_token"])
     ]
 )
-@Comment("토큰 발행 정보 테이블 (로그인 히스토리 역할 병행)")
-class Database1_Service1_LogInTokenInfo(
+@Comment("인증 토큰 발행 히스토리 테이블")
+class Database1_Service1_LogInTokenHistory(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_uid", nullable = false)
     @Comment("멤버 고유번호(service1.member_data.uid)")
@@ -44,7 +43,11 @@ class Database1_Service1_LogInTokenInfo(
 
     @Column(name = "refresh_token_expire_when", nullable = false, columnDefinition = "DATETIME(3)")
     @Comment("리플레시 토큰 만료 일시")
-    var refreshTokenExpireWhen: LocalDateTime
+    var refreshTokenExpireWhen: LocalDateTime,
+
+    @Column(name = "logout_date", nullable = true, columnDefinition = "DATETIME(3)")
+    @Comment("로그아웃 일시")
+    var logoutDate: LocalDateTime?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,11 +64,6 @@ class Database1_Service1_LogInTokenInfo(
     @UpdateTimestamp
     @Comment("행 수정일")
     var rowUpdateDate: LocalDateTime? = null
-
-    @Column(name = "row_delete_date_str", nullable = false, columnDefinition = "VARCHAR(50)")
-    @ColumnDefault("'/'")
-    @Comment("행 삭제일(yyyy_MM_dd_T_HH_mm_ss_SSS_z, 삭제되지 않았다면 /)")
-    var rowDeleteDateStr: String = "/"
 
 
     // ---------------------------------------------------------------------------------------------

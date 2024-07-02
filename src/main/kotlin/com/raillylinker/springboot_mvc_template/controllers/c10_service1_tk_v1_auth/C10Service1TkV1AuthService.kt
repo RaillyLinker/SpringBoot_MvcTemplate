@@ -58,7 +58,7 @@ class C10Service1TkV1AuthService(
     private val database1Service1AddEmailVerificationDataRepository: Database1_Service1_AddEmailVerificationDataRepository,
     private val database1Service1AddPhoneNumberVerificationDataRepository: Database1_Service1_AddPhoneNumberVerificationDataRepository,
     private val database1Service1MemberProfileDataRepository: Database1_Service1_MemberProfileDataRepository,
-    private val database1Service1LogInTokenInfoRepository: Database1_Service1_LogInTokenInfoRepository
+    private val database1Service1LogInTokenHistoryRepository: Database1_Service1_LogInTokenHistoryRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -175,10 +175,10 @@ class C10Service1TkV1AuthService(
 
                     // 로그아웃 여부 파악
                     val tokenInfo =
-                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
+                        database1Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
                             tokenType,
                             accessToken,
-                            "/"
+                            null
                         )
 
                     if (tokenInfo == null) {
@@ -331,15 +331,16 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
-        database1Service1LogInTokenInfoRepository.save(
-            Database1_Service1_LogInTokenInfo(
+        database1Service1LogInTokenHistoryRepository.save(
+            Database1_Service1_LogInTokenHistory(
                 memberData,
                 "Bearer",
                 LocalDateTime.now(),
                 jwtAccessToken,
                 accessTokenExpireWhen,
                 jwtRefreshToken,
-                refreshTokenExpireWhen
+                refreshTokenExpireWhen,
+                null
             )
         )
 
@@ -594,15 +595,16 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
-        database1Service1LogInTokenInfoRepository.save(
-            Database1_Service1_LogInTokenInfo(
+        database1Service1LogInTokenHistoryRepository.save(
+            Database1_Service1_LogInTokenHistory(
                 snsOauth2.memberData,
                 "Bearer",
                 LocalDateTime.now(),
                 jwtAccessToken,
                 accessTokenExpireWhen,
                 jwtRefreshToken,
-                refreshTokenExpireWhen
+                refreshTokenExpireWhen,
+                null
             )
         )
 
@@ -695,15 +697,16 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
-        database1Service1LogInTokenInfoRepository.save(
-            Database1_Service1_LogInTokenInfo(
+        database1Service1LogInTokenHistoryRepository.save(
+            Database1_Service1_LogInTokenHistory(
                 snsOauth2.memberData,
                 "Bearer",
                 LocalDateTime.now(),
                 jwtAccessToken,
                 accessTokenExpireWhen,
                 jwtRefreshToken,
-                refreshTokenExpireWhen
+                refreshTokenExpireWhen,
+                null
             )
         )
 
@@ -731,17 +734,15 @@ class C10Service1TkV1AuthService(
         // 해당 멤버의 토큰 발행 정보 삭제
         val tokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
 
-        val tokenInfo = database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
+        val tokenInfo = database1Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
             tokenType,
             token,
-            "/"
+            null
         )
 
         if (tokenInfo != null) {
-            tokenInfo.rowDeleteDateStr =
-                LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-            database1Service1LogInTokenInfoRepository.save(tokenInfo)
+            tokenInfo.logoutDate = LocalDateTime.now()
+            database1Service1LogInTokenHistoryRepository.save(tokenInfo)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -857,10 +858,10 @@ class C10Service1TkV1AuthService(
                 }
 
                 val tokenInfo =
-                    database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
+                    database1Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
                         accessTokenType,
                         accessToken,
-                        "/"
+                        null
                     )
 
                 if (tokenInfo == null) {// jwtAccessToken 의 리프레시 토큰이 저장소에 없음
@@ -877,10 +878,8 @@ class C10Service1TkV1AuthService(
                 }
 
                 // 먼저 로그아웃 처리
-                tokenInfo.rowDeleteDateStr =
-                    LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                database1Service1LogInTokenInfoRepository.save(tokenInfo)
+                tokenInfo.logoutDate = LocalDateTime.now()
+                database1Service1LogInTokenHistoryRepository.save(tokenInfo)
 
                 // 멤버의 권한 리스트를 조회 후 반환
                 val memberRoleList =
@@ -914,15 +913,16 @@ class C10Service1TkV1AuthService(
 
                 val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newRefreshToken)
 
-                database1Service1LogInTokenInfoRepository.save(
-                    Database1_Service1_LogInTokenInfo(
+                database1Service1LogInTokenHistoryRepository.save(
+                    Database1_Service1_LogInTokenHistory(
                         tokenInfo.memberData,
                         "Bearer",
                         LocalDateTime.now(),
                         newJwtAccessToken,
                         accessTokenExpireWhen,
                         newRefreshToken,
-                        refreshTokenExpireWhen
+                        refreshTokenExpireWhen,
+                        null
                     )
                 )
 
@@ -962,17 +962,15 @@ class C10Service1TkV1AuthService(
         val memberData = database1Service1MemberDataRepository.findById(memberUid).get()
 
         // loginAccessToken 의 Iterable 가져오기
-        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+        val tokenInfoList = database1Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDate(
             memberData,
-            "/"
+            null
         )
 
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
         for (tokenInfo in tokenInfoList) {
-            tokenInfo.rowDeleteDateStr =
-                LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-            database1Service1LogInTokenInfoRepository.save(tokenInfo)
+            tokenInfo.logoutDate = LocalDateTime.now()
+            database1Service1LogInTokenHistoryRepository.save(tokenInfo)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -2087,17 +2085,15 @@ class C10Service1TkV1AuthService(
 
         // 모든 토큰 비활성화 처리
         // loginAccessToken 의 Iterable 가져오기
-        val tokenInfoList = database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+        val tokenInfoList = database1Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDate(
             memberData,
-            "/"
+            null
         )
 
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
         for (tokenInfo in tokenInfoList) {
-            tokenInfo.rowDeleteDateStr =
-                LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-            database1Service1LogInTokenInfoRepository.save(tokenInfo)
+            tokenInfo.logoutDate = LocalDateTime.now()
+            database1Service1LogInTokenHistoryRepository.save(tokenInfo)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -2263,17 +2259,15 @@ class C10Service1TkV1AuthService(
             // 모든 토큰 비활성화 처리
             // loginAccessToken 의 Iterable 가져오기
             val tokenInfoList =
-                database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+                database1Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDate(
                     memberEmail.memberData,
-                    "/"
+                    null
                 )
 
             // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
             for (tokenInfo in tokenInfoList) {
-                tokenInfo.rowDeleteDateStr =
-                    LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                database1Service1LogInTokenInfoRepository.save(tokenInfo)
+                tokenInfo.logoutDate = LocalDateTime.now()
+                database1Service1LogInTokenHistoryRepository.save(tokenInfo)
             }
 
             httpServletResponse.setHeader("api-result-code", "")
@@ -2457,17 +2451,15 @@ class C10Service1TkV1AuthService(
             // 모든 토큰 비활성화 처리
             // loginAccessToken 의 Iterable 가져오기
             val tokenInfoList =
-                database1Service1LogInTokenInfoRepository.findAllByMemberDataAndRowDeleteDateStr(
+                database1Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDate(
                     memberPhone.memberData,
-                    "/"
+                    null
                 )
 
             // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
             for (tokenInfo in tokenInfoList) {
-                tokenInfo.rowDeleteDateStr =
-                    LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                database1Service1LogInTokenInfoRepository.save(tokenInfo)
+                tokenInfo.logoutDate = LocalDateTime.now()
+                database1Service1LogInTokenHistoryRepository.save(tokenInfo)
             }
 
             httpServletResponse.setHeader("api-result-code", "")

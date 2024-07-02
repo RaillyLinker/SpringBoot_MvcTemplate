@@ -2,7 +2,7 @@ package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_LogInTokenInfoRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_LogInTokenHistoryRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_MemberDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_MemberRoleDataRepository
 import jakarta.servlet.FilterChain
@@ -38,7 +38,7 @@ class SecurityConfig(
     // (회원 정보 및 상태 확인용 데이터베이스 레포지토리 객체)
     private val database1Service1MemberDataRepository: Database1_Service1_MemberDataRepository,
     private val database1Service1MemberRoleDataRepository: Database1_Service1_MemberRoleDataRepository,
-    private val database1Service1LogInTokenInfoRepository: Database1_Service1_LogInTokenInfoRepository
+    private val database1Service1LogInTokenHistoryRepository: Database1_Service1_LogInTokenHistoryRepository
 ) {
     // <멤버 변수 공간>
 
@@ -116,7 +116,7 @@ class SecurityConfig(
                 securityUrlList,
                 database1Service1MemberDataRepository,
                 database1Service1MemberRoleDataRepository,
-                database1Service1LogInTokenInfoRepository
+                database1Service1LogInTokenHistoryRepository
             ),
             UsernamePasswordAuthenticationFilter::class.java
         )
@@ -163,7 +163,7 @@ class SecurityConfig(
         private val filterPatternList: List<String>,
         private val database1Service1MemberDataRepository: Database1_Service1_MemberDataRepository,
         private val database1Service1MemberRoleDataRepository: Database1_Service1_MemberRoleDataRepository,
-        private val database1Service1LogInTokenInfoRepository: Database1_Service1_LogInTokenInfoRepository
+        private val database1Service1LogInTokenHistoryRepository: Database1_Service1_LogInTokenHistoryRepository
     ) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
@@ -338,9 +338,10 @@ class SecurityConfig(
 
                     // 로그아웃 여부 파악
                     val tokenInfo =
-                        database1Service1LogInTokenInfoRepository.findByTokenTypeAndAccessTokenAndRowDeleteDateStr(
-                            tokenType, accessToken,
-                            "/"
+                        database1Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
+                            tokenType,
+                            accessToken,
+                            null
                         )
 
                     if (tokenInfo == null) {
