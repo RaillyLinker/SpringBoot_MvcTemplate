@@ -32,23 +32,10 @@ class C1Service(
         httpServletResponse: HttpServletResponse
     ): ModelAndView? {
         val mv = ModelAndView()
-        mv.viewName = "template_c1_n1/home_page"
+        mv.viewName = "forward:/service1/sc/v1/home"
 
-        mv.addObject(
-            "viewModel",
-            Api1ViewModel(
-                activeProfile
-            )
-        )
-
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
-
-    data class Api1ViewModel(
-        val env: String
-    )
 
 
     ////
