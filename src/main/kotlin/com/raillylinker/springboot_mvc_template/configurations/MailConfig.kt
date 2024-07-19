@@ -33,6 +33,7 @@ class MailConfig(
         props["mail.smtp.writetimeout"] = timeOutMillis
 
         // SMTP 종류별 설정
+        // 보안 설정이 필요없는 상황이라면 아래 코드를 주석처리 하면 됩니다.
         if (port == 587) {
             // port 587 일 경우
             props["mail.transport.protocol"] = "smtp"
