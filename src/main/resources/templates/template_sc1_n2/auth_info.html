@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link th:href="@{/resource_global/font.css}"
+          href="../../static/resource_global/font.css"
+          rel="stylesheet"/>
+    <link th:href="@{/resource_sc1_n2/auth_info.css}"
+          href="../../static/resource_sc1_n2/auth_info.css"
+          rel="stylesheet"/>
+    <style>
+    </style>
+
+    <title>
+        Springboot MVC Template
+    </title>
+</head>
+<body>
+<!-- 본문 작성 -->
+
+<div>
+    <img id="title_icon"
+         th:src="@{/resource_global/title_icon.png}"
+         src="../../static/resource_global/title_icon.png"
+         onclick="location.href='/'"
+         alt="타이틀 아이콘 이미지"/>
+    <h1 id="title_txt">
+        Home
+    </h1>
+</div>
+
+<hr/>
+
+<h2>
+    세션 인증 정보
+</h2>
+
+<span>
+    구동 환경 프로필 :
+</span>
+
+<!-- Script 선언 -->
+<script th:src="@{/resource_sc1_n2/auth_info.js}"
+        src="../../static/resource_sc1_n2/auth_info.js">
+</script>
+<script>
+</script>
+</body>
+</html>

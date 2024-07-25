@@ -294,8 +294,29 @@
 
     위와 같은 이유로 저는 물리적 삭제를 선호합니다.
 
-- Springboot HTML 개발시 th 속성은 최소화 합시다.
-    이는 기본 HTML 문법에 충실하기 위함이며,
-    범용적으로 작성된 HTML 을 그대로 사용할 수 있도록 하여 생산성과 유지보수성을 높이기 위한 것입니다.
-    일단 일반적인 HTML 개발처럼 개발을 진행하며,
-    마무리 단계에서 Thymeleaf 기능(변수 가져오기 정도만)을 사용할 때에 기존 속성에 th 속성을 추가하는 방식으로 하면 좋습니다.
+- Thymeleaf html 의 style 태그 안에서 변수를 가져다 쓰려면,
+
+    <style>
+        /* inline css Thymeleaf 변수 사용 예시 */
+        body {
+            background-color: [(${viewModel.env} == 'local8080' ? '#277cea' : '#FFFFFF')];
+        }
+    </style>
+
+    이렇게 하면 되며,
+
+    태그 속성 값으로 넣을 때는,
+
+    <span th:text="${viewModel.env}">dev</span>
+
+    태그 내용으로 넣을 때는,
+
+    <p>[[${message}]]</p>
+
+    script 태그 안에서는,
+
+    // inline javascript Thymeleaf 변수 사용 예시
+    var env = "[[${viewModel.env}]]";
+    alert(env);
+
+    이렇게 하면 됩니다.
