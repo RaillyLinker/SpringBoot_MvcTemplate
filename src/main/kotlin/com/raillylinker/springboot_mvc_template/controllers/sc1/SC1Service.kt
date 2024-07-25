@@ -1,5 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.sc1
 
+import com.raillylinker.springboot_mvc_template.controllers.sc1.SC1Service.Api2ViewModel.MemberInfo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
@@ -73,9 +74,67 @@ class SC1Service(
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n2/auth_info"
 
+        val memberUid = principal.name.toLong()
+        val memberEntity = database1Service1MemberDataRepository.findById(memberUid).get()
+
+        val roleList: MutableList<String> = mutableListOf()
+        for (role in memberEntity.memberRoleDataList) {
+            roleList.add(role.role)
+        }
+
+        val emailList: MutableList<String> = mutableListOf()
+        for (email in memberEntity.memberEmailDataList) {
+            emailList.add(email.emailAddress)
+        }
+
+        val phoneList: MutableList<String> = mutableListOf()
+        for (phone in memberEntity.memberPhoneDataList) {
+            phoneList.add(phone.phoneNumber)
+        }
+
+        val oAuth2List: MutableList<MemberInfo.OAuth2Info> = mutableListOf()
+        for (oAuth2 in memberEntity.memberOauth2LoginDataList) {
+            oAuth2List.add(
+                MemberInfo.OAuth2Info(
+                    when (oAuth2.oauth2TypeCode.toInt()) {
+                        1 -> {
+                            "GOOGLE"
+                        }
+
+                        2 -> {
+                            "NAVER"
+                        }
+
+                        3 -> {
+                            "KAKAO"
+                        }
+
+                        4 -> {
+                            "APPLE"
+                        }
+
+                        else -> {
+                            ""
+                        }
+                    },
+                    oAuth2.oauth2Id
+                )
+            )
+        }
+
         mv.addObject(
             "viewModel",
-            Api2ViewModel(true)
+            Api2ViewModel(
+                MemberInfo(
+                    memberUid,
+                    memberEntity.nickName,
+                    memberEntity.frontMemberProfileData?.imageFullUrl,
+                    roleList,
+                    emailList,
+                    phoneList,
+                    oAuth2List
+                )
+            )
         )
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -84,8 +143,32 @@ class SC1Service(
     }
 
     data class Api2ViewModel(
-        val placeHolder: Boolean
-    )
+        val memberInfo: MemberInfo
+    ) {
+        data class MemberInfo(
+            // 멤버 고유번호
+            val memberUid: Long,
+            // 멤버 닉네임
+            val nickname: String,
+            // 멤버 프로필 이미지 주소
+            val frontProfileUrl: String?,
+            // 멤버 권한 리스트
+            val roleList: List<String>,
+            // 등록 이메일 주소 리스트
+            val emailList: List<String>,
+            // 등록 전화번호 리스트
+            val phoneNumberList: List<String>,
+            // 등록 OAuth2 정보 리스트
+            val oauth2InfoList: List<OAuth2Info>
+        ) {
+            data class OAuth2Info(
+                // OAuth2 타입
+                val oAuth2Type: String,
+                // OAuth2 아이디
+                val oAuth2Id: String
+            )
+        }
+    }
 
     ////
     fun api3(
