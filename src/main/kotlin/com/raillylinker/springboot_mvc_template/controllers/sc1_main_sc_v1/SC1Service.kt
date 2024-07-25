@@ -114,7 +114,7 @@ class SC1Service(
         principal: Principal
     ): ModelAndView? {
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n2/auth_info"
+        mv.viewName = "template_sc1_n2/member_info"
 
         val memberUid = principal.name.toLong()
         val memberEntity = database1RaillyLinkerProject1MemberDataRepository.findById(memberUid).get()
@@ -217,8 +217,7 @@ class SC1Service(
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         principal: Principal?,
-        fail: String?,
-        logout: String?
+        fail: String?
     ): ModelAndView? {
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n3/login"
@@ -226,8 +225,7 @@ class SC1Service(
         mv.addObject(
             "viewModel",
             Api3ViewModel(
-                fail != null,
-                logout != null
+                fail != null
             )
         )
 
@@ -238,8 +236,6 @@ class SC1Service(
 
     data class Api3ViewModel(
         // 로그인 정보 불일치
-        val loginError: Boolean,
-        // 로그아웃 진입
-        val logoutEnter: Boolean
+        val loginError: Boolean
     )
 }

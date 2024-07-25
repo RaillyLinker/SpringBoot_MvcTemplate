@@ -68,7 +68,7 @@ class SC1Controller(
         ]
     )
     @GetMapping(
-        path = ["/auth-info"],
+        path = ["/member-info"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
@@ -116,15 +116,8 @@ class SC1Controller(
             example = ""
         )
         @RequestParam("fail")
-        fail: String?,
-        @Parameter(
-            name = "logout",
-            description = "로그아웃으로 진입(not null 이라면 로그아웃 하여 자동으로 진입한 것입니다.)",
-            example = ""
-        )
-        @RequestParam("logout")
-        logout: String?
+        fail: String?
     ): ModelAndView? {
-        return service.api3(httpServletResponse, session, principal, fail, logout)
+        return service.api3(httpServletResponse, session, principal, fail)
     }
 }

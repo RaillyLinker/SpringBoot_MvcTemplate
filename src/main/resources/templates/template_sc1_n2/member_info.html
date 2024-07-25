@@ -8,8 +8,8 @@
     <link th:href="@{/resource_global/font.css}"
           href="../../static/resource_global/font.css"
           rel="stylesheet"/>
-    <link th:href="@{/resource_sc1_n2/auth_info.css}"
-          href="../../static/resource_sc1_n2/auth_info.css"
+    <link th:href="@{/resource_sc1_n2/member_info.css}"
+          href="../../static/resource_sc1_n2/member_info.css"
           rel="stylesheet"/>
     <style>
         /* 프로필 이미지 크기 조정 */
@@ -17,6 +17,11 @@
             width: 100px; /* 원하는 너비 */
             height: 100px; /* 원하는 높이 */
             object-fit: cover; /* 이미지 비율을 유지하면서 자르기 */
+        }
+
+        .top-button {
+            float: right;
+            margin: 0px;
         }
     </style>
 
@@ -36,6 +41,14 @@
     <h1 id="title_txt">
         Home
     </h1>
+    <!-- 로그인된 경우 로그아웃 버튼 표시 -->
+    <form id="logoutForm"
+          th:action="@{/main/sc/v1/logout}"
+          method="POST"
+          class="top-button">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit">로그아웃</button>
+    </form>
 </div>
 
 <hr/>
@@ -83,8 +96,8 @@
 </div>
 
 <!-- Script 선언 -->
-<script th:src="@{/resource_sc1_n2/auth_info.js}"
-        src="../../static/resource_sc1_n2/auth_info.js">
+<script th:src="@{/resource_sc1_n2/member_info.js}"
+        src="../../static/resource_sc1_n2/member_info.js">
 </script>
 <script>
 </script>

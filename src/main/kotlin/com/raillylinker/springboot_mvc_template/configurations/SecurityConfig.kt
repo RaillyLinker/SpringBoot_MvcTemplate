@@ -450,7 +450,12 @@ class SecurityConfig(
         securityMatcher.logout { logoutCustomizer ->
             // 로그아웃(현 세션에서 로그인된 멤버 정보를 제거) 경로
             logoutCustomizer.logoutUrl("/main/sc/v1/logout")
-            logoutCustomizer.logoutSuccessUrl("/main/sc/v1/login?logout")
+            // 로그아웃 시 이동할 경로
+//            logoutCustomizer.logoutSuccessUrl("/main/sc/v1/login?logout")
+            logoutCustomizer.logoutSuccessHandler { request, response, authentication ->
+                // 로그아웃 시 현 위치 다시 호출
+                response.sendRedirect(request.getHeader("Referer") ?: "/")
+            }
         }
 
         // (API 요청 제한)
