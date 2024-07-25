@@ -1105,6 +1105,159 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api12Dot9(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api12Dot9InputVo) {
+        if (inputVo.apiSecret != "aadke234!@") {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
+        if (database1Service1MemberDataRepository.existsByNickName(inputVo.nickName.trim())) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "2")
+            return
+        }
+
+        if (inputVo.email != null) {
+            val isUserExists = database1Service1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
+            if (isUserExists) { // 기존 회원이 있을 때
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                httpServletResponse.setHeader("api-result-code", "3")
+                return
+            }
+        }
+
+        if (inputVo.phoneNumber != null) {
+            val isUserExists =
+                database1Service1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
+            if (isUserExists) { // 기존 회원이 있을 때
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                httpServletResponse.setHeader("api-result-code", "4")
+                return
+            }
+        }
+
+        val password = passwordEncoder.encode(inputVo.password)!! // 비밀번호 암호화
+
+        // 회원가입
+        val database1MemberUser = database1Service1MemberDataRepository.save(
+            Database1_Service1_MemberData(
+                inputVo.nickName,
+                password,
+                null,
+                null,
+                null
+            )
+        )
+
+        // 역할 저장
+        val database1MemberUserRoleList = ArrayList<Database1_Service1_MemberRoleData>()
+        // 기본 권한 추가
+//        database1MemberUserRoleList.add(
+//            Database1_Member_MemberRole(
+//                database1MemberUser.uid!!,
+//                2,
+//                true
+//            )
+//        )
+        database1Service1MemberRoleDataRepository.saveAll(database1MemberUserRoleList)
+
+        if (inputVo.profileImageFile != null) {
+            // 저장된 프로필 이미지 파일을 다운로드 할 수 있는 URL
+            val savedProfileImageUrl: String
+
+            // 프로필 이미지 파일 저장
+
+            //----------------------------------------------------------------------------------------------------------
+            // 프로필 이미지를 서버 스토리지에 저장할 때 사용하는 방식
+            // 파일 저장 기본 디렉토리 경로
+            val saveDirectoryPath: Path =
+                Paths.get("./by_product_files/member/profile").toAbsolutePath().normalize()
+
+            // 파일 저장 기본 디렉토리 생성
+            Files.createDirectories(saveDirectoryPath)
+
+            // 원본 파일명(with suffix)
+            val multiPartFileNameString = StringUtils.cleanPath(inputVo.profileImageFile.originalFilename!!)
+
+            // 파일 확장자 구분 위치
+            val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
+
+            // 확장자가 없는 파일명
+            val fileNameWithOutExtension: String
+            // 확장자
+            val fileExtension: String
+
+            if (fileExtensionSplitIdx == -1) {
+                fileNameWithOutExtension = multiPartFileNameString
+                fileExtension = ""
+            } else {
+                fileNameWithOutExtension = multiPartFileNameString.substring(0, fileExtensionSplitIdx)
+                fileExtension =
+                    multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
+            }
+
+            val savedFileName = "${fileNameWithOutExtension}(${
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            }).$fileExtension"
+
+            // multipartFile 을 targetPath 에 저장
+            inputVo.profileImageFile.transferTo(
+                // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
+                saveDirectoryPath.resolve(savedFileName).normalize()
+            )
+
+            savedProfileImageUrl = "${externalAccessAddress}/service1/tk/v1/auth/member-profile/$savedFileName"
+            //----------------------------------------------------------------------------------------------------------
+
+            val database1Service1MemberProfileData =
+                database1Service1MemberProfileDataRepository.save(
+                    Database1_Service1_MemberProfileData(
+                        database1MemberUser,
+                        savedProfileImageUrl
+                    )
+                )
+
+            database1MemberUser.frontMemberProfileData = database1Service1MemberProfileData
+        }
+
+        if (inputVo.email != null) {
+            // 이메일 저장
+            val database1Service2MemberEmailData =
+                database1Service1MemberEmailDataRepository.save(
+                    Database1_Service1_MemberEmailData(
+                        database1MemberUser,
+                        inputVo.email
+                    )
+                )
+
+            database1MemberUser.frontMemberEmailData = database1Service2MemberEmailData
+        }
+
+        if (inputVo.phoneNumber != null) {
+            // 전화번호 저장
+            val database1Service1MemberPhoneData =
+                database1Service1MemberPhoneDataRepository.save(
+                    Database1_Service1_MemberPhoneData(
+                        database1MemberUser,
+                        inputVo.phoneNumber
+                    )
+                )
+
+            database1MemberUser.frontMemberPhoneData = database1Service1MemberPhoneData
+        }
+
+        database1Service1MemberDataRepository.save(database1MemberUser)
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return
+    }
+
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api13(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api13InputVo

@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 @Table(name = "add_phone_number_verification_data", catalog = "service1")
 @Comment("이메일 추가하기 검증 테이블")
 class Database1_Service1_AddPhoneNumberVerificationData(
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_uid", nullable = false)
     @Comment("멤버 고유번호(service1.member_data.uid)")
     var memberData: Database1_Service1_MemberData,

@@ -19,7 +19,7 @@ class Database1_Template_FkTestManyToOneChild(
     @Comment("자식 테이블 이름")
     var childName: String,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "fk_test_parent_uid", nullable = false)
     @Comment("FK 부모 테이블 고유번호 (template.fk_test_parent.uid)")
     var fkTestParent: Database1_Template_FkTestParent

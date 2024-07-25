@@ -24,17 +24,17 @@ class Database1_Service1_MemberData(
     @Comment("계정 로그인시 사용하는 비밀번호 (닉네임, 이메일, 전화번호 로그인에 모두 사용됨. OAuth2 만 등록했다면 null)")
     var accountPassword: String?,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "front_profile_uid", nullable = true)
     @Comment("대표 프로필 Uid (service1.member_profile_data.uid)")
     var frontMemberProfileData: Database1_Service1_MemberProfileData?,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "front_email_uid", nullable = true)
     @Comment("대표 이메일 Uid (service1.member_email_data.uid)")
     var frontMemberEmailData: Database1_Service1_MemberEmailData?,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "front_phone_uid", nullable = true)
     @Comment("대표 전화번호 Uid (service1.member_phone_data.uid)")
     var frontMemberPhoneData: Database1_Service1_MemberPhoneData?

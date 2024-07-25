@@ -17,7 +17,7 @@ import java.time.LocalDateTime
 )
 @Comment("회원의 OAuth2 로그인 정보 테이블")
 class Database1_Service1_MemberOauth2LoginData(
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_uid", nullable = false)
     @Comment("멤버 고유번호(service1.member_data.uid)")
     var memberData: Database1_Service1_MemberData,

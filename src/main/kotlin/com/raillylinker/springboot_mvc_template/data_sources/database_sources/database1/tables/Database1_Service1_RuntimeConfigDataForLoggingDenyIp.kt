@@ -17,7 +17,7 @@ import java.time.LocalDateTime
 )
 @Comment("Service1 의 런타임 변경 가능 설정 정보 중 로깅 대상에서 제외할 IP")
 class Database1_Service1_RuntimeConfigDataForLoggingDenyIp(
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "runtime_config_data_uid", nullable = false)
     @Comment("런타임 설정 고유번호(service1.runtime_config_data.uid)")
     var runtimeConfigData: Database1_Service1_RuntimeConfigData,

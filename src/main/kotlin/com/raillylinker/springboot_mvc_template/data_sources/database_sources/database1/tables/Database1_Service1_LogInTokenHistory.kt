@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 )
 @Comment("인증 토큰 발행 히스토리 테이블")
 class Database1_Service1_LogInTokenHistory(
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_uid", nullable = false)
     @Comment("멤버 고유번호(service1.member_data.uid)")
     var memberData: Database1_Service1_MemberData,

@@ -923,6 +923,99 @@ class C10Service1TkV1AuthController(
 
     ////
     @Operation(
+        summary = "N12.9 : 테스트 회원 회원가입",
+        description = "테스트용으로, 닉네임과 비밀번호만을 입력받은 회원가입 처리\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : API 비밀키가 다릅니다.\n\n" +
+                                "2 : 이미 동일한 닉네임으로 가입된 회원이 존재합니다.\n\n" +
+                                "3 : 이미 동일한 이메일로 가입된 회원이 존재합니다.\n\n" +
+                                "4 : 이미 동일한 전화번호로 가입된 회원이 존재합니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/join-the-membership-for-test"],
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api12Dot9(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @ModelAttribute
+        @RequestBody
+        inputVo: Api12Dot9InputVo
+    ) {
+        service.api12Dot9(httpServletResponse, inputVo)
+    }
+
+    data class Api12Dot9InputVo(
+        @Schema(
+            description = "API 비밀키",
+            required = true,
+            example = "aadke234!@"
+        )
+        @JsonProperty("apiSecret")
+        val apiSecret: String,
+
+        @Schema(
+            description = "아이디 - 이메일",
+            required = false,
+            example = "test@gmail.com"
+        )
+        @JsonProperty("email")
+        val email: String?,
+
+        @Schema(
+            description = "아이디 - 전화번호(국가번호 + 전화번호)",
+            required = false,
+            example = "82)010-0000-0000"
+        )
+        @JsonProperty("phoneNumber")
+        val phoneNumber: String?,
+
+        @Schema(
+            description = "닉네임",
+            required = true,
+            example = "홍길동"
+        )
+        @JsonProperty("nickName")
+        val nickName: String,
+
+        @Schema(
+            description = "사용할 비밀번호",
+            required = true,
+            example = "kkdli!!"
+        )
+        @JsonProperty("password")
+        val password: String,
+
+        @Schema(description = "프로필 이미지 파일", required = false)
+        @JsonProperty("profileImageFile")
+        val profileImageFile: MultipartFile?
+    )
+
+
+    ////
+    @Operation(
         summary = "N13 : 이메일 회원가입 본인 인증 이메일 발송",
         description = "이메일 회원가입시 본인 이메일 확인 메일 발송\n\n" +
                 "발송 후 10분 후 만료됨\n\n"
