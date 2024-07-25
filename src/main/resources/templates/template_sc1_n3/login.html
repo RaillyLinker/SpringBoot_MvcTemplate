@@ -34,10 +34,10 @@
 
 <hr/>
 
-<form th:action="@{/service1/sc/v1/login-process}" method="post" onsubmit="prependToUsername()">
+<form th:action="@{/main/sc/v1/login-process}" method="post" onsubmit="prependToUsername()">
     <div>
-        <label for="email">Username:</label>
-        <input type="email" id="email" name="email"/>
+        <label for="nickname">Username:</label>
+        <input type="text" id="nickname" name="nickname"/>
     </div>
     <div>
         <input type="hidden" id="username" name="username"/>
@@ -63,11 +63,11 @@
         alert("로그아웃 되었습니다.");
     }
 
-    // 이메일 입력창에서 정보를 보낼 때 email_이라고 붙여서 보내기
+    // 입력창에서 정보를 보낼 때 타입 붙여서 보내기
     function prependToUsername() {
-        var emailInput = document.getElementById('email');
+        var visibleInput = document.getElementById('nickname');
         var usernameInput = document.getElementById('username');
-        usernameInput.value = 'email_' + emailInput.value;
+        usernameInput.value = 'nickname_' + visibleInput.value;
     }
 </script>
 </body>

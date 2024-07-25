@@ -1,37 +1,48 @@
-package com.raillylinker.springboot_mvc_template.controllers.sc1
+package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 
-import com.raillylinker.springboot_mvc_template.controllers.sc1.SC1Service.Api2ViewModel.MemberInfo
+import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.*
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.util.StringUtils
 import org.springframework.web.servlet.ModelAndView
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.security.Principal
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.ArrayList
 
 @Service
 class SC1Service(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
+    private val passwordEncoder: PasswordEncoder,
+
     // (Database1 Repository)
-    private val database1Service1MemberDataRepository: Database1_Service1_MemberDataRepository,
-    private val database1Service1MemberRoleDataRepository: Database1_Service1_MemberRoleDataRepository,
-    private val database1Service1MemberEmailDataRepository: Database1_Service1_MemberEmailDataRepository,
-    private val database1Service1MemberPhoneDataRepository: Database1_Service1_MemberPhoneDataRepository,
-    private val database1Service1MemberOauth2LoginDataRepository: Database1_Service1_MemberOauth2LoginDataRepository,
-    private val database1Service1JoinTheMembershipWithPhoneNumberVerificationDataRepository: Database1_Service1_JoinTheMembershipWithPhoneNumberVerificationDataRepository,
-    private val database1Service1JoinTheMembershipWithEmailVerificationDataRepository: Database1_Service1_JoinTheMembershipWithEmailVerificationDataRepository,
-    private val database1Service1JoinTheMembershipWithOauth2VerificationDataRepository: Database1_Service1_JoinTheMembershipWithOauth2VerificationDataRepository,
-    private val database1Service1FindPasswordWithPhoneNumberVerificationDataRepository: Database1_Service1_FindPasswordWithPhoneNumberVerificationDataRepository,
-    private val database1Service1FindPasswordWithEmailVerificationDataRepository: Database1_Service1_FindPasswordWithEmailVerificationDataRepository,
-    private val database1Service1AddEmailVerificationDataRepository: Database1_Service1_AddEmailVerificationDataRepository,
-    private val database1Service1AddPhoneNumberVerificationDataRepository: Database1_Service1_AddPhoneNumberVerificationDataRepository,
-    private val database1Service1MemberProfileDataRepository: Database1_Service1_MemberProfileDataRepository,
-    private val database1Service1LogInTokenHistoryRepository: Database1_Service1_LogInTokenHistoryRepository
+    private val database1RaillyLinkerProject1MemberDataRepository: Database1_RaillyLinkerProject1_MemberDataRepository,
+    private val database1RaillyLinkerProject1MemberRoleDataRepository: Database1_RaillyLinkerProject1_MemberRoleDataRepository,
+    private val database1RaillyLinkerProject1MemberEmailDataRepository: Database1_RaillyLinkerProject1_MemberEmailDataRepository,
+    private val database1RaillyLinkerProject1MemberPhoneDataRepository: Database1_RaillyLinkerProject1_MemberPhoneDataRepository,
+    private val database1RaillyLinkerProject1MemberOauth2LoginDataRepository: Database1_RaillyLinkerProject1_MemberOauth2LoginDataRepository,
+    private val database1RaillyLinkerProject1JoinTheMembershipWithPhoneNumberVerificationDataRepository: Database1_RaillyLinkerProject1_JoinTheMembershipWithPhoneNumberVerificationDataRepository,
+    private val database1RaillyLinkerProject1JoinTheMembershipWithEmailVerificationDataRepository: Database1_RaillyLinkerProject1_JoinTheMembershipWithEmailVerificationDataRepository,
+    private val database1RaillyLinkerProject1JoinTheMembershipWithOauth2VerificationDataRepository: Database1_RaillyLinkerProject1_JoinTheMembershipWithOauth2VerificationDataRepository,
+    private val database1RaillyLinkerProject1FindPasswordWithPhoneNumberVerificationDataRepository: Database1_RaillyLinkerProject1_FindPasswordWithPhoneNumberVerificationDataRepository,
+    private val database1RaillyLinkerProject1FindPasswordWithEmailVerificationDataRepository: Database1_RaillyLinkerProject1_FindPasswordWithEmailVerificationDataRepository,
+    private val database1RaillyLinkerProject1AddEmailVerificationDataRepository: Database1_RaillyLinkerProject1_AddEmailVerificationDataRepository,
+    private val database1RaillyLinkerProject1AddPhoneNumberVerificationDataRepository: Database1_RaillyLinkerProject1_AddPhoneNumberVerificationDataRepository,
+    private val database1RaillyLinkerProject1MemberProfileDataRepository: Database1_RaillyLinkerProject1_MemberProfileDataRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -44,6 +55,37 @@ class SC1Service(
         session: HttpSession,
         principal: Principal?
     ): ModelAndView? {
+        // 관리자 계정이 없다면 생성
+        val adminNickname = "admin"
+        val passwordString = "todoChange1234!"
+
+        if (!database1RaillyLinkerProject1MemberDataRepository.existsByNickName(adminNickname)) {
+            val password = passwordEncoder.encode(passwordString)!! // 비밀번호 암호화
+
+            // 회원가입
+            val database1MemberUser = database1RaillyLinkerProject1MemberDataRepository.save(
+                Database1_RaillyLinkerProject1_MemberData(
+                    adminNickname,
+                    password,
+                    null,
+                    null,
+                    null
+                )
+            )
+
+            // 역할 저장
+            val database1MemberUserRoleList = ArrayList<Database1_RaillyLinkerProject1_MemberRoleData>()
+            // 관리자 권한 추가
+            database1MemberUserRoleList.add(
+                Database1_RaillyLinkerProject1_MemberRoleData(
+                    database1MemberUser,
+                    "ROLE_ADMIN"
+                )
+            )
+            database1RaillyLinkerProject1MemberRoleDataRepository.saveAll(database1MemberUserRoleList)
+        }
+
+        // 화면 정보 생성 및 전달
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n1/home_page"
 
@@ -75,7 +117,7 @@ class SC1Service(
         mv.viewName = "template_sc1_n2/auth_info"
 
         val memberUid = principal.name.toLong()
-        val memberEntity = database1Service1MemberDataRepository.findById(memberUid).get()
+        val memberEntity = database1RaillyLinkerProject1MemberDataRepository.findById(memberUid).get()
 
         val roleList: MutableList<String> = mutableListOf()
         for (role in memberEntity.memberRoleDataList) {

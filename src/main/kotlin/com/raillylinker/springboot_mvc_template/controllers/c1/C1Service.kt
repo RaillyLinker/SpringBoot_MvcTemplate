@@ -32,7 +32,7 @@ class C1Service(
         httpServletResponse: HttpServletResponse
     ): ModelAndView? {
         val mv = ModelAndView()
-        mv.viewName = "forward:/service1/sc/v1/home"
+        mv.viewName = "forward:/main/sc/v1/home"
 
         return mv
     }

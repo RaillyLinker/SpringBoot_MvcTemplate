@@ -3,7 +3,7 @@ package com.raillylinker.springboot_mvc_template.configurations
 import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Service1_MemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerProject1_MemberData
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -393,18 +393,18 @@ class SecurityConfig(
 
 
     ////
-    // [/service1/sc 로 시작되는 리퀘스트의 시큐리티 설정 = Session-Cookie 인증 사용]
+    // [/main/sc 로 시작되는 리퀘스트의 시큐리티 설정 = Session-Cookie 인증 사용]
     @Bean
     @Order(2)
-    fun securityFilterChainService1Sc(
+    fun securityFilterChainMainSc(
         http: HttpSecurity,
-        userDetailService: UserDetailsServiceService1Sc
+        userDetailService: UserDetailsServiceMainSc
     ): SecurityFilterChain {
         // !!!시큐리티 필터 추가시 수정!!!
         // 본 시큐리티 필터가 관리할 주소 체계
         val securityUrlList = listOf(
-            "/service1/sc/**",
-            "/service1-admin/sc/**" // 보통 Admin 관리 서비스는 동일 인증 체계에서 Role 로 구분하기에 예시에 추가했습니다.
+            "/main/sc/**",
+            "/main-admin/sc/**" // 보통 Admin 관리 서비스는 동일 인증 체계에서 Role 로 구분하기에 예시에 추가했습니다.
         ) // 위 모든 경로에 적용
 
         val securityMatcher = http.securityMatcher(*securityUrlList.toTypedArray())
@@ -428,17 +428,17 @@ class SecurityConfig(
         securityMatcher.formLogin { formLoginCustomizer ->
             // 로그인이 필요한 요청을 했을 때 자동으로 이동할 로그인 화면 경로
             // 이 경로를 만들어서 로그인 화면의 HTML 과 그 안의 form 태그 요소들을 만들어야 합니다.
-            formLoginCustomizer.loginPage("/service1/sc/v1/login")
+            formLoginCustomizer.loginPage("/main/sc/v1/login")
             // 로그인 인증처리 경로
             // 로그인 form 태그는 이 경로로 POST 요청을 보내야 하며,
             // 이 경로에 대한 처리는 개발자가 따로 작성할 필요가 없이 자동으로 처리됩니다.
-            formLoginCustomizer.loginProcessingUrl("/service1/sc/v1/login-process")
+            formLoginCustomizer.loginProcessingUrl("/main/sc/v1/login-process")
             // 인증 성공 시 자동으로 이동하는 경로
             formLoginCustomizer.defaultSuccessUrl("/")
             // 정상 인증 성공 후 별도의 처리가 필요한 경우 커스텀 핸들러 생성하여 등록
 //            formLoginCustomizer.successHandler(CustomAuthenticationSuccessHandler())
             // 인증 실패 시 자동으로 이동하는 경로
-            formLoginCustomizer.failureUrl("/service1/sc/v1/login?fail")
+            formLoginCustomizer.failureUrl("/main/sc/v1/login?fail")
             // 인증 실패 후 별도의 처리가 필요한 경우 커스텀 핸들러를 생성하여 등록
 //            formLoginCustomizer.failureHandler(CustomAuthenticationSuccessHandler())
         }
@@ -449,8 +449,8 @@ class SecurityConfig(
         // 스프링 시큐리티 로그아웃 설정
         securityMatcher.logout { logoutCustomizer ->
             // 로그아웃(현 세션에서 로그인된 멤버 정보를 제거) 경로
-            logoutCustomizer.logoutUrl("/service1/sc/v1/logout")
-            logoutCustomizer.logoutSuccessUrl("/service1/sc/v1/login?logout")
+            logoutCustomizer.logoutUrl("/main/sc/v1/logout")
+            logoutCustomizer.logoutSuccessUrl("/main/sc/v1/login?logout")
         }
 
         // (API 요청 제한)
@@ -469,11 +469,11 @@ class SecurityConfig(
     }
 
     @Service
-    class UserDetailsServiceService1Sc(
-        private val database1Service1MemberDataRepository: Database1_Service1_MemberDataRepository,
-        private val database1Service1MemberEmailDataRepository: Database1_Service1_MemberEmailDataRepository,
-        private val database1Service1MemberPhoneDataRepository: Database1_Service1_MemberPhoneDataRepository,
-        private val database1Service1MemberRoleDataRepository: Database1_Service1_MemberRoleDataRepository
+    class UserDetailsServiceMainSc(
+        private val database1RaillyLinkerProject1MemberDataRepository: Database1_RaillyLinkerProject1_MemberDataRepository,
+        private val database1RaillyLinkerProject1MemberEmailDataRepository: Database1_RaillyLinkerProject1_MemberEmailDataRepository,
+        private val database1RaillyLinkerProject1MemberPhoneDataRepository: Database1_RaillyLinkerProject1_MemberPhoneDataRepository,
+        private val database1RaillyLinkerProject1MemberRoleDataRepository: Database1_RaillyLinkerProject1_MemberRoleDataRepository
     ) : UserDetailsService {
         override fun loadUserByUsername(userName: String): UserDetails {
             // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
@@ -489,13 +489,29 @@ class SecurityConfig(
             val userNameValue = userName.substring(userNameSplitIdx + 1)
 
             // 로그인 타입별 멤버 정보 가져오기(없다면 UsernameNotFoundException)
-            val memberDataEntity: Database1_Service1_MemberData
+            val memberDataEntity: Database1_RaillyLinkerProject1_MemberData
             when (userNameType.lowercase()) {
+                // 이메일 로그인
                 "email" -> {
                     val memberEmailDataEntity =
-                        database1Service1MemberEmailDataRepository.findByEmailAddress(userNameValue)
+                        database1RaillyLinkerProject1MemberEmailDataRepository.findByEmailAddress(userNameValue)
                             ?: throw UsernameNotFoundException("이메일 유저 정보가 존재하지 않습니다 : $userNameValue")
                     memberDataEntity = memberEmailDataEntity.memberData
+                }
+
+                // 전화번호 로그인
+                "phone" -> {
+                    // 이때 userNameValue 는 "82)010-0000-0000" 형태로 와야합니다.
+                    val memberPhoneDataEntity =
+                        database1RaillyLinkerProject1MemberPhoneDataRepository.findByPhoneNumber(userNameValue)
+                            ?: throw UsernameNotFoundException("이메일 유저 정보가 존재하지 않습니다 : $userNameValue")
+                    memberDataEntity = memberPhoneDataEntity.memberData
+                }
+
+                // 닉네임 로그인
+                "nickname" -> {
+                    memberDataEntity = database1RaillyLinkerProject1MemberDataRepository.findByNickName(userNameValue)
+                        ?: throw UsernameNotFoundException("이메일 유저 정보가 존재하지 않습니다 : $userNameValue")
                 }
 
                 else -> {
@@ -505,7 +521,7 @@ class SecurityConfig(
 
             // 회원 권한을 가져와 변환
             val memberRoleDataEntityList =
-                database1Service1MemberRoleDataRepository.findAllByMemberData(memberDataEntity)
+                database1RaillyLinkerProject1MemberRoleDataRepository.findAllByMemberData(memberDataEntity)
             val authorities: MutableCollection<GrantedAuthority> = memberRoleDataEntityList
                 .map { roleData -> SimpleGrantedAuthority(roleData.role) }
                 .toMutableList()

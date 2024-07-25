@@ -48,7 +48,7 @@
 
 <button type="button"
         class="sample_btn"
-        onclick="location.href='/service1/sc/v1/login'"
+        onclick="location.href='/main/sc/v1/login'"
         th:if="${viewModel.loggedIn != true}">
     로그인 화면으로 이동
 </button>
@@ -59,7 +59,7 @@
 
 <button type="button"
         class="sample_btn"
-        onclick="location.href='/service1/sc/v1/auth-info'"
+        onclick="location.href='/main/sc/v1/auth-info'"
         th:if="${viewModel.loggedIn == true}">
     세션 인증 정보로 이동
 </button>

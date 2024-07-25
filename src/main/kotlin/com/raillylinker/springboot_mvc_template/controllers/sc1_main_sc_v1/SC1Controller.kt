@@ -1,4 +1,4 @@
-package com.raillylinker.springboot_mvc_template.controllers.sc1
+package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import java.security.Principal
 
-@Tag(name = "/service1/sc/v1 APIs", description = "SC1 : Service1 웹 페이지에 대한 API 컨트롤러")
+@Tag(name = "/main/sc/v1 APIs", description = "SC1 : main 웹 페이지에 대한 API 컨트롤러")
 @Controller
-@RequestMapping("/service1/sc/v1")
+@RequestMapping("/main/sc/v1")
 class SC1Controller(
     private val service: SC1Service
 ) {

@@ -47,13 +47,12 @@
 <!-- 회원 정보 표시 -->
 <div>
     <h3>회원 정보</h3>
-    <p>고유번호: <span th:text="${viewModel.memberInfo.memberUid}"></span></p>
-    <p>닉네임: <span th:text="${viewModel.memberInfo.nickname}"></span></p>
+    <p>고유번호 : <span th:text="${viewModel.memberInfo.memberUid}"></span></p>
+    <p>닉네임 : <span th:text="${viewModel.memberInfo.nickname}"></span></p>
     <div>
-        <p>프로필 이미지:</p>
+        <p>프로필 이미지 : <span th:if="${viewModel.memberInfo.frontProfileUrl == null}">없음</span></p>
         <img th:if="${viewModel.memberInfo.frontProfileUrl}" th:src="${viewModel.memberInfo.frontProfileUrl}"
              alt="프로필 이미지" class="profile-image"/>
-        <span th:if="${viewModel.memberInfo.frontProfileUrl == null}">없음</span>
     </div>
 
     <p>권한 리스트</p>
