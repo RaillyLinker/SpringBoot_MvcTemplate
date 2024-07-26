@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import java.security.Principal
-import java.util.ArrayList
 
 @Service
 class SC1Service(
@@ -135,7 +134,9 @@ class SC1Service(
     fun api4(
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
-        principal: Principal?
+        principal: Principal?,
+        complete: String?,
+        idExists: String?
     ): ModelAndView? {
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n4/join"
@@ -143,7 +144,8 @@ class SC1Service(
         mv.addObject(
             "viewModel",
             Api4ViewModel(
-                null
+                complete != null,
+                idExists != null
             )
         )
 
@@ -153,6 +155,42 @@ class SC1Service(
     }
 
     data class Api4ViewModel(
-        val placeholder: Boolean?
+        val complete: Boolean,
+        val idExists: Boolean
     )
+
+    ////
+    fun api5(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        principal: Principal?,
+        accountId: String,
+        password: String
+    ): ModelAndView? {
+        val mv = ModelAndView()
+
+        if (database1RaillyLinkerCompanyMemberDataRepository.existsByAccountId(accountId.trim())) {
+            mv.viewName = "redirect:/main/sc/v1/join?idExists"
+
+            httpServletResponse.setHeader("api-result-code", "")
+            httpServletResponse.status = HttpStatus.OK.value()
+            return mv
+        }
+
+        val passwordEnc = passwordEncoder.encode(password)!! // 비밀번호 암호화
+
+        // 회원가입
+        database1RaillyLinkerCompanyMemberDataRepository.save(
+            Database1_RaillyLinkerCompany_MemberData(
+                accountId,
+                passwordEnc
+            )
+        )
+
+        mv.viewName = "redirect:/main/sc/v1/join?complete"
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
 }

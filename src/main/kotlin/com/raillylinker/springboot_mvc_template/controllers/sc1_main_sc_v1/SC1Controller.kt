@@ -146,8 +146,66 @@ class SC1Controller(
         @Parameter(hidden = true)
         session: HttpSession,
         @Parameter(hidden = true)
-        principal: Principal?
+        principal: Principal?,
+        @Parameter(
+            name = "complete",
+            description = "회원가입 완료(not null 이라면 회원가입이 완료된 것입니다.)",
+            example = ""
+        )
+        @RequestParam("complete")
+        complete: String?,
+        @Parameter(
+            name = "idExists",
+            description = "가입된 아이디가 존재(not null 이라면 이미 가입된 아이디가 존재하는 것입니다.)",
+            example = ""
+        )
+        @RequestParam("idExists")
+        idExists: String?
     ): ModelAndView? {
-        return service.api4(httpServletResponse, session, principal)
+        return service.api4(httpServletResponse, session, principal, complete, idExists)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N5 : 회원가입 진행",
+        description = "회원가입 진행\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/join-process"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    fun api5(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(hidden = true)
+        principal: Principal?,
+        @Parameter(
+            name = "accountId",
+            description = "계정 아이디",
+            example = "hongGilDong"
+        )
+        @RequestParam("accountId")
+        accountId: String,
+        @Parameter(
+            name = "password",
+            description = "계정 비밃번호",
+            example = "tted21$"
+        )
+        @RequestParam("password")
+        password: String
+    ): ModelAndView? {
+        return service.api5(httpServletResponse, session, principal, accountId, password)
     }
 }
