@@ -61,6 +61,11 @@
         src="../../static/resource_sc1_n4/join.js">
 </script>
 <script>
+    if ([[${viewModel.loggedIn}]] === true) {
+        // 이미 로그인된 상황 -> 뒤로가기
+        history.back();
+    }
+
     if ([[${viewModel.complete}]] === true) {
         alert("회원가입이 완료되었습니다.");
         window.location.href = '/main/sc/v1/login';

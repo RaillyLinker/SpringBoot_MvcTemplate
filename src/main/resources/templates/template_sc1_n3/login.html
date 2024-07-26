@@ -61,6 +61,11 @@
         src="../../static/resource_sc1_n3/login.js">
 </script>
 <script>
+    if ([[${viewModel.loggedIn}]] === true) {
+        // 이미 로그인된 상황 -> 뒤로가기
+        history.back();
+    }
+
     if ([[${viewModel.loginError}]] === true) {
         alert("인증 정보가 일치하지 않습니다.");
         // 현재 URL을 /main/sc/v1/login 으로 변경하고, 실패 URL을 제거

@@ -116,6 +116,7 @@ class SC1Service(
         mv.addObject(
             "viewModel",
             Api3ViewModel(
+                principal != null,
                 fail != null
             )
         )
@@ -126,6 +127,7 @@ class SC1Service(
     }
 
     data class Api3ViewModel(
+        val loggedIn: Boolean,
         // 로그인 정보 불일치
         val loginError: Boolean
     )
@@ -144,6 +146,7 @@ class SC1Service(
         mv.addObject(
             "viewModel",
             Api4ViewModel(
+                principal != null,
                 complete != null,
                 idExists != null
             )
@@ -155,6 +158,7 @@ class SC1Service(
     }
 
     data class Api4ViewModel(
+        val loggedIn: Boolean,
         val complete: Boolean,
         val idExists: Boolean
     )
