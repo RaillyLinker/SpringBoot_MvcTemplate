@@ -31,18 +31,7 @@ class SC1Service(
 
     // (Database1 Repository)
     private val database1RaillyLinkerProject1MemberDataRepository: Database1_RaillyLinkerProject1_MemberDataRepository,
-    private val database1RaillyLinkerProject1MemberRoleDataRepository: Database1_RaillyLinkerProject1_MemberRoleDataRepository,
-    private val database1RaillyLinkerProject1MemberEmailDataRepository: Database1_RaillyLinkerProject1_MemberEmailDataRepository,
-    private val database1RaillyLinkerProject1MemberPhoneDataRepository: Database1_RaillyLinkerProject1_MemberPhoneDataRepository,
-    private val database1RaillyLinkerProject1MemberOauth2LoginDataRepository: Database1_RaillyLinkerProject1_MemberOauth2LoginDataRepository,
-    private val database1RaillyLinkerProject1JoinTheMembershipWithPhoneNumberVerificationDataRepository: Database1_RaillyLinkerProject1_JoinTheMembershipWithPhoneNumberVerificationDataRepository,
-    private val database1RaillyLinkerProject1JoinTheMembershipWithEmailVerificationDataRepository: Database1_RaillyLinkerProject1_JoinTheMembershipWithEmailVerificationDataRepository,
-    private val database1RaillyLinkerProject1JoinTheMembershipWithOauth2VerificationDataRepository: Database1_RaillyLinkerProject1_JoinTheMembershipWithOauth2VerificationDataRepository,
-    private val database1RaillyLinkerProject1FindPasswordWithPhoneNumberVerificationDataRepository: Database1_RaillyLinkerProject1_FindPasswordWithPhoneNumberVerificationDataRepository,
-    private val database1RaillyLinkerProject1FindPasswordWithEmailVerificationDataRepository: Database1_RaillyLinkerProject1_FindPasswordWithEmailVerificationDataRepository,
-    private val database1RaillyLinkerProject1AddEmailVerificationDataRepository: Database1_RaillyLinkerProject1_AddEmailVerificationDataRepository,
-    private val database1RaillyLinkerProject1AddPhoneNumberVerificationDataRepository: Database1_RaillyLinkerProject1_AddPhoneNumberVerificationDataRepository,
-    private val database1RaillyLinkerProject1MemberProfileDataRepository: Database1_RaillyLinkerProject1_MemberProfileDataRepository
+    private val database1RaillyLinkerProject1MemberRoleDataRepository: Database1_RaillyLinkerProject1_MemberRoleDataRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -66,10 +55,7 @@ class SC1Service(
             val database1MemberUser = database1RaillyLinkerProject1MemberDataRepository.save(
                 Database1_RaillyLinkerProject1_MemberData(
                     adminNickname,
-                    password,
-                    null,
-                    null,
-                    null
+                    password
                 )
             )
 
@@ -124,57 +110,13 @@ class SC1Service(
             roleList.add(role.role)
         }
 
-        val emailList: MutableList<String> = mutableListOf()
-        for (email in memberEntity.memberEmailDataList) {
-            emailList.add(email.emailAddress)
-        }
-
-        val phoneList: MutableList<String> = mutableListOf()
-        for (phone in memberEntity.memberPhoneDataList) {
-            phoneList.add(phone.phoneNumber)
-        }
-
-        val oAuth2List: MutableList<MemberInfo.OAuth2Info> = mutableListOf()
-        for (oAuth2 in memberEntity.memberOauth2LoginDataList) {
-            oAuth2List.add(
-                MemberInfo.OAuth2Info(
-                    when (oAuth2.oauth2TypeCode.toInt()) {
-                        1 -> {
-                            "GOOGLE"
-                        }
-
-                        2 -> {
-                            "NAVER"
-                        }
-
-                        3 -> {
-                            "KAKAO"
-                        }
-
-                        4 -> {
-                            "APPLE"
-                        }
-
-                        else -> {
-                            ""
-                        }
-                    },
-                    oAuth2.oauth2Id
-                )
-            )
-        }
-
         mv.addObject(
             "viewModel",
             Api2ViewModel(
                 MemberInfo(
                     memberUid,
                     memberEntity.nickName,
-                    memberEntity.frontMemberProfileData?.imageFullUrl,
-                    roleList,
-                    emailList,
-                    phoneList,
-                    oAuth2List
+                    roleList
                 )
             )
         )
@@ -192,24 +134,9 @@ class SC1Service(
             val memberUid: Long,
             // 멤버 닉네임
             val nickname: String,
-            // 멤버 프로필 이미지 주소
-            val frontProfileUrl: String?,
             // 멤버 권한 리스트
-            val roleList: List<String>,
-            // 등록 이메일 주소 리스트
-            val emailList: List<String>,
-            // 등록 전화번호 리스트
-            val phoneNumberList: List<String>,
-            // 등록 OAuth2 정보 리스트
-            val oauth2InfoList: List<OAuth2Info>
-        ) {
-            data class OAuth2Info(
-                // OAuth2 타입
-                val oAuth2Type: String,
-                // OAuth2 아이디
-                val oAuth2Id: String
-            )
-        }
+            val roleList: List<String>
+        )
     }
 
     ////

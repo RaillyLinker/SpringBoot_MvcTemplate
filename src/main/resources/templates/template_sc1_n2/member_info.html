@@ -39,7 +39,7 @@
          onclick="location.href='/'"
          alt="타이틀 아이콘 이미지"/>
     <h1 id="title_txt">
-        Home
+        회원 정보
     </h1>
     <!-- 로그인된 경우 로그아웃 버튼 표시 -->
     <form id="logoutForm"
@@ -62,36 +62,11 @@
     <h3>회원 정보</h3>
     <p>고유번호 : <span th:text="${viewModel.memberInfo.memberUid}"></span></p>
     <p>닉네임 : <span th:text="${viewModel.memberInfo.nickname}"></span></p>
-    <div>
-        <p>프로필 이미지 : <span th:if="${viewModel.memberInfo.frontProfileUrl == null}">없음</span></p>
-        <img th:if="${viewModel.memberInfo.frontProfileUrl}" th:src="${viewModel.memberInfo.frontProfileUrl}"
-             alt="프로필 이미지" class="profile-image"/>
-    </div>
 
     <p>권한 리스트</p>
     <ul>
         <li th:if="${viewModel.memberInfo.roleList.isEmpty()}" th:text="없음"></li>
         <li th:each="role : ${viewModel.memberInfo.roleList}" th:text="${role}"></li>
-    </ul>
-
-    <p>등록 이메일 주소 리스트</p>
-    <ul>
-        <li th:if="${viewModel.memberInfo.emailList.isEmpty()}" th:text="없음"></li>
-        <li th:each="email : ${viewModel.memberInfo.emailList}" th:text="${email}"></li>
-    </ul>
-
-    <p>등록 전화번호 리스트</p>
-    <ul>
-        <li th:if="${viewModel.memberInfo.phoneNumberList.isEmpty()}" th:text="없음"></li>
-        <li th:each="phone : ${viewModel.memberInfo.phoneNumberList}" th:text="${phone}"></li>
-    </ul>
-
-    <p>등록 OAuth2 정보 리스트</p>
-    <ul>
-        <li th:if="${viewModel.memberInfo.oauth2InfoList.isEmpty()}" th:text="없음"></li>
-        <li th:each="oauth2 : ${viewModel.memberInfo.oauth2InfoList}">
-            <span th:text="${oauth2.oAuth2Type}"></span>: <span th:text="${oauth2.oAuth2Id}"></span>
-        </li>
     </ul>
 </div>
 

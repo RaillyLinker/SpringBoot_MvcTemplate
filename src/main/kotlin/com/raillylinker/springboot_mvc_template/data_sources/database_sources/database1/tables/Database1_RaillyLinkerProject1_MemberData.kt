@@ -22,22 +22,7 @@ class Database1_RaillyLinkerProject1_MemberData(
 
     @Column(name = "account_password", nullable = true, columnDefinition = "VARCHAR(100)")
     @Comment("계정 로그인시 사용하는 비밀번호 (닉네임, 이메일, 전화번호 로그인에 모두 사용됨. OAuth2 만 등록했다면 null)")
-    var accountPassword: String?,
-
-    @ManyToOne
-    @JoinColumn(name = "front_profile_uid", nullable = true)
-    @Comment("대표 프로필 Uid (RaillyLinkerProject1.member_profile_data.uid)")
-    var frontMemberProfileData: Database1_RaillyLinkerProject1_MemberProfileData?,
-
-    @ManyToOne
-    @JoinColumn(name = "front_email_uid", nullable = true)
-    @Comment("대표 이메일 Uid (RaillyLinkerProject1.member_email_data.uid)")
-    var frontMemberEmailData: Database1_RaillyLinkerProject1_MemberEmailData?,
-
-    @ManyToOne
-    @JoinColumn(name = "front_phone_uid", nullable = true)
-    @Comment("대표 전화번호 Uid (RaillyLinkerProject1.member_phone_data.uid)")
-    var frontMemberPhoneData: Database1_RaillyLinkerProject1_MemberPhoneData?
+    var accountPassword: String?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,25 +42,6 @@ class Database1_RaillyLinkerProject1_MemberData(
 
     @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     var memberRoleDataList: MutableList<Database1_RaillyLinkerProject1_MemberRoleData> = mutableListOf()
-
-    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    var memberProfileDataList: MutableList<Database1_RaillyLinkerProject1_MemberProfileData> = mutableListOf()
-
-    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    var memberPhoneDataList: MutableList<Database1_RaillyLinkerProject1_MemberPhoneData> = mutableListOf()
-
-    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    var memberOauth2LoginDataList: MutableList<Database1_RaillyLinkerProject1_MemberOauth2LoginData> = mutableListOf()
-
-    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    var memberEmailDataList: MutableList<Database1_RaillyLinkerProject1_MemberEmailData> = mutableListOf()
-
-    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    var addPhoneNumberVerificationDataList: MutableList<Database1_RaillyLinkerProject1_AddPhoneNumberVerificationData> =
-        mutableListOf()
-
-    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    var addEmailVerificationDataList: MutableList<Database1_RaillyLinkerProject1_AddEmailVerificationData> = mutableListOf()
 
 
     // ---------------------------------------------------------------------------------------------

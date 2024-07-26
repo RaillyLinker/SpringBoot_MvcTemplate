@@ -476,8 +476,6 @@ class SecurityConfig(
     @Service
     class UserDetailsServiceMainSc(
         private val database1RaillyLinkerProject1MemberDataRepository: Database1_RaillyLinkerProject1_MemberDataRepository,
-        private val database1RaillyLinkerProject1MemberEmailDataRepository: Database1_RaillyLinkerProject1_MemberEmailDataRepository,
-        private val database1RaillyLinkerProject1MemberPhoneDataRepository: Database1_RaillyLinkerProject1_MemberPhoneDataRepository,
         private val database1RaillyLinkerProject1MemberRoleDataRepository: Database1_RaillyLinkerProject1_MemberRoleDataRepository
     ) : UserDetailsService {
         override fun loadUserByUsername(userName: String): UserDetails {
@@ -496,23 +494,6 @@ class SecurityConfig(
             // 로그인 타입별 멤버 정보 가져오기(없다면 UsernameNotFoundException)
             val memberDataEntity: Database1_RaillyLinkerProject1_MemberData
             when (userNameType.lowercase()) {
-                // 이메일 로그인
-                "email" -> {
-                    val memberEmailDataEntity =
-                        database1RaillyLinkerProject1MemberEmailDataRepository.findByEmailAddress(userNameValue)
-                            ?: throw UsernameNotFoundException("이메일 유저 정보가 존재하지 않습니다 : $userNameValue")
-                    memberDataEntity = memberEmailDataEntity.memberData
-                }
-
-                // 전화번호 로그인
-                "phone" -> {
-                    // 이때 userNameValue 는 "82)010-0000-0000" 형태로 와야합니다.
-                    val memberPhoneDataEntity =
-                        database1RaillyLinkerProject1MemberPhoneDataRepository.findByPhoneNumber(userNameValue)
-                            ?: throw UsernameNotFoundException("이메일 유저 정보가 존재하지 않습니다 : $userNameValue")
-                    memberDataEntity = memberPhoneDataEntity.memberData
-                }
-
                 // 닉네임 로그인
                 "nickname" -> {
                     memberDataEntity = database1RaillyLinkerProject1MemberDataRepository.findByNickName(userNameValue)
