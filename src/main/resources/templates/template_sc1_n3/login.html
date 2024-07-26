@@ -47,10 +47,13 @@
         <input type="password" id="password" name="password"/>
     </div>
     <div>
-        <button type="submit">Login</button>
+        <button type="submit">로그인</button>
     </div>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 </form>
+<div>
+    <button id="signup_button" onclick="goToSignup()">회원가입</button>
+</div>
 
 <!-- Script 선언 -->
 <script th:src="@{/resource_sc1_n3/login.js}"
@@ -66,6 +69,11 @@
         var visibleInput = document.getElementById('nickname');
         var usernameInput = document.getElementById('username');
         usernameInput.value = 'nickname_' + visibleInput.value;
+    }
+
+    // 회원가입 페이지로 이동하는 함수
+    function goToSignup() {
+        location.href = '/main/sc/v1/join';
     }
 </script>
 </body>

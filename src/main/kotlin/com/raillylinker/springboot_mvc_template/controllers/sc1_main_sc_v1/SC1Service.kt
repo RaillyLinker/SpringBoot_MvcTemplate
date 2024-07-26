@@ -178,4 +178,29 @@ class SC1Service(
         // 로그인 정보 불일치
         val loginError: Boolean
     )
+
+    ////
+    fun api4(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        principal: Principal?
+    ): ModelAndView? {
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n4/join"
+
+        mv.addObject(
+            "viewModel",
+            Api4ViewModel(
+                null
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api4ViewModel(
+        val placeholder: Boolean?
+    )
 }

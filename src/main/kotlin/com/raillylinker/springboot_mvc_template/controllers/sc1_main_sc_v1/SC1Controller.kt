@@ -120,4 +120,34 @@ class SC1Controller(
     ): ModelAndView? {
         return service.api3(httpServletResponse, session, principal, fail)
     }
+
+
+    ////
+    @Operation(
+        summary = "N4 : 회원가입 화면",
+        description = "회원가입 화면\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/join"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    fun api4(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(hidden = true)
+        principal: Principal?
+    ): ModelAndView? {
+        return service.api4(httpServletResponse, session, principal)
+    }
 }
