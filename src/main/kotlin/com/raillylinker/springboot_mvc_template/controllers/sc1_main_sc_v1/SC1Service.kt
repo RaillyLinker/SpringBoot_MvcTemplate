@@ -11,15 +11,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.util.StringUtils
 import org.springframework.web.servlet.ModelAndView
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
 import java.security.Principal
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.ArrayList
 
 @Service
@@ -44,12 +37,19 @@ class SC1Service(
         session: HttpSession,
         principal: Principal?
     ): ModelAndView? {
-        // 관리자 계정이 없다면 생성
+        // (관리자 계정이 없다면 생성)
+        // 만약 관리자 계정이 탈취되었다면,
+        // 서버를 정지시키거나, 데이터베이스에서 재빨리 관리자 권한을 회수처리 하거나,
+        // 계정 삭제 처리 후 다른 계정에 관리자 계정을 부여하여 다른 비밀번호로 복구 시키면 됩니다.
         val adminNickname = "admin"
-        val passwordString = "todoChange1234!"
+        val adminPasswordString = "todoChange1234!"
+
+        // 관리자 계정이 탈취되었을 때 이 계정에 권한을 부여하고 관리자 계정을 복구시키세요.
+        val tempAdminNickname = "adminTemp"
+        val tempAdminPasswordString = "todoChange1357!"
 
         if (!database1RaillyLinkerProject1MemberDataRepository.existsByNickName(adminNickname)) {
-            val password = passwordEncoder.encode(passwordString)!! // 비밀번호 암호화
+            val password = passwordEncoder.encode(adminPasswordString)!! // 비밀번호 암호화
 
             // 회원가입
             val database1MemberUser = database1RaillyLinkerProject1MemberDataRepository.save(
@@ -71,7 +71,20 @@ class SC1Service(
             database1RaillyLinkerProject1MemberRoleDataRepository.saveAll(database1MemberUserRoleList)
         }
 
-        // 화면 정보 생성 및 전달
+        // 임시 관리자 계정 생성
+        if (!database1RaillyLinkerProject1MemberDataRepository.existsByNickName(tempAdminNickname)) {
+            val password = passwordEncoder.encode(tempAdminPasswordString)!! // 비밀번호 암호화
+
+            // 회원가입
+            database1RaillyLinkerProject1MemberDataRepository.save(
+                Database1_RaillyLinkerProject1_MemberData(
+                    tempAdminNickname,
+                    password
+                )
+            )
+        }
+
+        // (화면 정보 생성 및 전달)
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n1/home_page"
 
