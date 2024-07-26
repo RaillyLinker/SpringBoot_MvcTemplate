@@ -37,54 +37,6 @@ class SC1Service(
         session: HttpSession,
         principal: Principal?
     ): ModelAndView? {
-        // (관리자 계정이 없다면 생성)
-        // 만약 관리자 계정이 탈취되었다면,
-        // 서버를 정지시키거나, 데이터베이스에서 재빨리 관리자 권한을 회수처리 하거나,
-        // 계정 삭제 처리 후 다른 계정에 관리자 계정을 부여하여 다른 비밀번호로 복구 시키면 됩니다.
-        val adminNickname = "admin"
-        val adminPasswordString = "todoChange1234!"
-
-        // 관리자 계정이 탈취되었을 때 이 계정에 권한을 부여하고 관리자 계정을 복구시키세요.
-        val tempAdminNickname = "adminTemp"
-        val tempAdminPasswordString = "todoChange1357!"
-
-        if (!database1RaillyLinkerCompanyMemberDataRepository.existsByNickName(adminNickname)) {
-            val password = passwordEncoder.encode(adminPasswordString)!! // 비밀번호 암호화
-
-            // 회원가입
-            val database1MemberUser = database1RaillyLinkerCompanyMemberDataRepository.save(
-                Database1_RaillyLinkerCompany_MemberData(
-                    adminNickname,
-                    password
-                )
-            )
-
-            // 역할 저장
-            val database1MemberUserRoleList = ArrayList<Database1_RaillyLinkerCompany_MemberRoleData>()
-            // 관리자 권한 추가
-            database1MemberUserRoleList.add(
-                Database1_RaillyLinkerCompany_MemberRoleData(
-                    database1MemberUser,
-                    "ROLE_ADMIN"
-                )
-            )
-            database1RaillyLinkerCompanyMemberRoleDataRepository.saveAll(database1MemberUserRoleList)
-        }
-
-        // 임시 관리자 계정 생성
-        if (!database1RaillyLinkerCompanyMemberDataRepository.existsByNickName(tempAdminNickname)) {
-            val password = passwordEncoder.encode(tempAdminPasswordString)!! // 비밀번호 암호화
-
-            // 회원가입
-            database1RaillyLinkerCompanyMemberDataRepository.save(
-                Database1_RaillyLinkerCompany_MemberData(
-                    tempAdminNickname,
-                    password
-                )
-            )
-        }
-
-        // (화면 정보 생성 및 전달)
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n1/home_page"
 
@@ -128,7 +80,7 @@ class SC1Service(
             Api2ViewModel(
                 MemberInfo(
                     memberUid,
-                    memberEntity.nickName,
+                    memberEntity.accountId,
                     roleList
                 )
             )
@@ -145,8 +97,8 @@ class SC1Service(
         data class MemberInfo(
             // 멤버 고유번호
             val memberUid: Long,
-            // 멤버 닉네임
-            val nickname: String,
+            // 멤버 아이디
+            val accountId: String,
             // 멤버 권한 리스트
             val roleList: List<String>
         )

@@ -16,12 +16,12 @@ import java.time.LocalDateTime
 )
 @Comment("회원 정보 테이블")
 class Database1_RaillyLinkerCompany_MemberData(
-    @Column(name = "nick_name", nullable = false, columnDefinition = "VARCHAR(100)")
-    @Comment("닉네임 (중복 비허용 = uid 에 대한 별칭의 역할)")
-    var nickName: String,
+    @Column(name = "account_id", nullable = false, columnDefinition = "VARCHAR(100)")
+    @Comment("계정 아이디 (중복을 허용하지 않는 닉네임 역할 및 uid 에 대한 별칭의 역할)")
+    var accountId: String,
 
     @Column(name = "account_password", nullable = true, columnDefinition = "VARCHAR(100)")
-    @Comment("계정 로그인시 사용하는 비밀번호 (닉네임, 이메일, 전화번호 로그인에 모두 사용됨. OAuth2 만 등록했다면 null)")
+    @Comment("계정 로그인시 사용하는 비밀번호 (계정 아이디, 이메일, 전화번호 로그인에 모두 사용됨. OAuth2 만 등록했다면 null)")
     var accountPassword: String?
 ) {
     @Id

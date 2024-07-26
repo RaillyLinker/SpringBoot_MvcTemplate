@@ -56,7 +56,7 @@ class SC1Controller(
 
     ////
     @Operation(
-        summary = "N2 : 인증 정보",
+        summary = "N2 : 인증 정보 화면 <>",
         description = "인증 정보 화면\n\n"
     )
     @ApiResponses(

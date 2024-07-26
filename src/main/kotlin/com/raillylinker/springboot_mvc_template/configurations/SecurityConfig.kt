@@ -494,10 +494,10 @@ class SecurityConfig(
             // 로그인 타입별 멤버 정보 가져오기(없다면 UsernameNotFoundException)
             val memberDataEntity: Database1_RaillyLinkerCompany_MemberData
             when (userNameType.lowercase()) {
-                // 닉네임 로그인
-                "nickname" -> {
-                    memberDataEntity = database1RaillyLinkerCompanyMemberDataRepository.findByNickName(userNameValue)
-                        ?: throw UsernameNotFoundException("이메일 유저 정보가 존재하지 않습니다 : $userNameValue")
+                // 아이디 로그인
+                "accountId" -> {
+                    memberDataEntity = database1RaillyLinkerCompanyMemberDataRepository.findByAccountId(userNameValue)
+                        ?: throw UsernameNotFoundException("아이디 유저 정보가 존재하지 않습니다 : $userNameValue")
                 }
 
                 else -> {
