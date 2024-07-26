@@ -23,8 +23,8 @@ class SC1Service(
     private val passwordEncoder: PasswordEncoder,
 
     // (Database1 Repository)
-    private val database1RaillyLinkerProject1MemberDataRepository: Database1_RaillyLinkerProject1_MemberDataRepository,
-    private val database1RaillyLinkerProject1MemberRoleDataRepository: Database1_RaillyLinkerProject1_MemberRoleDataRepository
+    private val database1RaillyLinkerCompanyMemberDataRepository: Database1_RaillyLinkerCompany_MemberDataRepository,
+    private val database1RaillyLinkerCompanyMemberRoleDataRepository: Database1_RaillyLinkerCompany_MemberRoleDataRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -48,36 +48,36 @@ class SC1Service(
         val tempAdminNickname = "adminTemp"
         val tempAdminPasswordString = "todoChange1357!"
 
-        if (!database1RaillyLinkerProject1MemberDataRepository.existsByNickName(adminNickname)) {
+        if (!database1RaillyLinkerCompanyMemberDataRepository.existsByNickName(adminNickname)) {
             val password = passwordEncoder.encode(adminPasswordString)!! // 비밀번호 암호화
 
             // 회원가입
-            val database1MemberUser = database1RaillyLinkerProject1MemberDataRepository.save(
-                Database1_RaillyLinkerProject1_MemberData(
+            val database1MemberUser = database1RaillyLinkerCompanyMemberDataRepository.save(
+                Database1_RaillyLinkerCompany_MemberData(
                     adminNickname,
                     password
                 )
             )
 
             // 역할 저장
-            val database1MemberUserRoleList = ArrayList<Database1_RaillyLinkerProject1_MemberRoleData>()
+            val database1MemberUserRoleList = ArrayList<Database1_RaillyLinkerCompany_MemberRoleData>()
             // 관리자 권한 추가
             database1MemberUserRoleList.add(
-                Database1_RaillyLinkerProject1_MemberRoleData(
+                Database1_RaillyLinkerCompany_MemberRoleData(
                     database1MemberUser,
                     "ROLE_ADMIN"
                 )
             )
-            database1RaillyLinkerProject1MemberRoleDataRepository.saveAll(database1MemberUserRoleList)
+            database1RaillyLinkerCompanyMemberRoleDataRepository.saveAll(database1MemberUserRoleList)
         }
 
         // 임시 관리자 계정 생성
-        if (!database1RaillyLinkerProject1MemberDataRepository.existsByNickName(tempAdminNickname)) {
+        if (!database1RaillyLinkerCompanyMemberDataRepository.existsByNickName(tempAdminNickname)) {
             val password = passwordEncoder.encode(tempAdminPasswordString)!! // 비밀번호 암호화
 
             // 회원가입
-            database1RaillyLinkerProject1MemberDataRepository.save(
-                Database1_RaillyLinkerProject1_MemberData(
+            database1RaillyLinkerCompanyMemberDataRepository.save(
+                Database1_RaillyLinkerCompany_MemberData(
                     tempAdminNickname,
                     password
                 )
@@ -116,7 +116,7 @@ class SC1Service(
         mv.viewName = "template_sc1_n2/member_info"
 
         val memberUid = principal.name.toLong()
-        val memberEntity = database1RaillyLinkerProject1MemberDataRepository.findById(memberUid).get()
+        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(memberUid).get()
 
         val roleList: MutableList<String> = mutableListOf()
         for (role in memberEntity.memberRoleDataList) {

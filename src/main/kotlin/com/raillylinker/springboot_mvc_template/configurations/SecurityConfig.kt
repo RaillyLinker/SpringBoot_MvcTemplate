@@ -3,7 +3,7 @@ package com.raillylinker.springboot_mvc_template.configurations
 import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerProject1_MemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerCompany_MemberData
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -475,8 +475,8 @@ class SecurityConfig(
 
     @Service
     class UserDetailsServiceMainSc(
-        private val database1RaillyLinkerProject1MemberDataRepository: Database1_RaillyLinkerProject1_MemberDataRepository,
-        private val database1RaillyLinkerProject1MemberRoleDataRepository: Database1_RaillyLinkerProject1_MemberRoleDataRepository
+        private val database1RaillyLinkerCompanyMemberDataRepository: Database1_RaillyLinkerCompany_MemberDataRepository,
+        private val database1RaillyLinkerCompanyMemberRoleDataRepository: Database1_RaillyLinkerCompany_MemberRoleDataRepository
     ) : UserDetailsService {
         override fun loadUserByUsername(userName: String): UserDetails {
             // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
@@ -492,11 +492,11 @@ class SecurityConfig(
             val userNameValue = userName.substring(userNameSplitIdx + 1)
 
             // 로그인 타입별 멤버 정보 가져오기(없다면 UsernameNotFoundException)
-            val memberDataEntity: Database1_RaillyLinkerProject1_MemberData
+            val memberDataEntity: Database1_RaillyLinkerCompany_MemberData
             when (userNameType.lowercase()) {
                 // 닉네임 로그인
                 "nickname" -> {
-                    memberDataEntity = database1RaillyLinkerProject1MemberDataRepository.findByNickName(userNameValue)
+                    memberDataEntity = database1RaillyLinkerCompanyMemberDataRepository.findByNickName(userNameValue)
                         ?: throw UsernameNotFoundException("이메일 유저 정보가 존재하지 않습니다 : $userNameValue")
                 }
 
@@ -507,7 +507,7 @@ class SecurityConfig(
 
             // 회원 권한을 가져와 변환
             val memberRoleDataEntityList =
-                database1RaillyLinkerProject1MemberRoleDataRepository.findAllByMemberData(memberDataEntity)
+                database1RaillyLinkerCompanyMemberRoleDataRepository.findAllByMemberData(memberDataEntity)
             val authorities: MutableCollection<GrantedAuthority> = memberRoleDataEntityList
                 .map { roleData -> SimpleGrantedAuthority(roleData.role) }
                 .toMutableList()
