@@ -45,6 +45,7 @@
     <div>
         <label for="password">비밀번호:</label>
         <input type="password" id="password" name="password"/>
+        <button type="button" id="togglePassword" onclick="togglePasswordVisibility()">Show</button>
     </div>
     <div>
         <button type="submit">로그인</button>
@@ -77,6 +78,19 @@
     // 회원가입 페이지로 이동하는 함수
     function goToSignup() {
         location.href = '/main/sc/v1/join';
+    }
+
+    // 비밀번호 감추기/보이기 기능
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('password');
+        var toggleButton = document.getElementById('togglePassword');
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleButton.textContent = "Hide";
+        } else {
+            passwordInput.type = "password";
+            toggleButton.textContent = "Show";
+        }
     }
 </script>
 </body>
