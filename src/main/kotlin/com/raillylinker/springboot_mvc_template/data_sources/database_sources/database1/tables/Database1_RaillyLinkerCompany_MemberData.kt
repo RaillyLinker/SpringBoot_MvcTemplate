@@ -11,13 +11,13 @@ import java.time.LocalDateTime
     name = "member_data",
     catalog = "railly_linker_company",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["nick_name"])
+        UniqueConstraint(columnNames = ["account_id"])
     ]
 )
 @Comment("회원 정보 테이블")
 class Database1_RaillyLinkerCompany_MemberData(
     @Column(name = "account_id", nullable = false, columnDefinition = "VARCHAR(100)")
-    @Comment("계정 아이디 (중복을 허용하지 않는 닉네임 역할 및 uid 에 대한 별칭의 역할)")
+    @Comment("계정 아이디")
     var accountId: String,
 
     @Column(name = "account_password", nullable = true, columnDefinition = "VARCHAR(100)")

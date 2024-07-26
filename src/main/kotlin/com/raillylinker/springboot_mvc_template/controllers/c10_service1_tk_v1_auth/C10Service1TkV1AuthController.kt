@@ -298,7 +298,7 @@ class C10Service1TkV1AuthController(
 
     data class Api5InputVo(
         @Schema(
-            description = "로그인 타입 (0 : 닉네임, 1 : 이메일, 2 : 전화번호)",
+            description = "로그인 타입 (0 : 아이디, 1 : 이메일, 2 : 전화번호)",
             required = true,
             example = "1"
         )
@@ -306,7 +306,7 @@ class C10Service1TkV1AuthController(
         val loginTypeCode: Int,
 
         @Schema(
-            description = "아이디 (0 : 홍길동, 1 : test@gmail.com, 2 : 82)000-0000-0000)",
+            description = "아이디 값 (0 : 홍길동, 1 : test@gmail.com, 2 : 82)000-0000-0000)",
             required = true,
             example = "test@gmail.com"
         )
@@ -723,9 +723,9 @@ class C10Service1TkV1AuthController(
     }
 
     data class Api10Dot1OutputVo(
-        @Schema(description = "닉네임", required = true, example = "홍길동")
-        @JsonProperty("nickName")
-        val nickName: String,
+        @Schema(description = "아이디", required = true, example = "hongGilDong")
+        @JsonProperty("accountId")
+        val accountId: String,
 
         @Schema(
             description = "권한 리스트 (관리자 : ROLE_ADMIN, 개발자 : ROLE_DEVELOPER)",
@@ -819,8 +819,8 @@ class C10Service1TkV1AuthController(
 
     ////
     @Operation(
-        summary = "N11 : 닉네임 중복 검사",
-        description = "닉네임 중복 여부 반환\n\n"
+        summary = "N11 : 아이디 중복 검사",
+        description = "아이디 중복 여부 반환\n\n"
     )
     @ApiResponses(
         value = [
@@ -831,7 +831,7 @@ class C10Service1TkV1AuthController(
         ]
     )
     @GetMapping(
-        path = ["/nickname-duplicate-check"],
+        path = ["/id-duplicate-check"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
@@ -839,13 +839,13 @@ class C10Service1TkV1AuthController(
     fun api11(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @Parameter(name = "nickName", description = "중복 검사 닉네임", example = "홍길동")
-        @RequestParam("nickName")
-        nickName: String
+        @Parameter(name = "id", description = "중복 검사 아이디", example = "hongGilDong")
+        @RequestParam("id")
+        id: String
     ): Api11OutputVo? {
         return service.api11(
             httpServletResponse,
-            nickName
+            id
         )
     }
 
@@ -858,8 +858,8 @@ class C10Service1TkV1AuthController(
 
     ////
     @Operation(
-        summary = "N12 : 닉네임 수정하기 <>",
-        description = "닉네임 수정하기\n\n"
+        summary = "N12 : 아이디 수정하기 <>",
+        description = "아이디 수정하기\n\n"
     )
     @ApiResponses(
         value = [
@@ -876,7 +876,7 @@ class C10Service1TkV1AuthController(
                     Header(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
-                                "1 : 동일한 닉네임을 사용하는 회원이 존재합니다.\n\n",
+                                "1 : 동일한 아이디를 사용하는 회원이 존재합니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -897,7 +897,7 @@ class C10Service1TkV1AuthController(
         ]
     )
     @PatchMapping(
-        path = ["/my/profile/nickname"],
+        path = ["/my/profile/id"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )
@@ -909,14 +909,14 @@ class C10Service1TkV1AuthController(
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?,
-        @Parameter(name = "nickName", description = "닉네임", example = "홍길동")
-        @RequestParam(value = "nickName")
-        nickName: String
+        @Parameter(name = "id", description = "아이디", example = "mrHong")
+        @RequestParam(value = "id")
+        id: String
     ) {
         service.api12(
             httpServletResponse,
             authorization!!,
-            nickName
+            id
         )
     }
 
@@ -924,7 +924,7 @@ class C10Service1TkV1AuthController(
     ////
     @Operation(
         summary = "N12.9 : 테스트 회원 회원가입",
-        description = "테스트용으로, 닉네임과 비밀번호만을 입력받은 회원가입 처리\n\n"
+        description = "테스트용으로, 입력받은 정보를 가지고 회원가입 처리\n\n"
     )
     @ApiResponses(
         value = [
@@ -942,7 +942,7 @@ class C10Service1TkV1AuthController(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : API 비밀키가 다릅니다.\n\n" +
-                                "2 : 이미 동일한 닉네임으로 가입된 회원이 존재합니다.\n\n" +
+                                "2 : 이미 동일한 아이디로 가입된 회원이 존재합니다.\n\n" +
                                 "3 : 이미 동일한 이메일로 가입된 회원이 존재합니다.\n\n" +
                                 "4 : 이미 동일한 전화번호로 가입된 회원이 존재합니다.\n\n",
                         schema = Schema(type = "string")
@@ -993,12 +993,12 @@ class C10Service1TkV1AuthController(
         val phoneNumber: String?,
 
         @Schema(
-            description = "닉네임",
+            description = "계정 아이디",
             required = true,
-            example = "홍길동"
+            example = "hongGilDong"
         )
-        @JsonProperty("nickName")
-        val nickName: String,
+        @JsonProperty("id")
+        val id: String,
 
         @Schema(
             description = "사용할 비밀번호",
@@ -1157,7 +1157,7 @@ class C10Service1TkV1AuthController(
                                 "2 : 이메일 검증 요청이 만료되었습니다.\n\n" +
                                 "3 : verificationCode 가 일치하지 않습니다.\n\n" +
                                 "4 : 이미 동일한 이메일로 가입된 회원이 존재합니다.\n\n" +
-                                "5 : 이미 동일한 닉네임으로 가입된 회원이 존재합니다.\n\n",
+                                "5 : 이미 동일한 아이디로 가입된 회원이 존재합니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -1206,12 +1206,12 @@ class C10Service1TkV1AuthController(
         val password: String,
 
         @Schema(
-            description = "닉네임",
+            description = "계정 아이디",
             required = true,
-            example = "홍길동"
+            example = "hongGilDong"
         )
-        @JsonProperty("nickName")
-        val nickName: String,
+        @JsonProperty("id")
+        val id: String,
 
         @Schema(
             description = "이메일 검증에 사용한 코드",
@@ -1371,7 +1371,7 @@ class C10Service1TkV1AuthController(
                                 "2 : 전화번호 검증 요청이 만료되었습니다.\n\n" +
                                 "3 : verificationCode 가 일치하지 않습니다.\n\n" +
                                 "4 : 이미 동일한 전화번호로 가입된 회원이 존재합니다.\n\n" +
-                                "5 : 이미 동일한 닉네임으로 가입된 회원이 존재합니다.\n\n",
+                                "5 : 이미 동일한 아이디로 가입된 회원이 존재합니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -1420,12 +1420,12 @@ class C10Service1TkV1AuthController(
         val password: String,
 
         @Schema(
-            description = "닉네임",
+            description = "계정 아이디",
             required = true,
-            example = "홍길동"
+            example = "hongGilDong"
         )
-        @JsonProperty("nickName")
-        val nickName: String,
+        @JsonProperty("id")
+        val id: String,
 
         @Schema(
             description = "문자 검증에 사용한 코드",
@@ -1657,7 +1657,7 @@ class C10Service1TkV1AuthController(
                                 "2 : OAuth2 검증 요청이 만료되었습니다.\n\n" +
                                 "3 : verificationCode 가 일치하지 않습니다.\n\n" +
                                 "4 : 이미 동일한 OAuth2 정보로 가입된 회원이 존재합니다.\n\n" +
-                                "5 : 이미 동일한 닉네임으로 가입된 회원이 존재합니다.\n\n",
+                                "5 : 이미 동일한 아이디로 가입된 회원이 존재합니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -1706,12 +1706,12 @@ class C10Service1TkV1AuthController(
         val oauth2TypeCode: Int,
 
         @Schema(
-            description = "닉네임",
+            description = "계정 아이디",
             required = true,
-            example = "홍길동"
+            example = "hongGilDong"
         )
-        @JsonProperty("nickName")
-        val nickName: String,
+        @JsonProperty("id")
+        val id: String,
 
         @Schema(
             description = "oauth2Id 검증에 사용한 코드",

@@ -244,9 +244,9 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api5OutputVo? {
         val memberData: Database1_Service1_MemberData
         when (inputVo.loginTypeCode) {
-            0 -> { // 닉네임
+            0 -> { // 아이디
                 // (정보 검증 로직 수행)
-                val member = database1Service1MemberDataRepository.findByNickName(inputVo.id)
+                val member = database1Service1MemberDataRepository.findByAccountId(inputVo.id)
 
                 if (member == null) { // 가입된 회원이 없음
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1052,7 +1052,7 @@ class C10Service1TkV1AuthService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api10Dot1OutputVo(
-            memberData.nickName,
+            memberData.accountId,
             roleList,
             myOAuth2List,
             myProfileList,
@@ -1066,19 +1066,19 @@ class C10Service1TkV1AuthService(
     ////
     fun api11(
         httpServletResponse: HttpServletResponse,
-        nickName: String
+        id: String
     ): C10Service1TkV1AuthController.Api11OutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api11OutputVo(
-            database1Service1MemberDataRepository.existsByNickName(nickName.trim())
+            database1Service1MemberDataRepository.existsByAccountId(id.trim())
         )
     }
 
 
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
-    fun api12(httpServletResponse: HttpServletResponse, authorization: String, nickName: String) {
+    fun api12(httpServletResponse: HttpServletResponse, authorization: String, id: String) {
         val memberUid = JwtTokenUtilObject.getMemberUid(
             authorization.split(" ")[1].trim(),
             ApplicationRuntimeConfigs.runtimeConfigData.authJwtClaimsAes256InitializationVector,
@@ -1087,13 +1087,13 @@ class C10Service1TkV1AuthService(
 
         val memberData = database1Service1MemberDataRepository.findById(memberUid).get()
 
-        if (database1Service1MemberDataRepository.existsByNickName(nickName)) {
+        if (database1Service1MemberDataRepository.existsByAccountId(id)) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
-        memberData.nickName = nickName
+        memberData.accountId = id
         database1Service1MemberDataRepository.save(
             memberData
         )
@@ -1112,7 +1112,7 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        if (database1Service1MemberDataRepository.existsByNickName(inputVo.nickName.trim())) {
+        if (database1Service1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return
@@ -1142,7 +1142,7 @@ class C10Service1TkV1AuthService(
         // 회원가입
         val database1MemberUser = database1Service1MemberDataRepository.save(
             Database1_Service1_MemberData(
-                inputVo.nickName,
+                inputVo.id,
                 password,
                 null,
                 null,
@@ -1387,7 +1387,7 @@ class C10Service1TkV1AuthService(
                 return
             }
 
-            if (database1Service1MemberDataRepository.existsByNickName(inputVo.nickName.trim())) {
+            if (database1Service1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "5")
                 return
@@ -1398,7 +1398,7 @@ class C10Service1TkV1AuthService(
             // 회원가입
             val database1MemberUser = database1Service1MemberDataRepository.save(
                 Database1_Service1_MemberData(
-                    inputVo.nickName,
+                    inputVo.id,
                     password,
                     null,
                     null,
@@ -1642,7 +1642,7 @@ class C10Service1TkV1AuthService(
                 return
             }
 
-            if (database1Service1MemberDataRepository.existsByNickName(inputVo.nickName.trim())) {
+            if (database1Service1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "5")
                 return
@@ -1653,7 +1653,7 @@ class C10Service1TkV1AuthService(
             // 회원가입
             val database1MemberUser = database1Service1MemberDataRepository.save(
                 Database1_Service1_MemberData(
-                    inputVo.nickName,
+                    inputVo.id,
                     password,
                     null,
                     null,
@@ -2075,7 +2075,7 @@ class C10Service1TkV1AuthService(
                 return
             }
 
-            if (database1Service1MemberDataRepository.existsByNickName(inputVo.nickName.trim())) {
+            if (database1Service1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "5")
                 return
@@ -2084,7 +2084,7 @@ class C10Service1TkV1AuthService(
             // 회원가입
             val database1MemberUser = database1Service1MemberDataRepository.save(
                 Database1_Service1_MemberData(
-                    inputVo.nickName,
+                    inputVo.id,
                     null,
                     null,
                     null,
