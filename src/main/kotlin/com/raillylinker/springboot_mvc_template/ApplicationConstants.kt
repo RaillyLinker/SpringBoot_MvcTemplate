@@ -2,6 +2,7 @@ package com.raillylinker.springboot_mvc_template
 
 import org.springframework.core.io.ClassPathResource
 import java.io.File
+import java.nio.file.Paths
 
 // (const 시점에서 사용하는 설정 변수 모음)
 // application.yml 과 동일한 역할을 하지만, const 시점에 조회하기 위해 모아둔 변수입니다.
@@ -14,8 +15,11 @@ object ApplicationConstants {
     const val SYSTEM_TIME_ZONE = "Asia/Seoul"
 
     // 프로젝트 루트 폴더 파일 객체
-    val rootDirFile: File = File(ClassPathResource("").uri).parentFile.parentFile.parentFile.parentFile
-
-    // 프로젝트 로그 폴더 파일 객체
-    val rootLogDirFile: File = File(rootDirFile, "by_product_files/logs")
+    val rootDirFile: File = if (File(Paths.get("").toAbsolutePath().toString()).exists()) {
+        // jar 파일로 실행시켰을 때, jar 파일과 동일한 위치
+        File(Paths.get("").toAbsolutePath().toString())
+    } else {
+        // 로컬 IDE 에서 실행시킬 때 src 폴더와 동일한 위치
+        File(ClassPathResource("").uri).parentFile.parentFile.parentFile.parentFile
+    }
 }

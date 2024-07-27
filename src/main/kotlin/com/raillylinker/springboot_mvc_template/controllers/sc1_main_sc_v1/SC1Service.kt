@@ -239,14 +239,16 @@ class SC1Service(
         session: HttpSession,
         currentPath: String?
     ): ModelAndView? {
+        val rootLogDirFile = File(ApplicationConstants.rootDirFile, "by_product_files/logs")
+
         // 현재 화면의 부모 폴더
         // 현재 화면의 폴더
         val currentDirFile: File = if (currentPath == null || currentPath.trim().isEmpty()) {
             // 파라미터가 없다면 루트 폴더
-            ApplicationConstants.rootLogDirFile
+            rootLogDirFile
         } else {
             // 파라미터가 있다면 해당 위치
-            File(ApplicationConstants.rootLogDirFile, currentPath)
+            File(rootLogDirFile, currentPath)
         }
 
         // 현재 로그 폴더에서 .log 확장자 파일 및 디렉토리 파일들을 추려오고 정렬
@@ -257,7 +259,7 @@ class SC1Service(
             val filePath: String? = if (it.isDirectory) {
                 null
             } else {
-                it.absolutePath.replaceFirst(ApplicationConstants.rootLogDirFile.absolutePath, "").drop(1)
+                it.absolutePath.replaceFirst(rootLogDirFile.absolutePath, "").drop(1)
             }
 
             val fileSize = if (it.isDirectory) {
@@ -312,8 +314,8 @@ class SC1Service(
         session: HttpSession,
         filePath: String
     ): ModelAndView? {
-        println("filePath : $filePath")
-        val file = File(ApplicationConstants.rootLogDirFile, filePath)
+        val rootLogDirFile = File(ApplicationConstants.rootDirFile, "by_product_files/logs")
+        val file = File(rootLogDirFile, filePath)
         val fileName: String
         val fileContent: String
 
@@ -324,8 +326,6 @@ class SC1Service(
             fileName = "-"
             fileContent = "파일을 찾을 수 없습니다."
         }
-        println("fileName : $fileName")
-        println("fileContent : ${fileContent.length}")
 
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n7/project_log_file"
