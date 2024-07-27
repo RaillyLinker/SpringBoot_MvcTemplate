@@ -217,7 +217,7 @@ class SC1Controller(
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
-    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_ADMIN'))")
+    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
     fun api6(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
@@ -253,7 +253,7 @@ class SC1Controller(
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
-    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_ADMIN'))")
+    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
     fun api7(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,

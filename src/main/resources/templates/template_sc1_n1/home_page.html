@@ -72,7 +72,7 @@
     구동 환경 프로필 : <span th:text="${viewModel.env}">dev</span>
 </span>
 
-<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_DEVELOPER')}">
+<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_DEVELOPER') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
     Swagger 문서
 </h2>
 
@@ -80,18 +80,18 @@
         type="button"
         class="sample_btn"
         onclick="location.href='/swagger-ui/index.html'"
-        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_DEVELOPER')}">
+        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_DEVELOPER') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
     Swagger 문서로 이동
 </button>
 
-<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN')}">
+<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
     프로젝트 로그 확인
 </h2>
 
 <button type="button"
         class="sample_btn"
         onclick="location.href='/main/sc/v1/project-logs'"
-        th:if="${viewModel.roles.contains('ROLE_ADMIN')}">
+        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
     로그 확인 페이지로 이동
 </button>
 

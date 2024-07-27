@@ -22,7 +22,8 @@ class Database1_RaillyLinkerCompany_MemberRoleData(
     var memberData: Database1_RaillyLinkerCompany_MemberData,
 
     @Column(name = "role", nullable = false, columnDefinition = "VARCHAR(100)")
-    @Comment("권한 코드 (ROLE_{권한} 형식으로 저장합니다.) (ex : (관리자 : ROLE_ADMIN, 개발자 : ROLE_DEVELOPER))")
+    @Comment("권한 코드 (ROLE_{권한} 형식으로 저장합니다.) " +
+            "(ex : (관리자 : ROLE_ADMIN, 개발 관계자 : ROLE_DEVELOPER, 서버 개발자 : ROLE_SERVER_DEVELOPER))")
     var role: String
 ) {
     @Id
