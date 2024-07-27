@@ -18,6 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.log10
+import kotlin.math.pow
 
 /*
     (세션 멤버 정보 가져오기)
@@ -256,10 +260,20 @@ class SC1Service(
                 it.absolutePath.replaceFirst(ApplicationConstants.rootLogDirFile.absolutePath, "").drop(1)
             }
 
+            val fileSize = if (it.isDirectory) {
+                "-"
+            } else {
+                val fileSizeInBytes = it.length()
+                val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
+                "%.2f MB".format(fileSizeInMB)
+            }
+
             Api6ViewModel.FileViewModel(
                 name = it.name,
                 path = it.path,
-                filePath = filePath
+                filePath = filePath,
+                lastModified = SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Date(it.lastModified())),
+                fileSize = fileSize
             )
         }
 
@@ -286,7 +300,9 @@ class SC1Service(
         data class FileViewModel(
             val name: String,
             val path: String,
-            val filePath: String?
+            val filePath: String?,
+            val lastModified: String,
+            val fileSize: String
         )
     }
 

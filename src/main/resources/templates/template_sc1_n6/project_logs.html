@@ -67,11 +67,11 @@
         <div th:each="file : ${viewModel.currentDirFiles}">
             <div th:if="${file.filePath == null}" class="directory">
                 <a th:href="@{/main/sc/v1/project-logs(currentPath=${file.name})}"
-                   th:text="'/' + ${file.name}"></a>
+                   th:text="'/' + ${file.name} + ' / ' + ${file.lastModified} + ' / ' + ${file.fileSize}"></a>
             </div>
             <div th:if="${file.filePath != null}" class="file">
                 <a th:href="@{/main/sc/v1/project-log-file(filePath=${file.filePath})}"
-                   th:text="${file.name}"></a>
+                   th:text="${file.name} + ' / ' + ${file.lastModified} + ' / ' + ${file.fileSize}"></a>
             </div>
         </div>
     </div>
