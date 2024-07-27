@@ -235,21 +235,21 @@ class SC1Service(
         session: HttpSession,
         currentPath: String?
     ): ModelAndView? {
-        // 현재 화면의 폴더
-        val currentDirFile: File
         // 현재 화면의 부모 폴더
-        if (currentPath == null || currentPath.trim().isEmpty()) {
+        // 현재 화면의 폴더
+        val currentDirFile: File = if (currentPath == null || currentPath.trim().isEmpty()) {
             // 파라미터가 없다면 루트 폴더
-            currentDirFile = ApplicationConstants.rootLogDirFile
+            ApplicationConstants.rootLogDirFile
         } else {
             // 파라미터가 있다면 해당 위치
-            currentDirFile = File(ApplicationConstants.rootLogDirFile, currentPath)
+            File(ApplicationConstants.rootLogDirFile, currentPath)
         }
 
         // 현재 로그 폴더에서 .log 확장자 파일 및 디렉토리 파일들을 추려오고 정렬
         val currentDirFiles = currentDirFile.listFiles()?.filter {
             it.isDirectory || it.extension == "log"
-        }?.sortedWith(compareBy<File> { !it.isDirectory }.thenBy { it.name })?.map {
+        }?.sortedWith(compareBy<File> { it.isDirectory }
+            .thenByDescending { if (it.isDirectory) it.name else it.lastModified() })?.map {
             val filePath: String? = if (it.isDirectory) {
                 null
             } else {
