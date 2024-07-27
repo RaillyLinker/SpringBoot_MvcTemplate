@@ -46,11 +46,9 @@ class SC1Controller(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
-        session: HttpSession,
-        @Parameter(hidden = true)
-        principal: Principal?
+        session: HttpSession
     ): ModelAndView? {
-        return service.api1(httpServletResponse, session, principal)
+        return service.api1(httpServletResponse, session)
     }
 
 
@@ -77,11 +75,9 @@ class SC1Controller(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
-        session: HttpSession,
-        @Parameter(hidden = true)
-        principal: Principal?
+        session: HttpSession
     ): ModelAndView? {
-        return service.api2(httpServletResponse, session, principal!!)
+        return service.api2(httpServletResponse, session)
     }
 
 
@@ -108,8 +104,6 @@ class SC1Controller(
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
-        @Parameter(hidden = true)
-        principal: Principal?,
         @Parameter(
             name = "fail",
             description = "인증 실패(not null 이라면 인증 정보가 잘못된 것입니다.)",
@@ -118,7 +112,7 @@ class SC1Controller(
         @RequestParam("fail")
         fail: String?
     ): ModelAndView? {
-        return service.api3(httpServletResponse, session, principal, fail)
+        return service.api3(httpServletResponse, session, fail)
     }
 
 
@@ -145,8 +139,6 @@ class SC1Controller(
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
-        @Parameter(hidden = true)
-        principal: Principal?,
         @Parameter(
             name = "complete",
             description = "회원가입 완료(not null 이라면 회원가입이 완료된 것입니다.)",
@@ -162,7 +154,7 @@ class SC1Controller(
         @RequestParam("idExists")
         idExists: String?
     ): ModelAndView? {
-        return service.api4(httpServletResponse, session, principal, complete, idExists)
+        return service.api4(httpServletResponse, session, complete, idExists)
     }
 
 
@@ -189,8 +181,6 @@ class SC1Controller(
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
-        @Parameter(hidden = true)
-        principal: Principal?,
         @Parameter(
             name = "accountId",
             description = "계정 아이디",
@@ -206,6 +196,6 @@ class SC1Controller(
         @RequestParam("password")
         password: String
     ): ModelAndView? {
-        return service.api5(httpServletResponse, session, principal, accountId, password)
+        return service.api5(httpServletResponse, session, accountId, password)
     }
 }

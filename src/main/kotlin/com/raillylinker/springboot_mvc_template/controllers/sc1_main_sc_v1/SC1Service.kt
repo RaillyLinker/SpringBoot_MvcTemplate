@@ -9,11 +9,23 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import java.security.Principal
 
+/*
+    (세션 멤버 정보 가져오기)
+    val authentication = SecurityContextHolder.getContext().authentication
+    // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
+    val username: String = authentication.name
+    // 현 세션 권한 리스트 (비로그인 : [ROLE_ANONYMOUS], 권한없음 : [])
+    val roles: List<String> = authentication.authorities.map(GrantedAuthority::getAuthority)
+    println("username : $username")
+    println("roles : $roles")
+*/
 @Service
 class SC1Service(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
@@ -33,9 +45,14 @@ class SC1Service(
     // <공개 메소드 공간>
     fun api1(
         httpServletResponse: HttpServletResponse,
-        session: HttpSession,
-        principal: Principal?
+        session: HttpSession
     ): ModelAndView? {
+        val authentication = SecurityContextHolder.getContext().authentication
+        // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
+        val username: String = authentication.name
+        // 현 세션 권한 리스트 (비로그인 : [ROLE_ANONYMOUS], 권한없음 : [])
+        val roles: List<String> = authentication.authorities.map(GrantedAuthority::getAuthority)
+
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n1/home_page"
 
@@ -43,7 +60,8 @@ class SC1Service(
             "viewModel",
             Api1ViewModel(
                 activeProfile,
-                principal != null
+                username != "anonymousUser",
+                roles
             )
         )
 
@@ -54,19 +72,23 @@ class SC1Service(
 
     data class Api1ViewModel(
         val env: String,
-        val loggedIn: Boolean
+        val loggedIn: Boolean,
+        val roles: List<String>
     )
 
     ////
     fun api2(
         httpServletResponse: HttpServletResponse,
-        session: HttpSession,
-        principal: Principal
+        session: HttpSession
     ): ModelAndView? {
+        val authentication = SecurityContextHolder.getContext().authentication
+        // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
+        val username: String = authentication.name
+
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n2/member_info"
 
-        val memberUid = principal.name.toLong()
+        val memberUid = username.toLong()
         val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(memberUid).get()
 
         val roleList: MutableList<String> = mutableListOf()
@@ -107,16 +129,19 @@ class SC1Service(
     fun api3(
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
-        principal: Principal?,
         fail: String?
     ): ModelAndView? {
+        val authentication = SecurityContextHolder.getContext().authentication
+        // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
+        val username: String = authentication.name
+
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n3/login"
 
         mv.addObject(
             "viewModel",
             Api3ViewModel(
-                principal != null,
+                username != "anonymousUser",
                 fail != null
             )
         )
@@ -136,17 +161,20 @@ class SC1Service(
     fun api4(
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
-        principal: Principal?,
         complete: String?,
         idExists: String?
     ): ModelAndView? {
+        val authentication = SecurityContextHolder.getContext().authentication
+        // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
+        val username: String = authentication.name
+
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n4/join"
 
         mv.addObject(
             "viewModel",
             Api4ViewModel(
-                principal != null,
+                username != "anonymousUser",
                 complete != null,
                 idExists != null
             )
@@ -167,7 +195,6 @@ class SC1Service(
     fun api5(
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
-        principal: Principal?,
         accountId: String,
         password: String
     ): ModelAndView? {
