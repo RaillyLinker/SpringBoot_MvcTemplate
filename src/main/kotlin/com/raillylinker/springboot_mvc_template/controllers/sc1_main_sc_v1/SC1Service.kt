@@ -1,5 +1,8 @@
 package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 
+import com.raillylinker.springboot_mvc_template.ApplicationConstants
+import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
+import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.*
@@ -14,7 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
-import java.security.Principal
+import java.io.File
 
 /*
     (세션 멤버 정보 가져오기)
@@ -192,6 +195,7 @@ class SC1Service(
     )
 
     ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api5(
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -224,4 +228,107 @@ class SC1Service(
         httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
+
+    ////
+    fun api6(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        currentPath: String?
+    ): ModelAndView? {
+        // 현재 화면의 폴더
+        val currentDirFile: File
+        // 현재 화면의 부모 폴더
+        if (currentPath == null || currentPath.trim().isEmpty()) {
+            // 파라미터가 없다면 루트 폴더
+            currentDirFile = ApplicationConstants.rootLogDirFile
+        } else {
+            // 파라미터가 있다면 해당 위치
+            currentDirFile = File(ApplicationConstants.rootLogDirFile, currentPath)
+        }
+
+        // 현재 로그 폴더에서 .log 확장자 파일 및 디렉토리 파일들을 추려오고 정렬
+        val currentDirFiles = currentDirFile.listFiles()?.filter {
+            it.isDirectory || it.extension == "log"
+        }?.sortedWith(compareBy<File> { !it.isDirectory }.thenBy { it.name })?.map {
+            val filePath: String? = if (it.isDirectory) {
+                null
+            } else {
+                it.absolutePath.replaceFirst(ApplicationConstants.rootLogDirFile.absolutePath, "").drop(1)
+            }
+
+            Api6ViewModel.FileViewModel(
+                name = it.name,
+                path = it.path,
+                filePath = filePath
+            )
+        }
+
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n6/project_logs"
+
+        mv.addObject(
+            "viewModel",
+            Api6ViewModel(
+                currentDirFile.absolutePath,
+                currentDirFiles
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api6ViewModel(
+        val currentDirFilePath: String,
+        val currentDirFiles: List<FileViewModel>?
+    ) {
+        data class FileViewModel(
+            val name: String,
+            val path: String,
+            val filePath: String?
+        )
+    }
+
+    ////
+    fun api7(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        filePath: String
+    ): ModelAndView? {
+        println("filePath : $filePath")
+        val file = File(ApplicationConstants.rootLogDirFile, filePath)
+        val fileName: String
+        val fileContent: String
+
+        if (file.exists()) {
+            fileName = file.name
+            fileContent = file.readText()
+        } else {
+            fileName = "-"
+            fileContent = "파일을 찾을 수 없습니다."
+        }
+        println("fileName : $fileName")
+        println("fileContent : ${fileContent.length}")
+
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n7/project_log_file"
+
+        mv.addObject(
+            "viewModel",
+            Api7ViewModel(
+                fileName,
+                fileContent
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api7ViewModel(
+        val fileName: String,
+        val fileContent: String
+    )
 }

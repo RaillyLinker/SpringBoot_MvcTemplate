@@ -84,6 +84,17 @@
     Swagger 문서로 이동
 </button>
 
+<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN')}">
+    프로젝트 로그 확인
+</h2>
+
+<button type="button"
+        class="sample_btn"
+        onclick="location.href='/main/sc/v1/project-logs'"
+        th:if="${viewModel.roles.contains('ROLE_ADMIN')}">
+    로그 확인 페이지로 이동
+</button>
+
 <!-- Script 선언 -->
 <script th:src="@{/resource_sc1_n1/home_page.js}"
         src="../../static/resource_sc1_n1/home_page.js">

@@ -1,5 +1,8 @@
 package com.raillylinker.springboot_mvc_template
 
+import org.springframework.core.io.ClassPathResource
+import java.io.File
+
 // (const 시점에서 사용하는 설정 변수 모음)
 // application.yml 과 동일한 역할을 하지만, const 시점에 조회하기 위해 모아둔 변수입니다.
 object ApplicationConstants {
@@ -9,4 +12,10 @@ object ApplicationConstants {
 
     // 현 프로젝트에서 사용할 타임존 설정 (UTC, Asia/Seoul, ...)
     const val SYSTEM_TIME_ZONE = "Asia/Seoul"
+
+    // 프로젝트 루트 폴더 파일 객체
+    val rootDirFile: File = File(ClassPathResource("").uri).parentFile.parentFile.parentFile.parentFile
+
+    // 프로젝트 로그 폴더 파일 객체
+    val rootLogDirFile: File = File(rootDirFile, "by_product_files/logs")
 }

@@ -91,10 +91,10 @@ object ImageProcessUtilObject {
         signImageWidth: Int,
         signImageHeight: Int,
         // 사인 텍스트 색상
-        signColor : Color,
+        signColor: Color,
         // 사인 텍스트 폰트
-        signFont : Font
-    ) : BufferedImage {
+        signFont: Font
+    ): BufferedImage {
         // 투명한 배경의 BufferedImage 생성
         val bufferedImage = BufferedImage(signImageWidth, signImageHeight, BufferedImage.TYPE_INT_ARGB)
         val g2d = bufferedImage.createGraphics()

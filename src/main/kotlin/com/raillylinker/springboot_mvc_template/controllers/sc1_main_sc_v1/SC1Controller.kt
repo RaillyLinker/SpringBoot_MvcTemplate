@@ -12,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
-import java.security.Principal
 
 @Tag(name = "/main/sc/v1 APIs", description = "SC1 : main 웹 페이지에 대한 API 컨트롤러")
 @Controller
@@ -197,5 +196,73 @@ class SC1Controller(
         password: String
     ): ModelAndView? {
         return service.api5(httpServletResponse, session, accountId, password)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N6 : 프로젝트 로그 확인 화면 <>",
+        description = "프로젝트 로그 확인 화면\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/project-logs"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_ADMIN'))")
+    fun api6(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "currentPath",
+            description = "폴더 현재 경로",
+            example = "2023_12_11"
+        )
+        @RequestParam("currentPath")
+        currentPath: String?
+    ): ModelAndView? {
+        return service.api6(httpServletResponse, session, currentPath)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N7 : 프로젝트 로그 내용 화면 <>",
+        description = "프로젝트 로그 내용 화면\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/project-log-file"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_ADMIN'))")
+    fun api7(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(name = "filePath", description = "파일 경로", example = "currentLog.log")
+        @RequestParam("filePath")
+        filePath: String
+    ): ModelAndView? {
+        return service.api7(httpServletResponse, session, filePath)
     }
 }
