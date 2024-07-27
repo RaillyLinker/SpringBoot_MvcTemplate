@@ -458,6 +458,15 @@ class SecurityConfig(
             }
         }
 
+        // 시큐리티 예외 처리
+        securityMatcher.exceptionHandling { exceptionHandlingCustomizer ->
+            exceptionHandlingCustomizer.accessDeniedPage("/main/sc/v1/error?type=ACCESS_DENIED") // 권한 부족 시 이동할 페이지 설정
+            // 또는 커스텀 핸들러 설정
+            // exceptionHandlingCustomizer.accessDeniedHandler { request, response, accessDeniedException ->
+            //     response.sendRedirect("/access-denied")
+            // }
+        }
+
         // (API 요청 제한)
         // 기본적으로 모두 Open
         securityMatcher.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->

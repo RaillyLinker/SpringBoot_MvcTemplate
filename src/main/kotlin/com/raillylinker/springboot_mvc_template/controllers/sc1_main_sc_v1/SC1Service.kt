@@ -331,4 +331,35 @@ class SC1Service(
         val fileName: String,
         val fileContent: String
     )
+
+    ////
+    fun api8(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        type: SC1Controller.Api8ErrorTypeEnum
+    ): ModelAndView? {
+        val errorMsg = when (type) {
+            SC1Controller.Api8ErrorTypeEnum.ACCESS_DENIED -> {
+                "권한이 없습니다."
+            }
+        }
+
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n8/error_page"
+
+        mv.addObject(
+            "viewModel",
+            Api8ViewModel(
+                errorMsg
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api8ViewModel(
+        val errorMsg: String
+    )
 }

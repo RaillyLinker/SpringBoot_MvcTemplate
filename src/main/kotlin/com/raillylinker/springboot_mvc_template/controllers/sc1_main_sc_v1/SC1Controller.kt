@@ -265,4 +265,39 @@ class SC1Controller(
     ): ModelAndView? {
         return service.api7(httpServletResponse, session, filePath)
     }
+
+
+    ////
+    @Operation(
+        summary = "N8 : 에러 화면",
+        description = "에러 화면\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/error"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    fun api8(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(name = "type", description = "에러 타입", example = "ACCESS_DENIED")
+        @RequestParam("type")
+        type: Api8ErrorTypeEnum
+    ): ModelAndView? {
+        return service.api8(httpServletResponse, session, type)
+    }
+
+    enum class Api8ErrorTypeEnum {
+        ACCESS_DENIED
+    }
 }
