@@ -80,7 +80,6 @@ object ApplicationRuntimeConfigs {
             for (actuatorAllowIp in runtimeConfigData.actuatorAllowIpList) {
                 database1Service1RuntimeConfigDataForActuatorAllowIpRepository.save(
                     Database1_Service1_RuntimeConfigDataForActuatorAllowIp(
-                        runtimeConfigDataEntity,
                         actuatorAllowIp.ipString,
                         actuatorAllowIp.ipDesc
                     )
@@ -91,7 +90,6 @@ object ApplicationRuntimeConfigs {
             for (loggingDenyIp in runtimeConfigData.loggingDenyIpList) {
                 database1Service1RuntimeConfigDataForLoggingDenyIpRepository.save(
                     Database1_Service1_RuntimeConfigDataForLoggingDenyIp(
-                        runtimeConfigDataEntity,
                         loggingDenyIp.ipString,
                         loggingDenyIp.ipDesc
                     )
@@ -102,9 +100,7 @@ object ApplicationRuntimeConfigs {
             val chosenEntity = entityList[0]
 
             val actuatorAllowIpEntityList =
-                database1Service1RuntimeConfigDataForActuatorAllowIpRepository.findAllByRuntimeConfigDataOrderByUid(
-                    chosenEntity
-                )
+                database1Service1RuntimeConfigDataForActuatorAllowIpRepository.findAllByOrderByUid()
             val actuatorAllowIpList: ArrayList<RuntimeConfigData.ConfigIp> = arrayListOf()
             for (actuatorAllowIpEntity in actuatorAllowIpEntityList) {
                 actuatorAllowIpList.add(
@@ -116,9 +112,7 @@ object ApplicationRuntimeConfigs {
             }
 
             val loggingIpEntityList =
-                database1Service1RuntimeConfigDataForLoggingDenyIpRepository.findAllByRuntimeConfigDataOrderByUid(
-                    chosenEntity
-                )
+                database1Service1RuntimeConfigDataForLoggingDenyIpRepository.findAllByOrderByUid()
             val loggingIpList: ArrayList<RuntimeConfigData.ConfigIp> = arrayListOf()
             for (loggingIpEntity in loggingIpEntityList) {
                 loggingIpList.add(

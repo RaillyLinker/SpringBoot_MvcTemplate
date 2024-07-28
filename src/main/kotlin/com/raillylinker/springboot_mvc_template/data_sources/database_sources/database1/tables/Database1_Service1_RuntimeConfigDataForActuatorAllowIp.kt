@@ -17,11 +17,6 @@ import java.time.LocalDateTime
 )
 @Comment("Service1 의 런타임 변경 가능 설정 정보 중 Actuator 정보 접근 허용 IP")
 class Database1_Service1_RuntimeConfigDataForActuatorAllowIp(
-    @ManyToOne
-    @JoinColumn(name = "runtime_config_data_uid", nullable = false)
-    @Comment("런타임 설정 고유번호(service1.runtime_config_data.uid)")
-    var runtimeConfigData: Database1_Service1_RuntimeConfigData,
-
     @Column(name = "ip_string", nullable = false, columnDefinition = "VARCHAR(20)")
     @Comment("접근 허용 IP (ex : 127.0.0.1)")
     var ipString: String,
