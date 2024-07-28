@@ -12,6 +12,9 @@
           href="../../static/resource_sc1_n4/join.css"
           rel="stylesheet"/>
     <style>
+        #signupButton {
+            margin-top: 5px;
+        }
     </style>
 
     <title>
@@ -51,7 +54,7 @@
         </button>
     </div>
     <div>
-        <button type="submit">회원가입</button>
+        <button id="signupButton" type="submit">회원가입</button>
     </div>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 </form>
@@ -71,6 +74,8 @@
         window.location.href = '/main/sc/v1/login';
     } else if ([[${viewModel.idExists}]] === true) {
         alert("동일 아이디로 가입된 회원이 존재합니다.");
+        history.replaceState(null, null, '/main/sc/v1/join');
+        history.back();
     }
 
     // 입력값 검증 함수

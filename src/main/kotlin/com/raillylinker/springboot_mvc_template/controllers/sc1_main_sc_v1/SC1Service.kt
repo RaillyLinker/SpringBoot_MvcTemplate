@@ -20,8 +20,7 @@ import org.springframework.web.servlet.ModelAndView
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log10
-import kotlin.math.pow
+import java.util.regex.Pattern
 
 /*
     (세션 멤버 정보 가져오기)
@@ -66,8 +65,8 @@ class SC1Service(
         mv.addObject(
             "viewModel",
             Api1ViewModel(
-                activeProfile,
                 username != "anonymousUser",
+                activeProfile,
                 roles
             )
         )
@@ -78,8 +77,8 @@ class SC1Service(
     }
 
     data class Api1ViewModel(
-        val env: String,
         val loggedIn: Boolean,
+        val env: String,
         val roles: List<String>
     )
 
@@ -91,6 +90,8 @@ class SC1Service(
         val authentication = SecurityContextHolder.getContext().authentication
         // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
         val username: String = authentication.name
+        // 현 세션 권한 리스트 (비로그인 : [ROLE_ANONYMOUS], 권한없음 : [])
+        val roles: List<String> = authentication.authorities.map(GrantedAuthority::getAuthority)
 
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n2/member_info"
@@ -99,8 +100,8 @@ class SC1Service(
         val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(memberUid).get()
 
         val roleList: MutableList<String> = mutableListOf()
-        for (role in memberEntity.memberRoleDataList) {
-            roleList.add(role.role)
+        for (role in roles) {
+            roleList.add(role)
         }
 
         mv.addObject(
@@ -271,11 +272,11 @@ class SC1Service(
             }
 
             Api6ViewModel.FileViewModel(
-                name = it.name,
-                path = it.path,
-                filePath = filePath,
-                lastModified = SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Date(it.lastModified())),
-                fileSize = fileSize
+                it.name,
+                it.path,
+                filePath,
+                SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Date(it.lastModified())),
+                fileSize
             )
         }
 
@@ -315,16 +316,37 @@ class SC1Service(
         filePath: String
     ): ModelAndView? {
         val rootLogDirFile = File(ApplicationConstants.rootDirFile, "by_product_files/logs")
-        val file = File(rootLogDirFile, filePath)
-        val fileName: String
-        val fileContent: String
+        val logFile = File(rootLogDirFile, filePath)
 
-        if (file.exists()) {
-            fileName = file.name
-            fileContent = file.readText()
+        val fileName: String
+        val logLines: MutableList<Api7ViewModel.LogLine> = mutableListOf()
+        if (logFile.exists()) {
+            fileName = logFile.name
+
+            // 로그 파일을 읽어 String 으로 저장
+            val fileContent = logFile.readText()
+
+            // 로그 라인을 추출하기 위한 정규 표현식 패턴
+            val logPattern = Pattern.compile(
+                """\[(\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+)] \[(DEBUG|ERROR|WARN|INFO|TRACE)] \[(.*?)](.*)""",
+                Pattern.DOTALL
+            )
+
+            // 정규 표현식 매처
+            val matcher = logPattern.matcher(fileContent)
+
+            // 로그 라인을 추출하고 데이터 클래스에 저장
+            while (matcher.find()) {
+                val logDatetime = matcher.group(1).trim()
+                val logLevel = matcher.group(2).uppercase().trim()
+                val logString = matcher.group(3).trim()
+                val etc = matcher.group(4).trim()
+
+                // 로그 라인 객체를 리스트에 추가
+                logLines.add(Api7ViewModel.LogLine(logDatetime, logLevel, logString, etc))
+            }
         } else {
             fileName = "-"
-            fileContent = "파일을 찾을 수 없습니다."
         }
 
         val mv = ModelAndView()
@@ -334,7 +356,7 @@ class SC1Service(
             "viewModel",
             Api7ViewModel(
                 fileName,
-                fileContent
+                logLines
             )
         )
 
@@ -345,8 +367,15 @@ class SC1Service(
 
     data class Api7ViewModel(
         val fileName: String,
-        val fileContent: String
-    )
+        val logLines: List<LogLine>
+    ) {
+        data class LogLine(
+            val logDatetime: String,
+            val logLevel: String,
+            val logString: String,
+            val etc: String
+        )
+    }
 
     ////
     fun api8(

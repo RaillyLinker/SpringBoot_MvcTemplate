@@ -12,6 +12,12 @@
           href="../../static/resource_sc1_n3/login.css"
           rel="stylesheet"/>
     <style>
+        #loginButton {
+            margin-top: 10px;
+        }
+        #signupButton {
+            margin-top: 5px;
+        }
     </style>
 
     <title>
@@ -34,7 +40,7 @@
 
 <hr/>
 
-<form th:action="@{/main/sc/v1/login-process}" method="post" onsubmit="prependToUsername()">
+<form th:action="@{/main/sc/v1/login-process}" method="post" onsubmit="return validateForm()">
     <div>
         <label for="accountId">아이디:</label>
         <input type="text" id="accountId" name="accountId"/>
@@ -48,12 +54,12 @@
         <button type="button" id="togglePassword" onclick="togglePasswordVisibility()">Show</button>
     </div>
     <div>
-        <button type="submit">로그인</button>
+        <button id="loginButton" type="submit">로그인</button>
     </div>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 </form>
 <div>
-    <button id="signup_button" onclick="goToSignup()">회원가입</button>
+    <button id="signupButton" onclick="goToSignup()">회원가입</button>
 </div>
 
 <!-- Script 선언 -->
@@ -73,11 +79,27 @@
         history.back();
     }
 
-    // 입력창에서 정보를 보낼 때 타입 붙여서 보내기
-    function prependToUsername() {
+    // 입력값 검증 함수
+    function validateForm() {
+        var accountId = document.getElementById('accountId').value;
+        var password = document.getElementById('password').value;
+
+        if (accountId === "") {
+            alert("아이디를 입력하세요.");
+            document.getElementById('accountId').focus();
+            return false;
+        }
+        if (password === "") {
+            alert("비밀번호를 입력하세요.");
+            document.getElementById('password').focus();
+            return false;
+        }
+
         var visibleInput = document.getElementById('accountId');
         var usernameInput = document.getElementById('username');
         usernameInput.value = 'accountId_' + visibleInput.value;
+
+        return true;
     }
 
     // 회원가입 페이지로 이동하는 함수
