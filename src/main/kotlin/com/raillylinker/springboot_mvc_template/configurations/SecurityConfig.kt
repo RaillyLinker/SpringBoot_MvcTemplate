@@ -1,6 +1,5 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
-import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerCompany_MemberData
@@ -173,6 +172,24 @@ class SecurityConfig(
     ) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
+            // 계정 설정 - JWT 비밀키
+            const val AUTH_JWT_SECRET_KEY_STRING: String = "123456789abcdefghijklmnopqrstuvw"
+
+            // 계정 설정 - JWT AccessToken 유효기간(초)
+            const val AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC: Long = 60L * 30L // 30분
+
+            // 계정 설정 - JWT RefreshToken 유효기간(초)
+            const val AUTH_JWT_REFRESH_TOKEN_EXPIRATION_TIME_SEC: Long = 60L * 60L * 24L * 7L // 7일
+
+            // 계정 설정 - JWT 본문 암호화 AES256 IV 16자
+            const val AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR: String = "odkejduc726dj48d"
+
+            // 계정 설정 - JWT 본문 암호화 AES256 암호키 32자
+            const val AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY: String = "8fu3jd0ciiu3384hfucy36dye9sjv7b3"
+
+            // 계정 설정 - JWT 발행자
+            const val AUTH_JWT_ISSUER: String = "com.raillylinker.springboot_mvc_template.service1"
+
             // (Swagger 에 표시될 401 api-result-code 설명)
             const val DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE =
                 "(Response Code 반환 원인) - Nullable\n\n" +
@@ -209,15 +226,15 @@ class SecurityConfig(
                             accessTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
                             JwtTokenUtilObject.getTokenUsage(
                                 accessToken,
-                                ApplicationRuntimeConfigs.runtimeConfigData.authJwtClaimsAes256InitializationVector,
-                                ApplicationRuntimeConfigs.runtimeConfigData.authJwtClaimsAes256EncryptionKey
+                                AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                                AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
                             ).lowercase() != "access" || // 토큰 용도가 다름
                             // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
-                            JwtTokenUtilObject.getRemainSeconds(accessToken) > ApplicationRuntimeConfigs.runtimeConfigData.authJwtAccessTokenExpirationTimeSec ||
-                            JwtTokenUtilObject.getIssuer(accessToken) != ApplicationRuntimeConfigs.runtimeConfigData.authJwtIssuer || // 발행인 불일치
+                            JwtTokenUtilObject.getRemainSeconds(accessToken) > AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
+                            JwtTokenUtilObject.getIssuer(accessToken) != AUTH_JWT_ISSUER || // 발행인 불일치
                             !JwtTokenUtilObject.validateSignature(
                                 accessToken,
-                                ApplicationRuntimeConfigs.runtimeConfigData.authJwtSecretKeyString
+                                AUTH_JWT_SECRET_KEY_STRING
                             ) // 시크릿 검증이 무효 = 위변조 된 토큰
                         ) {
                             // 올바르지 않은 Authorization Token
@@ -325,8 +342,8 @@ class SecurityConfig(
                     // 유저 탈퇴 여부 확인
                     val memberUid = JwtTokenUtilObject.getMemberUid(
                         accessToken,
-                        ApplicationRuntimeConfigs.runtimeConfigData.authJwtClaimsAes256InitializationVector,
-                        ApplicationRuntimeConfigs.runtimeConfigData.authJwtClaimsAes256EncryptionKey
+                        AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                        AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
                     ).toLong()
 
                     val memberDataOpt = database1Service1MemberDataRepository.findById(memberUid)

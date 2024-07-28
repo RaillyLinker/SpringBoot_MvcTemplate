@@ -69,7 +69,7 @@ class C1Controller(
     fun api2(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): ApplicationRuntimeConfigs.RuntimeConfigData {
+    ): ApplicationRuntimeConfigs.RuntimeConfigData? {
         return service.api2(httpServletResponse)
     }
 }

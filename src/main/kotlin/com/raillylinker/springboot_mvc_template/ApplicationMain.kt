@@ -1,8 +1,5 @@
 package com.raillylinker.springboot_mvc_template
 
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_RuntimeConfigDataForActuatorAllowIpRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_RuntimeConfigDataForLoggingDenyIpRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Service1_RuntimeConfigDataRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -14,22 +11,14 @@ import java.util.*
 @EnableScheduling // 스케쥴러 사용 설정
 @EnableAsync // 스케쥴러의 Async 사용 설정
 @SpringBootApplication
-class ApplicationMain(
-    private val database1Service1RuntimeConfigDataRepository: Database1_Service1_RuntimeConfigDataRepository,
-    private val database1Service1RuntimeConfigDataForActuatorAllowIpRepository: Database1_Service1_RuntimeConfigDataForActuatorAllowIpRepository,
-    private val database1Service1RuntimeConfigDataForLoggingDenyIpRepository: Database1_Service1_RuntimeConfigDataForLoggingDenyIpRepository
-) {
+class ApplicationMain {
     @Bean
     fun init() = CommandLineRunner {
         // 서버 타임존 설정
         TimeZone.setDefault(TimeZone.getTimeZone(ApplicationConstants.SYSTEM_TIME_ZONE))
 
         // 런타임 설정 가져오기
-        ApplicationRuntimeConfigs.loadRuntimeConfigData(
-            database1Service1RuntimeConfigDataRepository,
-            database1Service1RuntimeConfigDataForActuatorAllowIpRepository,
-            database1Service1RuntimeConfigDataForLoggingDenyIpRepository
-        )
+        ApplicationRuntimeConfigs.loadRuntimeConfigData()
     }
 }
 
