@@ -1,6 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 
 import com.raillylinker.springboot_mvc_template.ApplicationConstants
+import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
@@ -405,4 +406,67 @@ class SC1Service(
     data class Api8ViewModel(
         val errorMsg: String
     )
+
+    ////
+    fun api9(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        fail: String?,
+        complete: String?
+    ): ModelAndView? {
+        val runtimeConfigFile = File(ApplicationConstants.rootDirFile, "by_product_files/runtime_config.json")
+
+        val configJsonString: String = if (runtimeConfigFile.exists()) {
+            // 파일을 읽어 String 으로 저장
+            runtimeConfigFile.readText()
+        } else {
+            ""
+        }
+
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n9/runtime_config_editor"
+
+        mv.addObject(
+            "viewModel",
+            Api9ViewModel(
+                configJsonString,
+                complete != null,
+                fail != null
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api9ViewModel(
+        val configJsonString: String,
+        val complete: Boolean,
+        val fail: Boolean
+    )
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api10(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        configJsonString: String
+    ): ModelAndView? {
+        val mv = ModelAndView()
+
+        val resultObject = ApplicationRuntimeConfigs.saveRuntimeConfigData(configJsonString)
+
+        println("resultObject : $resultObject")
+
+        if (resultObject == null) {
+            mv.viewName = "redirect:/main/sc/v1/runtime-config-editor?fail"
+        } else {
+            mv.viewName = "redirect:/main/sc/v1/runtime-config-editor?complete"
+        }
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
 }

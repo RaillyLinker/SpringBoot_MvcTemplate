@@ -45,31 +45,4 @@ class C1Controller(
     ): ModelAndView? {
         return service.api1(httpServletResponse)
     }
-
-
-    ////
-    @Operation(
-        summary = "N2 : 런타임 설정 데이터 반영",
-        description = "런타임 설정 데이터를 프로젝트에 반영하고 현재 적용된 값을 가져옵니다.\n\n"
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-                description = "정상 동작"
-            )
-        ]
-    )
-    @GetMapping(
-        path = ["/runtime-config"],
-        consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
-    @ResponseBody
-    fun api2(
-        @Parameter(hidden = true)
-        httpServletResponse: HttpServletResponse
-    ): ApplicationRuntimeConfigs.RuntimeConfigData? {
-        return service.api2(httpServletResponse)
-    }
 }

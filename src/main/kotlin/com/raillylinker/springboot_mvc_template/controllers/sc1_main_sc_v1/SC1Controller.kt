@@ -307,4 +307,87 @@ class SC1Controller(
     enum class Api8ErrorTypeEnum {
         ACCESS_DENIED
     }
+
+
+    ////
+    @Operation(
+        summary = "N9 : 런타임 설정 수정 화면 <>",
+        description = "런타임 설정 수정 화면\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/runtime-config-editor"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
+    fun api9(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "fail",
+            description = "수정 실패(not null 이라면 수정 실패)",
+            example = ""
+        )
+        @RequestParam("fail")
+        fail: String?,
+        @Parameter(
+            name = "fail",
+            description = "수정 성공(not null 이라면 수정 성공)",
+            example = ""
+        )
+        @RequestParam("complete")
+        complete: String?
+    ): ModelAndView? {
+        return service.api9(httpServletResponse, session, fail, complete)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N10 : 런타임 설정 업데이트",
+        description = "런타임 설정 업데이트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "잘못된 요청"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/runtime-config"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
+    fun api10(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "configJsonString",
+            description = "설정 JsonString",
+            example = "{}"
+        )
+        @RequestParam("configJsonString")
+        configJsonString: String
+    ): ModelAndView? {
+        return service.api10(httpServletResponse, session, configJsonString)
+    }
 }

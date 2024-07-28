@@ -1,11 +1,9 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
-import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 
@@ -27,13 +25,5 @@ class C1Service(
         mv.viewName = "forward:/main/sc/v1/home"
 
         return mv
-    }
-
-
-    ////
-    fun api2(httpServletResponse: HttpServletResponse): ApplicationRuntimeConfigs.RuntimeConfigData? {
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
-        return ApplicationRuntimeConfigs.loadRuntimeConfigData()
     }
 }

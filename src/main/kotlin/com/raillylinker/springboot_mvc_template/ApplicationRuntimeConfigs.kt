@@ -35,6 +35,23 @@ object ApplicationRuntimeConfigs {
             )
         )
 
+    // (설정 데이터 저장)
+    fun saveRuntimeConfigData(configJsonString: String): RuntimeConfigData? {
+        val runtimeConfigJsonFile = File(ApplicationConstants.rootDirFile, "by_product_files/runtime_config.json")
+        try {
+            val newConfigObject: RuntimeConfigData = Gson().fromJson(
+                configJsonString,
+                object : TypeToken<RuntimeConfigData>() {}.type
+            )
+            runtimeConfigJsonFile.writeText(Gson().toJson(newConfigObject))
+            runtimeConfigData = newConfigObject
+            return runtimeConfigData
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
+
     // (설정 데이터 불러오기)
     fun loadRuntimeConfigData(): RuntimeConfigData? {
         val runtimeConfigJsonFile = File(ApplicationConstants.rootDirFile, "by_product_files/runtime_config.json")

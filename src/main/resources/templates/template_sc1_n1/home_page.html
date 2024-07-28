@@ -95,11 +95,22 @@
     로그 확인 페이지로 이동
 </button>
 
+<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
+    프로젝트 런타임 설정 변경
+</h2>
+
+<button type="button"
+        class="sample_btn"
+        onclick="location.href='/main/sc/v1/runtime-config-editor'"
+        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
+    런타임 설정 변경하러 이동
+</button>
+
 <!-- Script 선언 -->
 <script th:src="@{/resource_sc1_n1/home_page.js}"
         src="../../static/resource_sc1_n1/home_page.js">
 </script>
-<script>
+<script th:inline="javascript">
 </script>
 </body>
 </html>

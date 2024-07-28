@@ -66,7 +66,7 @@
 <script th:src="@{/resource_sc1_n3/login.js}"
         src="../../static/resource_sc1_n3/login.js">
 </script>
-<script>
+<script th:inline="javascript">
     if ([[${viewModel.loggedIn}]] === true) {
         // 이미 로그인된 상황 -> 뒤로가기
         history.back();
