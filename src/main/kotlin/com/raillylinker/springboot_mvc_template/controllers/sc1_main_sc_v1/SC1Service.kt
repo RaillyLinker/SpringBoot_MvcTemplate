@@ -328,7 +328,7 @@ class SC1Service(
 
             // 로그 라인을 추출하기 위한 정규 표현식 패턴
             val logPattern = Pattern.compile(
-                """\[(\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+)] \[(DEBUG|ERROR|WARN|INFO|TRACE)] \[(.*?)](.*)""",
+                """\[(\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+)] \[(DEBUG|ERROR|WARN |INFO |TRACE)] \[(.*?)](.*?)(?=\n\[\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+]|$)""",
                 Pattern.DOTALL
             )
 

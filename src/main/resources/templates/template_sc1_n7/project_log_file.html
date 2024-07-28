@@ -22,11 +22,6 @@
         .ERROR {
             color: red;
         }
-
-        .file-content {
-            white-space: pre-wrap; /* Preserve whitespace but allow word wrapping */
-            word-wrap: break-word; /* Enable word wrapping */
-        }
     </style>
     <title>Springboot MVC Template</title>
 </head>
@@ -56,11 +51,18 @@
 
 <div class="container">
     <h2 th:text="${viewModel.fileName}"></h2>
-    <pre class="file-content">
-        <th:block th:each="line : ${viewModel.logLines}">
-            <span th:text="'[' + ${line.logDatetime} + ']' + '[' + ${line.logLevel} + ']' + '[' + ${line.logString} + ']' + ${line.etc}" th:classappend="${line.logLevel}"></span><br/>
-        </th:block>
-    </pre>
+    <th:block th:each="line : ${viewModel.logLines}">
+        <div>
+            <span th:text="'[' + ${line.logDatetime} + '] '"></span>
+            <span>[</span>
+            <span th:text="${line.logLevel}" th:classappend="${line.logLevel}"></span>
+            <span>] </span>
+            <span th:text="'[' + ${line.logString} + ']'"></span>
+            <br>
+            <span th:text="${line.etc}"></span>
+        </div>
+        <div>&nbsp</div>
+    </th:block>
 </div>
 
 <script th:src="@{/resource_sc1_n7/project_log_file.js}"
