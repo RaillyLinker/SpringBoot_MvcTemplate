@@ -57,9 +57,8 @@
             <span>[</span>
             <span th:text="${line.logLevel}" th:classappend="${line.logLevel}"></span>
             <span>] </span>
-            <span th:text="'[' + ${line.logString} + ']'"></span>
             <br>
-            <span th:text="${line.etc}"></span>
+            <span th:text="${line.logString}"></span>
         </div>
         <div>&nbsp</div>
     </th:block>

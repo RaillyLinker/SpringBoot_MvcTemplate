@@ -328,7 +328,7 @@ class SC1Service(
 
             // 로그 라인을 추출하기 위한 정규 표현식 패턴
             val logPattern = Pattern.compile(
-                """\[(\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+)] \[(DEBUG|ERROR|WARN |INFO |TRACE)] \[(.*?)](.*?)(?=\n\[\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+]|$)""",
+                """\[(\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+)] \[(DEBUG|ERROR|WARN |INFO |TRACE)](.*?)(?=\n\[\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+]|$)""",
                 Pattern.DOTALL
             )
 
@@ -340,10 +340,9 @@ class SC1Service(
                 val logDatetime = matcher.group(1).trim()
                 val logLevel = matcher.group(2).uppercase().trim()
                 val logString = matcher.group(3).trim()
-                val etc = matcher.group(4).trim()
 
                 // 로그 라인 객체를 리스트에 추가
-                logLines.add(Api7ViewModel.LogLine(logDatetime, logLevel, logString, etc))
+                logLines.add(Api7ViewModel.LogLine(logDatetime, logLevel, logString))
             }
         } else {
             fileName = "-"
@@ -372,8 +371,7 @@ class SC1Service(
         data class LogLine(
             val logDatetime: String,
             val logLevel: String,
-            val logString: String,
-            val etc: String
+            val logString: String
         )
     }
 
