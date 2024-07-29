@@ -63,7 +63,7 @@
     <p>고유번호 : <span th:text="${viewModel.memberInfo.memberUid}"></span></p>
     <p>아이디 : <span th:text="${viewModel.memberInfo.accountId}"></span></p>
 
-    <p>권한 리스트</p>
+    <p>권한 목록</p>
     <ul>
         <li th:if="${viewModel.memberInfo.roleList.isEmpty()}" th:text="없음"></li>
         <li th:each="role : ${viewModel.memberInfo.roleList}" th:text="${role}"></li>

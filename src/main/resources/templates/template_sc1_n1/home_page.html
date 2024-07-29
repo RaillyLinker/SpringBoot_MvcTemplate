@@ -72,16 +72,15 @@
     구동 환경 프로필 : <span th:text="${viewModel.env}">dev</span>
 </span>
 
-<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_DEVELOPER') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    Swagger 문서
+<h2>
+    API 문서
 </h2>
 
 <button id="go_to_swagger_btn"
         type="button"
         class="sample_btn"
-        onclick="location.href='/swagger-ui/index.html'"
-        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_DEVELOPER') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    Swagger 문서로 이동
+        onclick="location.href='/swagger-ui/index.html'">
+    API 문서로 이동
 </button>
 
 <h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
