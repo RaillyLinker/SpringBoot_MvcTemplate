@@ -1900,4 +1900,256 @@ class C7Service1TkV1DatabaseTestController(
     ) {
         service.api29(httpServletResponse, index)
     }
+
+    ////
+    @Operation(
+        summary = "N30 : Database1 Row 입력 테스트 API",
+        description = "별도 DB인 Database1 의 테스트 테이블에 Row 를 입력합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/database1-row"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api30(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @RequestBody
+        inputVo: Api30InputVo
+    ): Api30OutputVo? {
+        return service.api30(httpServletResponse, inputVo)
+    }
+
+    data class Api30InputVo(
+        @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
+        @JsonProperty("content")
+        val content: String,
+        @Schema(
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552"
+        )
+        @JsonProperty("dateString")
+        val dateString: String
+    )
+
+    data class Api30OutputVo(
+        @Schema(description = "글 고유번호", required = true, example = "1234")
+        @JsonProperty("uid")
+        val uid: Long,
+        @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
+        @JsonProperty("content")
+        val content: String,
+        @Schema(description = "자동 생성 숫자", required = true, example = "21345")
+        @JsonProperty("randomNum")
+        val randomNum: Int,
+        @Schema(
+            description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552_KST"
+        )
+        @JsonProperty("testDatetime")
+        val testDatetime: String,
+        @Schema(
+            description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552_KST"
+        )
+        @JsonProperty("createDate")
+        val createDate: String,
+        @Schema(
+            description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
+            required = true,
+            example = "2024_05_02_T_15_14_49_552_KST"
+        )
+        @JsonProperty("updateDate")
+        val updateDate: String,
+        @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 /)", required = true, example = "/")
+        @JsonProperty("deleteDate")
+        val deleteDate: String
+    )
+
+
+    ////
+    @Operation(
+        summary = "N31 : Database1 Row 삭제 테스트",
+        description = "별도 DB인 Database1 의 테스트 테이블의 Row 하나를 삭제합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : index 에 해당하는 데이터가 데이터베이스에 존재하지 않습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            )
+        ]
+    )
+    @DeleteMapping(
+        path = ["/database1-row/{index}"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api31(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "index", description = "글 인덱스", example = "1")
+        @PathVariable("index")
+        index: Long,
+        @Parameter(name = "deleteLogically", description = "논리적 삭제 여부", example = "true")
+        @RequestParam("deleteLogically")
+        deleteLogically: Boolean
+    ) {
+        service.api31(httpServletResponse, index, deleteLogically)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N32 : Database1 Rows 조회 테스트",
+        description = "별도 DB인 Database1 의 테스트 테이블의 모든 Rows 를 반환합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/database1-rows"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api32(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ): Api32OutputVo? {
+        return service.api32(httpServletResponse)
+    }
+
+    data class Api32OutputVo(
+        @Schema(description = "아이템 리스트", required = true)
+        @JsonProperty("testEntityVoList")
+        val testEntityVoList: List<TestEntityVo>,
+
+        @Schema(description = "논리적으로 제거된 아이템 리스트", required = true)
+        @JsonProperty("logicalDeleteEntityVoList")
+        val logicalDeleteEntityVoList: List<TestEntityVo>
+    ) {
+        @Schema(description = "아이템")
+        data class TestEntityVo(
+            @Schema(description = "글 고유번호", required = true, example = "1234")
+            @JsonProperty("uid")
+            val uid: Long,
+            @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
+            @JsonProperty("content")
+            val content: String,
+            @Schema(description = "자동 생성 숫자", required = true, example = "21345")
+            @JsonProperty("randomNum")
+            val randomNum: Int,
+            @Schema(
+                description = "테스트용 일시 데이터(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552_KST"
+            )
+            @JsonProperty("testDatetime")
+            val testDatetime: String,
+            @Schema(
+                description = "글 작성일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552_KST"
+            )
+            @JsonProperty("createDate")
+            val createDate: String,
+            @Schema(
+                description = "글 수정일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552_KST"
+            )
+            @JsonProperty("updateDate")
+            val updateDate: String,
+            @Schema(description = "글 삭제일(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z, Null 이면 /)", required = true, example = "/")
+            @JsonProperty("deleteDate")
+            val deleteDate: String
+        )
+    }
+
+
+    ////
+    @Operation(
+        summary = "N33 : Database1 트랜젝션 동작 테스트",
+        description = "별도 DB인 Database1 의 정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/database1-transaction-rollback-sample"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api33(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api33(httpServletResponse)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N34 : Database1 트랜젝션 비동작 테스트",
+        description = "별도 DB인 Database1 의 트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/database1-no-transaction-exception-sample"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api34(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api34(httpServletResponse)
+    }
 }
