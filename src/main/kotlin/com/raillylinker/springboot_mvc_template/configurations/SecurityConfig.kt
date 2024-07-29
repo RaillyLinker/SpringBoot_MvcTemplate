@@ -1,8 +1,10 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberRoleDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerCompany_MemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database2.repositories.*
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -39,9 +41,9 @@ import org.springframework.web.filter.OncePerRequestFilter
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class SecurityConfig(
     // (회원 정보 및 상태 확인용 데이터베이스 레포지토리 객체)
-    private val database1Service1MemberDataRepository: Database1_Service1_MemberDataRepository,
-    private val database1Service1MemberRoleDataRepository: Database1_Service1_MemberRoleDataRepository,
-    private val database1Service1LogInTokenHistoryRepository: Database1_Service1_LogInTokenHistoryRepository
+    private val database2Service1MemberDataRepository: Database2_Service1_MemberDataRepository,
+    private val database2Service1MemberRoleDataRepository: Database2_Service1_MemberRoleDataRepository,
+    private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository
 ) {
     // <멤버 변수 공간>
 
@@ -361,9 +363,9 @@ class SecurityConfig(
             // !!!시큐리티 필터 추가시 수정!!!
             AuthTokenFilterService1Tk(
                 securityUrlList,
-                database1Service1MemberDataRepository,
-                database1Service1MemberRoleDataRepository,
-                database1Service1LogInTokenHistoryRepository
+                database2Service1MemberDataRepository,
+                database2Service1MemberRoleDataRepository,
+                database2Service1LogInTokenHistoryRepository
             ),
             UsernamePasswordAuthenticationFilter::class.java
         )
@@ -408,9 +410,9 @@ class SecurityConfig(
     // 인증 토큰 검증 필터 - API 요청마다 검증 실행
     class AuthTokenFilterService1Tk(
         private val filterPatternList: List<String>,
-        private val database1Service1MemberDataRepository: Database1_Service1_MemberDataRepository,
-        private val database1Service1MemberRoleDataRepository: Database1_Service1_MemberRoleDataRepository,
-        private val database1Service1LogInTokenHistoryRepository: Database1_Service1_LogInTokenHistoryRepository
+        private val database2Service1MemberDataRepository: Database2_Service1_MemberDataRepository,
+        private val database2Service1MemberRoleDataRepository: Database2_Service1_MemberRoleDataRepository,
+        private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository
     ) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
@@ -588,7 +590,7 @@ class SecurityConfig(
                         AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
                     ).toLong()
 
-                    val memberDataOpt = database1Service1MemberDataRepository.findById(memberUid)
+                    val memberDataOpt = database2Service1MemberDataRepository.findById(memberUid)
 
                     if (memberDataOpt.isEmpty) {
                         // 멤버 탈퇴
@@ -603,7 +605,7 @@ class SecurityConfig(
 
                     // 로그아웃 여부 파악
                     val tokenInfo =
-                        database1Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
+                        database2Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
                             tokenType,
                             accessToken,
                             null
@@ -621,7 +623,7 @@ class SecurityConfig(
                     // !!!패널티로 인한 접근 거부 와 같은 인증 / 인가 조건을 추가하려면 이곳에 추가하세요.!!!
 
                     // 멤버의 권한 리스트를 조회 후 반환
-                    val memberRoleEntityList = database1Service1MemberRoleDataRepository.findAllByMemberData(memberData)
+                    val memberRoleEntityList = database2Service1MemberRoleDataRepository.findAllByMemberData(memberData)
 
                     // 회원 권한 형식 변경
                     val authorities: ArrayList<GrantedAuthority> = ArrayList()

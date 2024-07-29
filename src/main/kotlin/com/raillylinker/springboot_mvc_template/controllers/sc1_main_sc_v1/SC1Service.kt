@@ -5,8 +5,9 @@ import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberRoleDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerCompany_MemberData
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
 import org.slf4j.Logger
@@ -40,7 +41,7 @@ class SC1Service(
 
     private val passwordEncoder: PasswordEncoder,
 
-    // (Database1 Repository)
+    // (Database Repository)
     private val database1RaillyLinkerCompanyMemberDataRepository: Database1_RaillyLinkerCompany_MemberDataRepository,
     private val database1RaillyLinkerCompanyMemberRoleDataRepository: Database1_RaillyLinkerCompany_MemberRoleDataRepository
 ) {
