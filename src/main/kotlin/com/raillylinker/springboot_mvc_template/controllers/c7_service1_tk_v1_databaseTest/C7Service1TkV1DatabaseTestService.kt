@@ -1155,4 +1155,59 @@ class C7Service1TkV1DatabaseTestService(
 
         throw Exception("No Transaction Exception Test!")
     }
+
+
+    ////
+    @CustomTransactional([Database2Config.TRANSACTION_NAME])
+    fun api35(
+        httpServletResponse: HttpServletResponse
+    ) {
+        val parentEntity = database2TemplateFkTestParentRepository.save(
+            Database2_Template_FkTestParent(
+                "transaction test"
+            )
+        )
+
+        database2TemplateFkTestOneToManyChildRepository.save(
+            Database2_Template_FkTestManyToOneChild(
+                "transaction test1",
+                parentEntity
+            )
+        )
+
+        database2TemplateFkTestOneToManyChildRepository.save(
+            Database2_Template_FkTestManyToOneChild(
+                "transaction test2",
+                parentEntity
+            )
+        )
+
+        throw Exception("Transaction Rollback Test!")
+    }
+
+
+    ////
+    fun api36(httpServletResponse: HttpServletResponse) {
+        val parentEntity = database2TemplateFkTestParentRepository.save(
+            Database2_Template_FkTestParent(
+                "transaction test"
+            )
+        )
+
+        database2TemplateFkTestOneToManyChildRepository.save(
+            Database2_Template_FkTestManyToOneChild(
+                "transaction test1",
+                parentEntity
+            )
+        )
+
+        database2TemplateFkTestOneToManyChildRepository.save(
+            Database2_Template_FkTestManyToOneChild(
+                "transaction test2",
+                parentEntity
+            )
+        )
+
+        throw Exception("No Transaction Exception Test!")
+    }
 }

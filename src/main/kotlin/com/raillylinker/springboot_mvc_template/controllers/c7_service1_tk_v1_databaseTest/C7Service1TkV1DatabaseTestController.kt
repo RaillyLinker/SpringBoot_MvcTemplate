@@ -2152,4 +2152,58 @@ class C7Service1TkV1DatabaseTestController(
     ) {
         service.api34(httpServletResponse)
     }
+
+
+    ////
+    @Operation(
+        summary = "N35 : 외래키 테이블 트랜젝션 동작 테스트",
+        description = "외래키 테이블에 정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/fk-transaction-rollback-sample"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api35(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api35(httpServletResponse)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N36 : 외래키 테이블 트랜젝션 비동작 테스트",
+        description = "외래키 테이블의 트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/fk-no-transaction-exception-sample"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api36(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api36(httpServletResponse)
+    }
 }
