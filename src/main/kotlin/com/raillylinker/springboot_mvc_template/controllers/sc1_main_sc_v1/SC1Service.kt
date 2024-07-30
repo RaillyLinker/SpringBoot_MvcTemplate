@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import java.io.File
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 import java.util.regex.Pattern
 
@@ -225,7 +226,8 @@ class SC1Service(
         database1RaillyLinkerCompanyMemberDataRepository.save(
             Database1_RaillyLinkerCompany_MemberData(
                 accountId,
-                passwordEnc
+                passwordEnc,
+                LocalDateTime.of(1970, 1, 1, 0, 0)
             )
         )
 

@@ -210,14 +210,16 @@ class SecurityConfig(
                 memberDataEntity.uid!!,
                 // 암호화되어 데이터베이스에 저장된 비밀번호
                 memberDataEntity.accountPassword!!,
-                authorities
+                authorities,
+                memberDataEntity.bannedBefore.isAfter(LocalDateTime.now())
             )
         }
 
         class UserDetailsVo(
             private val memberUid: Long,
             private val password: String,
-            private val authorities: MutableCollection<out GrantedAuthority>
+            private val authorities: MutableCollection<out GrantedAuthority>,
+            private val memberLock: Boolean
         ) : UserDetails {
             override fun getUsername(): String {
                 return memberUid.toString()
@@ -236,7 +238,7 @@ class SecurityConfig(
             }
 
             override fun isAccountNonLocked(): Boolean {
-                return true
+                return !memberLock
             }
 
             override fun isCredentialsNonExpired(): Boolean {
