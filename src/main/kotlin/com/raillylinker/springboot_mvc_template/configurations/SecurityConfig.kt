@@ -299,7 +299,7 @@ class SecurityConfig(
     ////
     // [/service1/tk 로 시작되는 리퀘스트의 시큐리티 설정 = Token 인증 사용]
     @Bean
-    @Order(1)
+    @Order(0)
     fun securityFilterChainService1Tk(http: HttpSecurity): SecurityFilterChain {
         // !!!시큐리티 필터 추가시 수정!!!
         // 본 시큐리티 필터가 관리할 주소 체계
@@ -398,6 +398,7 @@ class SecurityConfig(
     ) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
+            // !!!아래 인증 관련 설정 정보 변수들의 값을 수정하기!!!
             // 최대 계정 설정 (null 이라면 무제한)
             val MAX_SESSION_INFO: MaxSessionInfo? = null
 
