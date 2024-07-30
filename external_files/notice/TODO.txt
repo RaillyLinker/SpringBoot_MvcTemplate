@@ -11,7 +11,8 @@
 
 - SC 세션 만료 기능
 
-- 세션 추가 및 여러 변경점이 있으므로 rest api 전수 테스트(Flutter 수정과 동시에 진행하기)
+- 세션 추가 및 여러 변경점이 있으므로 rest api 전수 테스트
+    (SecurityConfig, JwtTokenUtilObject, C10 은 코드 검증 제대로 하기, 테스트는 Flutter 수정과 동시에 진행하기)
 
 - JWT 데이터베이스 접근이 아닌 캐싱 기능
     JWT 인증처리를 모두 토큰 내의 정보만으로 하고,

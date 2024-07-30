@@ -741,8 +741,8 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api5OutputVo? {
         if (authorization == null) {
             // 올바르지 않은 Authorization Token
-            httpServletResponse.setHeader("api-result-code", "1")
-            httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
+            httpServletResponse.setHeader("api-result-code", "3")
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             return null
         }
 
@@ -750,124 +750,78 @@ class C10Service1TkV1AuthService(
         val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
         if (authorizationSplit.size < 2) {
             // 올바르지 않은 Authorization Token
-            httpServletResponse.setHeader("api-result-code", "1")
-            httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
+            httpServletResponse.setHeader("api-result-code", "3")
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             return null
         }
 
-        val accessTokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
+        val accessTokenType = authorizationSplit[0].trim() // (ex : "bearer")
         val accessToken = authorizationSplit[1].trim() // (ex : "abcd1234")
 
         // 토큰 검증
-        val tokenVerificationCode =
-            SecurityConfig.AuthTokenFilterService1Tk.verifyAccessToken(accessTokenType, accessToken)
-
-        when (tokenVerificationCode) {
-            1 -> {
-                // 올바르지 않은 Authorization Token
-                httpServletResponse.setHeader("api-result-code", "1")
-                httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
-                return null
-            }
-        }
-
-        val accessTokenMemberUid = JwtTokenUtilObject.getMemberUid(
-            accessToken,
-            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        )
-
-        // 타입과 토큰을 분리
-        val refreshTokenInputSplit = inputVo.refreshToken.split(" ") // ex : ["Bearer", "qwer1234"]
-        if (refreshTokenInputSplit.size < 2) {
-            // 올바르지 않은 Token
+        if (accessToken == "") {
+            // 액세스 토큰이 비어있음 (올바르지 않은 Authorization Token)
+            httpServletResponse.setHeader("api-result-code", "3")
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "2")
             return null
         }
 
-        // 타입 분리
-        val tokenType = refreshTokenInputSplit[0].trim() // 첫번째 단어는 토큰 타입
-        val jwtRefreshToken = refreshTokenInputSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
-
-        if (jwtRefreshToken == "") {
-            // 토큰이 비어있음 (올바르지 않은 Authorization Token)
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "2")
-            return null
-        }
-
-        when (tokenType.lowercase()) { // 타입 검증
+        when (accessTokenType.lowercase()) { // 타입 검증
             "bearer" -> { // Bearer JWT 토큰 검증
                 // 토큰 문자열 해석 가능여부 확인
-                val refreshTokenType: String? = try {
-                    JwtTokenUtilObject.getTokenType(jwtRefreshToken)
+                val accessTokenType1: String? = try {
+                    JwtTokenUtilObject.getTokenType(accessToken)
                 } catch (_: Exception) {
                     null
                 }
 
-                // 리프레시 토큰 검증
-                if (refreshTokenType == null || // 해석 불가능한 리프레시 토큰
-                    refreshTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아닐 때
+                if (accessTokenType1 == null || // 해석 불가능한 JWT 토큰
+                    accessTokenType1.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
                     JwtTokenUtilObject.getTokenUsage(
-                        jwtRefreshToken,
-                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                    ).lowercase() != "refresh" || // 토큰 타입이 Refresh 토큰이 아닐 때
-                    // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
-                    JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) > SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_REFRESH_TOKEN_EXPIRATION_TIME_SEC ||
-                    JwtTokenUtilObject.getIssuer(jwtRefreshToken) != SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER || // 발행인이 다를 때
-                    !JwtTokenUtilObject.validateSignature(
-                        jwtRefreshToken,
-                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
-                    ) || // 시크릿 검증이 유효하지 않을 때 = 위변조된 토큰
-                    JwtTokenUtilObject.getMemberUid(
-                        jwtRefreshToken,
-                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                    ) != accessTokenMemberUid // 리프레시 토큰의 멤버 고유번호와 액세스 토큰 멤버 고유번호가 다를시
-                ) {
-                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "2")
-                    return null
-                }
-
-                if (JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) <= 0L) {
-                    // 리플레시 토큰 만료
-                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "3")
-                    return null
-                }
-
-                val tokenInfo =
-                    database2Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
-                        accessTokenType,
                         accessToken,
-                        null
-                    )
-
-                if (tokenInfo == null) {// jwtAccessToken 의 리프레시 토큰이 저장소에 없음
+                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                    ).lowercase() != "access" || // 토큰 용도가 다름
+                    // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
+                    JwtTokenUtilObject.getRemainSeconds(accessToken) > SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
+                    JwtTokenUtilObject.getIssuer(accessToken) != SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER || // 발행인 불일치
+                    !JwtTokenUtilObject.validateSignature(
+                        accessToken,
+                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
+                    ) // 시크릿 검증이 무효 = 위변조 된 토큰
+                ) {
+                    // 올바르지 않은 Authorization Token
+                    httpServletResponse.setHeader("api-result-code", "3")
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
 
-                if (jwtRefreshToken != tokenInfo.refreshToken) {
-                    // 건내받은 토큰이 해당 액세스 토큰의 가용 토큰과 맞지 않음
+                // 토큰 검증 정상 -> 데이터베이스 현 상태 확인
+
+                // 유저 탈퇴 여부 확인
+                val accessTokenMemberUid = JwtTokenUtilObject.getMemberUid(
+                    accessToken,
+                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                ).toLong()
+
+                val memberDataOpt = database2Service1MemberDataRepository.findById(accessTokenMemberUid)
+
+                if (memberDataOpt.isEmpty) {
+                    // 멤버 탈퇴
+                    httpServletResponse.setHeader("api-result-code", "4")
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "2")
                     return null
                 }
 
-                // 계정 정지 검증
-                val banList = database2Service1MemberBanHistoryRepository.findAllNowBans(
-                    tokenInfo.memberData,
-                    LocalDateTime.now()
-                )
+                val memberData = memberDataOpt.get()
+
+                // 정지 여부 파악
+                val banList =
+                    database2Service1MemberBanHistoryRepository.findAllNowBans(memberData, LocalDateTime.now())
                 if (banList.isNotEmpty()) {
                     // 계정 정지 당한 상황
-                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "4")
+                    httpServletResponse.setHeader("api-result-code", "6")
 
                     val banInfo = banList[0]
                     httpServletResponse.setHeader(
@@ -877,85 +831,182 @@ class C10Service1TkV1AuthService(
                                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                         }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
                     )
+
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     return null
                 }
 
-                // 먼저 로그아웃 처리
-                tokenInfo.logoutDate = LocalDateTime.now()
-                database2Service1LogInTokenHistoryRepository.save(tokenInfo)
-
-                // 멤버의 권한 리스트를 조회 후 반환
-                val memberRoleList =
-                    database2Service1MemberRoleDataRepository.findAllByMemberData(tokenInfo.memberData)
-
-                val roleList: ArrayList<String> = arrayListOf()
-                for (userRole in memberRoleList) {
-                    roleList.add(userRole.role)
-                }
-
-                // 로그인 정보 임시 저장
-                val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
-                    Database2_Service1_LogInTokenHistory(
-                        tokenInfo.memberData,
-                        "Bearer",
-                        LocalDateTime.now(),
-                        "tempValue", // 임시 저장
-                        LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
-                        "tempValue", // 임시 저장
-                        LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                // 로그아웃 여부 파악
+                val tokenInfo =
+                    database2Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
+                        accessTokenType1,
+                        accessToken,
                         null
                     )
-                )
 
-                // 새 토큰 생성 및 로그인 처리
-                val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
-                    accessTokenMemberUid,
-                    loginHistoryEntity.uid!!.toString(),
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER,
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
-                )
+                if (tokenInfo == null) {
+                    // 로그아웃된 토큰
+                    httpServletResponse.setHeader("api-result-code", "5")
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    return null
+                }
 
-                val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newJwtAccessToken)
+                // 액세스 토큰 만료 외의 인증/인가 검증 완료
 
-                val newRefreshToken = JwtTokenUtilObject.generateRefreshToken(
-                    accessTokenMemberUid,
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_REFRESH_TOKEN_EXPIRATION_TIME_SEC,
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER,
-                    SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
-                )
+                // 타입과 토큰을 분리
+                val refreshTokenInputSplit = inputVo.refreshToken.split(" ") // ex : ["Bearer", "qwer1234"]
+                if (refreshTokenInputSplit.size < 2) {
+                    // 올바르지 않은 Token
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    httpServletResponse.setHeader("api-result-code", "1")
+                    return null
+                }
 
-                val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newRefreshToken)
+                // 타입 분리
+                val tokenType = refreshTokenInputSplit[0].trim() // 첫번째 단어는 토큰 타입
+                val jwtRefreshToken = refreshTokenInputSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
 
-                // 생성된 정보 저장
-                loginHistoryEntity.accessToken = newJwtAccessToken
-                loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
-                loginHistoryEntity.refreshToken = newRefreshToken
-                loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
-                database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
+                if (jwtRefreshToken == "") {
+                    // 토큰이 비어있음 (올바르지 않은 Authorization Token)
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    httpServletResponse.setHeader("api-result-code", "1")
+                    return null
+                }
 
-                httpServletResponse.setHeader("api-result-code", "")
-                httpServletResponse.status = HttpStatus.OK.value()
-                return C10Service1TkV1AuthController.Api5OutputVo(
-                    tokenInfo.memberData.uid!!,
-                    "Bearer",
-                    newJwtAccessToken,
-                    newRefreshToken,
-                    accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-                    refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                )
+                when (tokenType.lowercase()) { // 타입 검증
+                    "bearer" -> { // Bearer JWT 토큰 검증
+                        // 토큰 문자열 해석 가능여부 확인
+                        val refreshTokenType: String? = try {
+                            JwtTokenUtilObject.getTokenType(jwtRefreshToken)
+                        } catch (_: Exception) {
+                            null
+                        }
+
+                        // 리프레시 토큰 검증
+                        if (refreshTokenType == null || // 해석 불가능한 리프레시 토큰
+                            refreshTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아닐 때
+                            JwtTokenUtilObject.getTokenUsage(
+                                jwtRefreshToken,
+                                SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                                SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                            ).lowercase() != "refresh" || // 토큰 타입이 Refresh 토큰이 아닐 때
+                            // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
+                            JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) > SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_REFRESH_TOKEN_EXPIRATION_TIME_SEC ||
+                            JwtTokenUtilObject.getIssuer(jwtRefreshToken) != SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER || // 발행인이 다를 때
+                            !JwtTokenUtilObject.validateSignature(
+                                jwtRefreshToken,
+                                SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
+                            ) || // 시크릿 검증이 유효하지 않을 때 = 위변조된 토큰
+                            JwtTokenUtilObject.getMemberUid(
+                                jwtRefreshToken,
+                                SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                                SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                            ) != accessTokenMemberUid.toString() // 리프레시 토큰의 멤버 고유번호와 액세스 토큰 멤버 고유번호가 다를시
+                        ) {
+                            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                            httpServletResponse.setHeader("api-result-code", "1")
+                            return null
+                        }
+
+                        if (JwtTokenUtilObject.getRemainSeconds(jwtRefreshToken) <= 0L) {
+                            // 리플레시 토큰 만료
+                            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                            httpServletResponse.setHeader("api-result-code", "2")
+                            return null
+                        }
+
+                        if (jwtRefreshToken != tokenInfo.refreshToken) {
+                            // 건내받은 토큰이 해당 액세스 토큰의 가용 토큰과 맞지 않음
+                            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                            httpServletResponse.setHeader("api-result-code", "1")
+                            return null
+                        }
+
+                        // 먼저 로그아웃 처리
+                        tokenInfo.logoutDate = LocalDateTime.now()
+                        database2Service1LogInTokenHistoryRepository.save(tokenInfo)
+
+                        // 로그인 정보 임시 저장
+                        val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
+                            Database2_Service1_LogInTokenHistory(
+                                tokenInfo.memberData,
+                                "Bearer",
+                                LocalDateTime.now(),
+                                "tempValue", // 임시 저장
+                                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                                "tempValue", // 임시 저장
+                                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                                null
+                            )
+                        )
+
+                        // 멤버의 권한 리스트를 조회 후 반환
+//                        val memberRoleList =
+//                            database2Service1MemberRoleDataRepository.findAllByMemberData(tokenInfo.memberData)
+//
+//                        val roleList: ArrayList<String> = arrayListOf()
+//                        for (userRole in memberRoleList) {
+//                            roleList.add(userRole.role)
+//                        }
+
+                        // 새 토큰 생성 및 로그인 처리
+                        val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
+                            accessTokenMemberUid.toString(),
+                            loginHistoryEntity.uid!!.toString(),
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER,
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
+                        )
+
+                        val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newJwtAccessToken)
+
+                        val newRefreshToken = JwtTokenUtilObject.generateRefreshToken(
+                            accessTokenMemberUid.toString(),
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_REFRESH_TOKEN_EXPIRATION_TIME_SEC,
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER,
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
+                        )
+
+                        val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newRefreshToken)
+
+                        // 생성된 정보 저장
+                        loginHistoryEntity.accessToken = newJwtAccessToken
+                        loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
+                        loginHistoryEntity.refreshToken = newRefreshToken
+                        loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
+                        database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
+
+                        httpServletResponse.setHeader("api-result-code", "")
+                        httpServletResponse.status = HttpStatus.OK.value()
+                        return C10Service1TkV1AuthController.Api5OutputVo(
+                            tokenInfo.memberData.uid!!,
+                            "Bearer",
+                            newJwtAccessToken,
+                            newRefreshToken,
+                            accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
+                            refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                        )
+                    }
+
+                    else -> {
+                        // 지원하지 않는 토큰 타입 (올바르지 않은 Authorization Token)
+                        httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                        httpServletResponse.setHeader("api-result-code", "1")
+                        return null
+                    }
+                }
             }
 
             else -> {
-                // 지원하지 않는 토큰 타입 (올바르지 않은 Authorization Token)
+                // 올바르지 않은 Authorization Token
+                httpServletResponse.setHeader("api-result-code", "3")
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                httpServletResponse.setHeader("api-result-code", "2")
                 return null
             }
         }

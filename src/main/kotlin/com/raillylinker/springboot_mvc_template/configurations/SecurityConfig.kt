@@ -406,67 +406,6 @@ class SecurityConfig(
 
             // 계정 설정 - JWT 발행자
             const val AUTH_JWT_ISSUER: String = "com.raillylinker.springboot_mvc_template.service1"
-
-            // (액세스 토큰 검증 함수)
-            // !!!입력받은 토큰을 검증하여 아래와 같은 결과 코드를 반환하도록 작성합니다.!!!
-            /*
-                결과 코드
-                0 : 정상적인 토큰입니다.
-                1 : 토큰이 올바르지 않습니다.
-                2 : 토큰의 유효시간이 만료되었습니다.
-             */
-            fun verifyAccessToken(tokenType: String, accessToken: String): Int {
-                if (accessToken == "") {
-                    // 액세스 토큰이 비어있음 (올바르지 않은 Authorization Token)
-                    return 1
-                }
-
-                when (tokenType.lowercase()) { // 타입 검증
-                    "bearer" -> { // Bearer JWT 토큰 검증
-                        // 토큰 문자열 해석 가능여부 확인
-                        val accessTokenType: String? = try {
-                            JwtTokenUtilObject.getTokenType(accessToken)
-                        } catch (_: Exception) {
-                            null
-                        }
-
-                        if (accessTokenType == null || // 해석 불가능한 JWT 토큰
-                            accessTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
-                            JwtTokenUtilObject.getTokenUsage(
-                                accessToken,
-                                AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                                AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                            ).lowercase() != "access" || // 토큰 용도가 다름
-                            // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
-                            JwtTokenUtilObject.getRemainSeconds(accessToken) > AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
-                            JwtTokenUtilObject.getIssuer(accessToken) != AUTH_JWT_ISSUER || // 발행인 불일치
-                            !JwtTokenUtilObject.validateSignature(
-                                accessToken,
-                                AUTH_JWT_SECRET_KEY_STRING
-                            ) // 시크릿 검증이 무효 = 위변조 된 토큰
-                        ) {
-                            // 올바르지 않은 Authorization Token
-                            return 1
-                        }
-
-                        // 토큰 만료 검증
-                        val jwtRemainSeconds = JwtTokenUtilObject.getRemainSeconds(accessToken)
-
-                        if (jwtRemainSeconds <= 0L) {
-                            // 토큰이 만료됨
-                            return 2
-                        }
-
-                        // 토큰 정상
-                        return 0
-                    }
-
-                    else -> {
-                        // 지원하지 않는 토큰 타입 (올바르지 않은 Authorization Token)
-                        return 1
-                    }
-                }
-            }
         }
 
         // ---------------------------------------------------------------------------------------------
@@ -523,28 +462,58 @@ class SecurityConfig(
             val accessToken = authorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
 
             // 토큰 검증
-            val tokenVerificationCode = verifyAccessToken(tokenType, accessToken)
+            if (accessToken == "") {
+                // 액세스 토큰이 비어있음 (올바르지 않은 Authorization Token)
+                response.setHeader("api-result-code", "1")
 
-            when (tokenVerificationCode) {
-                1 -> {
-                    // 올바르지 않은 Authorization Token
-                    response.setHeader("api-result-code", "1")
+                // 다음 필터 실행
+                filterChain.doFilter(request, response)
+                return
+            }
 
-                    // 다음 필터 실행
-                    filterChain.doFilter(request, response)
-                    return
-                }
+            when (tokenType.lowercase()) { // 타입 검증
+                "bearer" -> { // Bearer JWT 토큰 검증
+                    // 토큰 문자열 해석 가능여부 확인
+                    val accessTokenType: String? = try {
+                        JwtTokenUtilObject.getTokenType(accessToken)
+                    } catch (_: Exception) {
+                        null
+                    }
 
-                2 -> {
-                    // 토큰이 만료됨
-                    response.setHeader("api-result-code", "2")
+                    if (accessTokenType == null || // 해석 불가능한 JWT 토큰
+                        accessTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
+                        JwtTokenUtilObject.getTokenUsage(
+                            accessToken,
+                            AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                            AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                        ).lowercase() != "access" || // 토큰 용도가 다름
+                        // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
+                        JwtTokenUtilObject.getRemainSeconds(accessToken) > AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
+                        JwtTokenUtilObject.getIssuer(accessToken) != AUTH_JWT_ISSUER || // 발행인 불일치
+                        !JwtTokenUtilObject.validateSignature(
+                            accessToken,
+                            AUTH_JWT_SECRET_KEY_STRING
+                        ) // 시크릿 검증이 무효 = 위변조 된 토큰
+                    ) {
+                        // 올바르지 않은 Authorization Token
+                        response.setHeader("api-result-code", "1")
 
-                    // 다음 필터 실행
-                    filterChain.doFilter(request, response)
-                    return
-                }
+                        // 다음 필터 실행
+                        filterChain.doFilter(request, response)
+                        return
+                    }
 
-                else -> {
+                    // 토큰 만료 검증
+                    val jwtRemainSeconds = JwtTokenUtilObject.getRemainSeconds(accessToken)
+                    if (jwtRemainSeconds <= 0L) {
+                        // 토큰이 만료됨
+                        response.setHeader("api-result-code", "2")
+
+                        // 다음 필터 실행
+                        filterChain.doFilter(request, response)
+                        return
+                    }
+
                     // 토큰 검증 정상 -> 데이터베이스 현 상태 확인
 
                     // 유저 탈퇴 여부 확인
@@ -630,6 +599,15 @@ class SecurityConfig(
                                 WebAuthenticationDetailsSource().buildDetails(request)
                         }
 
+                    filterChain.doFilter(request, response)
+                    return
+                }
+
+                else -> {
+                    // 올바르지 않은 Authorization Token
+                    response.setHeader("api-result-code", "1")
+
+                    // 다음 필터 실행
                     filterChain.doFilter(request, response)
                     return
                 }
