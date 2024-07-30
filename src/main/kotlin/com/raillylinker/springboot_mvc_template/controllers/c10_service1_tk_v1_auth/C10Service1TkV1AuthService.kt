@@ -286,6 +286,13 @@ class C10Service1TkV1AuthService(
             }
         }
 
+        if (memberData.bannedBefore.isAfter(LocalDateTime.now())) {
+            // 계정 정지 당한 상황
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "4")
+            return null
+        }
+
         if (memberData.accountPassword == null || // 페스워드는 아직 만들지 않음
             !passwordEncoder.matches(inputVo.password, memberData.accountPassword!!) // 패스워드 불일치
         ) {
@@ -592,6 +599,13 @@ class C10Service1TkV1AuthService(
             return null
         }
 
+        if(snsOauth2.memberData.bannedBefore.isAfter(LocalDateTime.now())){
+            // 계정 정지 당한 상황
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "4")
+            return null
+        }
+
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
 
@@ -724,6 +738,13 @@ class C10Service1TkV1AuthService(
         if (snsOauth2 == null) { // 가입된 회원이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
+            return null
+        }
+
+        if(snsOauth2.memberData.bannedBefore.isAfter(LocalDateTime.now())){
+            // 계정 정지 당한 상황
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "4")
             return null
         }
 
@@ -1242,6 +1263,7 @@ class C10Service1TkV1AuthService(
             Database2_Service1_MemberData(
                 inputVo.id,
                 password,
+                LocalDateTime.of(1970, 1, 1, 0, 0),
                 null,
                 null,
                 null
@@ -1496,6 +1518,7 @@ class C10Service1TkV1AuthService(
                 Database2_Service1_MemberData(
                     inputVo.id,
                     password,
+                    LocalDateTime.of(1970, 1, 1, 0, 0),
                     null,
                     null,
                     null
@@ -1750,6 +1773,7 @@ class C10Service1TkV1AuthService(
                 Database2_Service1_MemberData(
                     inputVo.id,
                     password,
+                    LocalDateTime.of(1970, 1, 1, 0, 0),
                     null,
                     null,
                     null
@@ -2180,6 +2204,7 @@ class C10Service1TkV1AuthService(
                 Database2_Service1_MemberData(
                     inputVo.id,
                     null,
+                    LocalDateTime.of(1970, 1, 1, 0, 0),
                     null,
                     null,
                     null

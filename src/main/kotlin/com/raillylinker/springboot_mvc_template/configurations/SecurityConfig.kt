@@ -33,6 +33,7 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
+import java.time.LocalDateTime
 
 
 // (서비스 보안 시큐리티 설정)
@@ -454,7 +455,8 @@ class SecurityConfig(
                         "1 : Request Header 에 Authorization 키로 넣어준 토큰이 올바르지 않습니다. (재 로그인 필요)\n\n" +
                         "2 : Request Header 에 Authorization 키로 넣어준 토큰의 유효시간이 만료되었습니다. (Refresh Token 으로 재발급 필요)\n\n" +
                         "3 : Request Header 에 Authorization 키로 넣어준 토큰의 멤버가 탈퇴 된 상태입니다. (다른 계정으로 재 로그인 필요)\n\n" +
-                        "4 : Request Header 에 Authorization 키로 넣어준 토큰이 로그아웃 처리된 상태입니다. (재 로그인 필요)"
+                        "4 : Request Header 에 Authorization 키로 넣어준 토큰이 로그아웃 처리된 상태입니다. (재 로그인 필요)\n\n" +
+                        "5 : Request Header 에 Authorization 키로 넣어준 토큰의 멤버가 계정 정지 처리된 상태입니다. (다른 계정으로 재 로그인 필요)"
 
             // (액세스 토큰 검증 함수)
             // !!!입력받은 토큰을 검증하여 결과 코드를 반환하도록 작성합니다.!!!
@@ -615,6 +617,16 @@ class SecurityConfig(
                     }
 
                     val memberData = memberDataOpt.get()
+
+                    // 정지 여부 파악
+                    if (memberData.bannedBefore.isAfter(LocalDateTime.now())) {
+                        // 계정 정지 당한 상황
+                        response.setHeader("api-result-code", "5")
+
+                        // 다음 필터 실행
+                        filterChain.doFilter(request, response)
+                        return
+                    }
 
                     // 로그아웃 여부 파악
                     val tokenInfo =

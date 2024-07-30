@@ -24,6 +24,10 @@ class Database2_Service1_MemberData(
     @Comment("계정 로그인시 사용하는 비밀번호 (계정 아이디, 이메일, 전화번호 로그인에 모두 사용됨. OAuth2 만 등록했다면 null)")
     var accountPassword: String?,
 
+    @Column(name = "banned_before", nullable = false, columnDefinition = "DATETIME(3)")
+    @Comment("계정 밴 시간 (이 시간이 지나기 전까지 계정 정지)")
+    var bannedBefore: LocalDateTime,
+
     @ManyToOne
     @JoinColumn(name = "front_profile_uid", nullable = true)
     @Comment("대표 프로필 Uid (service1.member_profile_data.uid)")
