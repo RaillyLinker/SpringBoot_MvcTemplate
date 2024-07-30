@@ -27,7 +27,7 @@ class Database1_RaillyLinkerCompany_MemberBanHistory(
     var bannedReason: String,
 
     @Column(name = "early_release", nullable = true, columnDefinition = "DATETIME(3)")
-    @Comment("수동 밴 해제 시간 (이 값이 null 이 아니고 banned_before 보다 작다면 계정 밴 시간이 지나기 전에도 밴 헤제로 봅니다.)")
+    @Comment("수동으로 계정 정지를 해제한 시간 (이 값이 null 이 아니라면 계정 정지 헤제로 봅니다.)")
     var earlyRelease: LocalDateTime?
 ) {
     @Id

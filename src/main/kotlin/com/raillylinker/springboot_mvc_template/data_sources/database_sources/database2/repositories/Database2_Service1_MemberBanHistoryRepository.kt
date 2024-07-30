@@ -14,13 +14,16 @@ import java.time.LocalDateTime
 interface Database2_Service1_MemberBanHistoryRepository :
     JpaRepository<Database2_Service1_MemberBanHistory, Long> {
     @Query(
-        "SELECT b FROM Database2_Service1_MemberBanHistory b " +
-                "WHERE b.memberData = :memberData " +
-                "AND (" +
-                "(b.earlyRelease IS NOT NULL AND b.earlyRelease < b.bannedBefore AND b.earlyRelease > :currentTime) " +
-                "OR (b.earlyRelease IS NULL AND b.bannedBefore > :currentTime) " +
-                "OR (b.earlyRelease IS NOT NULL AND b.earlyRelease >= b.bannedBefore AND b.bannedBefore > :currentTime)" +
-                ")"
+        """
+            SELECT 
+            b 
+            FROM 
+            Database2_Service1_MemberBanHistory b 
+            WHERE 
+            b.memberData = :memberData AND 
+            b.earlyRelease IS NULL AND 
+            b.bannedBefore > :currentTime
+        """
     )
     fun findAllNowBans(
         @Param("memberData") memberData: Database2_Service1_MemberData,
