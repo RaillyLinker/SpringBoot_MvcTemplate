@@ -27,6 +27,9 @@ import org.springframework.web.multipart.MultipartFile
 // member : 회원
 // non member : 비회원
 // user : 서비스 이용자 (비회원 포함)
+
+// API 의 로그인/비로그인 시의 결과를 달리하고 싶으면, 차라리 API 를 2개로 나누는 것이 더 좋습니다.
+// SpringSecurity 의 도움을 받지 않는다면 복잡한 인증 관련 코드를 적용하여 로그인 여부를 확인해야 하므로, API 코드가 지저분해지기 때문이죠.
 @Tag(name = "/service1/tk/v1/auth APIs", description = "C10 : 인증/인가 API 컨트롤러")
 @Controller
 @RequestMapping("/service1/tk/v1/auth")
@@ -110,58 +113,6 @@ class C10Service1TkV1AuthController(
         authorization: String?
     ): String? {
         return service.api2(httpServletResponse, authorization!!)
-    }
-
-
-    ////
-    // 주의 : 아래와 같이 로그인/비로그인 시의 결과를 달리하고 싶으면,
-    //     차라리 API 를 2개로 나누는 것이 더 좋습니다.
-    //     이유는, Service 코드에서 보이는 것처럼,
-    //     SpringSecurity 의 도움을 받지 않는다면 코드가 지저분해지기 때문이죠.
-    @Operation(
-        summary = "N2.1 : 로그인 / 비로그인 진입 테스트 <>?",
-        description = "로그인 / 혹은 비로그인 모두 진입 가능하며, 로그인 여부를 코드에서 판단합니다.\n\n"
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-                description = "정상 동작"
-            ),
-            ApiResponse(
-                responseCode = "401",
-                content = [Content()],
-                description = "인증되지 않은 접근입니다.\n\n" +
-                        "Response Headers 를 확인하세요.",
-                headers = [
-                    Header(
-                        name = "api-result-code",
-                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
-                        schema = Schema(type = "string")
-                    ),
-                    Header(
-                        name = "member-lock-data",
-                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
-                        schema = Schema(type = "string")
-                    )
-                ]
-            )
-        ]
-    )
-    @GetMapping(
-        path = ["/for-logged-in-or-not"],
-        consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.TEXT_PLAIN_VALUE]
-    )
-    @ResponseBody
-    fun api2Dot1(
-        @Parameter(hidden = true)
-        httpServletResponse: HttpServletResponse,
-        @Parameter(hidden = true)
-        @RequestHeader("Authorization")
-        authorization: String?
-    ): String? {
-        return service.api2Dot1(httpServletResponse, authorization)
     }
 
 
@@ -295,13 +246,12 @@ class C10Service1TkV1AuthController(
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 입력한 id 로 가입된 회원 정보가 없습니다.\n\n" +
                                 "2 : 입력한 password 가 일치하지 않습니다.\n\n" +
-                                "3 : 최대 로그인 가능 회수를 넘어서 로그인이 불가능합니다.\n\n" +
-                                "4 : 계정이 정지된 상태입니다.\n\n",
+                                "3 : 계정이 정지된 상태입니다.\n\n",
                         schema = Schema(type = "string")
                     ),
                     Header(
                         name = "member-lock-data",
-                        description = "(api-result-code 가 4 일 때의 필수 계정 정지 정보) - Optional\n\n" +
+                        description = "(api-result-code 가 3 일 때의 필수 계정 정지 정보) - Optional\n\n" +
                                 "값은 JsonString 형식으로,\n\n" +
                                 "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 bannedBefore,\n\n" +
                                 "계정 정지 이유를 뜻하는 bannedReason\n\n" +
@@ -478,13 +428,12 @@ class C10Service1TkV1AuthController(
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 유효하지 않은 OAuth2 Access Token 입니다.\n\n" +
                                 "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n" +
-                                "3 : 최대 로그인 가능 회수를 넘어서 로그인이 불가능합니다.\n\n" +
-                                "4 : 계정이 정지된 상태입니다.\n\n",
+                                "3 : 계정이 정지된 상태입니다.\n\n",
                         schema = Schema(type = "string")
                     ),
                     Header(
                         name = "member-lock-data",
-                        description = "(api-result-code 가 4 일 때의 필수 계정 정지 정보) - Optional\n\n" +
+                        description = "(api-result-code 가 3 일 때의 필수 계정 정지 정보) - Optional\n\n" +
                                 "값은 JsonString 형식으로,\n\n" +
                                 "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 bannedBefore,\n\n" +
                                 "계정 정지 이유를 뜻하는 bannedReason\n\n" +
@@ -551,13 +500,12 @@ class C10Service1TkV1AuthController(
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 유효하지 않은 OAuth2 ID Token 입니다.\n\n" +
                                 "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n" +
-                                "3 : 최대 로그인 가능 회수를 넘어서 로그인이 불가능합니다.\n\n" +
-                                "4 : 계정이 정지된 상태입니다.\n\n",
+                                "3 : 계정이 정지된 상태입니다.\n\n",
                         schema = Schema(type = "string")
                     ),
                     Header(
                         name = "member-lock-data",
-                        description = "(api-result-code 가 4 일 때의 필수 계정 정지 정보) - Optional\n\n" +
+                        description = "(api-result-code 가 3 일 때의 필수 계정 정지 정보) - Optional\n\n" +
                                 "값은 JsonString 형식으로,\n\n" +
                                 "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 bannedBefore\n\n" +
                                 "계정 정지 이유를 뜻하는 bannedReason\n\n" +
@@ -672,7 +620,18 @@ class C10Service1TkV1AuthController(
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 올바르지 않은 Authorization Token 입니다.\n\n" +
                                 "2 : 유효하지 않은 Refresh Token 입니다.\n\n" +
-                                "3 : Refresh Token 이 만료되었습니다.\n\n",
+                                "3 : Refresh Token 이 만료되었습니다.\n\n" +
+                                "4 : 계정이 정지된 상태입니다.\n\n",
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = "(api-result-code 가 4 일 때의 필수 계정 정지 정보) - Optional\n\n" +
+                                "값은 JsonString 형식으로,\n\n" +
+                                "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 bannedBefore\n\n" +
+                                "계정 정지 이유를 뜻하는 bannedReason\n\n" +
+                                "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
+                                "{\"bannedBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"bannedReason\" : \"부정 행위로 인한 정지\"}\n\n",
                         schema = Schema(type = "string")
                     )
                 ]

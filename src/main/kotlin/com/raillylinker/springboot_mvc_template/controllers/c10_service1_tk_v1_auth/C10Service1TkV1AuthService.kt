@@ -110,106 +110,6 @@ class C10Service1TkV1AuthService(
         return "Member No.$memberUid : Test Success"
     }
 
-
-    ////
-    fun api2Dot1(httpServletResponse: HttpServletResponse, authorization: String?): String? {
-        if (authorization == null) {
-            // 인증 코드 미검증
-            return "Not Logged In : Test Success"
-        } else {
-            // 인증 코드 검증
-
-            // 타입과 토큰을 분리
-            val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
-            if (authorizationSplit.size < 2) {
-                httpServletResponse.setHeader("api-result-code", "1")
-                httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
-                return null
-            }
-
-            // 타입으로 추정되는 문장이 존재할 때
-            // 타입 분리
-            val tokenType = authorizationSplit[0].trim() // 첫번째 단어는 토큰 타입
-            val accessToken = authorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
-
-            // 토큰 검증
-            val tokenVerificationCode =
-                SecurityConfig.AuthTokenFilterService1Tk.verifyAccessToken(tokenType, accessToken)
-
-            when (tokenVerificationCode) {
-                1 -> {
-                    // 올바르지 않은 Authorization Token
-                    httpServletResponse.setHeader("api-result-code", "1")
-                    httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
-                    return null
-                }
-
-                2 -> {
-                    // 토큰이 만료됨
-                    httpServletResponse.setHeader("api-result-code", "2")
-                    httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
-                    return null
-                }
-
-                else -> {
-                    // 토큰 검증 정상 -> 데이터베이스 현 상태 확인
-
-                    // 유저 탈퇴 여부 확인
-                    val memberUid = JwtTokenUtilObject.getMemberUid(
-                        accessToken,
-                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                        SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                    ).toLong()
-
-                    val memberDataOpt =
-                        database2Service1MemberDataRepository.findById(memberUid)
-
-                    if (memberDataOpt.isEmpty) {
-                        // 멤버 탈퇴
-                        httpServletResponse.setHeader("api-result-code", "3")
-                        httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
-                        return null
-                    }
-
-                    val memberData = memberDataOpt.get()
-
-                    // 로그아웃 여부 파악
-                    val tokenInfo =
-                        database2Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
-                            tokenType,
-                            accessToken,
-                            null
-                        )
-
-                    if (tokenInfo == null) {
-                        // 로그아웃된 토큰
-                        httpServletResponse.setHeader("api-result-code", "4")
-                        httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
-                        return null
-                    }
-
-                    // 패널티로 인한 접근 거부와 같은 인증 / 인가 조건을 추가하려면 이곳에 추가
-
-                    // 멤버의 권한 리스트를 조회 후 반환
-                    val memberRoleEntityList =
-                        database2Service1MemberRoleDataRepository.findAllByMemberData(
-                            memberData
-                        )
-
-                    // 회원 권한 형식 변경
-                    val authorities: ArrayList<String> = ArrayList()
-                    for (memberRole in memberRoleEntityList) {
-                        authorities.add(memberRole.role)
-                    }
-
-                    // 회원 권한 비교가 필요하면 여기서 할 것.
-
-                    return "Member No.$memberUid : Test Success"
-                }
-            }
-        }
-    }
-
     ////
     fun api3(httpServletResponse: HttpServletResponse, authorization: String): String? {
         val memberUid = JwtTokenUtilObject.getMemberUid(
@@ -287,11 +187,21 @@ class C10Service1TkV1AuthService(
             }
         }
 
+        if (memberData.accountPassword == null || // 페스워드는 아직 만들지 않음
+            !passwordEncoder.matches(inputVo.password, memberData.accountPassword!!) // 패스워드 불일치
+        ) {
+            // 두 상황 모두 비밀번호 찾기를 하면 해결이 됨
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "2")
+            return null
+        }
+
+        // 계정 정지 검증
         val banList = database2Service1MemberBanHistoryRepository.findAllNowBans(memberData, LocalDateTime.now())
         if (banList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "4")
+            httpServletResponse.setHeader("api-result-code", "3")
 
             val banInfo = banList[0]
             httpServletResponse.setHeader(
@@ -304,22 +214,27 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        if (memberData.accountPassword == null || // 페스워드는 아직 만들지 않음
-            !passwordEncoder.matches(inputVo.password, memberData.accountPassword!!) // 패스워드 불일치
-        ) {
-            // 두 상황 모두 비밀번호 찾기를 하면 해결이 됨
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "2")
-            return null
-        }
+        // 로그인 정보 임시 저장
+        val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
+            Database2_Service1_LogInTokenHistory(
+                memberData,
+                "Bearer",
+                LocalDateTime.now(),
+                "tempValue", // 임시 저장
+                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                "tempValue", // 임시 저장
+                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                null
+            )
+        )
 
         // 멤버의 권한 리스트를 조회 후 반환
-        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(memberData)
-
-        val roleList: ArrayList<String> = arrayListOf()
-        for (userRole in memberRoleList) {
-            roleList.add(userRole.role)
-        }
+//        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(memberData)
+//
+//        val roleList: ArrayList<String> = arrayListOf()
+//        for (userRole in memberRoleList) {
+//            roleList.add(userRole.role)
+//        }
 
         // (토큰 생성 로직 수행)
         val memberUidString: String = memberData.uid!!.toString()
@@ -327,6 +242,7 @@ class C10Service1TkV1AuthService(
         // 멤버 고유번호로 엑세스 토큰 생성
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
+            loginHistoryEntity.uid!!.toString(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -348,51 +264,12 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
-        // 세션 최대 개수 검증
-        val maxSessionInfo = SecurityConfig.AuthTokenFilterService1Tk.MAX_SESSION_INFO
-        if (maxSessionInfo != null) {
-            // 최대 세션 개수 설정이 되어있을 때
-            val loginTokenList =
-                database2Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDateOrderByRowCreateDate(
-                    memberData,
-                    null
-                )
-            if (loginTokenList.size >= maxSessionInfo.maxCount) {
-                // 현재 발행된 토큰 개수가 최대 세션보다 크거나 같을 때
-                if (maxSessionInfo.prevent) {
-                    // 로그인 금지
-                    val tokensToLogoutList = loginTokenList.take(loginTokenList.size - maxSessionInfo.maxCount)
-                    for (tokensToLogout in tokensToLogoutList) {
-                        tokensToLogout.logoutDate = LocalDateTime.now()
-                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
-                    }
-
-                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "3")
-                    return null
-                } else {
-                    // 기존 로그인 정보 로그아웃 처리
-                    val tokensToLogoutList = loginTokenList.take((loginTokenList.size + 1) - maxSessionInfo.maxCount)
-                    for (tokensToLogout in tokensToLogoutList) {
-                        tokensToLogout.logoutDate = LocalDateTime.now()
-                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
-                    }
-                }
-            }
-        }
-
-        database2Service1LogInTokenHistoryRepository.save(
-            Database2_Service1_LogInTokenHistory(
-                memberData,
-                "Bearer",
-                LocalDateTime.now(),
-                jwtAccessToken,
-                accessTokenExpireWhen,
-                jwtRefreshToken,
-                refreshTokenExpireWhen,
-                null
-            )
-        )
+        // 생성된 정보 저장
+        loginHistoryEntity.accessToken = jwtAccessToken
+        loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
+        loginHistoryEntity.refreshToken = jwtRefreshToken
+        loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
+        database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -610,12 +487,13 @@ class C10Service1TkV1AuthService(
             return null
         }
 
+        // 계정 정지 검증
         val banList =
             database2Service1MemberBanHistoryRepository.findAllNowBans(snsOauth2.memberData, LocalDateTime.now())
         if (banList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "4")
+            httpServletResponse.setHeader("api-result-code", "3")
 
             val banInfo = banList[0]
             httpServletResponse.setHeader(
@@ -628,13 +506,27 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        // 멤버의 권한 리스트를 조회 후 반환
-        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
+        // 로그인 정보 임시 저장
+        val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
+            Database2_Service1_LogInTokenHistory(
+                snsOauth2.memberData,
+                "Bearer",
+                LocalDateTime.now(),
+                "tempValue", // 임시 저장
+                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                "tempValue", // 임시 저장
+                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                null
+            )
+        )
 
-        val roleList: ArrayList<String> = arrayListOf()
-        for (memberRole in memberRoleList) {
-            roleList.add(memberRole.role)
-        }
+        // 멤버의 권한 리스트를 조회 후 반환
+//        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
+//
+//        val roleList: ArrayList<String> = arrayListOf()
+//        for (memberRole in memberRoleList) {
+//            roleList.add(memberRole.role)
+//        }
 
         // (토큰 생성 로직 수행)
         // 멤버 고유번호로 엑세스 토큰 생성
@@ -642,6 +534,7 @@ class C10Service1TkV1AuthService(
 
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
+            loginHistoryEntity.uid!!.toString(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -663,51 +556,12 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
-        // 세션 최대 개수 검증
-        val maxSessionInfo = SecurityConfig.AuthTokenFilterService1Tk.MAX_SESSION_INFO
-        if (maxSessionInfo != null) {
-            // 최대 세션 개수 설정이 되어있을 때
-            val loginTokenList =
-                database2Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDateOrderByRowCreateDate(
-                    snsOauth2.memberData,
-                    null
-                )
-            if (loginTokenList.size >= maxSessionInfo.maxCount) {
-                // 현재 발행된 토큰 개수가 최대 세션보다 크거나 같을 때
-                if (maxSessionInfo.prevent) {
-                    // 로그인 금지
-                    val tokensToLogoutList = loginTokenList.take(loginTokenList.size - maxSessionInfo.maxCount)
-                    for (tokensToLogout in tokensToLogoutList) {
-                        tokensToLogout.logoutDate = LocalDateTime.now()
-                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
-                    }
-
-                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "3")
-                    return null
-                } else {
-                    // 기존 로그인 정보 로그아웃 처리
-                    val tokensToLogoutList = loginTokenList.take((loginTokenList.size + 1) - maxSessionInfo.maxCount)
-                    for (tokensToLogout in tokensToLogoutList) {
-                        tokensToLogout.logoutDate = LocalDateTime.now()
-                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
-                    }
-                }
-            }
-        }
-
-        database2Service1LogInTokenHistoryRepository.save(
-            Database2_Service1_LogInTokenHistory(
-                snsOauth2.memberData,
-                "Bearer",
-                LocalDateTime.now(),
-                jwtAccessToken,
-                accessTokenExpireWhen,
-                jwtRefreshToken,
-                refreshTokenExpireWhen,
-                null
-            )
-        )
+        // 생성된 정보 저장
+        loginHistoryEntity.accessToken = jwtAccessToken
+        loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
+        loginHistoryEntity.refreshToken = jwtRefreshToken
+        loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
+        database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -763,12 +617,13 @@ class C10Service1TkV1AuthService(
             return null
         }
 
+        // 계정 정지 검증
         val banList =
             database2Service1MemberBanHistoryRepository.findAllNowBans(snsOauth2.memberData, LocalDateTime.now())
         if (banList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "4")
+            httpServletResponse.setHeader("api-result-code", "3")
 
             val banInfo = banList[0]
             httpServletResponse.setHeader(
@@ -781,13 +636,26 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        // 멤버의 권한 리스트를 조회 후 반환
-        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
+        // 로그인 정보 임시 저장
+        val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
+            Database2_Service1_LogInTokenHistory(
+                snsOauth2.memberData,
+                "Bearer",
+                LocalDateTime.now(),
+                "tempValue", // 임시 저장
+                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                "tempValue", // 임시 저장
+                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                null
+            )
+        )
 
-        val roleList: ArrayList<String> = arrayListOf()
-        for (userRole in memberRoleList) {
-            roleList.add(userRole.role)
-        }
+        // 멤버의 권한 리스트를 조회 후 반환
+//        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
+//        val roleList: ArrayList<String> = arrayListOf()
+//        for (userRole in memberRoleList) {
+//            roleList.add(userRole.role)
+//        }
 
         // (토큰 생성 로직 수행)
         // 멤버 고유번호로 엑세스 토큰 생성
@@ -795,6 +663,7 @@ class C10Service1TkV1AuthService(
 
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
+            loginHistoryEntity.uid!!.toString(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -816,51 +685,12 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
-        // 세션 최대 개수 검증
-        val maxSessionInfo = SecurityConfig.AuthTokenFilterService1Tk.MAX_SESSION_INFO
-        if (maxSessionInfo != null) {
-            // 최대 세션 개수 설정이 되어있을 때
-            val loginTokenList =
-                database2Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDateOrderByRowCreateDate(
-                    snsOauth2.memberData,
-                    null
-                )
-            if (loginTokenList.size >= maxSessionInfo.maxCount) {
-                // 현재 발행된 토큰 개수가 최대 세션보다 크거나 같을 때
-                if (maxSessionInfo.prevent) {
-                    // 로그인 금지
-                    val tokensToLogoutList = loginTokenList.take(loginTokenList.size - maxSessionInfo.maxCount)
-                    for (tokensToLogout in tokensToLogoutList) {
-                        tokensToLogout.logoutDate = LocalDateTime.now()
-                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
-                    }
-
-                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    httpServletResponse.setHeader("api-result-code", "3")
-                    return null
-                } else {
-                    // 기존 로그인 정보 로그아웃 처리
-                    val tokensToLogoutList = loginTokenList.take((loginTokenList.size + 1) - maxSessionInfo.maxCount)
-                    for (tokensToLogout in tokensToLogoutList) {
-                        tokensToLogout.logoutDate = LocalDateTime.now()
-                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
-                    }
-                }
-            }
-        }
-
-        database2Service1LogInTokenHistoryRepository.save(
-            Database2_Service1_LogInTokenHistory(
-                snsOauth2.memberData,
-                "Bearer",
-                LocalDateTime.now(),
-                jwtAccessToken,
-                accessTokenExpireWhen,
-                jwtRefreshToken,
-                refreshTokenExpireWhen,
-                null
-            )
-        )
+        // 생성된 정보 저장
+        loginHistoryEntity.accessToken = jwtAccessToken
+        loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
+        loginHistoryEntity.refreshToken = jwtRefreshToken
+        loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
+        database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -1029,6 +859,27 @@ class C10Service1TkV1AuthService(
                     return null
                 }
 
+                // 계정 정지 검증
+                val banList = database2Service1MemberBanHistoryRepository.findAllNowBans(
+                    tokenInfo.memberData,
+                    LocalDateTime.now()
+                )
+                if (banList.isNotEmpty()) {
+                    // 계정 정지 당한 상황
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    httpServletResponse.setHeader("api-result-code", "4")
+
+                    val banInfo = banList[0]
+                    httpServletResponse.setHeader(
+                        "member-lock-data",
+                        "{\"bannedBefore\": \"${
+                            banInfo.bannedBefore.atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                        }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
+                    )
+                    return null
+                }
+
                 // 먼저 로그아웃 처리
                 tokenInfo.logoutDate = LocalDateTime.now()
                 database2Service1LogInTokenHistoryRepository.save(tokenInfo)
@@ -1042,9 +893,24 @@ class C10Service1TkV1AuthService(
                     roleList.add(userRole.role)
                 }
 
+                // 로그인 정보 임시 저장
+                val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
+                    Database2_Service1_LogInTokenHistory(
+                        tokenInfo.memberData,
+                        "Bearer",
+                        LocalDateTime.now(),
+                        "tempValue", // 임시 저장
+                        LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                        "tempValue", // 임시 저장
+                        LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
+                        null
+                    )
+                )
+
                 // 새 토큰 생성 및 로그인 처리
                 val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
                     accessTokenMemberUid,
+                    loginHistoryEntity.uid!!.toString(),
                     SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
                     SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                     SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -1065,18 +931,12 @@ class C10Service1TkV1AuthService(
 
                 val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newRefreshToken)
 
-                database2Service1LogInTokenHistoryRepository.save(
-                    Database2_Service1_LogInTokenHistory(
-                        tokenInfo.memberData,
-                        "Bearer",
-                        LocalDateTime.now(),
-                        newJwtAccessToken,
-                        accessTokenExpireWhen,
-                        newRefreshToken,
-                        refreshTokenExpireWhen,
-                        null
-                    )
-                )
+                // 생성된 정보 저장
+                loginHistoryEntity.accessToken = newJwtAccessToken
+                loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
+                loginHistoryEntity.refreshToken = newRefreshToken
+                loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
+                database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
 
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()

@@ -16,6 +16,7 @@ object JwtTokenUtilObject {
     // memberRoleList : 멤버 권한 리스트 (ex : ["ROLE_ADMIN", "ROLE_DEVELOPER"])
     fun generateAccessToken(
         memberUid: String,
+        loginHistoryUid: String,
         accessTokenExpirationTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String,
@@ -24,6 +25,7 @@ object JwtTokenUtilObject {
     ): String {
         return doGenerateToken(
             memberUid,
+            loginHistoryUid,
             "access",
             accessTokenExpirationTimeSec,
             jwtClaimsAes256InitializationVector,
@@ -44,6 +46,7 @@ object JwtTokenUtilObject {
     ): String {
         return doGenerateToken(
             memberUid,
+            null,
             "refresh",
             refreshTokenExpirationTimeSec,
             jwtClaimsAes256InitializationVector,
@@ -81,6 +84,20 @@ object JwtTokenUtilObject {
     ): String {
         return CryptoUtilObject.decryptAES256(
             parseJwtForPayload(token)["mu"].toString(),
+            "AES/CBC/PKCS5Padding",
+            jwtClaimsAes256InitializationVector,
+            jwtClaimsAes256EncryptionKey
+        )
+    }
+
+    // Login History Uid
+    fun getLoginHistoryUid(
+        token: String,
+        jwtClaimsAes256InitializationVector: String,
+        jwtClaimsAes256EncryptionKey: String
+    ): String {
+        return CryptoUtilObject.decryptAES256(
+            parseJwtForPayload(token)["lu"].toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
             jwtClaimsAes256EncryptionKey
@@ -133,6 +150,7 @@ object JwtTokenUtilObject {
     // (JWT 토큰 생성)
     private fun doGenerateToken(
         memberUid: String,
+        loginHistoryUid: String?,
         tokenUsage: String,
         expireTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
@@ -157,6 +175,16 @@ object JwtTokenUtilObject {
             jwtClaimsAes256InitializationVector,
             jwtClaimsAes256EncryptionKey
         )
+
+        // login history uid
+        if (loginHistoryUid != null) {
+            claimsMap["lu"] = CryptoUtilObject.encryptAES256(
+                loginHistoryUid,
+                "AES/CBC/PKCS5Padding",
+                jwtClaimsAes256InitializationVector,
+                jwtClaimsAes256EncryptionKey
+            )
+        }
 
         // token usage
         claimsMap["tu"] = CryptoUtilObject.encryptAES256(

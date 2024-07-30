@@ -1,7 +1,39 @@
 [TODO]
 - SC 권한 및 탈퇴 여부 변경시 세션 갱신하기
+    회원 탈퇴,
+    권한 변경,
+    로그아웃,
+    계정 정지
+
 - SC 자동 로그인
+
 - SC 동시 접속 설정
+
 - SC 세션 만료 기능
-- JWT 데이터베이스 접근이 아닌 캐싱 기능
+
 - 세션 추가 및 여러 변경점이 있으므로 rest api 전수 테스트(Flutter 수정과 동시에 진행하기)
+
+- JWT 데이터베이스 접근이 아닌 캐싱 기능
+    JWT 인증처리를 모두 토큰 내의 정보만으로 하고,
+
+    회원 탈퇴,
+    권한 변경,
+    로그아웃,
+    계정 정지
+
+    의 상황이 일어나면,
+
+    해당 유저 고유번호내 모든 토큰 만료처리
+
+    만료처리는,
+
+    토큰에 로그인 히스토리 고유번호를 넣고,
+    메모리상에 리플레시가 필요한 로그인 히스토리 고유번호 및 액세스 토큰 만료일 쌍의 맵을 올리면,
+    인증인가 필터 실행시마다 토큰의 고유번호를 확인하여 고유번호가 존재하면 해당 토큰에 만료 신호를 내기 ->
+    reissue 가 되어야만 메모리에서 내려감.
+    (메모리에 쌓이지 않도록 인증 필터에서 액세스 토큰 만료시간이 지나도 내려가도록 조치)
+
+    Database2_Service1_MemberDataRepository,
+    Database2_Service1_MemberRoleDataRepository,
+    Database2_Service1_LogInTokenHistoryRepository,
+    Database2_Service1_MemberBanHistoryRepository
