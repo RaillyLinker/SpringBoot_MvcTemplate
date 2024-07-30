@@ -88,76 +88,87 @@ class SecurityConfig(
 
     // !!!경로별 적용할 Security 설정 Bean 작성하기!!!
 
-    // [/main/sc 로 시작되는 리퀘스트의 시큐리티 설정 = Session-Cookie 인증 사용]
+    // [모든 리퀘스트의 기본 시큐리티 설정 = Session-Cookie 인증 사용]
     @Bean
-    @Order(1)
+    @Order(Int.MAX_VALUE)
     fun securityFilterChainMainSc(
         http: HttpSecurity,
         userDetailService: UserDetailsServiceMainSc
     ): SecurityFilterChain {
-        // !!!시큐리티 필터 추가시 수정!!!
-        // 본 시큐리티 필터가 관리할 주소 체계
-        val securityUrlList = listOf(
-            "/main/sc/**",
-            "/main-admin/sc/**" // 보통 Admin 관리 서비스는 동일 인증 체계에서 Role 로 구분하기에 예시에 추가했습니다.
-        ) // 위 모든 경로에 적용
+        // sameOrigin 에서 iframe 허용 설정
+        // 기본은 허용하지 않음, sameOrigin 은 같은 origin 일 때에만 허용하고, disable 은 모두 허용
+//        http.headers { headersConfigurer ->
+//            headersConfigurer.frameOptions { frameOptionsConfig ->
+//                frameOptionsConfig.sameOrigin()
+//            }
+//        }
 
-        val securityMatcher: HttpSecurity = getMainScHttpSecurity(
-            http,
-            userDetailService,
-            securityUrlList,
-            cors = true,
-            csrf = true
-        )
+        // cors 적용(서로 다른 origin 의 웹화면에서 리퀘스트 금지)
+        http.cors {}
+        // csrf 적용(HTML 에서 form 요청을 보낼 때,
+        // <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        // 이렇게 csrf 값을 같이 줘야 정상 수신)
+        http.csrf {}
 
-        // (API 요청 제한)
-        // 기본적으로 모두 Open
-        securityMatcher.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
-            authorizeHttpRequestsCustomizer.anyRequest().permitAll()
-            /*
-                본 서버 접근 보안은 블랙 리스트 방식을 사용합니다.
-                일반적으로 모든 요청을 허용하며, 인증/인가가 필요한 부분에는,
-                @PreAuthorize("isAuthenticated() and (hasRole('ROLE_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-                위와 같은 어노테이션을 접근 통제하고자 하는 API 위에 달아주면 인증 필터가 동작하게 됩니다.
-             */
+        // 스프링 시큐리티 로그인 설정
+        http.formLogin { formLoginCustomizer ->
+            // 로그인이 필요한 요청을 했을 때 자동으로 이동할 로그인 화면 경로
+            // 이 경로를 만들어서 로그인 화면의 HTML 과 그 안의 form 태그 요소들을 만들어야 합니다.
+            formLoginCustomizer.loginPage("/main/sc/v1/login")
+            // 로그인 인증처리 경로
+            // 로그인 form 태그는 이 경로로 POST 요청을 보내야 하며,
+            // 이 경로에 대한 처리는 개발자가 따로 작성할 필요가 없이 자동으로 처리됩니다.
+            formLoginCustomizer.loginProcessingUrl("/main/sc/v1/login-process")
+            // 인증 성공 시 자동으로 이동하는 경로
+            formLoginCustomizer.defaultSuccessUrl("/")
+            // 정상 인증 성공 후 별도의 처리가 필요한 경우 커스텀 핸들러 생성하여 등록
+//            formLoginCustomizer.successHandler(CustomAuthenticationSuccessHandler())
+            // 인증 실패 시 자동으로 이동하는 경로
+            formLoginCustomizer.failureUrl("/main/sc/v1/login?fail")
+            // 인증 실패 후 별도의 처리가 필요한 경우 커스텀 핸들러를 생성하여 등록
+//            formLoginCustomizer.failureHandler(CustomAuthenticationSuccessHandler())
         }
 
-        return http.build()
-    }
+        // 커스텀 UserDetailsService 설정
+        http.userDetailsService(userDetailService)
 
-    // [Swagger 문서 리퀘스트의 시큐리티 설정 = Session-Cookie 인증 사용]
-    @Bean
-    @Order(2)
-    fun securityFilterChainSwagger(
-        http: HttpSecurity,
-        userDetailService: UserDetailsServiceMainSc
-    ): SecurityFilterChain {
-        // !!!시큐리티 필터 추가시 수정!!!
-        // 본 시큐리티 필터가 관리할 주소 체계
-        val securityUrlList = listOf(
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/v3/api-docs.yaml"
-        ) // 위 모든 경로에 적용
+        // 스프링 시큐리티 로그아웃 설정
+        http.logout { logoutCustomizer ->
+            // 로그아웃(현 세션에서 로그인된 멤버 정보를 제거) 경로
+            logoutCustomizer.logoutUrl("/main/sc/v1/logout")
+            // 로그아웃 시 이동할 경로
+//            logoutCustomizer.logoutSuccessUrl("/main/sc/v1/login?logout")
+            logoutCustomizer.logoutSuccessHandler { request, response, _ ->
+                // 로그아웃 시 현 위치 다시 호출
+                response.sendRedirect(request.getHeader("Referer") ?: "/")
+            }
+        }
 
-        val securityMatcher: HttpSecurity = getMainScHttpSecurity(
-            http,
-            userDetailService,
-            securityUrlList,
-            cors = false,
-            csrf = false
-        )
+        // 시큐리티 예외 처리
+        http.exceptionHandling { exceptionHandlingCustomizer ->
+            exceptionHandlingCustomizer.accessDeniedPage("/main/sc/v1/error?type=ACCESS_DENIED") // 권한 부족 시 이동할 페이지 설정
+            // 또는 커스텀 핸들러 설정
+            // exceptionHandlingCustomizer.accessDeniedHandler { request, response, accessDeniedException ->
+            //     response.sendRedirect("/access-denied")
+            // }
+        }
 
         // (API 요청 제한)
         // 기본적으로 모두 Open
-        securityMatcher.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
-            authorizeHttpRequestsCustomizer.anyRequest().hasAnyRole("ADMIN", "DEVELOPER", "SERVER_DEVELOPER")
-            /*
-                본 서버 접근 보안은 블랙 리스트 방식을 사용합니다.
-                일반적으로 모든 요청을 허용하며, 인증/인가가 필요한 부분에는,
-                @PreAuthorize("isAuthenticated() and (hasRole('ROLE_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-                위와 같은 어노테이션을 접근 통제하고자 하는 API 위에 달아주면 인증 필터가 동작하게 됩니다.
-             */
+        http.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
+            // 스웨거 관련 주소 요청시 필요한 권한 설정
+            authorizeHttpRequestsCustomizer.requestMatchers(
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/v3/api-docs.yaml"
+            ).hasAnyRole(
+                "ADMIN",
+                "DEVELOPER",
+                "SERVER_DEVELOPER"
+            )
+
+            // 그외 모든 요청 허용
+            authorizeHttpRequestsCustomizer.anyRequest().permitAll()
         }
 
         return http.build()
@@ -261,88 +272,10 @@ class SecurityConfig(
         }
     }
 
-    fun getMainScHttpSecurity(
-        http: HttpSecurity,
-        userDetailService: UserDetailsServiceMainSc,
-        securityUrlList: List<String>,
-        cors: Boolean,
-        csrf: Boolean
-    ): HttpSecurity {
-        val securityMatcher: HttpSecurity = http.securityMatcher(*securityUrlList.toTypedArray())
-
-        // sameOrigin 에서 iframe 허용 설정
-        // 기본은 허용하지 않음, sameOrigin 은 같은 origin 일 때에만 허용하고, disable 은 모두 허용
-//        securityMatcher.headers { headersConfigurer ->
-//            headersConfigurer.frameOptions { frameOptionsConfig ->
-//                frameOptionsConfig.sameOrigin()
-//            }
-//        }
-
-        // cors 적용(서로 다른 origin 의 웹화면에서 리퀘스트 금지)
-        if (cors) {
-            securityMatcher.cors {}
-        } else {
-            securityMatcher.cors { it.disable() }
-        }
-        // csrf 적용(HTML 에서 form 요청을 보낼 때,
-        // <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        // 이렇게 csrf 값을 같이 줘야 정상 수신)
-        if (csrf) {
-            securityMatcher.csrf {}
-        } else {
-            securityMatcher.csrf { it.disable() }
-        }
-
-        // 스프링 시큐리티 로그인 설정
-        securityMatcher.formLogin { formLoginCustomizer ->
-            // 로그인이 필요한 요청을 했을 때 자동으로 이동할 로그인 화면 경로
-            // 이 경로를 만들어서 로그인 화면의 HTML 과 그 안의 form 태그 요소들을 만들어야 합니다.
-            formLoginCustomizer.loginPage("/main/sc/v1/login")
-            // 로그인 인증처리 경로
-            // 로그인 form 태그는 이 경로로 POST 요청을 보내야 하며,
-            // 이 경로에 대한 처리는 개발자가 따로 작성할 필요가 없이 자동으로 처리됩니다.
-            formLoginCustomizer.loginProcessingUrl("/main/sc/v1/login-process")
-            // 인증 성공 시 자동으로 이동하는 경로
-            formLoginCustomizer.defaultSuccessUrl("/")
-            // 정상 인증 성공 후 별도의 처리가 필요한 경우 커스텀 핸들러 생성하여 등록
-//            formLoginCustomizer.successHandler(CustomAuthenticationSuccessHandler())
-            // 인증 실패 시 자동으로 이동하는 경로
-            formLoginCustomizer.failureUrl("/main/sc/v1/login?fail")
-            // 인증 실패 후 별도의 처리가 필요한 경우 커스텀 핸들러를 생성하여 등록
-//            formLoginCustomizer.failureHandler(CustomAuthenticationSuccessHandler())
-        }
-
-        // 커스텀 UserDetailsService 설정
-        securityMatcher.userDetailsService(userDetailService)
-
-        // 스프링 시큐리티 로그아웃 설정
-        securityMatcher.logout { logoutCustomizer ->
-            // 로그아웃(현 세션에서 로그인된 멤버 정보를 제거) 경로
-            logoutCustomizer.logoutUrl("/main/sc/v1/logout")
-            // 로그아웃 시 이동할 경로
-//            logoutCustomizer.logoutSuccessUrl("/main/sc/v1/login?logout")
-            logoutCustomizer.logoutSuccessHandler { request, response, _ ->
-                // 로그아웃 시 현 위치 다시 호출
-                response.sendRedirect(request.getHeader("Referer") ?: "/")
-            }
-        }
-
-        // 시큐리티 예외 처리
-        securityMatcher.exceptionHandling { exceptionHandlingCustomizer ->
-            exceptionHandlingCustomizer.accessDeniedPage("/main/sc/v1/error?type=ACCESS_DENIED") // 권한 부족 시 이동할 페이지 설정
-            // 또는 커스텀 핸들러 설정
-            // exceptionHandlingCustomizer.accessDeniedHandler { request, response, accessDeniedException ->
-            //     response.sendRedirect("/access-denied")
-            // }
-        }
-
-        return http
-    }
-
     ////
     // [/service1/tk 로 시작되는 리퀘스트의 시큐리티 설정 = Token 인증 사용]
     @Bean
-    @Order(3)
+    @Order(1)
     fun securityFilterChainService1Tk(http: HttpSecurity): SecurityFilterChain {
         // !!!시큐리티 필터 추가시 수정!!!
         // 본 시큐리티 필터가 관리할 주소 체계
