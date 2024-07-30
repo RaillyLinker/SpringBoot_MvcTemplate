@@ -1,6 +1,7 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberBanHistoryRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberRoleDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerCompany_MemberData
@@ -44,7 +45,8 @@ class SecurityConfig(
     // (회원 정보 및 상태 확인용 데이터베이스 레포지토리 객체)
     private val database2Service1MemberDataRepository: Database2_Service1_MemberDataRepository,
     private val database2Service1MemberRoleDataRepository: Database2_Service1_MemberRoleDataRepository,
-    private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository
+    private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository,
+    private val database2Service1MemberBanHistoryRepository: Database2_Service1_MemberBanHistoryRepository
 ) {
     // <멤버 변수 공간>
 
@@ -164,7 +166,8 @@ class SecurityConfig(
     @Service
     class UserDetailsServiceMainSc(
         private val database1RaillyLinkerCompanyMemberDataRepository: Database1_RaillyLinkerCompany_MemberDataRepository,
-        private val database1RaillyLinkerCompanyMemberRoleDataRepository: Database1_RaillyLinkerCompany_MemberRoleDataRepository
+        private val database1RaillyLinkerCompanyMemberRoleDataRepository: Database1_RaillyLinkerCompany_MemberRoleDataRepository,
+        private val database1RaillyLinkerCompanyMemberBanHistoryRepository: Database1_RaillyLinkerCompany_MemberBanHistoryRepository
     ) : UserDetailsService {
         override fun loadUserByUsername(userName: String): UserDetails {
             // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
@@ -200,6 +203,13 @@ class SecurityConfig(
                 .map { roleData -> SimpleGrantedAuthority(roleData.role) }
                 .toMutableList()
 
+            // 정지 여부 파악
+            val banList =
+                database1RaillyLinkerCompanyMemberBanHistoryRepository.findAllNowBans(
+                    memberDataEntity,
+                    LocalDateTime.now()
+                )
+
             // 이것이 반환된 후 비밀번호 검증까지 끝나면 이 데이터가 메모리에 저장되어 있습니다.
             // api 에서는 @Parameter(hidden = true) principal: Principal? 이것으로 받은 후,
             // principal 이 null 이라면 로그아웃 상태, principal 이 있다면 principal?.name 으로 현재 로그인한 회원 정보를 알 수 있습니다.
@@ -211,7 +221,7 @@ class SecurityConfig(
                 // 암호화되어 데이터베이스에 저장된 비밀번호
                 memberDataEntity.accountPassword!!,
                 authorities,
-                memberDataEntity.bannedBefore.isAfter(LocalDateTime.now())
+                banList.isNotEmpty()
             )
         }
 
@@ -378,7 +388,8 @@ class SecurityConfig(
                 securityUrlList,
                 database2Service1MemberDataRepository,
                 database2Service1MemberRoleDataRepository,
-                database2Service1LogInTokenHistoryRepository
+                database2Service1LogInTokenHistoryRepository,
+                database2Service1MemberBanHistoryRepository
             ),
             UsernamePasswordAuthenticationFilter::class.java
         )
@@ -425,7 +436,8 @@ class SecurityConfig(
         private val filterPatternList: List<String>,
         private val database2Service1MemberDataRepository: Database2_Service1_MemberDataRepository,
         private val database2Service1MemberRoleDataRepository: Database2_Service1_MemberRoleDataRepository,
-        private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository
+        private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository,
+        private val database2Service1MemberBanHistoryRepository: Database2_Service1_MemberBanHistoryRepository
     ) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
@@ -621,7 +633,9 @@ class SecurityConfig(
                     val memberData = memberDataOpt.get()
 
                     // 정지 여부 파악
-                    if (memberData.bannedBefore.isAfter(LocalDateTime.now())) {
+                    val banList =
+                        database2Service1MemberBanHistoryRepository.findAllNowBans(memberData, LocalDateTime.now())
+                    if (banList.isNotEmpty()) {
                         // 계정 정지 당한 상황
                         response.setHeader("api-result-code", "5")
 

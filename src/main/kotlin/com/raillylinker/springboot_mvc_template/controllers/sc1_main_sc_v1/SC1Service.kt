@@ -226,8 +226,7 @@ class SC1Service(
         database1RaillyLinkerCompanyMemberDataRepository.save(
             Database1_RaillyLinkerCompany_MemberData(
                 accountId,
-                passwordEnc,
-                LocalDateTime.of(1970, 1, 1, 0, 0)
+                passwordEnc
             )
         )
 

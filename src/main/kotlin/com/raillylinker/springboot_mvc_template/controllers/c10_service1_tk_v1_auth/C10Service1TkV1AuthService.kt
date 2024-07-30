@@ -57,7 +57,8 @@ class C10Service1TkV1AuthService(
     private val database2Service1AddEmailVerificationDataRepository: Database2_Service1_AddEmailVerificationDataRepository,
     private val database2Service1AddPhoneNumberVerificationDataRepository: Database2_Service1_AddPhoneNumberVerificationDataRepository,
     private val database2Service1MemberProfileDataRepository: Database2_Service1_MemberProfileDataRepository,
-    private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository
+    private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository,
+    private val database2Service1MemberBanHistoryRepository: Database2_Service1_MemberBanHistoryRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -286,7 +287,8 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        if (memberData.bannedBefore.isAfter(LocalDateTime.now())) {
+        val banList = database2Service1MemberBanHistoryRepository.findAllNowBans(memberData, LocalDateTime.now())
+        if (banList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "4")
@@ -599,7 +601,9 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        if(snsOauth2.memberData.bannedBefore.isAfter(LocalDateTime.now())){
+        val banList =
+            database2Service1MemberBanHistoryRepository.findAllNowBans(snsOauth2.memberData, LocalDateTime.now())
+        if (banList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "4")
@@ -741,7 +745,9 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        if(snsOauth2.memberData.bannedBefore.isAfter(LocalDateTime.now())){
+        val banList =
+            database2Service1MemberBanHistoryRepository.findAllNowBans(snsOauth2.memberData, LocalDateTime.now())
+        if (banList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "4")
@@ -1263,7 +1269,6 @@ class C10Service1TkV1AuthService(
             Database2_Service1_MemberData(
                 inputVo.id,
                 password,
-                LocalDateTime.of(1970, 1, 1, 0, 0),
                 null,
                 null,
                 null
@@ -1518,7 +1523,6 @@ class C10Service1TkV1AuthService(
                 Database2_Service1_MemberData(
                     inputVo.id,
                     password,
-                    LocalDateTime.of(1970, 1, 1, 0, 0),
                     null,
                     null,
                     null
@@ -1773,7 +1777,6 @@ class C10Service1TkV1AuthService(
                 Database2_Service1_MemberData(
                     inputVo.id,
                     password,
-                    LocalDateTime.of(1970, 1, 1, 0, 0),
                     null,
                     null,
                     null
@@ -2204,7 +2207,6 @@ class C10Service1TkV1AuthService(
                 Database2_Service1_MemberData(
                     inputVo.id,
                     null,
-                    LocalDateTime.of(1970, 1, 1, 0, 0),
                     null,
                     null,
                     null

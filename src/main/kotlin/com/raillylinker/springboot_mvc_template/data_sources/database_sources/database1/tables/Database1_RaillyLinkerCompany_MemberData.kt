@@ -22,11 +22,7 @@ class Database1_RaillyLinkerCompany_MemberData(
 
     @Column(name = "account_password", nullable = true, columnDefinition = "VARCHAR(100)")
     @Comment("계정 로그인시 사용하는 비밀번호 (계정 아이디, 이메일, 전화번호 로그인에 모두 사용됨. OAuth2 만 등록했다면 null)")
-    var accountPassword: String?,
-
-    @Column(name = "banned_before", nullable = false, columnDefinition = "DATETIME(3)")
-    @Comment("계정 밴 시간 (이 시간이 지나기 전까지 계정 정지)")
-    var bannedBefore: LocalDateTime
+    var accountPassword: String?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +42,9 @@ class Database1_RaillyLinkerCompany_MemberData(
 
     @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     var memberRoleDataList: MutableList<Database1_RaillyLinkerCompany_MemberRoleData> = mutableListOf()
+
+    @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var memberBanHistoryList: MutableList<Database1_RaillyLinkerCompany_MemberBanHistory> = mutableListOf()
 
 
     // ---------------------------------------------------------------------------------------------
