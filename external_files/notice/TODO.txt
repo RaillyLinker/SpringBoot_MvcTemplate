@@ -37,3 +37,5 @@
     Database2_Service1_MemberRoleDataRepository,
     Database2_Service1_LogInTokenHistoryRepository,
     Database2_Service1_MemberBanHistoryRepository
+
+    위 로직 완성되면 비밀번호를 사용하여 특정 유저의 모든 토큰을 만료시키는 api 추가
