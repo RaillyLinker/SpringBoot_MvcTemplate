@@ -330,6 +330,39 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
+        // 세션 최대 개수 검증
+        val maxSessionInfo = SecurityConfig.AuthTokenFilterService1Tk.MAX_SESSION_INFO
+        if (maxSessionInfo != null) {
+            // 최대 세션 개수 설정이 되어있을 때
+            val loginTokenList =
+                database2Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDateOrderByRowCreateDate(
+                    memberData,
+                    null
+                )
+            if (loginTokenList.size >= maxSessionInfo.maxCount) {
+                // 현재 발행된 토큰 개수가 최대 세션보다 크거나 같을 때
+                if (maxSessionInfo.prevent) {
+                    // 로그인 금지
+                    val tokensToLogoutList = loginTokenList.take(loginTokenList.size - maxSessionInfo.maxCount)
+                    for (tokensToLogout in tokensToLogoutList) {
+                        tokensToLogout.logoutDate = LocalDateTime.now()
+                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
+                    }
+
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    httpServletResponse.setHeader("api-result-code", "3")
+                    return null
+                } else {
+                    // 기존 로그인 정보 로그아웃 처리
+                    val tokensToLogoutList = loginTokenList.take((loginTokenList.size + 1) - maxSessionInfo.maxCount)
+                    for (tokensToLogout in tokensToLogoutList) {
+                        tokensToLogout.logoutDate = LocalDateTime.now()
+                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
+                    }
+                }
+            }
+        }
+
         database2Service1LogInTokenHistoryRepository.save(
             Database2_Service1_LogInTokenHistory(
                 memberData,
@@ -594,6 +627,39 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
+        // 세션 최대 개수 검증
+        val maxSessionInfo = SecurityConfig.AuthTokenFilterService1Tk.MAX_SESSION_INFO
+        if (maxSessionInfo != null) {
+            // 최대 세션 개수 설정이 되어있을 때
+            val loginTokenList =
+                database2Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDateOrderByRowCreateDate(
+                    snsOauth2.memberData,
+                    null
+                )
+            if (loginTokenList.size >= maxSessionInfo.maxCount) {
+                // 현재 발행된 토큰 개수가 최대 세션보다 크거나 같을 때
+                if (maxSessionInfo.prevent) {
+                    // 로그인 금지
+                    val tokensToLogoutList = loginTokenList.take(loginTokenList.size - maxSessionInfo.maxCount)
+                    for (tokensToLogout in tokensToLogoutList) {
+                        tokensToLogout.logoutDate = LocalDateTime.now()
+                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
+                    }
+
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    httpServletResponse.setHeader("api-result-code", "3")
+                    return null
+                } else {
+                    // 기존 로그인 정보 로그아웃 처리
+                    val tokensToLogoutList = loginTokenList.take((loginTokenList.size + 1) - maxSessionInfo.maxCount)
+                    for (tokensToLogout in tokensToLogoutList) {
+                        tokensToLogout.logoutDate = LocalDateTime.now()
+                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
+                    }
+                }
+            }
+        }
+
         database2Service1LogInTokenHistoryRepository.save(
             Database2_Service1_LogInTokenHistory(
                 snsOauth2.memberData,
@@ -695,6 +761,39 @@ class C10Service1TkV1AuthService(
         )
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
+
+        // 세션 최대 개수 검증
+        val maxSessionInfo = SecurityConfig.AuthTokenFilterService1Tk.MAX_SESSION_INFO
+        if (maxSessionInfo != null) {
+            // 최대 세션 개수 설정이 되어있을 때
+            val loginTokenList =
+                database2Service1LogInTokenHistoryRepository.findAllByMemberDataAndLogoutDateOrderByRowCreateDate(
+                    snsOauth2.memberData,
+                    null
+                )
+            if (loginTokenList.size >= maxSessionInfo.maxCount) {
+                // 현재 발행된 토큰 개수가 최대 세션보다 크거나 같을 때
+                if (maxSessionInfo.prevent) {
+                    // 로그인 금지
+                    val tokensToLogoutList = loginTokenList.take(loginTokenList.size - maxSessionInfo.maxCount)
+                    for (tokensToLogout in tokensToLogoutList) {
+                        tokensToLogout.logoutDate = LocalDateTime.now()
+                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
+                    }
+
+                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                    httpServletResponse.setHeader("api-result-code", "3")
+                    return null
+                } else {
+                    // 기존 로그인 정보 로그아웃 처리
+                    val tokensToLogoutList = loginTokenList.take((loginTokenList.size + 1) - maxSessionInfo.maxCount)
+                    for (tokensToLogout in tokensToLogoutList) {
+                        tokensToLogout.logoutDate = LocalDateTime.now()
+                        database2Service1LogInTokenHistoryRepository.save(tokensToLogout)
+                    }
+                }
+            }
+        }
 
         database2Service1LogInTokenHistoryRepository.save(
             Database2_Service1_LogInTokenHistory(

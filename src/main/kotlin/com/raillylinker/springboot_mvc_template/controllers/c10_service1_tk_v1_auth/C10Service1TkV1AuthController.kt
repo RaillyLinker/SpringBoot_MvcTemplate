@@ -274,7 +274,8 @@ class C10Service1TkV1AuthController(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 입력한 id 로 가입된 회원 정보가 없습니다.\n\n" +
-                                "2 : 입력한 password 가 일치하지 않습니다.\n\n",
+                                "2 : 입력한 password 가 일치하지 않습니다.\n\n" +
+                                "3 : 최대 로그인 가능 회수를 넘어서 로그인이 불가능합니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -445,7 +446,8 @@ class C10Service1TkV1AuthController(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 유효하지 않은 OAuth2 Access Token 입니다.\n\n" +
-                                "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n",
+                                "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n" +
+                                "3 : 최대 로그인 가능 회수를 넘어서 로그인이 불가능합니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -506,7 +508,8 @@ class C10Service1TkV1AuthController(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 유효하지 않은 OAuth2 ID Token 입니다.\n\n" +
-                                "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n",
+                                "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n" +
+                                "3 : 최대 로그인 가능 회수를 넘어서 로그인이 불가능합니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]

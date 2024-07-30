@@ -73,6 +73,16 @@ class SecurityConfig(
         }
     }
 
+    // (최대 세션 / 토큰 발행수 설정 VO)
+    data class MaxSessionInfo(
+        // 최대 세션 허용량
+        val maxCount: Int,
+        // 세션 허용량을 넘어섰을 때의 동작
+        // true : 로그인 자체를 막기
+        // false : 로그인 시키고 가장 오래된 세션을 비활성화
+        val prevent: Boolean
+    )
+
     // !!!경로별 적용할 Security 설정 Bean 작성하기!!!
 
     // [/main/sc 로 시작되는 리퀘스트의 시큐리티 설정 = Session-Cookie 인증 사용]
@@ -416,6 +426,9 @@ class SecurityConfig(
     ) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
+            // 최대 계정 설정 (null 이라면 무제한)
+            val MAX_SESSION_INFO: MaxSessionInfo? = null
+
             // 계정 설정 - JWT 비밀키
             const val AUTH_JWT_SECRET_KEY_STRING: String = "123456789abcdefghijklmnopqrstuvw"
 
