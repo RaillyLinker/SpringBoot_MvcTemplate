@@ -83,7 +83,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -131,7 +136,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -174,7 +184,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -223,7 +238,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -277,6 +297,16 @@ class C10Service1TkV1AuthController(
                                 "2 : 입력한 password 가 일치하지 않습니다.\n\n" +
                                 "3 : 최대 로그인 가능 회수를 넘어서 로그인이 불가능합니다.\n\n" +
                                 "4 : 계정이 정지된 상태입니다.\n\n",
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = "(api-result-code 가 4 일 때의 필수 계정 정지 정보) - Optional\n\n" +
+                                "값은 JsonString 형식으로,\n\n" +
+                                "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 bannedBefore,\n\n" +
+                                "계정 정지 이유를 뜻하는 bannedReason\n\n" +
+                                "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
+                                "{\"bannedBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"bannedReason\" : \"부정 행위로 인한 정지\"}\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -451,6 +481,16 @@ class C10Service1TkV1AuthController(
                                 "3 : 최대 로그인 가능 회수를 넘어서 로그인이 불가능합니다.\n\n" +
                                 "4 : 계정이 정지된 상태입니다.\n\n",
                         schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = "(api-result-code 가 4 일 때의 필수 계정 정지 정보) - Optional\n\n" +
+                                "값은 JsonString 형식으로,\n\n" +
+                                "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 bannedBefore,\n\n" +
+                                "계정 정지 이유를 뜻하는 bannedReason\n\n" +
+                                "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
+                                "{\"bannedBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"bannedReason\" : \"부정 행위로 인한 정지\"}\n\n",
+                        schema = Schema(type = "string")
                     )
                 ]
             )
@@ -514,6 +554,16 @@ class C10Service1TkV1AuthController(
                                 "3 : 최대 로그인 가능 회수를 넘어서 로그인이 불가능합니다.\n\n" +
                                 "4 : 계정이 정지된 상태입니다.\n\n",
                         schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = "(api-result-code 가 4 일 때의 필수 계정 정지 정보) - Optional\n\n" +
+                                "값은 JsonString 형식으로,\n\n" +
+                                "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 bannedBefore\n\n" +
+                                "계정 정지 이유를 뜻하는 bannedReason\n\n" +
+                                "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
+                                "{\"bannedBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"bannedReason\" : \"부정 행위로 인한 정지\"}\n\n",
+                        schema = Schema(type = "string")
                     )
                 ]
             )
@@ -572,7 +622,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -668,7 +723,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -714,7 +774,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -908,7 +973,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -1781,7 +1851,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2214,7 +2289,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2277,7 +2357,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2340,7 +2425,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2422,7 +2512,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2508,7 +2603,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2578,7 +2678,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2675,7 +2780,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2737,7 +2847,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2823,7 +2938,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2892,7 +3012,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -2989,7 +3114,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3051,7 +3181,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3130,7 +3265,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3209,7 +3349,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3257,7 +3402,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3301,7 +3451,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3364,7 +3519,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3438,7 +3598,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3503,7 +3668,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3550,7 +3720,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3660,7 +3835,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3734,7 +3914,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3785,7 +3970,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]
@@ -3859,7 +4049,12 @@ class C10Service1TkV1AuthController(
                 headers = [
                     Header(
                         name = "api-result-code",
-                        description = SecurityConfig.AuthTokenFilterService1Tk.DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE,
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE,
+                        schema = Schema(type = "string")
+                    ),
+                    Header(
+                        name = "member-lock-data",
+                        description = SecurityConfig.DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE,
                         schema = Schema(type = "string")
                     )
                 ]

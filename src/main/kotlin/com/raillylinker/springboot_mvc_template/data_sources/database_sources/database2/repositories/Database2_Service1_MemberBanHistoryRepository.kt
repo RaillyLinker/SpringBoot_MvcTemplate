@@ -22,7 +22,8 @@ interface Database2_Service1_MemberBanHistoryRepository :
             WHERE 
             b.memberData = :memberData AND 
             b.earlyRelease IS NULL AND 
-            b.bannedBefore > :currentTime
+            b.bannedBefore > :currentTime 
+            ORDER BY b.bannedBefore DESC
         """
     )
     fun findAllNowBans(

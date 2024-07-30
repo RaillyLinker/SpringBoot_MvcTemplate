@@ -292,6 +292,15 @@ class C10Service1TkV1AuthService(
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "4")
+
+            val banInfo = banList[0]
+            httpServletResponse.setHeader(
+                "member-lock-data",
+                "{\"bannedBefore\": \"${
+                    banInfo.bannedBefore.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
+            )
             return null
         }
 
@@ -607,6 +616,15 @@ class C10Service1TkV1AuthService(
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "4")
+
+            val banInfo = banList[0]
+            httpServletResponse.setHeader(
+                "member-lock-data",
+                "{\"bannedBefore\": \"${
+                    banInfo.bannedBefore.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
+            )
             return null
         }
 
@@ -751,6 +769,15 @@ class C10Service1TkV1AuthService(
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "4")
+
+            val banInfo = banList[0]
+            httpServletResponse.setHeader(
+                "member-lock-data",
+                "{\"bannedBefore\": \"${
+                    banInfo.bannedBefore.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
+            )
             return null
         }
 

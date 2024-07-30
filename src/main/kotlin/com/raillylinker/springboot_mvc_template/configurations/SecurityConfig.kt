@@ -35,6 +35,8 @@ import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 
 // (서비스 보안 시큐리티 설정)
@@ -49,6 +51,28 @@ class SecurityConfig(
     private val database2Service1MemberBanHistoryRepository: Database2_Service1_MemberBanHistoryRepository
 ) {
     // <멤버 변수 공간>
+    companion object {
+        // (Swagger 에 표시될 Token API 401 api-result-code 설명)
+        // !!!아래에 작성할 Token API 에 대한 인증 필터는 아래 api-result-code 를 반환하도록 설계해야 합니다.!!!
+        // api-result-code 헤더키에 대한 설명
+        const val DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE =
+            "(Response Code 반환 원인) - Nullable\n\n" +
+                    "반환 안됨 : 인증 토큰을 입력하지 않았습니다.\n\n" +
+                    "1 : Request Header 에 Authorization 키로 넣어준 토큰이 올바르지 않습니다. (재 로그인 필요)\n\n" +
+                    "2 : Request Header 에 Authorization 키로 넣어준 토큰의 유효시간이 만료되었습니다. (Refresh Token 으로 재발급 필요)\n\n" +
+                    "3 : Request Header 에 Authorization 키로 넣어준 토큰의 멤버가 탈퇴 된 상태입니다. (다른 계정으로 재 로그인 필요)\n\n" +
+                    "4 : Request Header 에 Authorization 키로 넣어준 토큰이 로그아웃 처리된 상태입니다. (재 로그인 필요)\n\n" +
+                    "5 : Request Header 에 Authorization 키로 넣어준 토큰의 멤버가 계정 정지 처리된 상태입니다. (다른 계정으로 재 로그인 필요)"
+
+        // member-lock-data 헤더키에 대한 설명
+        const val DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE =
+            "(api-result-code 가 5 일 때의 계정 정지 정보) - Optional\n\n" +
+                    "값은 JsonString 형식으로,\n\n" +
+                    "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 bannedBefore,\n\n" +
+                    "계정 정지 이유를 뜻하는 bannedReason\n\n" +
+                    "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
+                    "{\"bannedBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"bannedReason\" : \"부정 행위로 인한 정지\"}\n\n"
+    }
 
 
     // ---------------------------------------------------------------------------------------------
@@ -395,18 +419,8 @@ class SecurityConfig(
             // 계정 설정 - JWT 발행자
             const val AUTH_JWT_ISSUER: String = "com.raillylinker.springboot_mvc_template.service1"
 
-            // (Swagger 에 표시될 401 api-result-code 설명)
-            const val DESCRIPTION_FOR_UNAUTHORIZED_API_RESULT_CODE =
-                "(Response Code 반환 원인) - Nullable\n\n" +
-                        "반환 안됨 : 인증 토큰을 입력하지 않았습니다.\n\n" +
-                        "1 : Request Header 에 Authorization 키로 넣어준 토큰이 올바르지 않습니다. (재 로그인 필요)\n\n" +
-                        "2 : Request Header 에 Authorization 키로 넣어준 토큰의 유효시간이 만료되었습니다. (Refresh Token 으로 재발급 필요)\n\n" +
-                        "3 : Request Header 에 Authorization 키로 넣어준 토큰의 멤버가 탈퇴 된 상태입니다. (다른 계정으로 재 로그인 필요)\n\n" +
-                        "4 : Request Header 에 Authorization 키로 넣어준 토큰이 로그아웃 처리된 상태입니다. (재 로그인 필요)\n\n" +
-                        "5 : Request Header 에 Authorization 키로 넣어준 토큰의 멤버가 계정 정지 처리된 상태입니다. (다른 계정으로 재 로그인 필요)"
-
             // (액세스 토큰 검증 함수)
-            // !!!입력받은 토큰을 검증하여 결과 코드를 반환하도록 작성합니다.!!!
+            // !!!입력받은 토큰을 검증하여 아래와 같은 결과 코드를 반환하도록 작성합니다.!!!
             /*
                 결과 코드
                 0 : 정상적인 토큰입니다.
@@ -571,6 +585,15 @@ class SecurityConfig(
                     if (banList.isNotEmpty()) {
                         // 계정 정지 당한 상황
                         response.setHeader("api-result-code", "5")
+
+                        val banInfo = banList[0]
+                        response.setHeader(
+                            "member-lock-data",
+                            "{\"bannedBefore\": \"${
+                                banInfo.bannedBefore.atZone(ZoneId.systemDefault())
+                                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                            }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
+                        )
 
                         // 다음 필터 실행
                         filterChain.doFilter(request, response)
