@@ -1,5 +1,11 @@
 [TODO]
+- application.yml 에서 server.servlet.session.timeout 설정(기본은 1800초)으로 세션 만료 설정 후 테스트
+
+- SC 동시 접속 금지 설정일 때 로그인시 그에대한 경고문구(현재는 그냥 인증 실패)
+
 - SC 회원탈퇴
+    회원 탈퇴 후 로그아웃 처리 및 잘가세요 페이지로 리다이렉트
+
     @PostMapping("/delete-account")
     fun deleteAccount(request: HttpServletRequest, response: HttpServletResponse): ModelAndView {
         // 사용자 인증 정보를 얻습니다.
@@ -16,9 +22,6 @@
         return ModelAndView("redirect:/goodbye") // 회원 탈퇴 후 리다이렉트할 페이지
     }
 
-- SC 권한 및 탈퇴 여부 변경시 세션 갱신하기 (회원 탈퇴, 권한 변경, 계정 정지)
-    회원 탈퇴 후 스스로 로그아웃 처리 및 안녕 페이지로 리다이렉트
+- SC 관리자 주관 멤버 세션 제어
     관리자가 권한 변경 후 바로 권한 반영
     관리자가 계정 정지 후 강제 로그아웃 처리
-
-- SC 동시 접속 금지 설정일 때 로그인시 그에대한 경고문구(현재는 그냥 인증 실패)

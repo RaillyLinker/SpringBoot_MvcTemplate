@@ -173,7 +173,7 @@ class SecurityConfig {
         http.sessionManagement { sessionManagementCustomizer ->
             sessionManagementCustomizer
                 // 세션 동시 접속 개수 (-1 : 무한)
-                .maximumSessions(-1)
+                .maximumSessions(1)
                 // 세션 만료시 이동 경로
                 .expiredUrl("/main/sc/v1/login?expired")
                 // 세션 동시 접속 초과 동작 (true : 추가 로그인을 막음, false : 이전 세션을 만료시킴)
