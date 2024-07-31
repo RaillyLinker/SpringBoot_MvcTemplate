@@ -1,6 +1,4 @@
 [TODO]
-- application.yml 에서 server.servlet.session.timeout 설정(기본은 1800초)으로 세션 만료 설정 후 테스트
-
 - SC 동시 접속 금지 설정일 때 로그인시 그에대한 경고문구(현재는 그냥 인증 실패)
 
 - SC 회원탈퇴
