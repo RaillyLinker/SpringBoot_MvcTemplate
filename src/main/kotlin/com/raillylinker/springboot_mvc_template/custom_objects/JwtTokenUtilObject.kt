@@ -92,7 +92,7 @@ object JwtTokenUtilObject {
         )
     }
 
-    // Token 용도 (access or refresh)
+    // (Token 용도 (access or refresh) 반환)
     fun getTokenUsage(
         token: String,
         jwtClaimsAes256InitializationVector: String,
@@ -106,7 +106,7 @@ object JwtTokenUtilObject {
         )
     }
 
-    // 멤버 권한 리스트
+    // (멤버 권한 리스트 반환)
     fun getRoleList(
         token: String,
         jwtClaimsAes256InitializationVector: String,
@@ -121,12 +121,12 @@ object JwtTokenUtilObject {
         return Gson().fromJson(rl, object : TypeToken<List<String>>() {}.type)
     }
 
-    // 발행자
+    // (발행자 반환)
     fun getIssuer(token: String): String {
         return parseJwtForPayload(token)["iss"].toString()
     }
 
-    // 토큰 남은 유효 시간(초) 반환 (만료된 토큰이라면 0)
+    // (토큰 남은 유효 시간(초) 반환 (만료된 토큰이라면 0))
     fun getRemainSeconds(token: String): Long {
         val exp = parseJwtForPayload(token)["exp"] as Long
         val currentEpochSeconds = Instant.now().epochSecond
@@ -134,7 +134,7 @@ object JwtTokenUtilObject {
         return if (currentEpochSeconds < exp) exp - currentEpochSeconds else 0
     }
 
-    // 토큰 만료 일시 반환
+    // (토큰 만료 일시 반환)
     fun getExpirationDateTime(token: String): LocalDateTime {
         val exp = parseJwtForPayload(token)["exp"] as Long
         val expirationInstant = Instant.ofEpochSecond(exp)
@@ -142,7 +142,7 @@ object JwtTokenUtilObject {
         return LocalDateTime.ofInstant(expirationInstant, ZoneId.systemDefault())
     }
 
-    // 토큰 타입
+    // (토큰 타입)
     fun getTokenType(token: String): String {
         return parseJwtForHeader(token)["typ"].toString()
     }
