@@ -8,3 +8,5 @@
 - SC 세션 만료 기능
 
 - C10 검증 및 테스트
+
+- JWT reissue 시에 강제 토큰 만료, 강제 토큰 만료 데이터에 토큰이 아니라 Authorization 으로

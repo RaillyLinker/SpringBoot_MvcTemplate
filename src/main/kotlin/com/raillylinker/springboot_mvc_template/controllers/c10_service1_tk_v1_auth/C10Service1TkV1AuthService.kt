@@ -159,7 +159,7 @@ class C10Service1TkV1AuthService(
                     LocalDateTime.now()
                 )
             for (tokenEntity in tokenEntityList) {
-                SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_LIST.add(tokenEntity.accessToken)
+                SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_SET.add(tokenEntity.accessToken)
             }
         }
 
@@ -757,7 +757,7 @@ class C10Service1TkV1AuthService(
             database2Service1LogInTokenHistoryRepository.save(tokenInfo)
 
             // 토큰 만료처리
-            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_LIST.add(tokenInfo.accessToken)
+            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_SET.add(tokenInfo.accessToken)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -871,7 +871,7 @@ class C10Service1TkV1AuthService(
                 // 로그아웃 여부 파악
                 val tokenInfo =
                     database2Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
-                        accessTokenType1,
+                        accessTokenType,
                         accessToken,
                         null
                     )
@@ -1068,7 +1068,7 @@ class C10Service1TkV1AuthService(
             database2Service1LogInTokenHistoryRepository.save(tokenInfo)
 
             // 토큰 만료처리
-            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_LIST.add(tokenInfo.accessToken)
+            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_SET.add(tokenInfo.accessToken)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -3618,7 +3618,7 @@ class C10Service1TkV1AuthService(
                 LocalDateTime.now()
             )
         for (tokenEntity in tokenEntityList) {
-            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_LIST.add(tokenEntity.accessToken)
+            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_SET.add(tokenEntity.accessToken)
         }
 
         // 회원탈퇴 처리

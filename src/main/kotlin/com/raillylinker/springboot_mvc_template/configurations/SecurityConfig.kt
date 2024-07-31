@@ -355,9 +355,9 @@ class SecurityConfig {
     class AuthTokenFilterService1Tk(private val filterPatternList: List<String>) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
-            // 만료 처리를 할 액세스 토큰 리스트
+            // 만료 처리를 할 액세스 토큰 세트
             // !!!회원 탈퇴, 권한 변경, 로그아웃, 계정 정지 등의 계정 관련 정보 변경으로 기존 발행 토큰을 만료시키고 재 심사 하려면 이곳에 입력하세요.!!!
-            val FORCE_EXPIRE_ACCESS_TOKEN_LIST: MutableList<String> = mutableListOf()
+            val FORCE_EXPIRE_ACCESS_TOKEN_SET: MutableSet<String> = mutableSetOf()
 
             // !!!아래 인증 관련 설정 정보 변수들의 값을 수정하기!!!
             // 계정 설정 - JWT 비밀키
@@ -487,7 +487,7 @@ class SecurityConfig {
 
                     // 강제 토큰 만료 검증
                     var forceExpired = false
-                    val iterator = FORCE_EXPIRE_ACCESS_TOKEN_LIST.iterator()
+                    val iterator = FORCE_EXPIRE_ACCESS_TOKEN_SET.iterator()
                     while (iterator.hasNext()) {
                         val feAccessToken = iterator.next()
                         if (feAccessToken.trim() == accessToken.trim()) {
