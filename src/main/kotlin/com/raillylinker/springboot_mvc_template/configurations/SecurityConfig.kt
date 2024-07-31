@@ -420,10 +420,19 @@ class SecurityConfig {
                     if (feAuthorizationSplit.size < 2) {
                         iterator.remove()
                     } else {
+                        val feTokenType = feAuthorizationSplit[0].trim() // 첫번째 단어는 토큰 타입
                         val feAccessToken = feAuthorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
 
                         val feRemainSecond: Long? = try {
-                            JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                            when (feTokenType.lowercase()) {
+                                "bearer" -> {
+                                    JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                                }
+
+                                else -> {
+                                    null
+                                }
+                            }
                         } catch (_: Exception) {
                             null
                         }
@@ -454,10 +463,19 @@ class SecurityConfig {
                     if (feAuthorizationSplit.size < 2) {
                         iterator.remove()
                     } else {
+                        val feTokenType = feAuthorizationSplit[0].trim() // 첫번째 단어는 토큰 타입
                         val feAccessToken = feAuthorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
 
                         val feRemainSecond: Long? = try {
-                            JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                            when (feTokenType.lowercase()) {
+                                "bearer" -> {
+                                    JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                                }
+
+                                else -> {
+                                    null
+                                }
+                            }
                         } catch (_: Exception) {
                             null
                         }
@@ -502,7 +520,15 @@ class SecurityConfig {
                     }
 
                     val feRemainSecond: Long? = try {
-                        JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                        when (feTokenType.lowercase()) {
+                            "bearer" -> {
+                                JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                            }
+
+                            else -> {
+                                null
+                            }
+                        }
                     } catch (_: Exception) {
                         null
                     }
