@@ -1,7 +1,25 @@
 [TODO]
 - SC 회원탈퇴
+    @PostMapping("/delete-account")
+    fun deleteAccount(request: HttpServletRequest, response: HttpServletResponse): ModelAndView {
+        // 사용자 인증 정보를 얻습니다.
+        val authentication: Authentication = SecurityContextHolder.getContext().authentication
+
+        // SecurityContextLogoutHandler를 사용하여 로그아웃을 처리합니다.
+        val logoutHandler = SecurityContextLogoutHandler()
+        logoutHandler.logout(request, response, authentication)
+
+        // 회원 탈퇴 로직을 여기에 추가합니다.
+        // 예: 사용자 정보를 데이터베이스에서 삭제
+
+        // 탈퇴 후 리다이렉트 또는 다른 페이지로 이동
+        return ModelAndView("redirect:/goodbye") // 회원 탈퇴 후 리다이렉트할 페이지
+    }
 
 - SC 권한 및 탈퇴 여부 변경시 세션 갱신하기 (회원 탈퇴, 권한 변경, 계정 정지)
+    회원 탈퇴 후 스스로 로그아웃 처리 및 안녕 페이지로 리다이렉트
+    관리자가 권한 변경 후 바로 권한 반영
+    관리자가 계정 정지 후 강제 로그아웃 처리
 
 - SC 동시 접속 금지 설정일 때 로그인시 그에대한 경고문구(현재는 그냥 인증 실패)
 
