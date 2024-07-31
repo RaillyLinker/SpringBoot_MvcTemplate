@@ -356,8 +356,9 @@ class SecurityConfig {
         // <멤버 변수 공간>
         companion object {
             // 만료 처리를 할 액세스 토큰 세트
+            // 값으로는 액세스 토큰이 아니라 Header 의 Authorization 에 넣어주는 "Bearer tes123t_access16token3" 이런 값을 넣습니다.
             // !!!회원 탈퇴, 권한 변경, 로그아웃, 계정 정지 등의 계정 관련 정보 변경으로 기존 발행 토큰을 만료시키고 재 심사 하려면 이곳에 입력하세요.!!!
-            val FORCE_EXPIRE_ACCESS_TOKEN_SET: MutableSet<String> = mutableSetOf()
+            val FORCE_EXPIRE_AUTHORIZATION_SET: MutableSet<String> = mutableSetOf()
 
             // !!!아래 인증 관련 설정 정보 변수들의 값을 수정하기!!!
             // 계정 설정 - JWT 비밀키
@@ -409,8 +410,32 @@ class SecurityConfig {
             // 정상적인 토큰값은 "Bearer {Token String}" 형식으로 온다고 가정.
             val authorization = request.getHeader("Authorization") // ex : "Bearer aqwer1234"
             if (authorization == null) {
-                // Authorization 에 토큰을 넣지 않은 경우 = 인증 / 인가를 받을 의도가 없음
+                // 강제 만료 리스트 갱신
+                val iterator = FORCE_EXPIRE_AUTHORIZATION_SET.iterator()
+                while (iterator.hasNext()) {
+                    // Authorization 값 (ex : "Bearer testestestest")
+                    val feAuthorization = iterator.next()
 
+                    val feAuthorizationSplit = feAuthorization.split(" ") // ex : ["Bearer", "qwer1234"]
+                    if (feAuthorizationSplit.size < 2) {
+                        iterator.remove()
+                    } else {
+                        val feAccessToken = feAuthorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
+
+                        val feRemainSecond: Long? = try {
+                            JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                        } catch (_: Exception) {
+                            null
+                        }
+
+                        if (feRemainSecond == null || feRemainSecond <= 0L) {
+                            // 토큰이 만료됨
+                            iterator.remove()
+                        }
+                    }
+                }
+
+                // Authorization 에 토큰을 넣지 않은 경우 = 인증 / 인가를 받을 의도가 없음
                 // 다음 필터 실행
                 filterChain.doFilter(request, response)
                 return
@@ -419,9 +444,33 @@ class SecurityConfig {
             // 타입과 토큰을 분리
             val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
             if (authorizationSplit.size < 2) {
+                // 강제 만료 리스트 갱신
+                val iterator = FORCE_EXPIRE_AUTHORIZATION_SET.iterator()
+                while (iterator.hasNext()) {
+                    // Authorization 값 (ex : "Bearer testestestest")
+                    val feAuthorization = iterator.next()
+
+                    val feAuthorizationSplit = feAuthorization.split(" ") // ex : ["Bearer", "qwer1234"]
+                    if (feAuthorizationSplit.size < 2) {
+                        iterator.remove()
+                    } else {
+                        val feAccessToken = feAuthorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
+
+                        val feRemainSecond: Long? = try {
+                            JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                        } catch (_: Exception) {
+                            null
+                        }
+
+                        if (feRemainSecond == null || feRemainSecond <= 0L) {
+                            // 토큰이 만료됨
+                            iterator.remove()
+                        }
+                    }
+                }
+
                 // 올바르지 않은 Authorization Token
                 response.setHeader("api-result-code", "1")
-
                 // 다음 필터 실행
                 filterChain.doFilter(request, response)
                 return
@@ -431,6 +480,48 @@ class SecurityConfig {
             // 타입 분리
             val tokenType = authorizationSplit[0].trim() // 첫번째 단어는 토큰 타입
             val accessToken = authorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
+
+            // 강제 토큰 만료 검증
+            var forceExpired = false
+            val iterator = FORCE_EXPIRE_AUTHORIZATION_SET.iterator()
+            while (iterator.hasNext()) {
+                // Authorization 값 (ex : "Bearer testestestest")
+                val feAuthorization = iterator.next()
+
+                val feAuthorizationSplit = feAuthorization.split(" ") // ex : ["Bearer", "qwer1234"]
+                if (feAuthorizationSplit.size < 2) {
+                    iterator.remove()
+                } else {
+                    val feTokenType = feAuthorizationSplit[0].trim() // 첫번째 단어는 토큰 타입
+                    val feAccessToken = feAuthorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
+
+                    if (tokenType.lowercase() == feTokenType.lowercase() &&
+                        accessToken.lowercase() == feAccessToken.lowercase()
+                    ) {
+                        forceExpired = true
+                    }
+
+                    val feRemainSecond: Long? = try {
+                        JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                    } catch (_: Exception) {
+                        null
+                    }
+
+                    if (feRemainSecond == null || feRemainSecond <= 0L) {
+                        // 토큰이 만료됨
+                        iterator.remove()
+                    }
+                }
+            }
+
+            if (forceExpired) {
+                // 강제 토큰 만료
+                response.setHeader("api-result-code", "2")
+
+                // 다음 필터 실행
+                filterChain.doFilter(request, response)
+                return
+            }
 
             // 토큰 검증
             if (accessToken == "") {
@@ -442,7 +533,7 @@ class SecurityConfig {
                 return
             }
 
-            when (tokenType.trim().lowercase()) { // 타입 검증
+            when (tokenType.lowercase()) { // 타입 검증
                 "bearer" -> { // Bearer JWT 토큰 검증
                     // 토큰 문자열 해석 가능여부 확인
                     val accessTokenType: String? = try {
@@ -478,36 +569,6 @@ class SecurityConfig {
                     val jwtRemainSeconds = JwtTokenUtilObject.getRemainSeconds(accessToken)
                     if (jwtRemainSeconds <= 0L) {
                         // 토큰이 만료됨
-                        response.setHeader("api-result-code", "2")
-
-                        // 다음 필터 실행
-                        filterChain.doFilter(request, response)
-                        return
-                    }
-
-                    // 강제 토큰 만료 검증
-                    var forceExpired = false
-                    val iterator = FORCE_EXPIRE_ACCESS_TOKEN_SET.iterator()
-                    while (iterator.hasNext()) {
-                        val feAccessToken = iterator.next()
-                        if (feAccessToken.trim() == accessToken.trim()) {
-                            forceExpired = true
-                        }
-
-                        val feRemainSecond: Long? = try {
-                            JwtTokenUtilObject.getRemainSeconds(feAccessToken)
-                        } catch (_: Exception) {
-                            null
-                        }
-
-                        if (feRemainSecond == null || feRemainSecond <= 0L) {
-                            // 토큰이 만료됨
-                            iterator.remove()
-                        }
-                    }
-
-                    if (forceExpired) {
-                        // 강제 토큰 만료
                         response.setHeader("api-result-code", "2")
 
                         // 다음 필터 실행
