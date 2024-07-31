@@ -172,11 +172,6 @@ class SecurityConfig {
 
         http.sessionManagement { sessionManagementCustomizer ->
             sessionManagementCustomizer
-                // 세션 고정 공격을 방지하기 위한 세션 고정 정책을 설정
-                .sessionFixation()
-                // 로그인마다 Session Id 변경
-                .changeSessionId()
-
                 // 세션 동시 접속 개수 (-1 : 무한)
                 .maximumSessions(-1)
                 // 세션 만료시 이동 경로
