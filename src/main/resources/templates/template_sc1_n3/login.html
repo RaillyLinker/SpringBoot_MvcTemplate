@@ -77,6 +77,9 @@
         // 현재 URL을 /main/sc/v1/login 으로 변경하고, 실패 URL을 제거
         history.replaceState(null, null, '/main/sc/v1/login');
         history.back();
+    } else if ([[${viewModel.expired}]] === true) {
+        alert("세션이 만료되었습니다.");
+        history.replaceState(null, null, '/main/sc/v1/login');
     }
 
     // 입력값 검증 함수

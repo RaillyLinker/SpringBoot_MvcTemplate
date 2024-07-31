@@ -116,9 +116,16 @@ class SC1Controller(
             example = ""
         )
         @RequestParam("fail")
-        fail: String?
+        fail: String?,
+        @Parameter(
+            name = "expired",
+            description = "세션 만료(not null 이라면 세션이 만료된 것입니다.)",
+            example = ""
+        )
+        @RequestParam("expired")
+        expired: String?
     ): ModelAndView? {
-        return service.api3(httpServletResponse, session, fail)
+        return service.api3(httpServletResponse, session, fail, expired)
     }
 
 

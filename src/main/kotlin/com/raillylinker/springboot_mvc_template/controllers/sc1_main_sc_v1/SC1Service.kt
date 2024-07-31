@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import java.io.File
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 import java.util.regex.Pattern
 
@@ -140,7 +139,8 @@ class SC1Service(
     fun api3(
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
-        fail: String?
+        fail: String?,
+        expired: String?
     ): ModelAndView? {
         val authentication = SecurityContextHolder.getContext().authentication
         // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
@@ -153,7 +153,8 @@ class SC1Service(
             "viewModel",
             Api3ViewModel(
                 username != "anonymousUser",
-                fail != null
+                fail != null,
+                expired != null
             )
         )
 
@@ -165,7 +166,9 @@ class SC1Service(
     data class Api3ViewModel(
         val loggedIn: Boolean,
         // 로그인 정보 불일치
-        val loginError: Boolean
+        val loginError: Boolean,
+        // 세션 만료
+        val expired: Boolean
     )
 
     ////

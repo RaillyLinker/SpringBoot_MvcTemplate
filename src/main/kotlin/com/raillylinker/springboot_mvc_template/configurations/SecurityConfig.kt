@@ -19,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -77,6 +78,11 @@ class SecurityConfig {
                 }
             )
         }
+    }
+
+    @Bean
+    protected fun sessionRegistry(): SessionRegistryImpl {
+        return SessionRegistryImpl()
     }
 
     // !!!경로별 적용할 Security 설정 Bean 작성하기!!!
@@ -164,6 +170,17 @@ class SecurityConfig {
             authorizeHttpRequestsCustomizer.anyRequest().permitAll()
         }
 
+        http.sessionManagement { sessionManagementCustomizer ->
+            sessionManagementCustomizer
+                // 세션 동시 접속 개수 (-1 : 무한)
+                .maximumSessions(-1)
+                // 세션 만료시 이동 경로
+                .expiredUrl("/main/sc/v1/login?expired")
+                // 세션 동시 접속 초과 동작 (true : 추가 로그인을 막음, false : 이전 세션을 만료시킴)
+                .maxSessionsPreventsLogin(true)
+                .sessionRegistry(sessionRegistry())
+        }
+
         return http.build()
     }
 
@@ -235,6 +252,19 @@ class SecurityConfig {
             private val authorities: MutableCollection<out GrantedAuthority>,
             private val memberLock: Boolean
         ) : UserDetails {
+            override fun equals(other: Any?): Boolean {
+                // maximumSessions 설정을 위한 오버라이드
+                if (other is UserDetailsVo) {
+                    return this.username == other.username
+                }
+                return false
+            }
+
+            override fun hashCode(): Int {
+                // maximumSessions 설정을 위한 오버라이드
+                return this.username.hashCode()
+            }
+
             override fun getUsername(): String {
                 return memberUid.toString()
             }
