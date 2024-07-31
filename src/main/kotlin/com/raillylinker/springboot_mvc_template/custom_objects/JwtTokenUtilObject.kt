@@ -17,7 +17,7 @@ object JwtTokenUtilObject {
     // (액세스 토큰 발행)
     // memberRoleList : 멤버 권한 리스트 (ex : ["ROLE_ADMIN", "ROLE_DEVELOPER"])
     fun generateAccessToken(
-        memberUid: String,
+        memberUid: Long,
         accessTokenExpirationTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String,
@@ -39,7 +39,7 @@ object JwtTokenUtilObject {
 
     // (리프레시 토큰 발행)
     fun generateRefreshToken(
-        memberUid: String,
+        memberUid: Long,
         refreshTokenExpirationTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String,
@@ -83,13 +83,13 @@ object JwtTokenUtilObject {
         token: String,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String
-    ): String {
+    ): Long {
         return CryptoUtilObject.decryptAES256(
             parseJwtForPayload(token)["mu"].toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
             jwtClaimsAes256EncryptionKey
-        )
+        ).toLong()
     }
 
     // (Token 용도 (access or refresh) 반환)
@@ -152,7 +152,7 @@ object JwtTokenUtilObject {
     // <비공개 메소드 공간>
     // (JWT 토큰 생성)
     private fun doGenerateToken(
-        memberUid: String,
+        memberUid: Long,
         tokenUsage: String,
         expireTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
@@ -173,7 +173,7 @@ object JwtTokenUtilObject {
 
         // member uid
         claimsMap["mu"] = CryptoUtilObject.encryptAES256(
-            memberUid,
+            memberUid.toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
             jwtClaimsAes256EncryptionKey

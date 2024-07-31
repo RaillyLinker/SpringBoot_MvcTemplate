@@ -103,7 +103,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
+        )
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -116,7 +116,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
+        )
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -129,7 +129,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
+        )
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -254,11 +254,9 @@ class C10Service1TkV1AuthService(
         }
 
         // (토큰 생성 로직 수행)
-        val memberUidString: String = memberData.uid!!.toString()
-
         // 멤버 고유번호로 엑세스 토큰 생성
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
-            memberUidString,
+            memberData.uid!!,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -271,7 +269,7 @@ class C10Service1TkV1AuthService(
 
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
-            memberUidString,
+            memberData.uid!!,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_REFRESH_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -539,10 +537,8 @@ class C10Service1TkV1AuthService(
 
         // (토큰 생성 로직 수행)
         // 멤버 고유번호로 엑세스 토큰 생성
-        val memberUidString: String = snsOauth2.memberData.uid!!.toString()
-
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
-            memberUidString,
+            snsOauth2.memberData.uid!!,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -555,7 +551,7 @@ class C10Service1TkV1AuthService(
 
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
-            memberUidString,
+            snsOauth2.memberData.uid!!,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_REFRESH_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -661,10 +657,8 @@ class C10Service1TkV1AuthService(
 
         // (토큰 생성 로직 수행)
         // 멤버 고유번호로 엑세스 토큰 생성
-        val memberUidString: String = snsOauth2.memberData.uid!!.toString()
-
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
-            memberUidString,
+            snsOauth2.memberData.uid!!,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -677,7 +671,7 @@ class C10Service1TkV1AuthService(
 
         // 액세스 토큰의 리프레시 토큰 생성 및 DB 저장 = 액세스 토큰에 대한 리프레시 토큰은 1개 혹은 0개
         val jwtRefreshToken = JwtTokenUtilObject.generateRefreshToken(
-            memberUidString,
+            snsOauth2.memberData.uid!!,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_REFRESH_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -814,8 +808,7 @@ class C10Service1TkV1AuthService(
                     accessToken,
                     SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                     SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                ).toLong()
-
+                )
                 val memberDataOpt = database2Service1MemberDataRepository.findById(accessTokenMemberUid)
 
                 if (memberDataOpt.isEmpty) {
@@ -913,7 +906,7 @@ class C10Service1TkV1AuthService(
                                 jwtRefreshToken,
                                 SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                                 SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                            ) != accessTokenMemberUid.toString() // 리프레시 토큰의 멤버 고유번호와 액세스 토큰 멤버 고유번호가 다를시
+                            ) != accessTokenMemberUid // 리프레시 토큰의 멤버 고유번호와 액세스 토큰 멤버 고유번호가 다를시
                         ) {
                             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                             httpServletResponse.setHeader("api-result-code", "1")
@@ -951,7 +944,7 @@ class C10Service1TkV1AuthService(
 
                         // 새 토큰 생성 및 로그인 처리
                         val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
-                            accessTokenMemberUid.toString(),
+                            accessTokenMemberUid,
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -963,7 +956,7 @@ class C10Service1TkV1AuthService(
                         val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newJwtAccessToken)
 
                         val newRefreshToken = JwtTokenUtilObject.generateRefreshToken(
-                            accessTokenMemberUid.toString(),
+                            accessTokenMemberUid,
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_REFRESH_TOKEN_EXPIRATION_TIME_SEC,
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
@@ -1027,8 +1020,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // loginAccessToken 의 Iterable 가져오기
@@ -1060,8 +1052,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 멤버의 권한 리스트를 조회 후 반환
@@ -1156,8 +1147,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         if (database2Service1MemberDataRepository.existsByAccountId(id)) {
@@ -2267,7 +2257,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         if (memberData.accountPassword == null) { // 기존 비번이 존재하지 않음
@@ -2713,8 +2703,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-
-        val memberData = database2Service1MemberDataRepository.findById(memberUid.toLong()).get()
+        val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val emailEntityList = database2Service1MemberEmailDataRepository.findAllByMemberData(memberData)
         val emailList = ArrayList<C10Service1TkV1AuthController.Api29OutputVo.EmailInfo>()
@@ -2746,8 +2735,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-
-        val memberData = database2Service1MemberDataRepository.findById(memberUid.toLong()).get()
+        val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val phoneEntityList = database2Service1MemberPhoneDataRepository.findAllByMemberData(memberData)
         val phoneNumberList = ArrayList<C10Service1TkV1AuthController.Api30OutputVo.PhoneInfo>()
@@ -2778,8 +2766,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val oAuth2EntityList = database2Service1MemberOauth2LoginDataRepository.findAllByMemberData(memberData)
@@ -2813,8 +2800,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 입력 데이터 검증
@@ -2875,8 +2861,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val emailVerificationOpt = database2Service1AddEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
@@ -2926,8 +2911,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val emailVerificationOpt =
@@ -3006,8 +2990,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 내 계정에 등록된 모든 이메일 리스트 가져오기
@@ -3074,8 +3057,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 입력 데이터 검증
@@ -3144,7 +3126,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
+        )
 
         val phoneNumberVerificationOpt =
             database2Service1AddPhoneNumberVerificationDataRepository.findById(verificationUid)
@@ -3194,8 +3176,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val phoneNumberVerificationOpt =
@@ -3276,8 +3257,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 내 계정에 등록된 모든 전화번호 리스트 가져오기
@@ -3343,8 +3323,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val snsTypeCode: Int
@@ -3453,8 +3432,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val snsTypeCode: Int
@@ -3521,8 +3499,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 내 계정에 등록된 모든 인증 리스트 가져오기
@@ -3582,8 +3559,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // member_phone, member_email, member_role, member_sns_oauth2, member_profile, loginAccessToken 비활성화
@@ -3622,8 +3598,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val profileData = database2Service1MemberProfileDataRepository.findAllByMemberData(memberData)
@@ -3656,8 +3631,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val profileData = database2Service1MemberProfileDataRepository.findAllByMemberData(memberData)
@@ -3688,8 +3662,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 내 프로필 리스트 가져오기
@@ -3742,8 +3715,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 프로필 가져오기
@@ -3781,8 +3753,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 저장된 프로필 이미지 파일을 다운로드 할 수 있는 URL
@@ -3902,8 +3873,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val emailData = database2Service1MemberEmailDataRepository.findAllByMemberData(memberData)
@@ -3934,8 +3904,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 내 이메일 리스트 가져오기
@@ -3990,8 +3959,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         val phoneNumberData = database2Service1MemberPhoneDataRepository.findAllByMemberData(memberData)
@@ -4022,8 +3990,7 @@ class C10Service1TkV1AuthService(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-        ).toLong()
-
+        )
         val memberData = database2Service1MemberDataRepository.findById(memberUid).get()
 
         // 내 전화번호 리스트 가져오기
