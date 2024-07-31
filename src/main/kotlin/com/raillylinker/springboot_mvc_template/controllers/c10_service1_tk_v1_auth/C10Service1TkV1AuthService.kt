@@ -246,20 +246,6 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        // 로그인 정보 임시 저장
-        val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
-            Database2_Service1_LogInTokenHistory(
-                memberData,
-                "Bearer",
-                LocalDateTime.now(),
-                "tempValue", // 임시 저장
-                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
-                "tempValue", // 임시 저장
-                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
-                null
-            )
-        )
-
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(memberData)
         val roleList: ArrayList<String> = arrayListOf()
@@ -295,12 +281,19 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
-        // 생성된 정보 저장
-        loginHistoryEntity.accessToken = jwtAccessToken
-        loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
-        loginHistoryEntity.refreshToken = jwtRefreshToken
-        loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
-        database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
+        // 로그인 정보 저장
+        database2Service1LogInTokenHistoryRepository.save(
+            Database2_Service1_LogInTokenHistory(
+                memberData,
+                "Bearer",
+                LocalDateTime.now(),
+                jwtAccessToken,
+                accessTokenExpireWhen,
+                jwtRefreshToken,
+                refreshTokenExpireWhen,
+                null
+            )
+        )
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -537,20 +530,6 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        // 로그인 정보 임시 저장
-        val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
-            Database2_Service1_LogInTokenHistory(
-                snsOauth2.memberData,
-                "Bearer",
-                LocalDateTime.now(),
-                "tempValue", // 임시 저장
-                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
-                "tempValue", // 임시 저장
-                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
-                null
-            )
-        )
-
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
         val roleList: ArrayList<String> = arrayListOf()
@@ -586,12 +565,19 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
-        // 생성된 정보 저장
-        loginHistoryEntity.accessToken = jwtAccessToken
-        loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
-        loginHistoryEntity.refreshToken = jwtRefreshToken
-        loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
-        database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
+        // 로그인 정보 저장
+        database2Service1LogInTokenHistoryRepository.save(
+            Database2_Service1_LogInTokenHistory(
+                snsOauth2.memberData,
+                "Bearer",
+                LocalDateTime.now(),
+                jwtAccessToken,
+                accessTokenExpireWhen,
+                jwtRefreshToken,
+                refreshTokenExpireWhen,
+                null
+            )
+        )
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -666,20 +652,6 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        // 로그인 정보 임시 저장
-        val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
-            Database2_Service1_LogInTokenHistory(
-                snsOauth2.memberData,
-                "Bearer",
-                LocalDateTime.now(),
-                "tempValue", // 임시 저장
-                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
-                "tempValue", // 임시 저장
-                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
-                null
-            )
-        )
-
         // 멤버의 권한 리스트를 조회 후 반환
         val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
         val roleList: ArrayList<String> = arrayListOf()
@@ -715,12 +687,19 @@ class C10Service1TkV1AuthService(
 
         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtRefreshToken)
 
-        // 생성된 정보 저장
-        loginHistoryEntity.accessToken = jwtAccessToken
-        loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
-        loginHistoryEntity.refreshToken = jwtRefreshToken
-        loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
-        database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
+        // 로그인 정보 저장
+        database2Service1LogInTokenHistoryRepository.save(
+            Database2_Service1_LogInTokenHistory(
+                snsOauth2.memberData,
+                "Bearer",
+                LocalDateTime.now(),
+                jwtAccessToken,
+                accessTokenExpireWhen,
+                jwtRefreshToken,
+                refreshTokenExpireWhen,
+                null
+            )
+        )
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -959,19 +938,8 @@ class C10Service1TkV1AuthService(
                         tokenInfo.logoutDate = LocalDateTime.now()
                         database2Service1LogInTokenHistoryRepository.save(tokenInfo)
 
-                        // 로그인 정보 임시 저장
-                        val loginHistoryEntity = database2Service1LogInTokenHistoryRepository.save(
-                            Database2_Service1_LogInTokenHistory(
-                                tokenInfo.memberData,
-                                "Bearer",
-                                LocalDateTime.now(),
-                                "tempValue", // 임시 저장
-                                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
-                                "tempValue", // 임시 저장
-                                LocalDateTime.of(1970, 1, 1, 0, 0), // 임시 저장
-                                null
-                            )
-                        )
+                        // 토큰 만료처리
+                        SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
 
                         // 멤버의 권한 리스트를 조회 후 반환
                         val memberRoleList =
@@ -1005,12 +973,19 @@ class C10Service1TkV1AuthService(
 
                         val refreshTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newRefreshToken)
 
-                        // 생성된 정보 저장
-                        loginHistoryEntity.accessToken = newJwtAccessToken
-                        loginHistoryEntity.accessTokenExpireWhen = accessTokenExpireWhen
-                        loginHistoryEntity.refreshToken = newRefreshToken
-                        loginHistoryEntity.refreshTokenExpireWhen = refreshTokenExpireWhen
-                        database2Service1LogInTokenHistoryRepository.save(loginHistoryEntity)
+                        // 로그인 정보 저장
+                        database2Service1LogInTokenHistoryRepository.save(
+                            Database2_Service1_LogInTokenHistory(
+                                tokenInfo.memberData,
+                                "Bearer",
+                                LocalDateTime.now(),
+                                newJwtAccessToken,
+                                accessTokenExpireWhen,
+                                newRefreshToken,
+                                refreshTokenExpireWhen,
+                                null
+                            )
+                        )
 
                         httpServletResponse.setHeader("api-result-code", "")
                         httpServletResponse.status = HttpStatus.OK.value()
@@ -2340,6 +2315,9 @@ class C10Service1TkV1AuthService(
         for (tokenInfo in tokenInfoList) {
             tokenInfo.logoutDate = LocalDateTime.now()
             database2Service1LogInTokenHistoryRepository.save(tokenInfo)
+
+            // 토큰 만료처리
+            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -2514,6 +2492,9 @@ class C10Service1TkV1AuthService(
             for (tokenInfo in tokenInfoList) {
                 tokenInfo.logoutDate = LocalDateTime.now()
                 database2Service1LogInTokenHistoryRepository.save(tokenInfo)
+
+                // 토큰 만료처리
+                SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
             }
 
             httpServletResponse.setHeader("api-result-code", "")
@@ -2706,6 +2687,9 @@ class C10Service1TkV1AuthService(
             for (tokenInfo in tokenInfoList) {
                 tokenInfo.logoutDate = LocalDateTime.now()
                 database2Service1LogInTokenHistoryRepository.save(tokenInfo)
+
+                // 토큰 만료처리
+                SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
             }
 
             httpServletResponse.setHeader("api-result-code", "")
