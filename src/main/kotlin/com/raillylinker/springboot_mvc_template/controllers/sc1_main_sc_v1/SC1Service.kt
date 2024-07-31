@@ -33,6 +33,10 @@ import java.util.regex.Pattern
     val roles: List<String> = authentication.authorities.map(GrantedAuthority::getAuthority)
     println("username : $username")
     println("roles : $roles")
+
+    (세션 만료시간 설정)
+    session.maxInactiveInterval = 60
+    위와 같이 세션 객체에 만료시간(초) 를 설정하면 됩니다.
 */
 @Service
 class SC1Service(
