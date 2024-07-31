@@ -356,8 +356,10 @@ class SecurityConfig {
         // <멤버 변수 공간>
         companion object {
             // 만료 처리를 할 액세스 토큰 세트
-            // 값으로는 액세스 토큰이 아니라 Header 의 Authorization 에 넣어주는 "Bearer tes123t_access16token3" 이런 값을 넣습니다.
-            // !!!회원 탈퇴, 권한 변경, 로그아웃, 계정 정지 등의 계정 관련 정보 변경으로 기존 발행 토큰을 만료시키고 재 심사 하려면 이곳에 입력하세요.!!!
+            // 아래 JWT 인증은 한번 발행된 토큰에 적혀있는 내용만을 신뢰하고 동작합니다.
+            // 회원 탈퇴, 로그아웃 처리, 권한 변경, 계정 정지 등의 계정 관련 정보 변경으로
+            // 기존 발행 토큰을 만료시키고 재 심사 하려면 이곳에 입력하세요.
+            // 값으로는 액세스 토큰만을 넣는 것이 아니라 토큰 타입을 합쳐서 "Bearer tes123t_access16token3" 이런 값을 넣습니다.
             val FORCE_EXPIRE_AUTHORIZATION_SET: MutableSet<String> = mutableSetOf()
 
             // !!!아래 인증 관련 설정 정보 변수들의 값을 수정하기!!!
