@@ -5,7 +5,6 @@ import com.raillylinker.springboot_mvc_template.data_sources.database_sources.da
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberRoleDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerCompany_MemberData
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database2.repositories.*
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -35,21 +34,13 @@ import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
 import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 
 // (서비스 보안 시큐리티 설정)
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
-class SecurityConfig(
-    // (회원 정보 및 상태 확인용 데이터베이스 레포지토리 객체)
-    private val database2Service1MemberDataRepository: Database2_Service1_MemberDataRepository,
-    private val database2Service1MemberRoleDataRepository: Database2_Service1_MemberRoleDataRepository,
-    private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository,
-    private val database2Service1MemberBanHistoryRepository: Database2_Service1_MemberBanHistoryRepository
-) {
+class SecurityConfig {
     // <멤버 변수 공간>
     companion object {
         // (Swagger 에 표시될 Token API 401 api-result-code 설명)
@@ -59,19 +50,7 @@ class SecurityConfig(
             "(Response Code 반환 원인) - Nullable\n\n" +
                     "반환 안됨 : 인증 토큰을 입력하지 않았습니다.\n\n" +
                     "1 : Request Header 에 Authorization 키로 넣어준 토큰이 올바르지 않습니다. (재 로그인 필요)\n\n" +
-                    "2 : Request Header 에 Authorization 키로 넣어준 토큰의 유효시간이 만료되었습니다. (Refresh Token 으로 재발급 필요)\n\n" +
-                    "3 : Request Header 에 Authorization 키로 넣어준 토큰의 멤버가 탈퇴 된 상태입니다. (다른 계정으로 재 로그인 필요)\n\n" +
-                    "4 : Request Header 에 Authorization 키로 넣어준 토큰이 로그아웃 처리된 상태입니다. (재 로그인 필요)\n\n" +
-                    "5 : Request Header 에 Authorization 키로 넣어준 토큰의 멤버가 계정 정지 처리된 상태입니다. (다른 계정으로 재 로그인 필요)"
-
-        // member-lock-data 헤더키에 대한 설명
-        const val DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_LOCK_RESULT_CODE =
-            "(api-result-code 가 5 일 때의 계정 정지 정보) - Optional\n\n" +
-                    "값은 JsonString 형식으로,\n\n" +
-                    "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 bannedBefore,\n\n" +
-                    "계정 정지 이유를 뜻하는 bannedReason\n\n" +
-                    "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
-                    "{\"bannedBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"bannedReason\" : \"부정 행위로 인한 정지\"}\n\n"
+                    "2 : Request Header 에 Authorization 키로 넣어준 토큰의 유효시간이 만료되었습니다. (Refresh Token 으로 재발급 필요)\n\n"
     }
 
 
@@ -331,13 +310,7 @@ class SecurityConfig(
         // API 요청마다 헤더로 들어오는 인증 토큰 유효성을 검증
         securityMatcher.addFilterBefore(
             // !!!시큐리티 필터 추가시 수정!!!
-            AuthTokenFilterService1Tk(
-                securityUrlList,
-                database2Service1MemberDataRepository,
-                database2Service1MemberRoleDataRepository,
-                database2Service1LogInTokenHistoryRepository,
-                database2Service1MemberBanHistoryRepository
-            ),
+            AuthTokenFilterService1Tk(securityUrlList),
             UsernamePasswordAuthenticationFilter::class.java
         )
 
@@ -379,15 +352,13 @@ class SecurityConfig(
     }
 
     // 인증 토큰 검증 필터 - API 요청마다 검증 실행
-    class AuthTokenFilterService1Tk(
-        private val filterPatternList: List<String>,
-        private val database2Service1MemberDataRepository: Database2_Service1_MemberDataRepository,
-        private val database2Service1MemberRoleDataRepository: Database2_Service1_MemberRoleDataRepository,
-        private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository,
-        private val database2Service1MemberBanHistoryRepository: Database2_Service1_MemberBanHistoryRepository
-    ) : OncePerRequestFilter() {
+    class AuthTokenFilterService1Tk(private val filterPatternList: List<String>) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
+            // 만료 처리를 할 액세스 토큰 리스트
+            // !!!회원 탈퇴, 권한 변경, 로그아웃, 계정 정지 등의 계정 관련 정보 변경으로 기존 발행 토큰을 만료시키고 재 심사 하려면 이곳에 입력하세요.!!!
+            val FORCE_EXPIRE_ACCESS_TOKEN_LIST: MutableList<String> = mutableListOf()
+
             // !!!아래 인증 관련 설정 정보 변수들의 값을 수정하기!!!
             // 계정 설정 - JWT 비밀키
             const val AUTH_JWT_SECRET_KEY_STRING: String = "123456789abcdefghijklmnopqrstuvw"
@@ -471,7 +442,7 @@ class SecurityConfig(
                 return
             }
 
-            when (tokenType.lowercase()) { // 타입 검증
+            when (tokenType.trim().lowercase()) { // 타입 검증
                 "bearer" -> { // Bearer JWT 토큰 검증
                     // 토큰 문자열 해석 가능여부 확인
                     val accessTokenType: String? = try {
@@ -514,76 +485,45 @@ class SecurityConfig(
                         return
                     }
 
-                    // 토큰 검증 정상 -> 데이터베이스 현 상태 확인
+                    // 강제 토큰 만료 검증
+                    var forceExpired = false
+                    val iterator = FORCE_EXPIRE_ACCESS_TOKEN_LIST.iterator()
+                    while (iterator.hasNext()) {
+                        val feAccessToken = iterator.next()
+                        if (feAccessToken.trim() == accessToken.trim()) {
+                            forceExpired = true
+                        }
 
-                    // 유저 탈퇴 여부 확인
-                    val memberUid = JwtTokenUtilObject.getMemberUid(
+                        val feRemainSecond: Long? = try {
+                            JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                        } catch (_: Exception) {
+                            null
+                        }
+
+                        if (feRemainSecond == null || feRemainSecond <= 0L) {
+                            // 토큰이 만료됨
+                            iterator.remove()
+                        }
+                    }
+
+                    if (forceExpired) {
+                        // 강제 토큰 만료
+                        response.setHeader("api-result-code", "2")
+
+                        // 다음 필터 실행
+                        filterChain.doFilter(request, response)
+                        return
+                    }
+
+                    // 회원 권한
+                    val authorities: ArrayList<GrantedAuthority> = ArrayList()
+                    for (memberRole in JwtTokenUtilObject.getRoleList(
                         accessToken,
                         AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                         AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
-                    ).toLong()
-
-                    val memberDataOpt = database2Service1MemberDataRepository.findById(memberUid)
-
-                    if (memberDataOpt.isEmpty) {
-                        // 멤버 탈퇴
-                        response.setHeader("api-result-code", "3")
-
-                        // 다음 필터 실행
-                        filterChain.doFilter(request, response)
-                        return
-                    }
-
-                    val memberData = memberDataOpt.get()
-
-                    // 정지 여부 파악
-                    val banList =
-                        database2Service1MemberBanHistoryRepository.findAllNowBans(memberData, LocalDateTime.now())
-                    if (banList.isNotEmpty()) {
-                        // 계정 정지 당한 상황
-                        response.setHeader("api-result-code", "5")
-
-                        val banInfo = banList[0]
-                        response.setHeader(
-                            "member-lock-data",
-                            "{\"bannedBefore\": \"${
-                                banInfo.bannedBefore.atZone(ZoneId.systemDefault())
-                                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                            }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
-                        )
-
-                        // 다음 필터 실행
-                        filterChain.doFilter(request, response)
-                        return
-                    }
-
-                    // 로그아웃 여부 파악
-                    val tokenInfo =
-                        database2Service1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
-                            tokenType,
-                            accessToken,
-                            null
-                        )
-
-                    if (tokenInfo == null) {
-                        // 로그아웃된 토큰
-                        response.setHeader("api-result-code", "4")
-
-                        // 다음 필터 실행
-                        filterChain.doFilter(request, response)
-                        return
-                    }
-
-                    // !!!패널티로 인한 접근 거부 와 같은 인증 / 인가 조건을 추가하려면 이곳에 추가하세요.!!!
-
-                    // 멤버의 권한 리스트를 조회 후 반환
-                    val memberRoleEntityList = database2Service1MemberRoleDataRepository.findAllByMemberData(memberData)
-
-                    // 회원 권한 형식 변경
-                    val authorities: ArrayList<GrantedAuthority> = ArrayList()
-                    for (memberRole in memberRoleEntityList) {
+                    )) {
                         authorities.add(
-                            SimpleGrantedAuthority(memberRole.role)
+                            SimpleGrantedAuthority(memberRole)
                         )
                     }
 

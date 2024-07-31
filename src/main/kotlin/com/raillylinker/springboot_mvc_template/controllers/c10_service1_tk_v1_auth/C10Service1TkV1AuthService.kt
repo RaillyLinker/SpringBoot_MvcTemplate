@@ -136,6 +136,38 @@ class C10Service1TkV1AuthService(
         return "Member No.$memberUid : Test Success"
     }
 
+
+    ////
+    @CustomTransactional([Database2Config.TRANSACTION_NAME])
+    fun api4Dot9(
+        httpServletResponse: HttpServletResponse,
+        memberUid: Long,
+        inputVo: C10Service1TkV1AuthController.Api4Dot9InputVo
+    ) {
+        if (inputVo.apiSecret != "aadke234!@") {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
+        val memberEntity = database2Service1MemberDataRepository.findById(memberUid)
+
+        if (!memberEntity.isEmpty) {
+            val tokenEntityList =
+                database2Service1LogInTokenHistoryRepository.findAllByMemberDataAndAccessTokenExpireWhenAfter(
+                    memberEntity.get(),
+                    LocalDateTime.now()
+                )
+            for (tokenEntity in tokenEntityList) {
+                SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_LIST.add(tokenEntity.accessToken)
+            }
+        }
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return
+    }
+
     ////
     @CustomTransactional([Database2Config.TRANSACTION_NAME])
     fun api5(
@@ -229,12 +261,11 @@ class C10Service1TkV1AuthService(
         )
 
         // 멤버의 권한 리스트를 조회 후 반환
-//        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(memberData)
-//
-//        val roleList: ArrayList<String> = arrayListOf()
-//        for (userRole in memberRoleList) {
-//            roleList.add(userRole.role)
-//        }
+        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(memberData)
+        val roleList: ArrayList<String> = arrayListOf()
+        for (userRole in memberRoleList) {
+            roleList.add(userRole.role)
+        }
 
         // (토큰 생성 로직 수행)
         val memberUidString: String = memberData.uid!!.toString()
@@ -242,12 +273,12 @@ class C10Service1TkV1AuthService(
         // 멤버 고유번호로 엑세스 토큰 생성
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
-            loginHistoryEntity.uid!!.toString(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER,
-            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
+            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING,
+            roleList
         )
 
         val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtAccessToken)
@@ -521,12 +552,11 @@ class C10Service1TkV1AuthService(
         )
 
         // 멤버의 권한 리스트를 조회 후 반환
-//        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
-//
-//        val roleList: ArrayList<String> = arrayListOf()
-//        for (memberRole in memberRoleList) {
-//            roleList.add(memberRole.role)
-//        }
+        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
+        val roleList: ArrayList<String> = arrayListOf()
+        for (memberRole in memberRoleList) {
+            roleList.add(memberRole.role)
+        }
 
         // (토큰 생성 로직 수행)
         // 멤버 고유번호로 엑세스 토큰 생성
@@ -534,12 +564,12 @@ class C10Service1TkV1AuthService(
 
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
-            loginHistoryEntity.uid!!.toString(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER,
-            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
+            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING,
+            roleList
         )
 
         val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtAccessToken)
@@ -651,11 +681,11 @@ class C10Service1TkV1AuthService(
         )
 
         // 멤버의 권한 리스트를 조회 후 반환
-//        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
-//        val roleList: ArrayList<String> = arrayListOf()
-//        for (userRole in memberRoleList) {
-//            roleList.add(userRole.role)
-//        }
+        val memberRoleList = database2Service1MemberRoleDataRepository.findAllByMemberData(snsOauth2.memberData)
+        val roleList: ArrayList<String> = arrayListOf()
+        for (userRole in memberRoleList) {
+            roleList.add(userRole.role)
+        }
 
         // (토큰 생성 로직 수행)
         // 멤버 고유번호로 엑세스 토큰 생성
@@ -663,12 +693,12 @@ class C10Service1TkV1AuthService(
 
         val jwtAccessToken = JwtTokenUtilObject.generateAccessToken(
             memberUidString,
-            loginHistoryEntity.uid!!.toString(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER,
-            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
+            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING,
+            roleList
         )
 
         val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(jwtAccessToken)
@@ -725,6 +755,9 @@ class C10Service1TkV1AuthService(
         if (tokenInfo != null) {
             tokenInfo.logoutDate = LocalDateTime.now()
             database2Service1LogInTokenHistoryRepository.save(tokenInfo)
+
+            // 토큰 만료처리
+            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_LIST.add(tokenInfo.accessToken)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -746,7 +779,6 @@ class C10Service1TkV1AuthService(
             return null
         }
 
-        // 저장된 현재 인증된 멤버의 리프레시 토큰 가져오기
         val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
         if (authorizationSplit.size < 2) {
             // 올바르지 않은 Authorization Token
@@ -853,6 +885,7 @@ class C10Service1TkV1AuthService(
 
                 // 액세스 토큰 만료 외의 인증/인가 검증 완료
 
+                // 리플레시 토큰 검증 시작
                 // 타입과 토큰을 분리
                 val refreshTokenInputSplit = inputVo.refreshToken.split(" ") // ex : ["Bearer", "qwer1234"]
                 if (refreshTokenInputSplit.size < 2) {
@@ -941,23 +974,22 @@ class C10Service1TkV1AuthService(
                         )
 
                         // 멤버의 권한 리스트를 조회 후 반환
-//                        val memberRoleList =
-//                            database2Service1MemberRoleDataRepository.findAllByMemberData(tokenInfo.memberData)
-//
-//                        val roleList: ArrayList<String> = arrayListOf()
-//                        for (userRole in memberRoleList) {
-//                            roleList.add(userRole.role)
-//                        }
+                        val memberRoleList =
+                            database2Service1MemberRoleDataRepository.findAllByMemberData(tokenInfo.memberData)
+                        val roleList: ArrayList<String> = arrayListOf()
+                        for (userRole in memberRoleList) {
+                            roleList.add(userRole.role)
+                        }
 
                         // 새 토큰 생성 및 로그인 처리
                         val newJwtAccessToken = JwtTokenUtilObject.generateAccessToken(
                             accessTokenMemberUid.toString(),
-                            loginHistoryEntity.uid!!.toString(),
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC,
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY,
                             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_ISSUER,
-                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING
+                            SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_SECRET_KEY_STRING,
+                            roleList
                         )
 
                         val accessTokenExpireWhen = JwtTokenUtilObject.getExpirationDateTime(newJwtAccessToken)
@@ -1034,6 +1066,9 @@ class C10Service1TkV1AuthService(
         for (tokenInfo in tokenInfoList) {
             tokenInfo.logoutDate = LocalDateTime.now()
             database2Service1LogInTokenHistoryRepository.save(tokenInfo)
+
+            // 토큰 만료처리
+            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_LIST.add(tokenInfo.accessToken)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -3575,6 +3610,16 @@ class C10Service1TkV1AuthService(
 //        for (profile in profileData) {
 //            // !!!프로필 이미지 파일 삭제하세요!!!
 //        }
+
+        // 이미 발행된 토큰 만료처리
+        val tokenEntityList =
+            database2Service1LogInTokenHistoryRepository.findAllByMemberDataAndAccessTokenExpireWhenAfter(
+                memberData,
+                LocalDateTime.now()
+            )
+        for (tokenEntity in tokenEntityList) {
+            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_ACCESS_TOKEN_LIST.add(tokenEntity.accessToken)
+        }
 
         // 회원탈퇴 처리
         database2Service1MemberDataRepository.deleteById(memberData.uid!!)

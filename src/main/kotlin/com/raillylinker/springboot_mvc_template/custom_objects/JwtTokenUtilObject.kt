@@ -1,5 +1,7 @@
 package com.raillylinker.springboot_mvc_template.custom_objects
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.json.BasicJsonParser
@@ -16,22 +18,22 @@ object JwtTokenUtilObject {
     // memberRoleList : 멤버 권한 리스트 (ex : ["ROLE_ADMIN", "ROLE_DEVELOPER"])
     fun generateAccessToken(
         memberUid: String,
-        loginHistoryUid: String,
         accessTokenExpirationTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String,
         issuer: String,
-        jwtSecretKeyString: String
+        jwtSecretKeyString: String,
+        roleList: List<String>
     ): String {
         return doGenerateToken(
             memberUid,
-            loginHistoryUid,
             "access",
             accessTokenExpirationTimeSec,
             jwtClaimsAes256InitializationVector,
             jwtClaimsAes256EncryptionKey,
             issuer,
-            jwtSecretKeyString
+            jwtSecretKeyString,
+            roleList
         )
     }
 
@@ -46,13 +48,13 @@ object JwtTokenUtilObject {
     ): String {
         return doGenerateToken(
             memberUid,
-            null,
             "refresh",
             refreshTokenExpirationTimeSec,
             jwtClaimsAes256InitializationVector,
             jwtClaimsAes256EncryptionKey,
             issuer,
-            jwtSecretKeyString
+            jwtSecretKeyString,
+            null
         )
     }
 
@@ -90,20 +92,6 @@ object JwtTokenUtilObject {
         )
     }
 
-    // Login History Uid
-    fun getLoginHistoryUid(
-        token: String,
-        jwtClaimsAes256InitializationVector: String,
-        jwtClaimsAes256EncryptionKey: String
-    ): String {
-        return CryptoUtilObject.decryptAES256(
-            parseJwtForPayload(token)["lu"].toString(),
-            "AES/CBC/PKCS5Padding",
-            jwtClaimsAes256InitializationVector,
-            jwtClaimsAes256EncryptionKey
-        )
-    }
-
     // Token 용도 (access or refresh)
     fun getTokenUsage(
         token: String,
@@ -116,6 +104,21 @@ object JwtTokenUtilObject {
             jwtClaimsAes256InitializationVector,
             jwtClaimsAes256EncryptionKey
         )
+    }
+
+    // 멤버 권한 리스트
+    fun getRoleList(
+        token: String,
+        jwtClaimsAes256InitializationVector: String,
+        jwtClaimsAes256EncryptionKey: String
+    ): List<String> {
+        val rl = CryptoUtilObject.decryptAES256(
+            parseJwtForPayload(token)["rl"].toString(),
+            "AES/CBC/PKCS5Padding",
+            jwtClaimsAes256InitializationVector,
+            jwtClaimsAes256EncryptionKey
+        )
+        return Gson().fromJson(rl, object : TypeToken<List<String>>() {}.type)
     }
 
     // 발행자
@@ -150,13 +153,13 @@ object JwtTokenUtilObject {
     // (JWT 토큰 생성)
     private fun doGenerateToken(
         memberUid: String,
-        loginHistoryUid: String?,
         tokenUsage: String,
         expireTimeSec: Long,
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String,
         issuer: String,
-        jwtSecretKeyString: String
+        jwtSecretKeyString: String,
+        roleList: List<String>?
     ): String {
         val jwtBuilder = Jwts.builder()
 
@@ -176,10 +179,10 @@ object JwtTokenUtilObject {
             jwtClaimsAes256EncryptionKey
         )
 
-        // login history uid
-        if (loginHistoryUid != null) {
-            claimsMap["lu"] = CryptoUtilObject.encryptAES256(
-                loginHistoryUid,
+        // 멤버 권한 리스트
+        if (roleList != null) {
+            claimsMap["rl"] = CryptoUtilObject.encryptAES256(
+                Gson().toJson(roleList),
                 "AES/CBC/PKCS5Padding",
                 jwtClaimsAes256InitializationVector,
                 jwtClaimsAes256EncryptionKey

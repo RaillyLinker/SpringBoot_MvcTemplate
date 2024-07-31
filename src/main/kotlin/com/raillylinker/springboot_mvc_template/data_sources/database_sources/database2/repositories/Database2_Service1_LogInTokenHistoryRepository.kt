@@ -22,8 +22,8 @@ interface Database2_Service1_LogInTokenHistoryRepository :
         logoutDate: LocalDateTime?
     ): List<Database2_Service1_LogInTokenHistory>
 
-    fun findAllByMemberDataAndLogoutDateOrderByRowCreateDate(
+    fun findAllByMemberDataAndAccessTokenExpireWhenAfter(
         memberData: Database2_Service1_MemberData,
-        logoutDate: LocalDateTime?
+        accessTokenExpireWhenAfter: LocalDateTime
     ): List<Database2_Service1_LogInTokenHistory>
 }
