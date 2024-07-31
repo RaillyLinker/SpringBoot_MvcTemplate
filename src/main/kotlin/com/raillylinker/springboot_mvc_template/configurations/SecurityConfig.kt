@@ -360,6 +360,7 @@ class SecurityConfig {
             // 회원 탈퇴, 로그아웃 처리, 권한 변경, 계정 정지 등의 계정 관련 정보 변경으로
             // 기존 발행 토큰을 만료시키고 재 심사 하려면 이곳에 입력하세요.
             // 값으로는 액세스 토큰만을 넣는 것이 아니라 토큰 타입을 합쳐서 "Bearer tes123t_access16token3" 이런 값을 넣습니다.
+            // 이곳에 입력된 값들은 매 API 호출시마다 토큰 만료일을 판별되어 만료일이 지났을 때에 제거됩니다.
             val FORCE_EXPIRE_AUTHORIZATION_SET: MutableSet<String> = mutableSetOf()
 
             // !!!아래 인증 관련 설정 정보 변수들의 값을 수정하기!!!
