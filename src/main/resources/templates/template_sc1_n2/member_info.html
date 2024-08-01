@@ -53,13 +53,8 @@
 
 <hr/>
 
-<h2>
-    현 세션 인증 회원
-</h2>
-
 <!-- 회원 정보 표시 -->
 <div>
-    <h3>회원 정보</h3>
     <p>고유번호 : <span th:text="${viewModel.memberInfo.memberUid}"></span></p>
     <p>아이디 : <span th:text="${viewModel.memberInfo.accountId}"></span></p>
 
@@ -69,6 +64,27 @@
         <li th:each="role : ${viewModel.memberInfo.roleList}" th:text="${role}"></li>
     </ul>
 </div>
+
+<button id="go_to_change_id_btn"
+        type="button"
+        class="sample_btn"
+        onclick="location.href='/main/sc/v1/change-id'">
+    아이디 변경
+</button>
+
+<button id="go_to_change_password_btn"
+        type="button"
+        class="sample_btn"
+        onclick="location.href='/main/sc/v1/change-password'">
+    비밀번호 변경
+</button>
+
+<button id="go_to_withdrawal_btn"
+        type="button"
+        class="sample_btn"
+        onclick="location.href='/main/sc/v1/withdrawal'">
+    회원 탈퇴
+</button>
 
 <!-- Script 선언 -->
 <script th:src="@{/resource_sc1_n2/member_info.js}"
