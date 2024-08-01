@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberBanHistoryRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberLockHistoryRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberRoleDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerCompany_MemberData
@@ -188,7 +188,7 @@ class SecurityConfig {
     class UserDetailsServiceMainSc(
         private val database1RaillyLinkerCompanyMemberDataRepository: Database1_RaillyLinkerCompany_MemberDataRepository,
         private val database1RaillyLinkerCompanyMemberRoleDataRepository: Database1_RaillyLinkerCompany_MemberRoleDataRepository,
-        private val database1RaillyLinkerCompanyMemberBanHistoryRepository: Database1_RaillyLinkerCompany_MemberBanHistoryRepository
+        private val database1RaillyLinkerCompanyMemberLockHistoryRepository: Database1_RaillyLinkerCompany_MemberLockHistoryRepository
     ) : UserDetailsService {
         override fun loadUserByUsername(userName: String): UserDetails {
             // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
@@ -225,8 +225,8 @@ class SecurityConfig {
                 .toMutableList()
 
             // 정지 여부 파악
-            val banList =
-                database1RaillyLinkerCompanyMemberBanHistoryRepository.findAllNowBans(
+            val lockList =
+                database1RaillyLinkerCompanyMemberLockHistoryRepository.findAllNowLocks(
                     memberDataEntity,
                     LocalDateTime.now()
                 )
@@ -242,7 +242,7 @@ class SecurityConfig {
                 // 암호화되어 데이터베이스에 저장된 비밀번호
                 memberDataEntity.accountPassword!!,
                 authorities,
-                banList.isNotEmpty()
+                lockList.isNotEmpty()
             )
         }
 

@@ -8,23 +8,23 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(
-    name = "member_ban_history",
+    name = "member_lock_history",
     catalog = "service1"
 )
 @Comment("계정 정지 히스토리 테이블")
-class Database2_Service1_MemberBanHistory(
+class Database2_Service1_MemberLockHistory(
     @ManyToOne
     @JoinColumn(name = "member_uid", nullable = false)
     @Comment("멤버 고유번호(service1.member_data.uid)")
     var memberData: Database2_Service1_MemberData,
 
-    @Column(name = "banned_before", nullable = false, columnDefinition = "DATETIME(3)")
+    @Column(name = "lock_before", nullable = false, columnDefinition = "DATETIME(3)")
     @Comment("계정 정지 만료 시간 (이 시간이 지나기 전까지 계정 정지 상태)")
-    var bannedBefore: LocalDateTime,
+    var lockBefore: LocalDateTime,
 
-    @Column(name = "banned_reason", nullable = false, columnDefinition = "VARCHAR(1000)")
+    @Column(name = "lock_reason", nullable = false, columnDefinition = "VARCHAR(1000)")
     @Comment("계정 정지 이유")
-    var bannedReason: String,
+    var lockReason: String,
 
     @Column(name = "early_release", nullable = true, columnDefinition = "DATETIME(3)")
     @Comment("수동으로 계정 정지를 해제한 시간 (이 값이 null 이 아니라면 계정 정지 헤제로 봅니다.)")

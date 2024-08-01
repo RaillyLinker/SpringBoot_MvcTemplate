@@ -58,7 +58,7 @@ class C10Service1TkV1AuthService(
     private val database2Service1AddPhoneNumberVerificationDataRepository: Database2_Service1_AddPhoneNumberVerificationDataRepository,
     private val database2Service1MemberProfileDataRepository: Database2_Service1_MemberProfileDataRepository,
     private val database2Service1LogInTokenHistoryRepository: Database2_Service1_LogInTokenHistoryRepository,
-    private val database2Service1MemberBanHistoryRepository: Database2_Service1_MemberBanHistoryRepository
+    private val database2Service1MemberLockHistoryRepository: Database2_Service1_MemberLockHistoryRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -229,19 +229,19 @@ class C10Service1TkV1AuthService(
         }
 
         // 계정 정지 검증
-        val banList = database2Service1MemberBanHistoryRepository.findAllNowBans(memberData, LocalDateTime.now())
-        if (banList.isNotEmpty()) {
+        val lockList = database2Service1MemberLockHistoryRepository.findAllNowLocks(memberData, LocalDateTime.now())
+        if (lockList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
 
-            val banInfo = banList[0]
+            val lockInfo = lockList[0]
             httpServletResponse.setHeader(
                 "member-lock-data",
-                "{\"bannedBefore\": \"${
-                    banInfo.bannedBefore.atZone(ZoneId.systemDefault())
+                "{\"lockBefore\": \"${
+                    lockInfo.lockBefore.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
+                }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
             )
             return null
         }
@@ -510,20 +510,20 @@ class C10Service1TkV1AuthService(
         }
 
         // 계정 정지 검증
-        val banList =
-            database2Service1MemberBanHistoryRepository.findAllNowBans(snsOauth2.memberData, LocalDateTime.now())
-        if (banList.isNotEmpty()) {
+        val lockList =
+            database2Service1MemberLockHistoryRepository.findAllNowLocks(snsOauth2.memberData, LocalDateTime.now())
+        if (lockList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
 
-            val banInfo = banList[0]
+            val lockInfo = lockList[0]
             httpServletResponse.setHeader(
                 "member-lock-data",
-                "{\"bannedBefore\": \"${
-                    banInfo.bannedBefore.atZone(ZoneId.systemDefault())
+                "{\"lockBefore\": \"${
+                    lockInfo.lockBefore.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
+                }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
             )
             return null
         }
@@ -630,20 +630,20 @@ class C10Service1TkV1AuthService(
         }
 
         // 계정 정지 검증
-        val banList =
-            database2Service1MemberBanHistoryRepository.findAllNowBans(snsOauth2.memberData, LocalDateTime.now())
-        if (banList.isNotEmpty()) {
+        val lockList =
+            database2Service1MemberLockHistoryRepository.findAllNowLocks(snsOauth2.memberData, LocalDateTime.now())
+        if (lockList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
 
-            val banInfo = banList[0]
+            val lockInfo = lockList[0]
             httpServletResponse.setHeader(
                 "member-lock-data",
-                "{\"bannedBefore\": \"${
-                    banInfo.bannedBefore.atZone(ZoneId.systemDefault())
+                "{\"lockBefore\": \"${
+                    lockInfo.lockBefore.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
+                }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
             )
             return null
         }
@@ -821,19 +821,19 @@ class C10Service1TkV1AuthService(
                 val memberData = memberDataOpt.get()
 
                 // 정지 여부 파악
-                val banList =
-                    database2Service1MemberBanHistoryRepository.findAllNowBans(memberData, LocalDateTime.now())
-                if (banList.isNotEmpty()) {
+                val lockList =
+                    database2Service1MemberLockHistoryRepository.findAllNowLocks(memberData, LocalDateTime.now())
+                if (lockList.isNotEmpty()) {
                     // 계정 정지 당한 상황
                     httpServletResponse.setHeader("api-result-code", "6")
 
-                    val banInfo = banList[0]
+                    val lockInfo = lockList[0]
                     httpServletResponse.setHeader(
                         "member-lock-data",
-                        "{\"bannedBefore\": \"${
-                            banInfo.bannedBefore.atZone(ZoneId.systemDefault())
+                        "{\"lockBefore\": \"${
+                            lockInfo.lockBefore.atZone(ZoneId.systemDefault())
                                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                        }\",\"bannedReason\": \"${banInfo.bannedReason}\"}"
+                        }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
                     )
 
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()

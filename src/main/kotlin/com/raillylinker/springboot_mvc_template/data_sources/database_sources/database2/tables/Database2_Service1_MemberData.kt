@@ -71,7 +71,7 @@ class Database2_Service1_MemberData(
     var memberEmailDataList: MutableList<Database2_Service1_MemberEmailData> = mutableListOf()
 
     @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    var memberBanHistoryList: MutableList<Database2_Service1_MemberBanHistory> = mutableListOf()
+    var memberLockHistoryList: MutableList<Database2_Service1_MemberLockHistory> = mutableListOf()
 
     @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     var logInTokenHistoryList: MutableList<Database2_Service1_LogInTokenHistory> = mutableListOf()

@@ -44,7 +44,7 @@ class Database1_RaillyLinkerCompany_MemberData(
     var memberRoleDataList: MutableList<Database1_RaillyLinkerCompany_MemberRoleData> = mutableListOf()
 
     @OneToMany(mappedBy = "memberData", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    var memberBanHistoryList: MutableList<Database1_RaillyLinkerCompany_MemberBanHistory> = mutableListOf()
+    var memberLockHistoryList: MutableList<Database1_RaillyLinkerCompany_MemberLockHistory> = mutableListOf()
 
 
     // ---------------------------------------------------------------------------------------------
