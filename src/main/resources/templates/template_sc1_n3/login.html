@@ -87,23 +87,36 @@
 
     // 입력값 검증 함수
     function validateForm() {
-        var accountId = document.getElementById('accountId').value;
-        var password = document.getElementById('password').value;
+        var accountIdField = document.getElementById('accountId');
+        var passwordField = document.getElementById('password');
+        var accountId = accountIdField.value;
+        var password = passwordField.value;
 
-        if (accountId === "") {
-            alert("아이디를 입력하세요.");
-            document.getElementById('accountId').focus();
-            return false;
-        }
-        if (password === "") {
-            alert("비밀번호를 입력하세요.");
-            document.getElementById('password').focus();
-            return false;
+        if (document.activeElement === accountIdField) {
+            if (accountId === "") {
+                alert("아이디를 입력하세요.");
+                accountIdField.focus();
+                return false;
+            } else {
+                passwordField.focus();
+                return false;
+            }
         }
 
-        var visibleInput = document.getElementById('accountId');
-        var usernameInput = document.getElementById('username');
-        usernameInput.value = 'accountId_' + visibleInput.value;
+        if (document.activeElement === passwordField) {
+            if (accountId === "") {
+                alert("아이디를 입력하세요.");
+                accountIdField.focus();
+                return false;
+            }
+            if (password === "") {
+                alert("비밀번호를 입력하세요.");
+                passwordField.focus();
+                return false;
+            }
+        }
+
+        document.getElementById('username').value = 'accountId_' + accountId;
 
         return true;
     }
