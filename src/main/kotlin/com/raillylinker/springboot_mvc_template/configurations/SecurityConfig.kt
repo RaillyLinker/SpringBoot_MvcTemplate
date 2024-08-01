@@ -28,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
+import org.springframework.security.web.authentication.session.SessionAuthenticationException
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.stereotype.Service
 import org.springframework.web.cors.CorsConfiguration
@@ -123,9 +124,17 @@ class SecurityConfig {
             // 정상 인증 성공 후 별도의 처리가 필요한 경우 커스텀 핸들러 생성하여 등록
 //            formLoginCustomizer.successHandler(CustomAuthenticationSuccessHandler())
             // 인증 실패 시 자동으로 이동하는 경로
-            formLoginCustomizer.failureUrl("/main/sc/v1/login?fail")
+//            formLoginCustomizer.failureUrl("/main/sc/v1/login?fail")
             // 인증 실패 후 별도의 처리가 필요한 경우 커스텀 핸들러를 생성하여 등록
-//            formLoginCustomizer.failureHandler(CustomAuthenticationSuccessHandler())
+            formLoginCustomizer.failureHandler { _, response, exception ->
+                if (exception is SessionAuthenticationException) {
+                    // 동시 접속 금지로 실패한 경우
+                    response.sendRedirect("/main/sc/v1/login?duplicated")
+                } else {
+                    // 그외 인증 실패
+                    response.sendRedirect("/main/sc/v1/login?fail")
+                }
+            }
         }
 
         // 커스텀 UserDetailsService 설정

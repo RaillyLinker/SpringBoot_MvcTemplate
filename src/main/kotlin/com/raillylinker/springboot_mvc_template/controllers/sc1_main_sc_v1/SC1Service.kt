@@ -144,7 +144,8 @@ class SC1Service(
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         fail: String?,
-        expired: String?
+        expired: String?,
+        duplicated: String?
     ): ModelAndView? {
         val authentication = SecurityContextHolder.getContext().authentication
         // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
@@ -158,7 +159,8 @@ class SC1Service(
             Api3ViewModel(
                 username != "anonymousUser",
                 fail != null,
-                expired != null
+                expired != null,
+                duplicated != null
             )
         )
 
@@ -172,7 +174,9 @@ class SC1Service(
         // 로그인 정보 불일치
         val loginError: Boolean,
         // 세션 만료
-        val expired: Boolean
+        val expired: Boolean,
+        // 동시 접속 금지
+        val duplicated: Boolean
     )
 
     ////

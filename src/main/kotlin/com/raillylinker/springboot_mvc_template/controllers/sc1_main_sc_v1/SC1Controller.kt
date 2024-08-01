@@ -123,9 +123,16 @@ class SC1Controller(
             example = ""
         )
         @RequestParam("expired")
-        expired: String?
+        expired: String?,
+        @Parameter(
+            name = "duplicated",
+            description = "동시 접속 금지(not null 이라면 동시 접속 금지 된 것입니다.)",
+            example = ""
+        )
+        @RequestParam("duplicated")
+        duplicated: String?
     ): ModelAndView? {
-        return service.api3(httpServletResponse, session, fail, expired)
+        return service.api3(httpServletResponse, session, fail, expired, duplicated)
     }
 
 
