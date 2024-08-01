@@ -404,4 +404,82 @@ class SC1Controller(
     ): ModelAndView? {
         return service.api10(httpServletResponse, session, configJsonString)
     }
+
+    ////
+    @Operation(
+        summary = "N11 : 아이디 변경",
+        description = "아이디 변경\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/change-id"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated()")
+    fun api11(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "complete",
+            description = "회원가입 완료(not null 이라면 회원가입이 완료된 것입니다.)",
+            example = ""
+        )
+        @RequestParam("complete")
+        complete: String?,
+        @Parameter(
+            name = "idExists",
+            description = "가입된 아이디가 존재(not null 이라면 이미 가입된 아이디가 존재하는 것입니다.)",
+            example = ""
+        )
+        @RequestParam("idExists")
+        idExists: String?
+    ): ModelAndView? {
+        return service.api11(httpServletResponse, session, complete, idExists)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N12 : 아이디 변경 진행",
+        description = "아이디 변경 진행\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/change-id-process"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated()")
+    fun api12(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "accountId",
+            description = "계정 아이디",
+            example = "hongGilDong"
+        )
+        @RequestParam("accountId")
+        accountId: String
+    ): ModelAndView? {
+        return service.api12(httpServletResponse, session, accountId)
+    }
 }

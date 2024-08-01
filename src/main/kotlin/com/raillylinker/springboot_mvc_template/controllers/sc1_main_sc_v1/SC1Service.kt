@@ -482,4 +482,69 @@ class SC1Service(
         httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
+
+    ////
+    fun api11(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        complete: String?,
+        idExists: String?
+    ): ModelAndView? {
+        val authentication = SecurityContextHolder.getContext().authentication
+        val userUid: Long = authentication.name.toLong()
+
+        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n11/change_id"
+
+        mv.addObject(
+            "viewModel",
+            Api11ViewModel(
+                memberEntity.accountId,
+                complete != null,
+                idExists != null
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api11ViewModel(
+        val accountId: String,
+        val complete: Boolean,
+        val idExists: Boolean
+    )
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api12(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        accountId: String
+    ): ModelAndView? {
+        val mv = ModelAndView()
+
+        if (database1RaillyLinkerCompanyMemberDataRepository.existsByAccountId(accountId.trim())) {
+            mv.viewName = "redirect:/main/sc/v1/change-id?idExists"
+
+            httpServletResponse.setHeader("api-result-code", "")
+            httpServletResponse.status = HttpStatus.OK.value()
+            return mv
+        }
+
+        val authentication = SecurityContextHolder.getContext().authentication
+        val userUid: Long = authentication.name.toLong()
+        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+        memberEntity.accountId = accountId
+        database1RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
+
+        mv.viewName = "redirect:/main/sc/v1/change-id?complete"
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
 }
