@@ -81,55 +81,34 @@
     // 입력값 검증 함수
     function validateForm() {
         var accountIdField = document.getElementById('accountId');
-        var passwordField = document.getElementById('password');
-        var confirmPasswordField = document.getElementById('confirmPassword');
         var accountId = accountIdField.value;
+        var passwordField = document.getElementById('password');
         var password = passwordField.value;
+        var confirmPasswordField = document.getElementById('confirmPassword');
         var confirmPassword = confirmPasswordField.value;
 
-        if (document.activeElement === accountIdField) {
-            if (accountId === "") {
-                alert("아이디를 입력하세요.");
-                accountIdField.focus();
-                return false;
-            } else {
-                passwordField.focus();
-                return false;
-            }
+        if (accountId === "") {
+            alert("아이디를 입력하세요.");
+            accountIdField.focus();
+            return false;
         }
 
-        if (document.activeElement === passwordField) {
-            if (password === "") {
-                alert("비밀번호를 입력하세요.");
-                passwordField.focus();
-                return false;
-            } else {
-                confirmPasswordField.focus();
-                return false;
-            }
+        if (password === "") {
+            alert("비밀번호를 입력하세요.");
+            passwordField.focus();
+            return false;
         }
 
-        if (document.activeElement === confirmPasswordField) {
-            if (accountId === "") {
-                alert("아이디를 입력하세요.");
-                accountIdField.focus();
-                return false;
-            }
-            if (password === "") {
-                alert("비밀번호를 입력하세요.");
-                passwordField.focus();
-                return false;
-            }
-            if (confirmPassword === "") {
-                alert("비밀번호 확인을 입력하세요.");
-                confirmPasswordField.focus();
-                return false;
-            }
-            if (password !== confirmPassword) {
-                alert("비밀번호가 일치하지 않습니다.");
-                confirmPasswordField.focus();
-                return false;
-            }
+        if (confirmPassword === "") {
+            alert("비밀번호 확인을 입력하세요.");
+            confirmPasswordField.focus();
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            alert("비밀번호가 일치하지 않습니다.");
+            confirmPasswordField.focus();
+            return false;
         }
 
         return true;

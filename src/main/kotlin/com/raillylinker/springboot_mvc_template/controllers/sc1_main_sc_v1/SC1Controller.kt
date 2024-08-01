@@ -431,7 +431,7 @@ class SC1Controller(
         session: HttpSession,
         @Parameter(
             name = "complete",
-            description = "회원가입 완료(not null 이라면 회원가입이 완료된 것입니다.)",
+            description = "아이디 변경 완료(not null 이라면 아이디 변경이 완료된 것입니다.)",
             example = ""
         )
         @RequestParam("complete")
@@ -481,5 +481,47 @@ class SC1Controller(
         accountId: String
     ): ModelAndView? {
         return service.api12(httpServletResponse, session, accountId)
+    }
+
+    ////
+    @Operation(
+        summary = "N13 : 비밀번호 변경",
+        description = "비밀번호 변경\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/change-password"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated()")
+    fun api13(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "complete",
+            description = "비밀번호 변경 완료(not null 이라면 비밀번호 변경이 완료된 것입니다.)",
+            example = ""
+        )
+        @RequestParam("complete")
+        complete: String?,
+        @Parameter(
+            name = "passwordNotMatch",
+            description = "기존 비밀번호가 일치하지 않습니다.(not null 이라면 기존 비밀번호가 일치하지 않는 것입니다.)",
+            example = ""
+        )
+        @RequestParam("passwordNotMatch")
+        passwordNotMatch: String?
+    ): ModelAndView? {
+        return service.api13(httpServletResponse, session, complete, passwordNotMatch)
     }
 }

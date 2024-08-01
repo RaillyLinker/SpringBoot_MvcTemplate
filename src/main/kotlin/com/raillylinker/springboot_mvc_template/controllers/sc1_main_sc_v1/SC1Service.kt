@@ -547,4 +547,32 @@ class SC1Service(
         httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
+
+    ////
+    fun api13(
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        complete: String?,
+        passwordNotMatch: String?
+    ): ModelAndView? {
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n13/change_password"
+
+        mv.addObject(
+            "viewModel",
+            Api13ViewModel(
+                complete != null,
+                passwordNotMatch != null
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api13ViewModel(
+        val complete: Boolean,
+        val passwordNotMatch: Boolean
+    )
 }
