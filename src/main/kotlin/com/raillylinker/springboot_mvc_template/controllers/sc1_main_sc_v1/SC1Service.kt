@@ -8,6 +8,7 @@ import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Se
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberRoleDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerCompany_MemberData
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
 import org.slf4j.Logger
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import java.io.File
@@ -56,6 +58,7 @@ class SC1Service(
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
     fun api1(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession
     ): ModelAndView? {
@@ -90,6 +93,7 @@ class SC1Service(
 
     ////
     fun api2(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession
     ): ModelAndView? {
@@ -141,11 +145,13 @@ class SC1Service(
 
     ////
     fun api3(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         fail: String?,
         expired: String?,
-        duplicated: String?
+        duplicated: String?,
+        changePassword: String?
     ): ModelAndView? {
         val authentication = SecurityContextHolder.getContext().authentication
         // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
@@ -160,7 +166,8 @@ class SC1Service(
                 username != "anonymousUser",
                 fail != null,
                 expired != null,
-                duplicated != null
+                duplicated != null,
+                changePassword != null
             )
         )
 
@@ -176,11 +183,14 @@ class SC1Service(
         // 세션 만료
         val expired: Boolean,
         // 동시 접속 금지
-        val duplicated: Boolean
+        val duplicated: Boolean,
+        // 비밀번호 변경
+        val changePassword: Boolean
     )
 
     ////
     fun api4(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         complete: String?,
@@ -216,6 +226,7 @@ class SC1Service(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api5(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         accountId: String,
@@ -250,6 +261,7 @@ class SC1Service(
 
     ////
     fun api6(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         currentPath: String?
@@ -325,6 +337,7 @@ class SC1Service(
 
     ////
     fun api7(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         filePath: String
@@ -391,6 +404,7 @@ class SC1Service(
 
     ////
     fun api8(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         type: SC1Controller.Api8ErrorTypeEnum
@@ -422,6 +436,7 @@ class SC1Service(
 
     ////
     fun api9(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         fail: String?,
@@ -462,6 +477,7 @@ class SC1Service(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api10(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         configJsonString: String
@@ -485,6 +501,7 @@ class SC1Service(
 
     ////
     fun api11(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         complete: String?,
@@ -521,6 +538,7 @@ class SC1Service(
     ////
     @CustomTransactional([Database1Config.TRANSACTION_NAME])
     fun api12(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         accountId: String
@@ -550,9 +568,9 @@ class SC1Service(
 
     ////
     fun api13(
+        httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
-        complete: String?,
         passwordNotMatch: String?
     ): ModelAndView? {
         val mv = ModelAndView()
@@ -561,7 +579,6 @@ class SC1Service(
         mv.addObject(
             "viewModel",
             Api13ViewModel(
-                complete != null,
                 passwordNotMatch != null
             )
         )
@@ -572,7 +589,44 @@ class SC1Service(
     }
 
     data class Api13ViewModel(
-        val complete: Boolean,
         val passwordNotMatch: Boolean
     )
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api14(
+        httpServletRequest: HttpServletRequest,
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        oldPassword: String,
+        newPassword: String
+    ): ModelAndView? {
+        val mv = ModelAndView()
+
+        val authentication = SecurityContextHolder.getContext().authentication
+        val userUid: Long = authentication.name.toLong()
+        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+
+        if (memberEntity.accountPassword == null || // 페스워드는 아직 만들지 않음
+            !passwordEncoder.matches(oldPassword, memberEntity.accountPassword!!) // 패스워드 불일치
+        ) {
+            // 두 상황 모두 비밀번호 찾기를 하면 해결이 됨
+            mv.viewName = "redirect:/main/sc/v1/change-password?passwordNotMatch"
+
+            httpServletResponse.setHeader("api-result-code", "")
+            httpServletResponse.status = HttpStatus.OK.value()
+            return mv
+        }
+
+        memberEntity.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
+        database1RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
+
+        // SecurityContextLogoutHandler를 사용하여 로그아웃을 처리합니다.
+        SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, authentication)
+
+        mv.viewName = "redirect:/main/sc/v1/login?changePassword"
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
 }

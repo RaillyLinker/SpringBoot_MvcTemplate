@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
 import org.springframework.http.MediaType
@@ -50,11 +51,13 @@ class SC1Controller(
     )
     fun api1(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession
     ): ModelAndView? {
-        return service.api1(httpServletResponse, session)
+        return service.api1(httpServletRequest, httpServletResponse, session)
     }
 
 
@@ -79,11 +82,13 @@ class SC1Controller(
     @PreAuthorize("isAuthenticated()")
     fun api2(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession
     ): ModelAndView? {
-        return service.api2(httpServletResponse, session)
+        return service.api2(httpServletRequest, httpServletResponse, session)
     }
 
 
@@ -106,6 +111,8 @@ class SC1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     fun api3(
+        @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -130,9 +137,16 @@ class SC1Controller(
             example = ""
         )
         @RequestParam("duplicated")
-        duplicated: String?
+        duplicated: String?,
+        @Parameter(
+            name = "changePassword",
+            description = "비밀번호 변경(not null 이라면 비밀번호 변경 된 것입니다.)",
+            example = ""
+        )
+        @RequestParam("changePassword")
+        changePassword: String?
     ): ModelAndView? {
-        return service.api3(httpServletResponse, session, fail, expired, duplicated)
+        return service.api3(httpServletRequest, httpServletResponse, session, fail, expired, duplicated, changePassword)
     }
 
 
@@ -156,6 +170,8 @@ class SC1Controller(
     )
     fun api4(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
@@ -174,7 +190,7 @@ class SC1Controller(
         @RequestParam("idExists")
         idExists: String?
     ): ModelAndView? {
-        return service.api4(httpServletResponse, session, complete, idExists)
+        return service.api4(httpServletRequest, httpServletResponse, session, complete, idExists)
     }
 
 
@@ -198,6 +214,8 @@ class SC1Controller(
     )
     fun api5(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
@@ -216,7 +234,7 @@ class SC1Controller(
         @RequestParam("password")
         password: String
     ): ModelAndView? {
-        return service.api5(httpServletResponse, session, accountId, password)
+        return service.api5(httpServletRequest, httpServletResponse, session, accountId, password)
     }
 
 
@@ -241,6 +259,8 @@ class SC1Controller(
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
     fun api6(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
@@ -252,7 +272,7 @@ class SC1Controller(
         @RequestParam("currentPath")
         currentPath: String?
     ): ModelAndView? {
-        return service.api6(httpServletResponse, session, currentPath)
+        return service.api6(httpServletRequest, httpServletResponse, session, currentPath)
     }
 
 
@@ -277,6 +297,8 @@ class SC1Controller(
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
     fun api7(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
@@ -284,7 +306,7 @@ class SC1Controller(
         @RequestParam("filePath")
         filePath: String
     ): ModelAndView? {
-        return service.api7(httpServletResponse, session, filePath)
+        return service.api7(httpServletRequest, httpServletResponse, session, filePath)
     }
 
 
@@ -308,6 +330,8 @@ class SC1Controller(
     )
     fun api8(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
@@ -315,7 +339,7 @@ class SC1Controller(
         @RequestParam("type")
         type: Api8ErrorTypeEnum
     ): ModelAndView? {
-        return service.api8(httpServletResponse, session, type)
+        return service.api8(httpServletRequest, httpServletResponse, session, type)
     }
 
     enum class Api8ErrorTypeEnum {
@@ -344,6 +368,8 @@ class SC1Controller(
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
     fun api9(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
@@ -362,7 +388,7 @@ class SC1Controller(
         @RequestParam("complete")
         complete: String?
     ): ModelAndView? {
-        return service.api9(httpServletResponse, session, fail, complete)
+        return service.api9(httpServletRequest, httpServletResponse, session, fail, complete)
     }
 
 
@@ -391,6 +417,8 @@ class SC1Controller(
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
     fun api10(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
@@ -402,7 +430,7 @@ class SC1Controller(
         @RequestParam("configJsonString")
         configJsonString: String
     ): ModelAndView? {
-        return service.api10(httpServletResponse, session, configJsonString)
+        return service.api10(httpServletRequest, httpServletResponse, session, configJsonString)
     }
 
     ////
@@ -426,6 +454,8 @@ class SC1Controller(
     @PreAuthorize("isAuthenticated()")
     fun api11(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
@@ -444,7 +474,7 @@ class SC1Controller(
         @RequestParam("idExists")
         idExists: String?
     ): ModelAndView? {
-        return service.api11(httpServletResponse, session, complete, idExists)
+        return service.api11(httpServletRequest, httpServletResponse, session, complete, idExists)
     }
 
 
@@ -469,6 +499,8 @@ class SC1Controller(
     @PreAuthorize("isAuthenticated()")
     fun api12(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
@@ -480,7 +512,7 @@ class SC1Controller(
         @RequestParam("accountId")
         accountId: String
     ): ModelAndView? {
-        return service.api12(httpServletResponse, session, accountId)
+        return service.api12(httpServletRequest, httpServletResponse, session, accountId)
     }
 
     ////
@@ -504,16 +536,11 @@ class SC1Controller(
     @PreAuthorize("isAuthenticated()")
     fun api13(
         @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         session: HttpSession,
-        @Parameter(
-            name = "complete",
-            description = "비밀번호 변경 완료(not null 이라면 비밀번호 변경이 완료된 것입니다.)",
-            example = ""
-        )
-        @RequestParam("complete")
-        complete: String?,
         @Parameter(
             name = "passwordNotMatch",
             description = "기존 비밀번호가 일치하지 않습니다.(not null 이라면 기존 비밀번호가 일치하지 않는 것입니다.)",
@@ -522,6 +549,51 @@ class SC1Controller(
         @RequestParam("passwordNotMatch")
         passwordNotMatch: String?
     ): ModelAndView? {
-        return service.api13(httpServletResponse, session, complete, passwordNotMatch)
+        return service.api13(httpServletRequest, httpServletResponse, session, passwordNotMatch)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N14 : 비밀번호 변경 진행",
+        description = "비밀번호 변경 진행\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/change-password-process"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated()")
+    fun api14(
+        @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "oldPassword",
+            description = "기존 비밀번호",
+            example = "abcd1234"
+        )
+        @RequestParam("oldPassword")
+        oldPassword: String,
+        @Parameter(
+            name = "newPassword",
+            description = "새 비밀번호",
+            example = "abcd1234"
+        )
+        @RequestParam("newPassword")
+        newPassword: String
+    ): ModelAndView? {
+        return service.api14(httpServletRequest, httpServletResponse, session, oldPassword, newPassword)
     }
 }
