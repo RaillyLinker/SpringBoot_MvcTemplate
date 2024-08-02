@@ -26,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.function.Function
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 
@@ -87,8 +86,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -132,8 +129,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -178,8 +173,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -219,8 +212,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -243,9 +234,6 @@ class SC1Service(
 
         if (database1RaillyLinkerCompanyMemberDataRepository.existsByAccountId(accountId.trim())) {
             mv.viewName = "redirect:/main/sc/v1/join?idExists"
-
-            httpServletResponse.setHeader("api-result-code", "")
-            httpServletResponse.status = HttpStatus.OK.value()
             return mv
         }
 
@@ -260,9 +248,6 @@ class SC1Service(
         )
 
         mv.viewName = "redirect:/main/sc/v1/join?complete"
-
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -324,8 +309,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -393,8 +376,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -432,8 +413,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -470,8 +449,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -501,8 +478,6 @@ class SC1Service(
             mv.viewName = "redirect:/main/sc/v1/runtime-config-editor?complete"
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -531,8 +506,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -554,9 +527,6 @@ class SC1Service(
 
         if (database1RaillyLinkerCompanyMemberDataRepository.existsByAccountId(accountId.trim())) {
             mv.viewName = "redirect:/main/sc/v1/change-id?idExists"
-
-            httpServletResponse.setHeader("api-result-code", "")
-            httpServletResponse.status = HttpStatus.OK.value()
             return mv
         }
 
@@ -567,9 +537,6 @@ class SC1Service(
         database1RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
 
         mv.viewName = "redirect:/main/sc/v1/change-id?complete"
-
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -590,8 +557,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -619,9 +584,6 @@ class SC1Service(
         ) {
             // 두 상황 모두 비밀번호 찾기를 하면 해결이 됨
             mv.viewName = "redirect:/main/sc/v1/change-password?passwordNotMatch"
-
-            httpServletResponse.setHeader("api-result-code", "")
-            httpServletResponse.status = HttpStatus.OK.value()
             return mv
         }
 
@@ -632,8 +594,6 @@ class SC1Service(
         SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, authentication)
 
         mv.viewName = "redirect:/main/sc/v1/login?changePassword"
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -658,8 +618,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -686,8 +644,6 @@ class SC1Service(
         SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, authentication)
 
         mv.viewName = "redirect:/main/sc/v1/good-bye?accountId=$accountId"
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -708,8 +664,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -736,8 +690,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -761,8 +713,6 @@ class SC1Service(
 
         if (memberEntityOpt.isEmpty) {
             mv.viewName = "redirect:/main/sc/v1/member-password-change?memberNotFound"
-            httpServletResponse.setHeader("api-result-code", "")
-            httpServletResponse.status = HttpStatus.OK.value()
             return mv
         }
 
@@ -783,8 +733,6 @@ class SC1Service(
         }
 
         mv.viewName = "redirect:/main/sc/v1/member-password-change?complete"
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -807,8 +755,6 @@ class SC1Service(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 
@@ -830,8 +776,6 @@ class SC1Service(
 
         if (memberEntityOpt.isEmpty) {
             mv.viewName = "redirect:/main/sc/v1/member-session-expire?memberNotFound"
-            httpServletResponse.setHeader("api-result-code", "")
-            httpServletResponse.status = HttpStatus.OK.value()
             return mv
         }
 
@@ -848,8 +792,6 @@ class SC1Service(
         }
 
         mv.viewName = "redirect:/main/sc/v1/member-session-expire?complete"
-        httpServletResponse.setHeader("api-result-code", "")
-        httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
 }
