@@ -29,6 +29,15 @@ hr{
     border: 0px;
 }
 
+.top-button {
+    float: right;
+    margin: 0px;
+}
+
+.member-info-button {
+    margin-right: 10px;
+}
+
 
 /* [Id] */
 #title_icon{

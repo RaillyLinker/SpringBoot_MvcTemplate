@@ -29,6 +29,16 @@ hr{
     border: 0px;
 }
 
+.profile-image {
+    width: 100px; /* 원하는 너비 */
+    height: 100px; /* 원하는 높이 */
+    object-fit: cover; /* 이미지 비율을 유지하면서 자르기 */
+}
+
+.top-button {
+    float: right;
+    margin: 0px;
+}
 
 /* [Id] */
 #title_icon{

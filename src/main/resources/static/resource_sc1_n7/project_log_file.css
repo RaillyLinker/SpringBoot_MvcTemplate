@@ -29,6 +29,27 @@ hr{
     border: 0px;
 }
 
+.top-button {
+    float: right;
+    margin: 0px;
+}
+
+.member-info-button {
+    margin-right: 10px;
+}
+
+.INFO {
+    color: blue;
+}
+
+.ERROR {
+    color: red;
+}
+
+.WARN {
+    color: #FF8C00;
+}
+
 
 /* [Id] */
 #title_icon{

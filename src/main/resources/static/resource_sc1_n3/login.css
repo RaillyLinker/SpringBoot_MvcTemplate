@@ -69,4 +69,12 @@ hr{
     float: right;
 }
 
+#loginButton {
+    margin-top: 10px;
+}
+
+#signupButton {
+    margin-top: 5px;
+}
+
 /* [Name] */

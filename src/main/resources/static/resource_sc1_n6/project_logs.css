@@ -29,6 +29,40 @@ hr{
     border: 0px;
 }
 
+.container {
+    margin-top: 20px;
+}
+
+.directory, .file {
+    margin-bottom: 10px;
+}
+
+.directory a, .file a {
+    text-decoration: none;
+    color: #1a73e8;
+}
+
+.directory a:hover, .file a:hover {
+    text-decoration: underline;
+}
+
+.parent-dir {
+    color: #ff5722;
+}
+
+.current-path {
+    font-weight: bold;
+}
+
+.top-button {
+    float: right;
+    margin: 0px;
+}
+
+.member-info-button {
+    margin-right: 10px;
+}
+
 
 /* [Id] */
 #title_icon{
