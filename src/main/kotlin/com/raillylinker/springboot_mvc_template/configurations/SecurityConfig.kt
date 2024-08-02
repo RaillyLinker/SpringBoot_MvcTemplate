@@ -95,19 +95,20 @@ class SecurityConfig {
         http: HttpSecurity,
         userDetailService: UserDetailsServiceMainSc
     ): SecurityFilterChain {
-        // sameOrigin 에서 iframe 허용 설정
-        // 기본은 허용하지 않음, sameOrigin 은 같은 origin 일 때에만 허용하고, disable 은 모두 허용
-//        http.headers { headersConfigurer ->
-//            headersConfigurer.frameOptions { frameOptionsConfig ->
-//                frameOptionsConfig.sameOrigin()
-//            }
-//        }
+        http.headers { headersCustomizer ->
+            // iframe 허용 설정
+            // 기본은 허용하지 않음, sameOrigin 은 같은 origin 일 때에만 허용하고, disable 은 모두 허용
+            headersCustomizer.frameOptions { frameOptionsConfig ->
+                frameOptionsConfig.sameOrigin()
+            }
+        }
 
         // cors 적용(서로 다른 origin 의 웹화면에서 리퀘스트 금지)
         http.cors {}
-        // csrf 적용(HTML 에서 form 요청을 보낼 때,
+        // csrf 보안 설정
+        // HTML 에서 form 요청을 보낼 때,
         // <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        // 이렇게 csrf 값을 같이 줘야 정상 수신)
+        // 이렇게 csrf 값을 같이 줘야하는데, Thymeleaf 에선 굳이 명시하지 않아도 자동으로 포함됩니다.
         http.csrf {}
 
         // 스프링 시큐리티 로그인 설정
@@ -181,6 +182,8 @@ class SecurityConfig {
 
         http.sessionManagement { sessionManagementCustomizer ->
             sessionManagementCustomizer
+                // 세션 고정 공격 방지 : 로그인 할 때마다 새로운 세션 ID 를 발급받습니다.
+                .sessionFixation().migrateSession()
                 // 세션 동시 접속 개수 (-1 : 무한)
                 .maximumSessions(1)
                 // 세션 만료시 이동 경로
@@ -318,13 +321,13 @@ class SecurityConfig {
 
         val securityMatcher = http.securityMatcher(*securityUrlList.toTypedArray())
 
-        // sameOrigin 에서 iframe 허용 설정
-        // 기본은 허용하지 않음, sameOrigin 은 같은 origin 일 때에만 허용하고, disable 은 모두 허용
-//        securityMatcher.headers { headersConfigurer ->
-//            headersConfigurer.frameOptions { frameOptionsConfig ->
-//                frameOptionsConfig.sameOrigin()
-//            }
-//        }
+        securityMatcher.headers { headersCustomizer ->
+            // iframe 허용 설정
+            // 기본은 허용하지 않음, sameOrigin 은 같은 origin 일 때에만 허용하고, disable 은 모두 허용
+            headersCustomizer.frameOptions { frameOptionsConfig ->
+                frameOptionsConfig.sameOrigin()
+            }
+        }
 
         // cors 적용(서로 다른 origin 의 웹화면에서 리퀘스트 금지)
         securityMatcher.cors {}

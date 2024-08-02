@@ -34,7 +34,6 @@
           th:action="@{/main/sc/v1/logout}"
           method="POST"
           class="top-button">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <button type="submit">로그아웃</button>
     </form>
 
@@ -47,7 +46,6 @@
 <hr/>
 
 <form id="configEditorForm" th:action="@{/main/sc/v1/runtime-config}" method="POST">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <textarea id="configEditor" name="configJsonString"></textarea>
     <button type="submit" id="saveButton">Save</button>
 </form>
