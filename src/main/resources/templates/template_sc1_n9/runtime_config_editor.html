@@ -40,32 +40,15 @@
     <button type="submit" id="saveButton">Save</button>
 </form>
 
-<script th:src="@{/resource_sc1_n9/runtime_config_editor.js}"
-        src="../../static/resource_sc1_n9/runtime_config_editor.js"></script>
+<!-- Script 선언 -->
 <script th:inline="javascript">
-    /*<![CDATA[*/
-    const configJsonString = /*[[${viewModel.configJsonString}]]*/ 'null';
-    /*]]>*/
-
-    if ([[${viewModel.complete}]] === true) {
-        alert("런타임 설정이 수정되었습니다.");
-        history.replaceState(null, null, '/main/sc/v1/runtime-config-editor');
-        history.back();
-    } else if ([[${viewModel.fail}]] === true) {
-        alert("런타임 설정 수정에 실패하였습니다.");
-        history.replaceState(null, null, '/main/sc/v1/runtime-config-editor');
-        history.back();
-    }
-
-    // Initialize CodeMirror editor
-    const editor = CodeMirror.fromTextArea(document.getElementById('configEditor'), {
-        lineNumbers: true,
-        mode: 'application/json',
-        theme: 'default'
-    });
-
-    // Set initial content from configJsonString
-    editor.setValue(configJsonString);
+    // Thymeleaf 변수 할당하기
+    const configJsonString = /*[[${viewModel.configJsonString}]]*/ '{}';
+    const complete = /*[[${viewModel.complete}]]*/ false;
+    const fail = /*[[${viewModel.fail}]]*/ false;
+</script>
+<script th:src="@{/resource_sc1_n9/runtime_config_editor.js}"
+        src="../../static/resource_sc1_n9/runtime_config_editor.js">
 </script>
 </body>
 </html>
