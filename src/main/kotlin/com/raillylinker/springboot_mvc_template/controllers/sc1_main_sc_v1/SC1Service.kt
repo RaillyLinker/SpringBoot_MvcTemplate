@@ -709,4 +709,63 @@ class SC1Service(
     data class Api17ViewModel(
         val accountId: String
     )
+
+    ////
+    fun api18(
+        httpServletRequest: HttpServletRequest,
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        complete: String?,
+        memberNotFound: String?
+    ): ModelAndView? {
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n18/member_password_change"
+
+        mv.addObject(
+            "viewModel",
+            Api18ViewModel(
+                complete != null,
+                memberNotFound != null
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api18ViewModel(
+        val complete: Boolean,
+        val memberNotFound: Boolean
+    )
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api19(
+        httpServletRequest: HttpServletRequest,
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        memberUid: Long,
+        newPassword: String
+    ): ModelAndView? {
+        val mv = ModelAndView()
+
+        val memberEntityOpt = database1RaillyLinkerCompanyMemberDataRepository.findById(memberUid)
+
+        if(memberEntityOpt.isEmpty){
+            mv.viewName = "redirect:/main/sc/v1/member-password-change?memberNotFound"
+            httpServletResponse.setHeader("api-result-code", "")
+            httpServletResponse.status = HttpStatus.OK.value()
+            return mv
+        }
+
+        val memberEntity = memberEntityOpt.get()
+        memberEntity.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
+        database1RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
+
+        mv.viewName = "redirect:/main/sc/v1/member-password-change?complete"
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
 }

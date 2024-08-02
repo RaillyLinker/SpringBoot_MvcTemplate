@@ -693,4 +693,93 @@ class SC1Controller(
     ): ModelAndView? {
         return service.api17(httpServletRequest, httpServletResponse, session, accountId)
     }
+
+    ////
+    @Operation(
+        summary = "N18 : 멤버 비밀번호 변경",
+        description = "멤버 비밀번호 변경\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/member-password-change"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
+    fun api18(
+        @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "complete",
+            description = "비밀번호 변경 완료(not null 이라면 비밀번호 변경이 완료된 것입니다.)",
+            example = ""
+        )
+        @RequestParam("complete")
+        complete: String?,
+        @Parameter(
+            name = "memberNotFound",
+            description = "멤버가 없습니다.(not null 이라면 멤버가 없는 것입니다.)",
+            example = ""
+        )
+        @RequestParam("memberNotFound")
+        memberNotFound: String?
+    ): ModelAndView? {
+        return service.api18(httpServletRequest, httpServletResponse, session, complete, memberNotFound)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N19 : 멤버 비밀번호 변경 진행",
+        description = "멤버 비밀번호 변경 진행\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/member-password-change-process"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated()")
+    fun api19(
+        @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "memberUid",
+            description = "멤버 고유번호",
+            example = "1"
+        )
+        @RequestParam("memberUid")
+        memberUid: Long,
+        @Parameter(
+            name = "newPassword",
+            description = "새 비밀번호",
+            example = "abcd1234"
+        )
+        @RequestParam("newPassword")
+        newPassword: String
+    ): ModelAndView? {
+        return service.api19(httpServletRequest, httpServletResponse, session, memberUid, newPassword)
+    }
 }
