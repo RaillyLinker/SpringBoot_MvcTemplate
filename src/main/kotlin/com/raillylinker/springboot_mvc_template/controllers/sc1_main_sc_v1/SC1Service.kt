@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.session.SessionRegistry
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.stereotype.Service
@@ -24,7 +26,10 @@ import org.springframework.web.servlet.ModelAndView
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.function.Function
 import java.util.regex.Pattern
+import java.util.stream.Collectors
+
 
 /*
     (세션 멤버 정보 가져오기)
@@ -46,6 +51,8 @@ class SC1Service(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     private val passwordEncoder: PasswordEncoder,
+
+    private val sessionRegistry: SessionRegistry,
 
     // (Database Repository)
     private val database1RaillyLinkerCompanyMemberDataRepository: Database1_RaillyLinkerCompany_MemberDataRepository,
@@ -752,7 +759,7 @@ class SC1Service(
 
         val memberEntityOpt = database1RaillyLinkerCompanyMemberDataRepository.findById(memberUid)
 
-        if(memberEntityOpt.isEmpty){
+        if (memberEntityOpt.isEmpty) {
             mv.viewName = "redirect:/main/sc/v1/member-password-change?memberNotFound"
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
@@ -762,6 +769,18 @@ class SC1Service(
         val memberEntity = memberEntityOpt.get()
         memberEntity.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
         database1RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
+
+        // 강제 로그아웃 로직 추가
+        for (principal in sessionRegistry.allPrincipals.stream().map { o: Any? -> o as UserDetails? }
+            .collect(Collectors.toList())) {
+            // 인증된 객체들중 정지시키려는 객체의 유니크값과 루프돌던 인증객체의 유니크값이 같을경우
+            if (principal?.username?.toLong() == memberUid) {
+                val sessionList = sessionRegistry.getAllSessions(principal, false) // 해당 인증객체로 생성된 모든 세션을 가져옴
+                for (memberSession in sessionList) {
+                    memberSession.expireNow() // 해당 인증객체의 현재 만료되지 않은 세션을 모두 만료시킴 -> HttpSessionEventPublisher가 세션 만료를 감지하고 로그아웃 처리시킴
+                }
+            }
+        }
 
         mv.viewName = "redirect:/main/sc/v1/member-password-change?complete"
         httpServletResponse.setHeader("api-result-code", "")
