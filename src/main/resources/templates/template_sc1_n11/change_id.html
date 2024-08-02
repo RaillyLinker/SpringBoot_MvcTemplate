@@ -12,6 +12,15 @@
           href="../../static/resource_sc1_n11/change_id.css"
           rel="stylesheet"/>
 
+    <script th:inline="javascript">
+        // Thymeleaf 변수 할당하기
+        const complete = /*[[${viewModel.complete}]]*/ false;
+        const idExists = /*[[${viewModel.idExists}]]*/ false;
+    </script>
+    <script th:src="@{/resource_sc1_n11/change_id.js}"
+            src="../../static/resource_sc1_n11/change_id.js">
+    </script>
+
     <title>
         Springboot MVC Template
     </title>
@@ -42,14 +51,5 @@
     </div>
 </form>
 
-<!-- Script 선언 -->
-<script th:inline="javascript">
-    // Thymeleaf 변수 할당하기
-    const complete = /*[[${viewModel.complete}]]*/ false;
-    const idExists = /*[[${viewModel.idExists}]]*/ false;
-</script>
-<script th:src="@{/resource_sc1_n11/change_id.js}"
-        src="../../static/resource_sc1_n11/change_id.js">
-</script>
 </body>
 </html>

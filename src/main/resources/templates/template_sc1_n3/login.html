@@ -12,6 +12,18 @@
           href="../../static/resource_sc1_n3/login.css"
           rel="stylesheet"/>
 
+    <script th:inline="javascript">
+        // Thymeleaf 변수 할당하기
+        const loggedIn = /*[[${viewModel.loggedIn}]]*/ false;
+        const loginError = /*[[${viewModel.loginError}]]*/ false;
+        const expired = /*[[${viewModel.expired}]]*/ false;
+        const duplicated = /*[[${viewModel.duplicated}]]*/ false;
+        const changePassword = /*[[${viewModel.changePassword}]]*/ false;
+    </script>
+    <script th:src="@{/resource_sc1_n3/login.js}"
+            src="../../static/resource_sc1_n3/login.js">
+    </script>
+
     <title>
         Springboot MVC Template
     </title>
@@ -53,17 +65,5 @@
     <button id="signupButton" onclick="goToSignup()">회원가입</button>
 </div>
 
-<!-- Script 선언 -->
-<script th:inline="javascript">
-    // Thymeleaf 변수 할당하기
-    const loggedIn = /*[[${viewModel.loggedIn}]]*/ false;
-    const loginError = /*[[${viewModel.loginError}]]*/ false;
-    const expired = /*[[${viewModel.expired}]]*/ false;
-    const duplicated = /*[[${viewModel.duplicated}]]*/ false;
-    const changePassword = /*[[${viewModel.changePassword}]]*/ false;
-</script>
-<script th:src="@{/resource_sc1_n3/login.js}"
-        src="../../static/resource_sc1_n3/login.js">
-</script>
 </body>
 </html>

@@ -12,6 +12,13 @@
           href="../../static/resource_sc1_n17/good_bye.css"
           rel="stylesheet"/>
 
+    <script th:inline="javascript">
+        // Thymeleaf 변수 할당하기
+    </script>
+    <script th:src="@{/resource_sc1_n17/good_bye.js}"
+            src="../../static/resource_sc1_n17/good_bye.js">
+    </script>
+
     <title>
         Springboot MVC Template
     </title>
@@ -37,12 +44,5 @@
     <button class="home-button" onclick="location.href='/'">홈으로</button>
 </div>
 
-<!-- Script 선언 -->
-<script th:inline="javascript">
-    // Thymeleaf 변수 할당하기
-</script>
-<script th:src="@{/resource_sc1_n17/good_bye.js}"
-        src="../../static/resource_sc1_n17/good_bye.js">
-</script>
 </body>
 </html>

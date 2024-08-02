@@ -12,6 +12,13 @@
           href="../../static/resource_sc1_n1/home_page.css"
           rel="stylesheet"/>
 
+    <script th:inline="javascript">
+        // Thymeleaf 변수 할당하기
+    </script>
+    <script th:src="@{/resource_sc1_n1/home_page.js}"
+            src="../../static/resource_sc1_n1/home_page.js">
+    </script>
+
     <title>
         Springboot MVC Template
     </title>
@@ -120,12 +127,5 @@
     회원 세션 만료 처리 하러 가기
 </button>
 
-<!-- Script 선언 -->
-<script th:inline="javascript">
-    // Thymeleaf 변수 할당하기
-</script>
-<script th:src="@{/resource_sc1_n1/home_page.js}"
-        src="../../static/resource_sc1_n1/home_page.js">
-</script>
 </body>
 </html>

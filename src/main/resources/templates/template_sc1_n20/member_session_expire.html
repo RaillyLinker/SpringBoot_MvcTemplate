@@ -12,6 +12,15 @@
           href="../../static/resource_sc1_n20/member_session_expire.css"
           rel="stylesheet"/>
 
+    <script th:inline="javascript">
+        // Thymeleaf 변수 할당하기
+        const complete = /*[[${viewModel.complete}]]*/ false;
+        const memberNotFound = /*[[${viewModel.memberNotFound}]]*/ false;
+    </script>
+    <script th:src="@{/resource_sc1_n20/member_session_expire.js}"
+            src="../../static/resource_sc1_n20/member_session_expire.js">
+    </script>
+
     <title>
         Springboot MVC Template
     </title>
@@ -42,32 +51,5 @@
     </div>
 </form>
 
-<!-- Script 선언 -->
-<script th:src="@{/resource_sc1_n20/member_session_expire.js}"
-        src="../../static/resource_sc1_n20/member_session_expire.js">
-</script>
-<script th:inline="javascript">
-    if ([[${viewModel.complete}]] === true) {
-        alert("회원의 세션이 만료되었습니다.");
-        history.replaceState(null, null, '/main/sc/v1/member-session-expire');
-    } else if ([[${viewModel.memberNotFound}]] === true) {
-        alert("존재하지 않는 회원 고유번호입니다.");
-        history.replaceState(null, null, '/main/sc/v1/member-session-expire');
-    }
-
-    // 입력값 검증 함수
-    function validateForm() {
-        var memberUidField = document.getElementById('memberUid');
-        var memberUid = memberUidField.value;
-
-        if (memberUid === "") {
-            alert("세션 만료 처리 할 회원의 고유번호를 입력하세요.");
-            memberUidField.focus();
-            return false;
-        }
-
-        return true;
-    }
-</script>
 </body>
 </html>

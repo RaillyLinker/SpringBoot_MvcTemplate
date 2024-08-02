@@ -12,6 +12,13 @@
           href="../../static/resource_sc1_n15/withdrawal.css"
           rel="stylesheet"/>
 
+    <script th:inline="javascript">
+        // Thymeleaf 변수 할당하기
+    </script>
+    <script th:src="@{/resource_sc1_n15/withdrawal.js}"
+            src="../../static/resource_sc1_n15/withdrawal.js">
+    </script>
+
     <title>
         Springboot MVC Template
     </title>
@@ -50,21 +57,5 @@
     <button id="cancelButton" type="button" onclick="history.back()">취소</button>
 </div>
 
-<!-- Script 선언 -->
-<script th:src="@{/resource_sc1_n15/withdrawal.js}"
-        src="../../static/resource_sc1_n15/withdrawal.js">
-</script>
-<script th:inline="javascript">
-
-    // 입력값 검증 함수
-    function validateForm() {
-        var checkbox = document.getElementById('agreeCheckbox');
-        if (!checkbox.checked) {
-            alert('동의합니다를 체크해주세요.');
-            return false;
-        }
-        return true;
-    }
-</script>
 </body>
 </html>
