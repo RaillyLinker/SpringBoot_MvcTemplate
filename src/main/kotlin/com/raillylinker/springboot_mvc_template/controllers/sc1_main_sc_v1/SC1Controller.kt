@@ -596,4 +596,101 @@ class SC1Controller(
     ): ModelAndView? {
         return service.api14(httpServletRequest, httpServletResponse, session, oldPassword, newPassword)
     }
+
+    ////
+    @Operation(
+        summary = "N15 : 회원 탈퇴",
+        description = "회원 탈퇴\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/withdrawal"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated()")
+    fun api15(
+        @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession
+    ): ModelAndView? {
+        return service.api15(httpServletRequest, httpServletResponse, session)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N16 : 회원탈퇴 진행",
+        description = "회원탈퇴 진행\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/withdrawal-process"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated()")
+    fun api16(
+        @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession
+    ): ModelAndView? {
+        return service.api16(httpServletRequest, httpServletResponse, session)
+    }
+
+    ////
+    @Operation(
+        summary = "N17 : 회원 탈퇴 완료",
+        description = "회원 탈퇴 완료\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/good-bye"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    fun api17(
+        @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "accountId",
+            description = "아이디",
+            example = "abcd1234"
+        )
+        @RequestParam("accountId")
+        accountId: String
+    ): ModelAndView? {
+        return service.api17(httpServletRequest, httpServletResponse, session, accountId)
+    }
 }

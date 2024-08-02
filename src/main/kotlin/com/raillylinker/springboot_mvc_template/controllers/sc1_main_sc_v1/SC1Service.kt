@@ -629,4 +629,84 @@ class SC1Service(
         httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
+
+    ////
+    fun api15(
+        httpServletRequest: HttpServletRequest,
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession
+    ): ModelAndView? {
+        val authentication = SecurityContextHolder.getContext().authentication
+        val userUid: Long = authentication.name.toLong()
+
+        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n15/withdrawal"
+
+        mv.addObject(
+            "viewModel",
+            Api15ViewModel(
+                memberEntity.accountId
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api15ViewModel(
+        val accountId: String
+    )
+
+    ////
+    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    fun api16(
+        httpServletRequest: HttpServletRequest,
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession
+    ): ModelAndView? {
+        val mv = ModelAndView()
+
+        val authentication = SecurityContextHolder.getContext().authentication
+        val userUid: Long = authentication.name.toLong()
+        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+        val accountId = memberEntity.accountId
+        database1RaillyLinkerCompanyMemberDataRepository.deleteById(userUid)
+
+        // SecurityContextLogoutHandler를 사용하여 로그아웃을 처리합니다.
+        SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, authentication)
+
+        mv.viewName = "redirect:/main/sc/v1/good-bye?accountId=$accountId"
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    ////
+    fun api17(
+        httpServletRequest: HttpServletRequest,
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        accountId: String
+    ): ModelAndView? {
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n17/good_bye"
+
+        mv.addObject(
+            "viewModel",
+            Api17ViewModel(
+                accountId
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api17ViewModel(
+        val accountId: String
+    )
 }
