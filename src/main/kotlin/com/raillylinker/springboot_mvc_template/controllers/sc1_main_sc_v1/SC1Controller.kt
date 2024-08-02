@@ -782,4 +782,86 @@ class SC1Controller(
     ): ModelAndView? {
         return service.api19(httpServletRequest, httpServletResponse, session, memberUid, newPassword)
     }
+
+    ////
+    @Operation(
+        summary = "N20 : 멤버 세션 만료 처리",
+        description = "멤버 세션 만료 처리\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/member-session-expire"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
+    fun api20(
+        @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "complete",
+            description = "비밀번호 변경 완료(not null 이라면 비밀번호 변경이 완료된 것입니다.)",
+            example = ""
+        )
+        @RequestParam("complete")
+        complete: String?,
+        @Parameter(
+            name = "memberNotFound",
+            description = "멤버가 없습니다.(not null 이라면 멤버가 없는 것입니다.)",
+            example = ""
+        )
+        @RequestParam("memberNotFound")
+        memberNotFound: String?
+    ): ModelAndView? {
+        return service.api20(httpServletRequest, httpServletResponse, session, complete, memberNotFound)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N21 : 멤버 세션 만료 처리 진행",
+        description = "멤버 세션 만료 처리 진행\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/member-session-expire-process"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_HTML_VALUE]
+    )
+    @PreAuthorize("isAuthenticated()")
+    fun api21(
+        @Parameter(hidden = true)
+        httpServletRequest: HttpServletRequest,
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(hidden = true)
+        session: HttpSession,
+        @Parameter(
+            name = "memberUid",
+            description = "멤버 고유번호",
+            example = "1"
+        )
+        @RequestParam("memberUid")
+        memberUid: Long
+    ): ModelAndView? {
+        return service.api21(httpServletRequest, httpServletResponse, session, memberUid)
+    }
 }

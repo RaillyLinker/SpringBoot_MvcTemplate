@@ -787,4 +787,69 @@ class SC1Service(
         httpServletResponse.status = HttpStatus.OK.value()
         return mv
     }
+
+    ////
+    fun api20(
+        httpServletRequest: HttpServletRequest,
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        complete: String?,
+        memberNotFound: String?
+    ): ModelAndView? {
+        val mv = ModelAndView()
+        mv.viewName = "template_sc1_n20/member_session_expire"
+
+        mv.addObject(
+            "viewModel",
+            Api20ViewModel(
+                complete != null,
+                memberNotFound != null
+            )
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
+
+    data class Api20ViewModel(
+        val complete: Boolean,
+        val memberNotFound: Boolean
+    )
+
+    ////
+    fun api21(
+        httpServletRequest: HttpServletRequest,
+        httpServletResponse: HttpServletResponse,
+        session: HttpSession,
+        memberUid: Long
+    ): ModelAndView? {
+        val mv = ModelAndView()
+
+        val memberEntityOpt = database1RaillyLinkerCompanyMemberDataRepository.findById(memberUid)
+
+        if (memberEntityOpt.isEmpty) {
+            mv.viewName = "redirect:/main/sc/v1/member-session-expire?memberNotFound"
+            httpServletResponse.setHeader("api-result-code", "")
+            httpServletResponse.status = HttpStatus.OK.value()
+            return mv
+        }
+
+        // 강제 로그아웃 로직 추가
+        for (principal in sessionRegistry.allPrincipals.stream().map { o: Any? -> o as UserDetails? }
+            .collect(Collectors.toList())) {
+            // 인증된 객체들중 정지시키려는 객체의 유니크값과 루프돌던 인증객체의 유니크값이 같을경우
+            if (principal?.username?.toLong() == memberUid) {
+                val sessionList = sessionRegistry.getAllSessions(principal, false) // 해당 인증객체로 생성된 모든 세션을 가져옴
+                for (memberSession in sessionList) {
+                    memberSession.expireNow() // 해당 인증객체의 현재 만료되지 않은 세션을 모두 만료시킴 -> HttpSessionEventPublisher가 세션 만료를 감지하고 로그아웃 처리시킴
+                }
+            }
+        }
+
+        mv.viewName = "redirect:/main/sc/v1/member-session-expire?complete"
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return mv
+    }
 }

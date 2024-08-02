@@ -121,14 +121,14 @@
 </button>
 
 <h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    회원 세션 만료
+    회원 세션 만료 처리
 </h2>
 
 <button type="button"
         class="sample_btn"
         onclick="location.href='/main/sc/v1/member-session-expire'"
         th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    회원 세션 만료처리 하러 가기
+    회원 세션 만료 처리 하러 가기
 </button>
 
 <!-- Script 선언 -->

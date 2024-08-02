@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link th:href="@{/resource_global/font.css}"
+          href="../../static/resource_global/font.css"
+          rel="stylesheet"/>
+    <link th:href="@{/resource_sc1_n20/member_session_expire.css}"
+          href="../../static/resource_sc1_n20/member_session_expire.css"
+          rel="stylesheet"/>
+    <style>
+        #changePasswordButton {
+            margin-top: 5px;
+        }
+    </style>
+
+    <title>
+        Springboot MVC Template
+    </title>
+</head>
+<body>
+<!-- 본문 작성 -->
+
+<div>
+    <img id="title_icon"
+         th:src="@{/resource_global/title_icon.png}"
+         src="../../static/resource_global/title_icon.png"
+         onclick="location.href='/'"
+         alt="타이틀 아이콘 이미지"/>
+    <h1 id="title_txt">
+        회원 세션 만료 처리
+    </h1>
+</div>
+
+<hr/>
+
+<form th:action="@{/main/sc/v1/member-session-expire-process}" method="post" onsubmit="return validateForm()">
+    <div>
+        <label for="memberUid">회원 고유번호:</label>
+        <input type="number" min="1" id="memberUid" name="memberUid"/>
+    </div>
+    <div>
+        <button id="changePasswordButton" type="submit">회원 세션 만료 처리</button>
+    </div>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+</form>
+
+<!-- Script 선언 -->
+<script th:src="@{/resource_sc1_n20/member_session_expire.js}"
+        src="../../static/resource_sc1_n20/member_session_expire.js">
+</script>
+<script th:inline="javascript">
+    if ([[${viewModel.complete}]] === true) {
+        alert("회원의 세션이 만료되었습니다.");
+        history.replaceState(null, null, '/main/sc/v1/member-session-expire');
+    } else if ([[${viewModel.memberNotFound}]] === true) {
+        alert("존재하지 않는 회원 고유번호입니다.");
+        history.replaceState(null, null, '/main/sc/v1/member-session-expire');
+    }
+
+    // 입력값 검증 함수
+    function validateForm() {
+        var memberUidField = document.getElementById('memberUid');
+        var memberUid = memberUidField.value;
+
+        if (memberUid === "") {
+            alert("세션 만료 처리 할 회원의 고유번호를 입력하세요.");
+            memberUidField.focus();
+            return false;
+        }
+
+        return true;
+    }
+</script>
+</body>
+</html>
