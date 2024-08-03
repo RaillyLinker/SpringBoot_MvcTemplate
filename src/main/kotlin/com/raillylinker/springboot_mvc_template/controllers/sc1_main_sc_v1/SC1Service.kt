@@ -3,18 +3,17 @@ package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 import com.raillylinker.springboot_mvc_template.ApplicationConstants
 import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
-import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
+import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database0Config
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberDataRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_RaillyLinkerCompany_MemberRoleDataRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_RaillyLinkerCompany_MemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_MemberDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_MemberRoleDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.tables.Database0_RaillyLinkerCompany_MemberData
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.HttpStatus
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.session.SessionRegistry
@@ -54,8 +53,8 @@ class SC1Service(
     private val sessionRegistry: SessionRegistry,
 
     // (Database Repository)
-    private val database1RaillyLinkerCompanyMemberDataRepository: Database1_RaillyLinkerCompany_MemberDataRepository,
-    private val database1RaillyLinkerCompanyMemberRoleDataRepository: Database1_RaillyLinkerCompany_MemberRoleDataRepository
+    private val database0RaillyLinkerCompanyMemberDataRepository: Database0_RaillyLinkerCompany_MemberDataRepository,
+    private val database0RaillyLinkerCompanyMemberRoleDataRepository: Database0_RaillyLinkerCompany_MemberRoleDataRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -111,7 +110,7 @@ class SC1Service(
         mv.viewName = "template_sc1_n2/member_info"
 
         val memberUid = username.toLong()
-        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(memberUid).get()
+        val memberEntity = database0RaillyLinkerCompanyMemberDataRepository.findById(memberUid).get()
 
         val roleList: MutableList<String> = mutableListOf()
         for (role in roles) {
@@ -222,7 +221,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Database0Config.TRANSACTION_NAME])
     fun api5(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -232,7 +231,7 @@ class SC1Service(
     ): ModelAndView? {
         val mv = ModelAndView()
 
-        if (database1RaillyLinkerCompanyMemberDataRepository.existsByAccountId(accountId.trim())) {
+        if (database0RaillyLinkerCompanyMemberDataRepository.existsByAccountId(accountId.trim())) {
             mv.viewName = "redirect:/main/sc/v1/join?idExists"
             return mv
         }
@@ -240,8 +239,8 @@ class SC1Service(
         val passwordEnc = passwordEncoder.encode(password)!! // 비밀번호 암호화
 
         // 회원가입
-        database1RaillyLinkerCompanyMemberDataRepository.save(
-            Database1_RaillyLinkerCompany_MemberData(
+        database0RaillyLinkerCompanyMemberDataRepository.save(
+            Database0_RaillyLinkerCompany_MemberData(
                 accountId,
                 passwordEnc
             )
@@ -459,7 +458,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Database0Config.TRANSACTION_NAME])
     fun api10(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -492,7 +491,7 @@ class SC1Service(
         val authentication = SecurityContextHolder.getContext().authentication
         val userUid: Long = authentication.name.toLong()
 
-        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+        val memberEntity = database0RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
 
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n11/change_id"
@@ -516,7 +515,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Database0Config.TRANSACTION_NAME])
     fun api12(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -525,16 +524,16 @@ class SC1Service(
     ): ModelAndView? {
         val mv = ModelAndView()
 
-        if (database1RaillyLinkerCompanyMemberDataRepository.existsByAccountId(accountId.trim())) {
+        if (database0RaillyLinkerCompanyMemberDataRepository.existsByAccountId(accountId.trim())) {
             mv.viewName = "redirect:/main/sc/v1/change-id?idExists"
             return mv
         }
 
         val authentication = SecurityContextHolder.getContext().authentication
         val userUid: Long = authentication.name.toLong()
-        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+        val memberEntity = database0RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
         memberEntity.accountId = accountId
-        database1RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
+        database0RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
 
         mv.viewName = "redirect:/main/sc/v1/change-id?complete"
         return mv
@@ -565,7 +564,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Database0Config.TRANSACTION_NAME])
     fun api14(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -577,7 +576,7 @@ class SC1Service(
 
         val authentication = SecurityContextHolder.getContext().authentication
         val userUid: Long = authentication.name.toLong()
-        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+        val memberEntity = database0RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
 
         if (memberEntity.accountPassword == null || // 페스워드는 아직 만들지 않음
             !passwordEncoder.matches(oldPassword, memberEntity.accountPassword!!) // 패스워드 불일치
@@ -588,7 +587,7 @@ class SC1Service(
         }
 
         memberEntity.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
-        database1RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
+        database0RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
 
         // SecurityContextLogoutHandler를 사용하여 로그아웃을 처리합니다.
         SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, authentication)
@@ -606,7 +605,7 @@ class SC1Service(
         val authentication = SecurityContextHolder.getContext().authentication
         val userUid: Long = authentication.name.toLong()
 
-        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+        val memberEntity = database0RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
 
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n15/withdrawal"
@@ -626,7 +625,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Database0Config.TRANSACTION_NAME])
     fun api16(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -636,9 +635,9 @@ class SC1Service(
 
         val authentication = SecurityContextHolder.getContext().authentication
         val userUid: Long = authentication.name.toLong()
-        val memberEntity = database1RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
+        val memberEntity = database0RaillyLinkerCompanyMemberDataRepository.findById(userUid).get()
         val accountId = memberEntity.accountId
-        database1RaillyLinkerCompanyMemberDataRepository.deleteById(userUid)
+        database0RaillyLinkerCompanyMemberDataRepository.deleteById(userUid)
 
         // SecurityContextLogoutHandler를 사용하여 로그아웃을 처리합니다.
         SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, authentication)
@@ -699,7 +698,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Database0Config.TRANSACTION_NAME])
     fun api19(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -709,7 +708,7 @@ class SC1Service(
     ): ModelAndView? {
         val mv = ModelAndView()
 
-        val memberEntityOpt = database1RaillyLinkerCompanyMemberDataRepository.findById(memberUid)
+        val memberEntityOpt = database0RaillyLinkerCompanyMemberDataRepository.findById(memberUid)
 
         if (memberEntityOpt.isEmpty) {
             mv.viewName = "redirect:/main/sc/v1/member-password-change?memberNotFound"
@@ -718,7 +717,7 @@ class SC1Service(
 
         val memberEntity = memberEntityOpt.get()
         memberEntity.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
-        database1RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
+        database0RaillyLinkerCompanyMemberDataRepository.save(memberEntity)
 
         // 강제 로그아웃 로직 추가
         for (principal in sessionRegistry.allPrincipals.stream().map { o: Any? -> o as UserDetails? }
@@ -772,7 +771,7 @@ class SC1Service(
     ): ModelAndView? {
         val mv = ModelAndView()
 
-        val memberEntityOpt = database1RaillyLinkerCompanyMemberDataRepository.findById(memberUid)
+        val memberEntityOpt = database0RaillyLinkerCompanyMemberDataRepository.findById(memberUid)
 
         if (memberEntityOpt.isEmpty) {
             mv.viewName = "redirect:/main/sc/v1/member-session-expire?memberNotFound"

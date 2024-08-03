@@ -1903,8 +1903,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N30 : Database1 Row 입력 테스트 API",
-        description = "별도 DB인 Database1 의 테스트 테이블에 Row 를 입력합니다.\n\n"
+        summary = "N30 : Database0 Row 입력 테스트 API",
+        description = "별도 DB인 Database0 의 테스트 테이블에 Row 를 입력합니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -1915,7 +1915,7 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @PostMapping(
-        path = ["/database1-row"],
+        path = ["/database0-row"],
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
@@ -1981,8 +1981,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N31 : Database1 Row 삭제 테스트",
-        description = "별도 DB인 Database1 의 테스트 테이블의 Row 하나를 삭제합니다.\n\n"
+        summary = "N31 : Database0 Row 삭제 테스트",
+        description = "별도 DB인 Database0 의 테스트 테이블의 Row 하나를 삭제합니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -2007,7 +2007,7 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @DeleteMapping(
-        path = ["/database1-row/{index}"],
+        path = ["/database0-row/{index}"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )
@@ -2028,8 +2028,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N32 : Database1 Rows 조회 테스트",
-        description = "별도 DB인 Database1 의 테스트 테이블의 모든 Rows 를 반환합니다.\n\n"
+        summary = "N32 : Database0 Rows 조회 테스트",
+        description = "별도 DB인 Database0 의 테스트 테이블의 모든 Rows 를 반환합니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -2040,7 +2040,7 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @GetMapping(
-        path = ["/database1-rows"],
+        path = ["/database0-rows"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
@@ -2102,8 +2102,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N33 : Database1 트랜젝션 동작 테스트",
-        description = "별도 DB인 Database1 의 정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n"
+        summary = "N33 : Database0 트랜젝션 동작 테스트",
+        description = "별도 DB인 Database0 의 정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n"
     )
     @ApiResponses(
         value = [
@@ -2114,7 +2114,7 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @PostMapping(
-        path = ["/database1-transaction-rollback-sample"],
+        path = ["/database0-transaction-rollback-sample"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )
@@ -2129,8 +2129,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N34 : Database1 트랜젝션 비동작 테스트",
-        description = "별도 DB인 Database1 의 트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n"
+        summary = "N34 : Database0 트랜젝션 비동작 테스트",
+        description = "별도 DB인 Database0 의 트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n"
     )
     @ApiResponses(
         value = [
@@ -2141,7 +2141,7 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @PostMapping(
-        path = ["/database1-no-transaction-exception-sample"],
+        path = ["/database0-no-transaction-exception-sample"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )

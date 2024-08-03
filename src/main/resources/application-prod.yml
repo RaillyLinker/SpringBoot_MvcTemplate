@@ -40,7 +40,7 @@ spring:
 datasource:
   # !!!접속하려는 DB 에 대한 정보를 아래와 같이 추가 할 것!!!
   # (사내 개발자 정보 테이블이 존재하는 데이터베이스)
-  database1: # DB 추가
+  database0: # DB 추가
     # 데이터베이스 접속 경로
     # !!!serverTimezone 설정을 데이터베이스의 타임존 설정과 일치시켜주세요.!!!
     # 로컬 DB 접속은 localhost 를 사용하고, 도커에서 로컬 DB 접속시엔 host.docker.internal 를 사용하세요.
@@ -55,7 +55,7 @@ datasource:
     initialization-mode: always
 
   # (서비스 데이터베이스)
-  database2: # DB 추가
+  database1: # DB 추가
     # 데이터베이스 접속 경로
     # !!!serverTimezone 설정을 데이터베이스의 타임존 설정과 일치시켜주세요.!!!
     # 로컬 DB 접속은 localhost 를 사용하고, 도커에서 로컬 DB 접속시엔 host.docker.internal 를 사용하세요.
