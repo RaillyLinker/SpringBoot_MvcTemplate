@@ -15,3 +15,5 @@
                     response.sendRedirect("/main/sc/v1/login?fail")
                 }
             }
+
+- Admin 회원 탈퇴 처리
