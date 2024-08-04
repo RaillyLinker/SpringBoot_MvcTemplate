@@ -81,6 +81,13 @@ datasource-mongodb: # MongoDB 추가 (하위 요소를 추가하고 MongoDbConfi
   mongoDb1:
     uri: mongodb://127.0.0.1:27017/db
 
+logging:
+  file:
+    name: ./by_product_files/logs/currentLog_dev.log # !!!로그 파일 경로!!!
+  level:
+    org.springframework.r2dbc.core: DEBUG # R2DBC 로깅 설정
+    org.springframework.data.mongodb: DEBUG # mongoDB 로깅 설정
+
 springdoc:
   swagger-ui:
     enabled: true # Swagger 문서 공개 여부

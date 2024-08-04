@@ -48,13 +48,6 @@ cloud:
     stack:
       auto: false
 
-logging:
-  file:
-    name: ./by_product_files/logs/currentLog.log # !!!Spring Admin Server 에 전달할 로그 파일 경로!!!
-  level:
-    org.springframework.r2dbc.core: DEBUG # R2DBC 로깅 설정
-    org.springframework.data.mongodb: DEBUG # mongoDB 로깅 설정
-
 customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
   # cors 경로 리스트 설정 (설정하지 않으면 모든 요청 허용)
   corsList: http://localhost:8081, http://127.0.0.1:8081
