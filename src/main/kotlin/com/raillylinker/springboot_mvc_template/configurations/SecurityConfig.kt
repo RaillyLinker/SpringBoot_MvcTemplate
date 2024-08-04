@@ -392,7 +392,7 @@ class SecurityConfig {
              */
         }
 
-        return http.build()
+        return securityMatcher.build()
     }
 
     // 인증 토큰 검증 필터 - API 요청마다 검증 실행
