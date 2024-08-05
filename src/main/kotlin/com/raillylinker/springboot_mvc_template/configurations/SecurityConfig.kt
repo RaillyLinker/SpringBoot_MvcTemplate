@@ -90,12 +90,23 @@ class SecurityConfig {
 
     // [모든 리퀘스트의 기본 시큐리티 설정 = Session-Cookie 인증 사용]
     @Bean
-    @Order(Int.MAX_VALUE)
+    @Order(0)
     fun securityFilterChainMainSc(
         http: HttpSecurity,
         userDetailService: UserDetailsServiceMainSc
     ): SecurityFilterChain {
-        http.headers { headersCustomizer ->
+        // !!!시큐리티 필터 추가시 수정!!!
+        // 본 시큐리티 필터가 관리할 주소 체계
+        val securityUrlList = listOf(
+            "/main/sc/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml"
+        ) // 위 모든 경로에 적용
+
+        val securityMatcher = http.securityMatcher(*securityUrlList.toTypedArray())
+
+        securityMatcher.headers { headersCustomizer ->
             // iframe 허용 설정
             // 기본은 허용하지 않음, sameOrigin 은 같은 origin 일 때에만 허용하고, disable 은 모두 허용
             headersCustomizer.frameOptions { frameOptionsConfig ->
@@ -104,15 +115,15 @@ class SecurityConfig {
         }
 
         // cors 적용(서로 다른 origin 의 웹화면에서 리퀘스트 금지)
-        http.cors {}
+        securityMatcher.cors {}
         // csrf 보안 설정
         // HTML 에서 form 요청을 보낼 때,
         // <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         // 이렇게 csrf 값을 같이 줘야하는데, Thymeleaf 에선 굳이 명시하지 않아도 자동으로 포함됩니다.
-        http.csrf {}
+        securityMatcher.csrf {}
 
         // 스프링 시큐리티 로그인 설정
-        http.formLogin { formLoginCustomizer ->
+        securityMatcher.formLogin { formLoginCustomizer ->
             // 로그인이 필요한 요청을 했을 때 자동으로 이동할 로그인 화면 경로
             // 이 경로를 만들어서 로그인 화면의 HTML 과 그 안의 form 태그 요소들을 만들어야 합니다.
             formLoginCustomizer.loginPage("/main/sc/v1/login")
@@ -141,10 +152,10 @@ class SecurityConfig {
         }
 
         // 커스텀 UserDetailsService 설정
-        http.userDetailsService(userDetailService)
+        securityMatcher.userDetailsService(userDetailService)
 
         // 스프링 시큐리티 로그아웃 설정
-        http.logout { logoutCustomizer ->
+        securityMatcher.logout { logoutCustomizer ->
             // 로그아웃(현 세션에서 로그인된 멤버 정보를 제거) 경로
             logoutCustomizer.logoutUrl("/main/sc/v1/logout")
             // 로그아웃 시 이동할 경로
@@ -156,7 +167,7 @@ class SecurityConfig {
         }
 
         // 시큐리티 예외 처리
-        http.exceptionHandling { exceptionHandlingCustomizer ->
+        securityMatcher.exceptionHandling { exceptionHandlingCustomizer ->
             exceptionHandlingCustomizer.accessDeniedPage("/main/sc/v1/error?type=ACCESS_DENIED") // 권한 부족 시 이동할 페이지 설정
             // 또는 커스텀 핸들러 설정
             // exceptionHandlingCustomizer.accessDeniedHandler { request, response, accessDeniedException ->
@@ -166,7 +177,7 @@ class SecurityConfig {
 
         // (API 요청 제한)
         // 기본적으로 모두 Open
-        http.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
+        securityMatcher.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
             // 스웨거 관련 주소 요청시 필요한 권한 설정
             authorizeHttpRequestsCustomizer.requestMatchers(
                 "/swagger-ui/**",
@@ -182,7 +193,7 @@ class SecurityConfig {
             authorizeHttpRequestsCustomizer.anyRequest().permitAll()
         }
 
-        http.sessionManagement { sessionManagementCustomizer ->
+        securityMatcher.sessionManagement { sessionManagementCustomizer ->
             sessionManagementCustomizer
                 // 세션 고정 공격 방지 : 로그인 할 때마다 새로운 세션 ID 를 발급받습니다.
                 .sessionFixation().migrateSession()
@@ -195,7 +206,7 @@ class SecurityConfig {
                 .sessionRegistry(sessionRegistry())
         }
 
-        return http.build()
+        return securityMatcher.build()
     }
 
     @Service
@@ -312,7 +323,7 @@ class SecurityConfig {
     ////
     // [/service1/tk 로 시작되는 리퀘스트의 시큐리티 설정 = Token 인증 사용]
     @Bean
-    @Order(0)
+    @Order(1)
     fun securityFilterChainService1Tk(http: HttpSecurity): SecurityFilterChain {
         // !!!시큐리티 필터 추가시 수정!!!
         // 본 시큐리티 필터가 관리할 주소 체계
