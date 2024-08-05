@@ -234,18 +234,6 @@ class C10Service1TkV1AuthService(
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
-
-            val lockInfo = lockList[0]
-            httpServletResponse.setHeader(
-                "member-lock-data",
-                "{\"lockWhen\": \"${
-                    lockInfo.rowCreateDate!!.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                }\",\"lockBefore\": \"${
-                    lockInfo.lockBefore.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
-            )
             return null
         }
 
@@ -519,18 +507,6 @@ class C10Service1TkV1AuthService(
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
-
-            val lockInfo = lockList[0]
-            httpServletResponse.setHeader(
-                "member-lock-data",
-                "{\"lockWhen\": \"${
-                    lockInfo.rowCreateDate!!.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                }\",\"lockBefore\": \"${
-                    lockInfo.lockBefore.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
-            )
             return null
         }
 
@@ -642,18 +618,6 @@ class C10Service1TkV1AuthService(
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
-
-            val lockInfo = lockList[0]
-            httpServletResponse.setHeader(
-                "member-lock-data",
-                "{\"lockWhen\": \"${
-                    lockInfo.rowCreateDate!!.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                }\",\"lockBefore\": \"${
-                    lockInfo.lockBefore.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
-            )
             return null
         }
 
@@ -835,18 +799,6 @@ class C10Service1TkV1AuthService(
                 if (lockList.isNotEmpty()) {
                     // 계정 정지 당한 상황
                     httpServletResponse.setHeader("api-result-code", "6")
-
-                    val lockInfo = lockList[0]
-                    httpServletResponse.setHeader(
-                        "member-lock-data",
-                        "{\"lockWhen\": \"${
-                            lockInfo.rowCreateDate!!.atZone(ZoneId.systemDefault())
-                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                        }\",\"lockBefore\": \"${
-                            lockInfo.lockBefore.atZone(ZoneId.systemDefault())
-                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-                        }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
-                    )
 
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     return null
