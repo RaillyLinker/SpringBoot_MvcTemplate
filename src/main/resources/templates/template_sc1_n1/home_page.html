@@ -127,5 +127,16 @@
     회원 세션 만료 처리 하러 가기
 </button>
 
+<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
+    회원 탈퇴 처리
+</h2>
+
+<button type="button"
+        class="sample_btn"
+        onclick="location.href='/main/sc/v1/member-withdrawal'"
+        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
+    회원 탈퇴 처리 하러 가기
+</button>
+
 </body>
 </html>
