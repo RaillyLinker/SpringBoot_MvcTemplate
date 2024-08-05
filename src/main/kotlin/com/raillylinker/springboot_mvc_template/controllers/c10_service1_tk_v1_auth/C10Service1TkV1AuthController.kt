@@ -232,7 +232,8 @@ class C10Service1TkV1AuthController(
                     Header(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
-                                "1 : API 비밀키가 다릅니다.\n\n",
+                                "1 : API 비밀키가 다릅니다.\n\n" +
+                                "2 : 존재하지 않는 회원 고유번호입니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]

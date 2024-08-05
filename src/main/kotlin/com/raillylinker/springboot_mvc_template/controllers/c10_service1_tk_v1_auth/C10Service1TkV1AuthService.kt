@@ -152,7 +152,11 @@ class C10Service1TkV1AuthService(
 
         val memberEntity = database1Service1MemberDataRepository.findById(memberUid)
 
-        if (!memberEntity.isEmpty) {
+        if (memberEntity.isEmpty) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "2")
+            return
+        } else {
             val tokenEntityList =
                 database1Service1LogInTokenHistoryRepository.findAllByMemberDataAndAccessTokenExpireWhenAfter(
                     memberEntity.get(),
@@ -161,6 +165,7 @@ class C10Service1TkV1AuthService(
             for (tokenEntity in tokenEntityList) {
                 SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenEntity.tokenType} ${tokenEntity.accessToken}")
             }
+
         }
 
         httpServletResponse.setHeader("api-result-code", "")
