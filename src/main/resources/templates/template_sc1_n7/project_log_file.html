@@ -44,12 +44,12 @@
     <h2 th:text="${viewModel.fileName}"></h2>
     <th:block th:each="line : ${viewModel.logLines}">
         <div>
-            <span th:text="'[' + ${line.logDatetime} + '] '"></span>
-            <span>[</span>
-            <span th:text="${line.logLevel}" th:classappend="${line.logLevel}"></span>
-            <span>] </span>
+            <span>-------------------------------------------</span>
             <br>
-            <span th:text="${line.logString}"></span>
+            <span th:text="'[' + ${line.logDatetime} + '] '"></span>
+            <span th:text="'[' + ${line.logLevel} + '] '" th:classappend="${line.logLevel}"></span>
+            <br>
+            <pre th:text="${line.logString}"></pre>
         </div>
         <div>&nbsp</div>
     </th:block>

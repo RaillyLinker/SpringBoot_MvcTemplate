@@ -116,7 +116,7 @@ class LoggingFilter : OncePerRequestFilter() {
 
             if (isError) {
                 classLogger.error(
-                    "\n----------------------------------------------------------------------\n" +
+                    ">>ApiFilterLog>>\n" + // API 필터로 인한 로그
                             "requestTime : $requestTime\n" +
                             "endPoint : $endpoint\n" +
                             "client Ip : $clientAddressIp\n" +
@@ -128,12 +128,11 @@ class LoggingFilter : OncePerRequestFilter() {
                                 Duration.between(requestTime, LocalDateTime.now()).toMillis()
                             }\n" +
                             "response Headers : $responseHeaders\n" +
-                            "response Body : $responseBody\n" +
-                            "\n----------------------------------------------------------------------\n"
+                            "response Body : $responseBody\n"
                 )
             } else {
                 classLogger.info(
-                    "\n----------------------------------------------------------------------\n" +
+                    ">>ApiFilterLog>>\n" + // API 필터로 인한 로그
                             "requestTime : $requestTime\n" +
                             "endPoint : $endpoint\n" +
                             "client Ip : $clientAddressIp\n" +
@@ -145,8 +144,7 @@ class LoggingFilter : OncePerRequestFilter() {
                                 Duration.between(requestTime, LocalDateTime.now()).toMillis()
                             }\n" +
                             "response Headers : $responseHeaders\n" +
-                            "response Body : $responseBody\n" +
-                            "\n----------------------------------------------------------------------\n"
+                            "response Body : $responseBody\n"
                 )
             }
 
