@@ -238,7 +238,10 @@ class C10Service1TkV1AuthService(
             val lockInfo = lockList[0]
             httpServletResponse.setHeader(
                 "member-lock-data",
-                "{\"lockBefore\": \"${
+                "{\"lockWhen\": \"${
+                    lockInfo.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                }\",\"lockBefore\": \"${
                     lockInfo.lockBefore.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
@@ -520,7 +523,10 @@ class C10Service1TkV1AuthService(
             val lockInfo = lockList[0]
             httpServletResponse.setHeader(
                 "member-lock-data",
-                "{\"lockBefore\": \"${
+                "{\"lockWhen\": \"${
+                    lockInfo.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                }\",\"lockBefore\": \"${
                     lockInfo.lockBefore.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
@@ -640,7 +646,10 @@ class C10Service1TkV1AuthService(
             val lockInfo = lockList[0]
             httpServletResponse.setHeader(
                 "member-lock-data",
-                "{\"lockBefore\": \"${
+                "{\"lockWhen\": \"${
+                    lockInfo.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                }\",\"lockBefore\": \"${
                     lockInfo.lockBefore.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 }\",\"lockReason\": \"${lockInfo.lockReason}\"}"
@@ -830,7 +839,10 @@ class C10Service1TkV1AuthService(
                     val lockInfo = lockList[0]
                     httpServletResponse.setHeader(
                         "member-lock-data",
-                        "{\"lockBefore\": \"${
+                        "{\"lockWhen\": \"${
+                            lockInfo.rowCreateDate!!.atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                        }\",\"lockBefore\": \"${
                             lockInfo.lockBefore.atZone(ZoneId.systemDefault())
                                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                         }\",\"lockReason\": \"${lockInfo.lockReason}\"}"

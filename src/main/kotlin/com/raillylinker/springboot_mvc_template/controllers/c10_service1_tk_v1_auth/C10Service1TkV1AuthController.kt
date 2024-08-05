@@ -296,10 +296,11 @@ class C10Service1TkV1AuthController(
                         name = "member-lock-data",
                         description = "(api-result-code 가 3 일 때의 계정 정지 정보) - Optional, api-result-code 에 따라 Required\n\n" +
                                 "값은 JsonString 형식으로,\n\n" +
+                                "계정 정지 시작 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 lockWhen,\n\n" +
                                 "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 lockBefore,\n\n" +
                                 "계정 정지 이유를 뜻하는 lockReason\n\n" +
                                 "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
-                                "{\"lockBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockReason\" : \"부정 행위로 인한 정지\"}\n\n",
+                                "{\"lockWhen\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockReason\" : \"부정 행위로 인한 정지\"}\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -478,10 +479,11 @@ class C10Service1TkV1AuthController(
                         name = "member-lock-data",
                         description = "(api-result-code 가 3 일 때의 계정 정지 정보) - Optional, api-result-code 에 따라 Required\n\n" +
                                 "값은 JsonString 형식으로,\n\n" +
+                                "계정 정지 시작 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 lockWhen,\n\n" +
                                 "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 lockBefore,\n\n" +
                                 "계정 정지 이유를 뜻하는 lockReason\n\n" +
                                 "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
-                                "{\"lockBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockReason\" : \"부정 행위로 인한 정지\"}\n\n",
+                                "{\"lockWhen\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockReason\" : \"부정 행위로 인한 정지\"}\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -550,10 +552,11 @@ class C10Service1TkV1AuthController(
                         name = "member-lock-data",
                         description = "(api-result-code 가 3 일 때의 계정 정지 정보) - Optional, api-result-code 에 따라 Required\n\n" +
                                 "값은 JsonString 형식으로,\n\n" +
+                                "계정 정지 시작 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 lockWhen,\n\n" +
                                 "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 lockBefore\n\n" +
                                 "계정 정지 이유를 뜻하는 lockReason\n\n" +
                                 "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
-                                "{\"lockBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockReason\" : \"부정 행위로 인한 정지\"}\n\n",
+                                "{\"lockWhen\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockReason\" : \"부정 행위로 인한 정지\"}\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -668,10 +671,11 @@ class C10Service1TkV1AuthController(
                         name = "member-lock-data",
                         description = "(api-result-code 가 6 일 때의 계정 정지 정보) - Optional, api-result-code 에 따라 Required\n\n" +
                                 "값은 JsonString 형식으로,\n\n" +
+                                "계정 정지 시작 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 lockWhen,\n\n" +
                                 "계정 정지 마지막 일시(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)를 뜻하는 lockBefore,\n\n" +
                                 "계정 정지 이유를 뜻하는 lockReason\n\n" +
                                 "으로 이루어져 있으며 예시는 아래와 같습니다.\n\n" +
-                                "{\"lockBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockReason\" : \"부정 행위로 인한 정지\"}\n\n",
+                                "{\"lockWhen\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockBefore\" : \"2024_05_02_T_15_14_49_552_KST\", \"lockReason\" : \"부정 행위로 인한 정지\"}\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
