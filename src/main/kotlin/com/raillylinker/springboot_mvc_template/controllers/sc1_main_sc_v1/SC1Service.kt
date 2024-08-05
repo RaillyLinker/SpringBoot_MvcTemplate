@@ -5,9 +5,11 @@ import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database0Config
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
+import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api3ViewModel.LockInfo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_MemberDataRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_MemberRoleDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_MemberLockHistoryRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.tables.Database0_RaillyLinkerCompany_MemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.tables.Database0_RaillyLinkerCompany_MemberLockHistory
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import java.io.File
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.regex.Pattern
 import java.util.stream.Collectors
@@ -54,7 +58,7 @@ class SC1Service(
 
     // (Database Repository)
     private val database0RaillyLinkerCompanyMemberDataRepository: Database0_RaillyLinkerCompany_MemberDataRepository,
-    private val database0RaillyLinkerCompanyMemberRoleDataRepository: Database0_RaillyLinkerCompany_MemberRoleDataRepository
+    private val database0RaillyLinkerCompanyMemberLockHistoryRepository: Database0_RaillyLinkerCompany_MemberLockHistoryRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -152,7 +156,8 @@ class SC1Service(
         fail: String?,
         expired: String?,
         duplicated: String?,
-        changePassword: String?
+        changePassword: String?,
+        lock: Long?
     ): ModelAndView? {
         val authentication = SecurityContextHolder.getContext().authentication
         // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
@@ -161,6 +166,35 @@ class SC1Service(
         val mv = ModelAndView()
         mv.viewName = "template_sc1_n3/login"
 
+        val lockInfo: LockInfo?
+        if (lock == null) {
+            lockInfo = null
+        } else {
+            val lockEntity: Database0_RaillyLinkerCompany_MemberLockHistory?
+            val memberEntity = database0RaillyLinkerCompanyMemberDataRepository.findById(lock).get()
+            val lockList = database0RaillyLinkerCompanyMemberLockHistoryRepository.findAllNowLocks(
+                memberEntity, LocalDateTime.now()
+            )
+            lockEntity = if (lockList.isEmpty()) {
+                null
+            } else {
+                lockList[0]
+            }
+
+            lockInfo = LockInfo(
+                if (lockEntity == null) {
+                    null
+                } else {
+                    LockInfo.LockDesc(
+                        memberEntity.accountId,
+                        lockEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")),
+                        lockEntity.lockBefore.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")),
+                        lockEntity.lockReason
+                    )
+                }
+            )
+        }
+
         mv.addObject(
             "viewModel",
             Api3ViewModel(
@@ -168,7 +202,8 @@ class SC1Service(
                 fail != null,
                 expired != null,
                 duplicated != null,
-                changePassword != null
+                changePassword != null,
+                lockInfo
             )
         )
 
@@ -184,8 +219,26 @@ class SC1Service(
         // 동시 접속 금지
         val duplicated: Boolean,
         // 비밀번호 변경
-        val changePassword: Boolean
-    )
+        val changePassword: Boolean,
+        // 계정 정지 정보
+        val lockInfo: LockInfo?
+    ) {
+        // 계정 정지 정보
+        data class LockInfo(
+            val lockDesc: LockDesc?
+        ) {
+            data class LockDesc(
+                // 정지된 회원 아이디
+                val accountId: String,
+                // 언제부터 계정 정지(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)
+                val lockCreate: String,
+                // 이때까지 계정 정지(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)
+                val lockBefore: String,
+                //계정 정지 사유
+                val lockReason: String
+            )
+        }
+    }
 
     ////
     fun api4(

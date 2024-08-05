@@ -1,5 +1,6 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
+import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig.UserDetailsServiceMainSc.Companion.getMemberEntity
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_MemberLockHistoryRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_MemberDataRepository
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
+import org.springframework.security.authentication.LockedException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -42,7 +44,9 @@ import java.time.LocalDateTime
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
-class SecurityConfig {
+class SecurityConfig(
+    private val database0RaillyLinkerCompanyMemberDataRepository: Database0_RaillyLinkerCompany_MemberDataRepository
+) {
     // <멤버 변수 공간>
     companion object {
         // (Swagger 에 표시될 Token API 401 api-result-code 설명)
@@ -140,13 +144,25 @@ class SecurityConfig {
             // 인증 실패 시 자동으로 이동하는 경로
 //            formLoginCustomizer.failureUrl("/main/sc/v1/login?fail")
             // 인증 실패 후 별도의 처리가 필요한 경우 커스텀 핸들러를 생성하여 등록
-            formLoginCustomizer.failureHandler { _, response, exception ->
-                if (exception is SessionAuthenticationException) {
-                    // 동시 접속 금지로 실패한 경우
-                    response.sendRedirect("/main/sc/v1/login?duplicated")
-                } else {
-                    // 그외 인증 실패
-                    response.sendRedirect("/main/sc/v1/login?fail")
+            formLoginCustomizer.failureHandler { request, response, exception ->
+                when (exception) {
+                    is SessionAuthenticationException -> {
+                        // 동시 접속 금지로 실패한 경우
+                        response.sendRedirect("/main/sc/v1/login?duplicated")
+                    }
+
+                    is LockedException -> {
+                        // 계정 정지로 인한 실패
+                        val userName = request.getParameter("username")
+                        val memberDataEntity: Database0_RaillyLinkerCompany_MemberData =
+                            getMemberEntity(userName, database0RaillyLinkerCompanyMemberDataRepository)
+                        response.sendRedirect("/main/sc/v1/login?lock=${memberDataEntity.uid}")
+                    }
+
+                    else -> {
+                        // 그외 인증 실패
+                        response.sendRedirect("/main/sc/v1/login?fail")
+                    }
                 }
             }
         }
@@ -215,32 +231,44 @@ class SecurityConfig {
         private val database0RaillyLinkerCompanyMemberRoleDataRepository: Database0_RaillyLinkerCompany_MemberRoleDataRepository,
         private val database0RaillyLinkerCompanyMemberLockHistoryRepository: Database0_RaillyLinkerCompany_MemberLockHistoryRepository
     ) : UserDetailsService {
+        companion object {
+            fun getMemberEntity(
+                userName: String,
+                database0RaillyLinkerCompanyMemberDataRepository: Database0_RaillyLinkerCompany_MemberDataRepository
+            ): Database0_RaillyLinkerCompany_MemberData {
+                // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
+                // 예를들어 email 로그인의 test@test.com 계정의 로그인시에는,
+                // email_test@test.com 이라는 값이 userName 에 담겨져 올 것입니다.
+                val userNameSplitIdx = userName.indexOf('_')
+                if (userNameSplitIdx == -1) {
+                    throw UsernameNotFoundException("유효하지 않은 로그인 타입입니다. : ")
+                }
+
+                // 로그인 타입과 아이디 분리
+                val userNameType = userName.substring(0, userNameSplitIdx)
+                val userNameValue = userName.substring(userNameSplitIdx + 1)
+
+                val memberDataEntity: Database0_RaillyLinkerCompany_MemberData
+                when (userNameType) {
+                    // 아이디 로그인
+                    "accountId" -> {
+                        memberDataEntity =
+                            database0RaillyLinkerCompanyMemberDataRepository.findByAccountId(userNameValue)
+                                ?: throw UsernameNotFoundException("아이디 유저 정보가 존재하지 않습니다 : $userNameValue")
+                    }
+
+                    else -> {
+                        throw UsernameNotFoundException("유효하지 않은 로그인 타입입니다. : $userNameType")
+                    }
+                }
+                return memberDataEntity
+            }
+        }
+
         override fun loadUserByUsername(userName: String): UserDetails {
-            // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
-            // 예를들어 email 로그인의 test@test.com 계정의 로그인시에는,
-            // email_test@test.com 이라는 값이 userName 에 담겨져 올 것입니다.
-            val userNameSplitIdx = userName.indexOf('_')
-            if (userNameSplitIdx == -1) {
-                throw UsernameNotFoundException("유효하지 않은 로그인 타입입니다. : ")
-            }
-
-            // 로그인 타입과 아이디 분리
-            val userNameType = userName.substring(0, userNameSplitIdx)
-            val userNameValue = userName.substring(userNameSplitIdx + 1)
-
             // 로그인 타입별 멤버 정보 가져오기(없다면 UsernameNotFoundException)
-            val memberDataEntity: Database0_RaillyLinkerCompany_MemberData
-            when (userNameType) {
-                // 아이디 로그인
-                "accountId" -> {
-                    memberDataEntity = database0RaillyLinkerCompanyMemberDataRepository.findByAccountId(userNameValue)
-                        ?: throw UsernameNotFoundException("아이디 유저 정보가 존재하지 않습니다 : $userNameValue")
-                }
-
-                else -> {
-                    throw UsernameNotFoundException("유효하지 않은 로그인 타입입니다. : $userNameType")
-                }
-            }
+            val memberDataEntity: Database0_RaillyLinkerCompany_MemberData =
+                getMemberEntity(userName, database0RaillyLinkerCompanyMemberDataRepository)
 
             // 회원 권한을 가져와 변환
             val memberRoleDataEntityList =

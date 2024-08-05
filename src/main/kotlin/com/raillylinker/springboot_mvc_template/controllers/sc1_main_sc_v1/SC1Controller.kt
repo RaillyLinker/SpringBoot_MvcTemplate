@@ -144,9 +144,25 @@ class SC1Controller(
             example = ""
         )
         @RequestParam("changePassword")
-        changePassword: String?
+        changePassword: String?,
+        @Parameter(
+            name = "lock",
+            description = "계정 정지된 회원 고유번호(not null 이라면 계정이 정지 된 것이며, 값은 회원 고유번호를 뜻합니다.)",
+            example = ""
+        )
+        @RequestParam("lock")
+        lock: Long?
     ): ModelAndView? {
-        return service.api3(httpServletRequest, httpServletResponse, session, fail, expired, duplicated, changePassword)
+        return service.api3(
+            httpServletRequest,
+            httpServletResponse,
+            session,
+            fail,
+            expired,
+            duplicated,
+            changePassword,
+            lock
+        )
     }
 
 

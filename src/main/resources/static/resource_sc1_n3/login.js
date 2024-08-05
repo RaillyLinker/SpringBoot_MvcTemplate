@@ -20,6 +20,18 @@ window.onload = function(){
     } else if (changePassword) {
         alert("비밀번호가 변경되었습니다.");
         history.replaceState(null, null, '/main/sc/v1/login');
+    } else if (lockInfo != null) {
+        if (lockInfo.lockDesc == null) {
+            alert("인증 오류\n다시 한번 로그인해주세요.");
+            history.replaceState(null, null, '/main/sc/v1/login');
+        }else{
+            alert(lockInfo.lockDesc.accountId +
+                " 님의 계정이 관리자에 의해 정지되었습니다.\n\n정지 기간 :\n" +
+                lockInfo.lockDesc.lockCreate + " ~\n" +
+                lockInfo.lockDesc.lockBefore + "\n\n정지 사유 : " +
+                lockInfo.lockDesc.lockReason);
+            history.replaceState(null, null, '/main/sc/v1/login');
+        }
     }
 }
 
