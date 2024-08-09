@@ -573,10 +573,12 @@ class C2Service1TkV1RequestTestService(
 
         // 반환값에 전해줄 FIS
         val fileInputStream = FileInputStream("$serverFileAbsolutePathString/$serverFileNameString")
+        val fileByteArray = FileCopyUtils.copyToByteArray(fileInputStream)
+        fileInputStream.close()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return ByteArrayResource(FileCopyUtils.copyToByteArray(fileInputStream))
+        return ByteArrayResource(fileByteArray)
     }
 
 
@@ -591,10 +593,12 @@ class C2Service1TkV1RequestTestService(
 
         // 반환값에 전해줄 FIS
         val fileInputStream = FileInputStream("$serverFileAbsolutePathString/$serverFileNameString")
+        val fileByteArray = FileCopyUtils.copyToByteArray(fileInputStream)
+        fileInputStream.close()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return ByteArrayResource(FileCopyUtils.copyToByteArray(fileInputStream))
+        return ByteArrayResource(fileByteArray)
     }
 
 

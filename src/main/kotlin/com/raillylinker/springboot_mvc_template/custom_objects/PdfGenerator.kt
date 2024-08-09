@@ -162,7 +162,9 @@ object PdfGenerator {
 
         val byteArrayOutputStream = ByteArrayOutputStream()
         renderer.createPDF(byteArrayOutputStream) // PDF 파일 생성
+        val bytearray = byteArrayOutputStream.toByteArray()
+        byteArrayOutputStream.close()
 
-        return byteArrayOutputStream.toByteArray()
+        return bytearray
     }
 }
