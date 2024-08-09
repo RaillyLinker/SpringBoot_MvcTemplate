@@ -1,1 +1,5 @@
 [TODO]
+- arraylist 를 mutablelist로
+- fileinputstream, fileoutputstream 닫기 처리
+- hashmap 을 weakmap 으로
+- pdf 생성 등 메모리 릭 확인
