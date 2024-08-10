@@ -170,14 +170,16 @@ class C6Service1TkV1TestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C6Service1TkV1TestController.Api4InputVo
     ): C6Service1TkV1TestController.Api4OutputVo? {
+        val fileInputStream = inputVo.excelFile.inputStream
         val excelData = ExcelFileUtilObject.readExcel(
-            inputVo.excelFile.inputStream,
+            fileInputStream,
             inputVo.sheetIdx,
             inputVo.rowRangeStartIdx,
             inputVo.rowRangeEndIdx,
             inputVo.columnRangeIdxList,
             inputVo.minColumnLength
         )
+        fileInputStream.close()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -217,7 +219,9 @@ class C6Service1TkV1TestService(
             listOf("2-1", "2-2")
         )
 
-        ExcelFileUtilObject.writeExcel(file.outputStream(), inputExcelSheetDataMap)
+        file.outputStream().use { fileOutputStream ->
+            ExcelFileUtilObject.writeExcel(fileOutputStream, inputExcelSheetDataMap)
+        }
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -330,6 +334,7 @@ class C6Service1TkV1TestService(
                         val ttf = TTFParser().parseEmbedded(fontInputStream)
                         ttfName = ttf.name
                         ttf.close()
+                        fontInputStream.close()
 
                         val fontFileUrl =
                             "http://127.0.0.1:${serverProperties.port}${controllerBasicMapping ?: ""}/by_product_files/uploads/fonts/$ttfName.$fileExtension"
@@ -495,6 +500,7 @@ class C6Service1TkV1TestService(
         val ttf = parser.parseEmbedded(fontInputStream)
         val fontName: String = ttf.name
         ttf.close()
+        fontInputStream.close()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()

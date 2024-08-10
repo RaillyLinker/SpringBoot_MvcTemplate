@@ -106,30 +106,32 @@ class C5Service1TkV1MediaResourceProcessService(
         val gifFilePathObject =
             Paths.get("$projectRootAbsolutePathString/src/main/resources/static/resource_c5_n2/test.gif")
 
-        val frameSplit = ImageProcessUtilObject.gifToImageList(Files.newInputStream(gifFilePathObject))
+        Files.newInputStream(gifFilePathObject).use { fileInputStream ->
+            val frameSplit = ImageProcessUtilObject.gifToImageList(fileInputStream)
 
-        // 요청 시간을 문자열로
-        val timeString = LocalDateTime.now().atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            // 요청 시간을 문자열로
+            val timeString = LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
 
-        // 파일 저장 디렉토리 경로
-        val saveDirectoryPathString = "./by_product_files/test/$timeString"
-        val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
-        // 파일 저장 디렉토리 생성
-        Files.createDirectories(saveDirectoryPath)
+            // 파일 저장 디렉토리 경로
+            val saveDirectoryPathString = "./by_product_files/test/$timeString"
+            val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
+            // 파일 저장 디렉토리 생성
+            Files.createDirectories(saveDirectoryPath)
 
-        // 받은 파일 순회
-        for (bufferedImageIndexedValue in frameSplit.withIndex()) {
-            val bufferedImage = bufferedImageIndexedValue.value
+            // 받은 파일 순회
+            for (bufferedImageIndexedValue in frameSplit.withIndex()) {
+                val bufferedImage = bufferedImageIndexedValue.value
 
-            // 확장자 포함 파일명 생성
-            val saveFileName = "${bufferedImageIndexedValue.index + 1}.png"
+                // 확장자 포함 파일명 생성
+                val saveFileName = "${bufferedImageIndexedValue.index + 1}.png"
 
-            // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
-            val fileTargetPath = saveDirectoryPath.resolve(saveFileName).normalize()
+                // 파일 저장 경로와 파일명(with index) 을 합친 path 객체
+                val fileTargetPath = saveDirectoryPath.resolve(saveFileName).normalize()
 
-            // 파일 저장
-            ImageIO.write(bufferedImage.frameBufferedImage, "png", fileTargetPath.toFile())
+                // 파일 저장
+                ImageIO.write(bufferedImage.frameBufferedImage, "png", fileTargetPath.toFile())
+            }
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -174,10 +176,12 @@ class C5Service1TkV1MediaResourceProcessService(
             )
         }
 
-        ImageProcessUtilObject.imageListToGif(
-            gifFrameList,
-            fileTargetPath.toFile().outputStream()
-        )
+        fileTargetPath.toFile().outputStream().use { fileOutputStream ->
+            ImageProcessUtilObject.imageListToGif(
+                gifFrameList,
+                fileOutputStream
+            )
+        }
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -209,11 +213,13 @@ class C5Service1TkV1MediaResourceProcessService(
         val resultFileName = "resized_${timeString}.gif"
 
         // 리사이징
+        val fileInputStream = inputVo.multipartImageFile.inputStream
         val resizedImageByteArray = ImageProcessUtilObject.resizeGifImage(
-            inputVo.multipartImageFile.inputStream,
+            fileInputStream,
             inputVo.resizingWidth,
             inputVo.resizingHeight
         )
+        fileInputStream.close()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()

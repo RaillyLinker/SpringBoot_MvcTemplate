@@ -154,16 +154,16 @@ class C4Service1TkV1FileTestService(
         ).normalize()
 
         // 압축 파일 생성
-        val zipOutputStream = ZipOutputStream(FileOutputStream(fileTargetPath.toFile()))
-
-        for (filePath in filePathList) {
-            val file = File(filePath)
-            if (file.exists()) {
-                CustomUtilObject.addToZip(file, file.name, zipOutputStream)
+        FileOutputStream(fileTargetPath.toFile()).use { fileOutputStream ->
+            ZipOutputStream(fileOutputStream).use { zipOutputStream ->
+                for (filePath in filePathList) {
+                    val file = File(filePath)
+                    if (file.exists()) {
+                        CustomUtilObject.addToZip(file, file.name, zipOutputStream)
+                    }
+                }
             }
         }
-
-        zipOutputStream.close()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -193,8 +193,10 @@ class C4Service1TkV1FileTestService(
         ).normalize()
 
         // 압축 파일 생성
-        ZipOutputStream(FileOutputStream(fileTargetPath.toFile())).use { zipOutputStream ->
-            CustomUtilObject.compressDirectoryToZip(sourceDir, sourceDir.name, zipOutputStream)
+        FileOutputStream(fileTargetPath.toFile()).use { fileOutputStream ->
+            ZipOutputStream(fileOutputStream).use { zipOutputStream ->
+                CustomUtilObject.compressDirectoryToZip(sourceDir, sourceDir.name, zipOutputStream)
+            }
         }
 
         httpServletResponse.setHeader("api-result-code", "")
