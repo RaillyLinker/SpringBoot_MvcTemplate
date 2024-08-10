@@ -44,24 +44,26 @@ object CustomUtilObject {
 
     // (zip 파일을 압축 풀기)
     fun unzipFile(zipFilePath: String, destDirectory: Path) {
-        ZipInputStream(FileInputStream(zipFilePath)).use { zipInputStream ->
-            var entry: ZipEntry? = zipInputStream.nextEntry
-            while (entry != null) {
-                val newFile = destDirectory.resolve(entry.name).toFile()
-                if (entry.isDirectory) {
-                    newFile.mkdirs()
-                } else {
-                    newFile.parentFile.mkdirs() // Ensure directory structure is created
-                    FileOutputStream(newFile).use { fos ->
-                        val buffer = ByteArray(1024)
-                        var length: Int
-                        while (zipInputStream.read(buffer).also { length = it } > 0) {
-                            fos.write(buffer, 0, length)
+        FileInputStream(zipFilePath).use { fileInputStream ->
+            ZipInputStream(fileInputStream).use { zipInputStream ->
+                var entry: ZipEntry? = zipInputStream.nextEntry
+                while (entry != null) {
+                    val newFile = destDirectory.resolve(entry.name).toFile()
+                    if (entry.isDirectory) {
+                        newFile.mkdirs()
+                    } else {
+                        newFile.parentFile.mkdirs() // Ensure directory structure is created
+                        FileOutputStream(newFile).use { fos ->
+                            val buffer = ByteArray(1024)
+                            var length: Int
+                            while (zipInputStream.read(buffer).also { length = it } > 0) {
+                                fos.write(buffer, 0, length)
+                            }
                         }
                     }
+                    zipInputStream.closeEntry()
+                    entry = zipInputStream.nextEntry
                 }
-                zipInputStream.closeEntry()
-                entry = zipInputStream.nextEntry
             }
         }
     }

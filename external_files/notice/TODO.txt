@@ -1,19 +1,1 @@
 [TODO]
-- inputstream, outputstream 닫기 처리
-    (Inputstream)
-    Custom util object
-    Excel file util object
-    Gif util object
-    Image process util object
-
-    Aws s3 util di
-
-    (outputstream)
-    Custom util object
-    Excel file util object
-    Gif util object
-    Image process util object
-
-- 그외 close 처리 및 누수 확인
-
-- 회사 프로젝트에도 누수 처리

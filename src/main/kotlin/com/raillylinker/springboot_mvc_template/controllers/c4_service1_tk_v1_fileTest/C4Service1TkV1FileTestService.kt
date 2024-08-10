@@ -293,9 +293,9 @@ class C4Service1TkV1FileTestService(
             inputVo.multipartFile,
             savedFileName,
             if (activeProfile == "prod80") {
-                "petlogon-contract-prod/test"
+                "test-prod/test"
             } else {
-                "petlogon-contract-dev/test"
+                "test-dev/test"
             }
         )
 

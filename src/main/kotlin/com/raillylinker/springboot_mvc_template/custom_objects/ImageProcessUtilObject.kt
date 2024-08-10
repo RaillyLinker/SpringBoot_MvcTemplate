@@ -19,16 +19,20 @@ object ImageProcessUtilObject {
     ): ByteArray {
         val imageType = imageTypeEnum.typeStr
         val bufferedResizedImage = BufferedImage(resizeWidth, resizeHeight, BufferedImage.TYPE_INT_RGB)
+        val imageInputStream = imageBytes.inputStream()
         bufferedResizedImage.createGraphics().drawImage(
-            ImageIO.read(imageBytes.inputStream())
+            ImageIO.read(imageInputStream)
                 .getScaledInstance(resizeWidth, resizeHeight, BufferedImage.SCALE_SMOOTH),
             0,
             0,
             null
         )
+        imageInputStream.close()
         val outputStream = ByteArrayOutputStream()
         ImageIO.write(bufferedResizedImage, imageType, outputStream)
-        return outputStream.toByteArray()
+        val resultByteArray = outputStream.toByteArray()
+        outputStream.close()
+        return resultByteArray
     }
 
     enum class ResizeImageTypeEnum(val typeStr: String) {
@@ -75,7 +79,9 @@ object ImageProcessUtilObject {
         val tempFile = File.createTempFile("resized_", ".gif")
 
         try {
-            GifUtilObject.encodeGif(resizedFrameList, FileOutputStream(tempFile), 2, false)
+            val fileOutputStream = FileOutputStream(tempFile)
+            GifUtilObject.encodeGif(resizedFrameList, fileOutputStream, 2, false)
+            fileOutputStream.close()
             return Files.readAllBytes(tempFile.toPath())
         } finally {
             // 임시 파일 삭제
