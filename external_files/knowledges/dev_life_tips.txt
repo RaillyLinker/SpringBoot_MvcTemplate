@@ -334,7 +334,12 @@
         이 영역의 사용을 지양하도록 합시다.
 
     2. 해제를 전제로 만들어진 라이브러리를 사용할 때에는 꼭 사용 후 해제하도록 합시다.
-        예를들어 FileInputStream, FileOutputStream, BufferedReader 객체를 사용시에는 꼭 close 메소드를 실행시켜야 하는 것과 같습니다.
+        해제가 필요한 대표적인 클래스
+        PrintStream
+        FileInputStream
+        FileOutputStream
+        BufferedReader
+        InputStreamReader
 
     3. 래핑 클래스 구현시 로직상 메모리 해제 처리를 합시다.
         대표적인 예로, Stack 클래스를 구현할 때,
