@@ -40,6 +40,11 @@ class ThreadMerger(
     fun mergeThread() {
         executorService.execute {
             mergedThreadCountSemaphore.acquire()
+            // 오버플로우 방지
+            if (mergedThreadCount < 0) {
+                mergedThreadCountSemaphore.release()
+                return@execute
+            }
             try {
                 // 스레드 병합 카운트 +1
                 ++mergedThreadCount
