@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository
 interface Database1_Template_FkTestManyToOneChildRepository :
     JpaRepository<Database1_Template_FkTestManyToOneChild, Long> {
     // 외래키 변수로 검색시, 테이블 컬럼명이 아닌 클래스 변수명을 기준으로 하며, 데이터 타입도 부모 테이블의 클래스 타입을 선언해야합니다.
-    fun findAllByFkTestParentOrderByRowCreateDate(fkTestParent: Database1_Template_FkTestParent): List<Database1_Template_FkTestManyToOneChild>
+    fun findAllByFkTestParentOrderByRowCreateDate(
+        fkTestParent: Database1_Template_FkTestParent
+    ): List<Database1_Template_FkTestManyToOneChild>
 }

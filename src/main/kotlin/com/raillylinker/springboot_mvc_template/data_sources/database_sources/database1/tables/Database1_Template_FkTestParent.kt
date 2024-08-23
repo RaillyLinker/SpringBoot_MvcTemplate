@@ -8,7 +8,10 @@ import java.time.LocalDateTime
 
 // 주의 : 낙관적 Lock (@Version) 사용시 Transaction 기능과 충돌이 있음
 @Entity
-@Table(name = "fk_test_parent", catalog = "template")
+@Table(
+    name = "fk_test_parent",
+    catalog = "template"
+)
 @Comment("Foreign Key 테스트용 테이블 (부모 테이블)")
 class Database1_Template_FkTestParent(
     @Column(name = "parent_name", nullable = false, columnDefinition = "VARCHAR(255)")

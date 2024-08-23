@@ -9,7 +9,10 @@ import java.time.LocalDateTime
 
 // 주의 : 낙관적 Lock (@Version) 사용시 Transaction 기능과 충돌이 있음
 @Entity
-@Table(name = "test_data", catalog = "template")
+@Table(
+    name = "test_data",
+    catalog = "template"
+)
 @Comment("테스트 정보 테이블(논리적 삭제 적용)")
 class Database1_Template_TestData(
     @Column(name = "content", nullable = false, columnDefinition = "VARCHAR(255)")

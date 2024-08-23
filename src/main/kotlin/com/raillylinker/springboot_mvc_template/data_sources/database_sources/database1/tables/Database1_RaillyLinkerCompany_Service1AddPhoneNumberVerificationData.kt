@@ -6,26 +6,29 @@ import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
-// Fk 관계 중 OneToOne 은 논리적 삭제를 적용하는 본 프로젝트에서 사용이 불가능합니다.
-//     고로, One to One 역시 Many to One 을 사용하며,
-//     로직상으로 활성화된 행이 한개 뿐이라고 처리하면 됩니다. (합성 Unique 로 FK 변수를 유니크 처리하면 더 좋습니다.)
-
-// 주의 : 낙관적 Lock (@Version) 사용시 Transaction 기능과 충돌이 있음
 @Entity
 @Table(
-    name = "fk_test_many_to_one_child",
-    catalog = "template"
+    name = "service1_add_phone_number_verification_data",
+    catalog = "railly_linker_company"
 )
-@Comment("Foreign Key 테스트용 테이블 (one to many 테스트용 자식 테이블)")
-class Database1_Template_FkTestManyToOneChild(
-    @Column(name = "child_name", nullable = false, columnDefinition = "VARCHAR(255)")
-    @Comment("자식 테이블 이름")
-    var childName: String,
-
+@Comment("Service1 계정 이메일 추가하기 검증 테이블")
+class Database1_RaillyLinkerCompany_Service1AddPhoneNumberVerificationData(
     @ManyToOne
-    @JoinColumn(name = "fk_test_parent_uid", nullable = false)
-    @Comment("FK 부모 테이블 고유번호 (template.fk_test_parent.uid)")
-    var fkTestParent: Database1_Template_FkTestParent
+    @JoinColumn(name = "service1_member_uid", nullable = false)
+    @Comment("멤버 고유번호(railly_linker_company.service1_member_data.uid)")
+    var service1MemberData: Database1_RaillyLinkerCompany_Service1MemberData,
+
+    @Column(name = "phone_number", nullable = false, columnDefinition = "VARCHAR(45)")
+    @Comment("전화 번호")
+    var phoneNumber: String,
+
+    @Column(name = "verification_secret", nullable = false, columnDefinition = "VARCHAR(20)")
+    @Comment("검증 비문")
+    var verificationSecret: String,
+
+    @Column(name = "verification_expire_when", nullable = false, columnDefinition = "DATETIME(3)")
+    @Comment("검증 만료 일시")
+    var verificationExpireWhen: LocalDateTime
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

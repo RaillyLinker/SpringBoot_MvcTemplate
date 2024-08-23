@@ -7,7 +7,10 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "test_map", catalog = "template")
+@Table(
+    name = "test_map",
+    catalog = "template"
+)
 @Comment("지도 좌표 테스트용 테이블")
 class Database1_Template_TestMap(
     @Column(name = "latitude", nullable = false, columnDefinition = "DOUBLE")

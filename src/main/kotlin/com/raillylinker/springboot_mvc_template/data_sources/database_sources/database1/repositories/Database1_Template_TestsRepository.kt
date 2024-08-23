@@ -15,7 +15,9 @@ interface Database1_Template_TestsRepository : JpaRepository<Database1_Template_
         pageable: Pageable
     ): Page<Database1_Template_TestData>
 
-    fun countByRowDeleteDateStr(rowDeleteDateStr: String): Long
+    fun countByRowDeleteDateStr(
+        rowDeleteDateStr: String
+    ): Long
 
     fun findByUidAndRowDeleteDateStr(
         uid: Long,
@@ -46,5 +48,7 @@ interface Database1_Template_TestsRepository : JpaRepository<Database1_Template_
         template_test_data.rowCreateDate desc
     """
     )
-    fun findAllByContentOrderByRowCreateDateJpql(@Param("content") content: String): List<Database1_Template_TestData>
+    fun findAllByContentOrderByRowCreateDateJpql(
+        @Param("content") content: String
+    ): List<Database1_Template_TestData>
 }

@@ -5,7 +5,10 @@ import org.hibernate.annotations.Comment
 
 // 주의 : 낙관적 Lock (@Version) 사용시 Transaction 기능과 충돌이 있음
 @Entity
-@Table(name = "just_boolean_test", catalog = "template")
+@Table(
+    name = "just_boolean_test",
+    catalog = "template"
+)
 @Comment("Boolean 값 반환 예시만을 위한 테이블")
 class Database1_Template_JustBooleanTest(
     @Column(name = "bool_value", nullable = false, columnDefinition = "BIT(1)")
