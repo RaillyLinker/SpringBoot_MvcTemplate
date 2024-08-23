@@ -7,7 +7,9 @@ import com.amazonaws.services.s3.model.S3Object
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.net.URI
 import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 
 @Service
 class AwsS3UtilDi(
@@ -82,6 +84,27 @@ class AwsS3UtilDi(
         s3Object.objectContent.use { inputStream ->
             val testString = inputStream.bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
             return testString
+        }
+    }
+
+    // (다운로드 주소로부터 파일을 다운로드하여 S3에 업로드하고 로컬 파일을 삭제하는 함수)
+    fun downloadFileAndUpload(
+        fileUrl: String,
+        fileSaveName: String,
+        bucketName: String
+    ): String {
+        val tempFilePath = Files.createTempFile("temp", ".tmp")
+        URI(fileUrl).toURL().openStream().use { inputStream ->
+            Files.copy(inputStream, tempFilePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+        }
+
+        val tempFile = tempFilePath.toFile()
+        try {
+            // 로컬 파일을 S3에 업로드
+            return upload(tempFile, fileSaveName, bucketName)
+        } finally {
+            // 임시 파일 삭제
+            tempFile.delete()
         }
     }
 }
