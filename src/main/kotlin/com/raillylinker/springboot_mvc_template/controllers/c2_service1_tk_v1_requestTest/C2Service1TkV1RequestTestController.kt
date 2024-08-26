@@ -380,7 +380,7 @@ class C2Service1TkV1RequestTestController(
 
     ////
     @Operation(
-        summary = "N6.1 : Post 요청 테스트 (application-json) - 객체 파라미터 받기",
+        summary = "N6.1 : Post 요청 테스트 (application-json, 객체 파라미터 포함)",
         description = "application-json 형태의 Request Body(객체 파라미터 포함) 를 받는 Post 메소드 요청 테스트\n\n"
     )
     @ApiResponses(
@@ -392,7 +392,7 @@ class C2Service1TkV1RequestTestController(
         ]
     )
     @PostMapping(
-        path = ["/post-request-application-json-object-param"],
+        path = ["/post-request-application-json-with-object-param"],
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
