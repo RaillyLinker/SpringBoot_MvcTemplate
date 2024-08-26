@@ -380,6 +380,120 @@ class C2Service1TkV1RequestTestController(
 
     ////
     @Operation(
+        summary = "N6.1 : Post 요청 테스트 (application-json) - 객체 파라미터 받기",
+        description = "application-json 형태의 Request Body(객체 파라미터 포함) 를 받는 Post 메소드 요청 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/post-request-application-json-object-param"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api6Dot1(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @RequestBody
+        inputVo: Api6Dot1InputVo
+    ): Api6Dot1OutputVo? {
+        return service.api6Dot1(
+            httpServletResponse,
+            inputVo
+        )
+    }
+
+    data class Api6Dot1InputVo(
+        @Schema(description = "객체 타입 파라미터", required = true)
+        @JsonProperty("objectVo")
+        val objectVo: ObjectVo,
+        @Schema(description = "객체 타입 리스트 파라미터", required = true)
+        @JsonProperty("objectVoList")
+        val objectVoList: List<ObjectVo>
+    ) {
+        data class ObjectVo(
+            @Schema(description = "String Body 파라미터", required = true, example = "testString")
+            @JsonProperty("requestBodyString")
+            val requestBodyString: String,
+            @Schema(
+                description = "StringList Body 파라미터",
+                required = true,
+                example = "[\"testString1\", \"testString2\"]"
+            )
+            @JsonProperty("requestBodyStringList")
+            val requestBodyStringList: List<String>,
+            @Schema(description = "서브 객체 타입 파라미터", required = true)
+            @JsonProperty("subObjectVo")
+            val subObjectVo: SubObjectVo,
+            @Schema(description = "서브 객체 타입 리스트 파라미터", required = true)
+            @JsonProperty("subObjectVoList")
+            val subObjectVoList: List<SubObjectVo>
+        ) {
+            data class SubObjectVo(
+                @Schema(description = "String Body 파라미터", required = true, example = "testString")
+                @JsonProperty("requestBodyString")
+                val requestBodyString: String,
+                @Schema(
+                    description = "StringList Body 파라미터",
+                    required = true,
+                    example = "[\"testString1\", \"testString2\"]"
+                )
+                @JsonProperty("requestBodyStringList")
+                val requestBodyStringList: List<String>
+            )
+        }
+    }
+
+    data class Api6Dot1OutputVo(
+        @Schema(description = "객체 타입 파라미터", required = true)
+        @JsonProperty("objectVo")
+        val objectVo: ObjectVo,
+        @Schema(description = "객체 타입 리스트 파라미터", required = true)
+        @JsonProperty("objectVoList")
+        val objectVoList: List<ObjectVo>
+    ) {
+        data class ObjectVo(
+            @Schema(description = "String Body 파라미터", required = true, example = "testString")
+            @JsonProperty("requestBodyString")
+            val requestBodyString: String,
+            @Schema(
+                description = "StringList Body 파라미터",
+                required = true,
+                example = "[\"testString1\", \"testString2\"]"
+            )
+            @JsonProperty("requestBodyStringList")
+            val requestBodyStringList: List<String>,
+            @Schema(description = "서브 객체 타입 파라미터", required = true)
+            @JsonProperty("subObjectVo")
+            val subObjectVo: SubObjectVo,
+            @Schema(description = "서브 객체 타입 리스트 파라미터", required = true)
+            @JsonProperty("subObjectVoList")
+            val subObjectVoList: List<SubObjectVo>
+        ) {
+            data class SubObjectVo(
+                @Schema(description = "String Body 파라미터", required = true, example = "testString")
+                @JsonProperty("requestBodyString")
+                val requestBodyString: String,
+                @Schema(
+                    description = "StringList Body 파라미터",
+                    required = true,
+                    example = "[\"testString1\", \"testString2\"]"
+                )
+                @JsonProperty("requestBodyStringList")
+                val requestBodyStringList: List<String>
+            )
+        }
+    }
+
+
+    ////
+    @Operation(
         summary = "N7 : Post 요청 테스트 (x-www-form-urlencoded)",
         description = "x-www-form-urlencoded 형태의 Request Body 를 받는 Post 메소드 요청 테스트\n\n"
     )

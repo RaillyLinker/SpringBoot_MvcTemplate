@@ -132,6 +132,68 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
+    fun api6Dot1(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C2Service1TkV1RequestTestController.Api6Dot1InputVo
+    ): C2Service1TkV1RequestTestController.Api6Dot1OutputVo? {
+        val objectList: MutableList<C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo> = mutableListOf()
+
+        for (objectVo in inputVo.objectVoList) {
+            val subObjectVoList: MutableList<C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo> =
+                mutableListOf()
+            for (subObject in objectVo.subObjectVoList) {
+                subObjectVoList.add(
+                    C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo(
+                        subObject.requestBodyString,
+                        subObject.requestBodyStringList
+                    )
+                )
+            }
+
+            objectList.add(
+                C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo(
+                    objectVo.requestBodyString,
+                    objectVo.requestBodyStringList,
+                    C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo(
+                        objectVo.subObjectVo.requestBodyString,
+                        objectVo.subObjectVo.requestBodyStringList
+                    ),
+                    subObjectVoList
+                )
+            )
+        }
+
+        val subObjectVoList: MutableList<C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo> =
+            mutableListOf()
+        for (subObject in inputVo.objectVo.subObjectVoList) {
+            subObjectVoList.add(
+                C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo(
+                    subObject.requestBodyString,
+                    subObject.requestBodyStringList
+                )
+            )
+        }
+
+        val outputVo = C2Service1TkV1RequestTestController.Api6Dot1OutputVo(
+            C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo(
+                inputVo.objectVo.requestBodyString,
+                inputVo.objectVo.requestBodyStringList,
+                C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo(
+                    inputVo.objectVo.subObjectVo.requestBodyString,
+                    inputVo.objectVo.subObjectVo.requestBodyStringList
+                ),
+                subObjectVoList
+            ),
+            objectList
+        )
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return outputVo
+    }
+
+
+    ////
     fun api7(
         httpServletResponse: HttpServletResponse,
         inputVo: C2Service1TkV1RequestTestController.Api7InputVo
