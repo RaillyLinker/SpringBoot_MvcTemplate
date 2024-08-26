@@ -458,6 +458,7 @@ class C2Service1TkV1RequestTestController(
         @JsonProperty("objectVoList")
         val objectVoList: List<ObjectVo>
     ) {
+        @Schema(description = "객체 타입 파라미터 VO", required = true)
         data class ObjectVo(
             @Schema(description = "String Body 파라미터", required = true, example = "testString")
             @JsonProperty("requestBodyString")
@@ -476,6 +477,7 @@ class C2Service1TkV1RequestTestController(
             @JsonProperty("subObjectVoList")
             val subObjectVoList: List<SubObjectVo>
         ) {
+            @Schema(description = "서브 객체 타입 파라미터 VO", required = true)
             data class SubObjectVo(
                 @Schema(description = "String Body 파라미터", required = true, example = "testString")
                 @JsonProperty("requestBodyString")
