@@ -194,6 +194,15 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
+    fun api6Dot2(
+        httpServletResponse: HttpServletResponse
+    ) {
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
+
+
+    ////
     fun api7(
         httpServletResponse: HttpServletResponse,
         inputVo: C2Service1TkV1RequestTestController.Api7InputVo

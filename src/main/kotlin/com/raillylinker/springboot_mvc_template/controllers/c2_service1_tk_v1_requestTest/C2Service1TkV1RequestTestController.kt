@@ -496,6 +496,35 @@ class C2Service1TkV1RequestTestController(
 
     ////
     @Operation(
+        summary = "N6.2 : Post 요청 테스트 (입출력값 없음)",
+        description = "입출력값이 없는 Post 메소드 요청 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/post-request-application-json-with-no-param"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api6Dot2(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        return service.api6Dot2(
+            httpServletResponse
+        )
+    }
+
+
+    ////
+    @Operation(
         summary = "N7 : Post 요청 테스트 (x-www-form-urlencoded)",
         description = "x-www-form-urlencoded 형태의 Request Body 를 받는 Post 메소드 요청 테스트\n\n"
     )
