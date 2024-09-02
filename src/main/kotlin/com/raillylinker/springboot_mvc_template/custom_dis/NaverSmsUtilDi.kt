@@ -4,12 +4,12 @@ import com.raillylinker.springboot_mvc_template.data_sources.network_retrofit2.R
 import com.raillylinker.springboot_mvc_template.data_sources.network_retrofit2.request_apis.SensApigwNtrussComRequestApi
 import org.apache.commons.codec.binary.Base64
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 // [Naver SMS 발송 유틸 객체]
-@Service
+@Component
 class NaverSmsUtilDi(
     @Value("\${customConfig.naverSms.accessKey}")
     private var accessKey: String,
