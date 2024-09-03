@@ -16,6 +16,12 @@ import jakarta.servlet.http.HttpSession
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.InputStreamResource
+import org.springframework.core.io.Resource
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.session.SessionRegistry
@@ -25,11 +31,13 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import java.io.File
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import java.util.regex.Pattern
 import java.util.stream.Collectors
 
 
@@ -377,68 +385,43 @@ class SC1Service(
         )
     }
 
+
     ////
-    fun api7(
-        httpServletRequest: HttpServletRequest,
-        httpServletResponse: HttpServletResponse,
-        session: HttpSession,
-        filePath: String
-    ): ModelAndView? {
-        val rootLogDirFile = File(ApplicationConstants.rootDirFile, "by_product_files/logs")
-        val logFile = File(rootLogDirFile, filePath)
+    fun api7(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
+        // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
+        val projectRootAbsolutePathString: String = File("").absolutePath
 
-        val fileName: String
-        val logLines: MutableList<Api7ViewModel.LogLine> = mutableListOf()
-        if (logFile.exists()) {
-            fileName = logFile.name
+        // 파일 절대 경로 및 파일명 (프로젝트 루트 경로에 있는 by_product_files/test 폴더를 기준으로 함)
+        val serverFilePathObject =
+            Paths.get("$projectRootAbsolutePathString/by_product_files/logs/$fileName")
 
-            // 로그 파일을 읽어 String 으로 저장
-            val fileContent = logFile.readText()
-
-            // 로그 라인을 추출하기 위한 정규 표현식 패턴
-            val logPattern = Pattern.compile(
-                """\[(\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+)] \[(DEBUG|ERROR|WARN |INFO |TRACE)](.*?)(?=\n\[\d{4}_\d{2}_\d{2}_T_\d{2}_\d{2}_\d{2}_\d{3}_\w+]|$)""",
-                Pattern.DOTALL
-            )
-
-            // 정규 표현식 매처
-            val matcher = logPattern.matcher(fileContent)
-
-            // 로그 라인을 추출하고 데이터 클래스에 저장
-            while (matcher.find()) {
-                val logDatetime = matcher.group(1).trim()
-                val logLevel = matcher.group(2).uppercase().trim()
-                val logString = matcher.group(3).trim()
-
-                // 로그 라인 객체를 리스트에 추가
-                logLines.add(Api7ViewModel.LogLine(logDatetime, logLevel, logString))
+        when {
+            Files.isDirectory(serverFilePathObject) -> {
+                // 파일이 디렉토리일때
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                httpServletResponse.setHeader("api-result-code", "1")
+                return null
             }
-        } else {
-            fileName = "-"
+
+            Files.notExists(serverFilePathObject) -> {
+                // 파일이 없을 때
+                httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+                httpServletResponse.setHeader("api-result-code", "1")
+                return null
+            }
         }
 
-        val mv = ModelAndView()
-        mv.viewName = "template_sc1_n7/project_log_file"
-
-        mv.addObject(
-            "viewModel",
-            Api7ViewModel(
-                fileName,
-                logLines
-            )
-        )
-
-        return mv
-    }
-
-    data class Api7ViewModel(
-        val fileName: String,
-        val logLines: List<LogLine>
-    ) {
-        data class LogLine(
-            val logDatetime: String,
-            val logLevel: String,
-            val logString: String
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+        return ResponseEntity<Resource>(
+            InputStreamResource(Files.newInputStream(serverFilePathObject)),
+            HttpHeaders().apply {
+                this.contentDisposition = ContentDisposition.builder("attachment")
+                    .filename(fileName, StandardCharsets.UTF_8)
+                    .build()
+                this.add(HttpHeaders.CONTENT_TYPE, Files.probeContentType(serverFilePathObject))
+            },
+            HttpStatus.OK
         )
     }
 

@@ -3,13 +3,18 @@ package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
+import org.springframework.core.io.Resource
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -294,35 +299,46 @@ class SC1Controller(
 
     ////
     @Operation(
-        summary = "N7 : 프로젝트 로그 내용 화면 <>",
-        description = "프로젝트 로그 내용 화면\n\n"
+        summary = "N7 : by_product_files/logs 폴더에서 파일 다운받기",
+        description = "업로드 API 를 사용하여 by_product_files/logs 로 업로드한 파일을 다운로드\n\n"
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
                 description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : fileName 에 해당하는 파일이 존재하지 않습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
             )
         ]
     )
     @GetMapping(
         path = ["/project-log-file"],
         consumes = [MediaType.ALL_VALUE],
-        produces = [MediaType.TEXT_HTML_VALUE]
+        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
+    @ResponseBody
     fun api7(
         @Parameter(hidden = true)
-        httpServletRequest: HttpServletRequest,
-        @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @Parameter(hidden = true)
-        session: HttpSession,
         @Parameter(name = "filePath", description = "파일 경로", example = "currentLog.log")
         @RequestParam("filePath")
         filePath: String
-    ): ModelAndView? {
-        return service.api7(httpServletRequest, httpServletResponse, session, filePath)
+    ): ResponseEntity<Resource>? {
+        return service.api7(httpServletResponse, filePath)
     }
 
 
