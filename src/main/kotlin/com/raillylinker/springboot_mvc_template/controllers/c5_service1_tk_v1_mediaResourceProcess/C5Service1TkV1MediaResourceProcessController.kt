@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c5_service1_tk_v1_mediaResourceProcess
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.raillylinker.springboot_mvc_template.custom_objects.ImageProcessUtilObject
+import com.raillylinker.springboot_mvc_template.custom_objects.ImageProcessUtil
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
@@ -84,7 +84,7 @@ class C5Service1TkV1MediaResourceProcessController(
         val resizingHeight: Int,
         @Schema(description = "이미지 포멧", required = true, example = "BMP")
         @JsonProperty("imageType")
-        val imageType: ImageProcessUtilObject.ResizeImageTypeEnum
+        val imageType: ImageProcessUtil.ResizeImageTypeEnum
     )
 
 

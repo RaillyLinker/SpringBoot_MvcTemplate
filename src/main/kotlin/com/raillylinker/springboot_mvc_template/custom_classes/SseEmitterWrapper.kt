@@ -1,8 +1,7 @@
 package com.raillylinker.springboot_mvc_template.custom_classes
 
-import com.raillylinker.springboot_mvc_template.custom_objects.SseEmitterUtilObject
+import com.raillylinker.springboot_mvc_template.custom_objects.SseEmitterUtil
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
-import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -70,9 +69,9 @@ data class SseEmitterWrapper(
         emitterMap[sseEmitterId] = sseEmitter
 
         // 503 에러를 방지하기 위해, 처음 이미터 생성시엔 빈 메세지라도 발송해야함
-        SseEmitterUtilObject.sendSseEvent(
+        SseEmitterUtil.sendSseEvent(
             sseEmitter,
-            SseEmitterUtilObject.makeSseEventBuilder("system", null, "SSE Connected!")
+            SseEmitterUtil.makeSseEventBuilder("system", null, "SSE Connected!")
         )
 
         if (lastSseEventId != null) { // 첫번째 요청이 아님 (에러로 인해 lastSseEventId 다음의 이벤트를 못 받은 상황)
@@ -110,7 +109,7 @@ data class SseEmitterWrapper(
                         // eventDate 은 lastEventDate 이후 날짜
                         newEventList.add(lastEvent)
 
-                        SseEmitterUtilObject.sendSseEvent(sseEmitter, event)
+                        SseEmitterUtil.sendSseEvent(sseEmitter, event)
                     }
                 }
 

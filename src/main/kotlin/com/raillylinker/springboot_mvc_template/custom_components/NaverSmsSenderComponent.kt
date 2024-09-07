@@ -1,4 +1,4 @@
-package com.raillylinker.springboot_mvc_template.custom_dis
+package com.raillylinker.springboot_mvc_template.custom_components
 
 import com.raillylinker.springboot_mvc_template.data_sources.network_retrofit2.RepositoryNetworkRetrofit2
 import com.raillylinker.springboot_mvc_template.data_sources.network_retrofit2.request_apis.SensApigwNtrussComRequestApi
@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec
 
 // [Naver SMS 발송 유틸 객체]
 @Component
-class NaverSmsUtilDi(
+class NaverSmsSenderComponent(
     @Value("\${customConfig.naverSms.accessKey}")
     private var accessKey: String,
     @Value("\${customConfig.naverSms.secretKey}")

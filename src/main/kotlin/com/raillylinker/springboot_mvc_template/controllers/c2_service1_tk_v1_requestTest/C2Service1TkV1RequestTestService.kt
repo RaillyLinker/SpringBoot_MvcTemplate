@@ -3,7 +3,7 @@ package com.raillylinker.springboot_mvc_template.controllers.c2_service1_tk_v1_r
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.raillylinker.springboot_mvc_template.custom_classes.SseEmitterWrapper
-import com.raillylinker.springboot_mvc_template.custom_objects.SseEmitterUtilObject
+import com.raillylinker.springboot_mvc_template.custom_objects.SseEmitterUtil
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -741,7 +741,7 @@ class C2Service1TkV1RequestTestService(
             val eventId = "${emitter.key}/${dateString}"
 
             // 이벤트 빌더 생성
-            val sseEventBuilder = SseEmitterUtilObject.makeSseEventBuilder(
+            val sseEventBuilder = SseEmitterUtil.makeSseEventBuilder(
                 "triggerTest", // 이벤트 그룹명
                 eventId, // 이벤트 고유값
                 "trigger $nowTriggerTestCount" // 전달 데이터
@@ -755,7 +755,7 @@ class C2Service1TkV1RequestTestService(
             }
 
             // 이벤트 발송
-            SseEmitterUtilObject.sendSseEvent(
+            SseEmitterUtil.sendSseEvent(
                 emitter.value,
                 sseEventBuilder
             )

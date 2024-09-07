@@ -5,7 +5,7 @@ import com.raillylinker.springboot_mvc_template.configurations.database_configs.
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_NativeRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_TestMapRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_TestMap
-import com.raillylinker.springboot_mvc_template.custom_objects.MapCoordinateUtilObject
+import com.raillylinker.springboot_mvc_template.custom_objects.MapCoordinateUtil
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -79,7 +79,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C9Service1TkV1MapCoordinateCalculationController.Api1OutputVo(
-            MapCoordinateUtilObject.getDistanceMeterBetweenTwoLatLngCoordinate(
+            MapCoordinateUtil.getDistanceMeterBetweenTwoLatLngCoordinate(
                 Pair(latitude1, longitude1),
                 Pair(latitude2, longitude2)
             )
@@ -100,7 +100,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
             )
         }
 
-        val centerCoordinate = MapCoordinateUtilObject.getCenterLatLngCoordinate(
+        val centerCoordinate = MapCoordinateUtil.getCenterLatLngCoordinate(
             latLngCoordinate
         )
 
@@ -142,7 +142,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
             )
         }
 
-        val centerCoordinate = MapCoordinateUtilObject.getCenterLatLngCoordinate(
+        val centerCoordinate = MapCoordinateUtil.getCenterLatLngCoordinate(
             latLngCoordinate
         )
 

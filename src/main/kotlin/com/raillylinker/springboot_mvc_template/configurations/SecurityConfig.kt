@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig.UserDetailsServiceMainSc.Companion.getMemberEntity
-import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtilObject
+import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtil
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberLockHistoryRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberDataRepository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberRoleDataRepository
@@ -512,7 +512,7 @@ class SecurityConfig(
                         val feRemainSecond: Long? = try {
                             when (feTokenType.lowercase()) {
                                 "bearer" -> {
-                                    JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                                    JwtTokenUtil.getRemainSeconds(feAccessToken)
                                 }
 
                                 else -> {
@@ -555,7 +555,7 @@ class SecurityConfig(
                         val feRemainSecond: Long? = try {
                             when (feTokenType.lowercase()) {
                                 "bearer" -> {
-                                    JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                                    JwtTokenUtil.getRemainSeconds(feAccessToken)
                                 }
 
                                 else -> {
@@ -608,7 +608,7 @@ class SecurityConfig(
                     val feRemainSecond: Long? = try {
                         when (feTokenType.lowercase()) {
                             "bearer" -> {
-                                JwtTokenUtilObject.getRemainSeconds(feAccessToken)
+                                JwtTokenUtil.getRemainSeconds(feAccessToken)
                             }
 
                             else -> {
@@ -649,22 +649,22 @@ class SecurityConfig(
                 "bearer" -> { // Bearer JWT 토큰 검증
                     // 토큰 문자열 해석 가능여부 확인
                     val accessTokenType: String? = try {
-                        JwtTokenUtilObject.getTokenType(accessToken)
+                        JwtTokenUtil.getTokenType(accessToken)
                     } catch (_: Exception) {
                         null
                     }
 
                     if (accessTokenType == null || // 해석 불가능한 JWT 토큰
                         accessTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
-                        JwtTokenUtilObject.getTokenUsage(
+                        JwtTokenUtil.getTokenUsage(
                             accessToken,
                             AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                             AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
                         ).lowercase() != "access" || // 토큰 용도가 다름
                         // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
-                        JwtTokenUtilObject.getRemainSeconds(accessToken) > AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
-                        JwtTokenUtilObject.getIssuer(accessToken) != AUTH_JWT_ISSUER || // 발행인 불일치
-                        !JwtTokenUtilObject.validateSignature(
+                        JwtTokenUtil.getRemainSeconds(accessToken) > AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
+                        JwtTokenUtil.getIssuer(accessToken) != AUTH_JWT_ISSUER || // 발행인 불일치
+                        !JwtTokenUtil.validateSignature(
                             accessToken,
                             AUTH_JWT_SECRET_KEY_STRING
                         ) // 시크릿 검증이 무효 = 위변조 된 토큰
@@ -678,7 +678,7 @@ class SecurityConfig(
                     }
 
                     // 토큰 만료 검증
-                    val jwtRemainSeconds = JwtTokenUtilObject.getRemainSeconds(accessToken)
+                    val jwtRemainSeconds = JwtTokenUtil.getRemainSeconds(accessToken)
                     if (jwtRemainSeconds <= 0L) {
                         // 토큰이 만료됨
                         response.setHeader("api-result-code", "2")
@@ -690,7 +690,7 @@ class SecurityConfig(
 
                     // 회원 권한
                     val authorities: ArrayList<GrantedAuthority> = ArrayList()
-                    for (memberRole in JwtTokenUtilObject.getRoleList(
+                    for (memberRole in JwtTokenUtil.getRoleList(
                         accessToken,
                         AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                         AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY

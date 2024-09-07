@@ -9,7 +9,8 @@ import java.io.*
 import java.nio.file.Files
 import javax.imageio.ImageIO
 
-object ImageProcessUtilObject {
+// [이미지 처리 유틸]
+object ImageProcessUtil {
     // (움직이지 않는 정적 이미지 리사이징 및 리포멧 함수)
     fun resizeImage(
         imageBytes: ByteArray,
@@ -43,19 +44,19 @@ object ImageProcessUtilObject {
     }
 
     // (Gif 를 이미지 리스트로 분리)
-    fun gifToImageList(inputStream: InputStream): ArrayList<GifUtilObject.GifFrame> {
-        return GifUtilObject.decodeGif(inputStream)
+    fun gifToImageList(inputStream: InputStream): ArrayList<GifUtil.GifFrame> {
+        return GifUtil.decodeGif(inputStream)
     }
 
     // (이미지 리스트를 Gif 로 병합)
-    fun imageListToGif(gifFrameList: ArrayList<GifUtilObject.GifFrame>, outputStream: OutputStream) {
-        GifUtilObject.encodeGif(gifFrameList, outputStream, 2, false)
+    fun imageListToGif(gifFrameList: ArrayList<GifUtil.GifFrame>, outputStream: OutputStream) {
+        GifUtil.encodeGif(gifFrameList, outputStream, 2, false)
     }
 
     fun resizeGifImage(inputStream: InputStream, newWidth: Int, newHeight: Int): ByteArray {
-        val frameList = GifUtilObject.decodeGif(inputStream)
+        val frameList = GifUtil.decodeGif(inputStream)
 
-        val resizedFrameList = ArrayList<GifUtilObject.GifFrame>()
+        val resizedFrameList = ArrayList<GifUtil.GifFrame>()
         for (frame in frameList) {
             // 이미지 리사이징
             val resizedImage: Image =
@@ -68,7 +69,7 @@ object ImageProcessUtilObject {
             g2d.dispose()
 
             resizedFrameList.add(
-                GifUtilObject.GifFrame(
+                GifUtil.GifFrame(
                     resultBufferedImage,
                     frame.frameDelay
                 )
@@ -80,7 +81,7 @@ object ImageProcessUtilObject {
 
         try {
             val fileOutputStream = FileOutputStream(tempFile)
-            GifUtilObject.encodeGif(resizedFrameList, fileOutputStream, 2, false)
+            GifUtil.encodeGif(resizedFrameList, fileOutputStream, 2, false)
             fileOutputStream.close()
             return Files.readAllBytes(tempFile.toPath())
         } finally {

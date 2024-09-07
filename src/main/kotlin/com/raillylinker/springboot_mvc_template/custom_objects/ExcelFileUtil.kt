@@ -14,7 +14,7 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import javax.xml.parsers.SAXParserFactory
 
-object ExcelFileUtilObject {
+object ExcelFileUtil {
     // <멤버 변수 공간>
 
 

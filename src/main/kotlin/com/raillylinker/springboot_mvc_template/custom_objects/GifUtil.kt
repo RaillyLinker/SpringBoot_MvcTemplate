@@ -13,7 +13,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 // [Gif 관련 유틸 오브젝트]
-object GifUtilObject {
+object GifUtil {
     // <멤버 변수 공간>
 
 

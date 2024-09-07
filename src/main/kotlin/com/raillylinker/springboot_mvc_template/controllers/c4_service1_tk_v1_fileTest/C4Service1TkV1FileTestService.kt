@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c4_service1_tk_v1_fileTest
 
-import com.raillylinker.springboot_mvc_template.custom_dis.AwsS3UtilDi
-import com.raillylinker.springboot_mvc_template.custom_objects.CustomUtilObject
+import com.raillylinker.springboot_mvc_template.custom_components.AwsS3UtilComponent
+import com.raillylinker.springboot_mvc_template.custom_objects.CustomUtil
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -32,7 +32,7 @@ class C4Service1TkV1FileTestService(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     // (AWS S3 유틸 객체)
-    private val awsS3UtilDi: AwsS3UtilDi
+    private val awsS3UtilComponent: AwsS3UtilComponent
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -159,7 +159,7 @@ class C4Service1TkV1FileTestService(
                 for (filePath in filePathList) {
                     val file = File(filePath)
                     if (file.exists()) {
-                        CustomUtilObject.addToZip(file, file.name, zipOutputStream)
+                        CustomUtil.addToZip(file, file.name, zipOutputStream)
                     }
                 }
             }
@@ -195,7 +195,7 @@ class C4Service1TkV1FileTestService(
         // 압축 파일 생성
         FileOutputStream(fileTargetPath.toFile()).use { fileOutputStream ->
             ZipOutputStream(fileOutputStream).use { zipOutputStream ->
-                CustomUtilObject.compressDirectoryToZip(sourceDir, sourceDir.name, zipOutputStream)
+                CustomUtil.compressDirectoryToZip(sourceDir, sourceDir.name, zipOutputStream)
             }
         }
 
@@ -226,7 +226,7 @@ class C4Service1TkV1FileTestService(
 
         val fileTargetPath = saveDirectoryPath.resolve(saveFileName).normalize()
 
-        CustomUtilObject.unzipFile(filePathString, fileTargetPath)
+        CustomUtil.unzipFile(filePathString, fileTargetPath)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -289,7 +289,7 @@ class C4Service1TkV1FileTestService(
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         }).$fileExtension"
 
-        val uploadedFileFullUrl: String = awsS3UtilDi.upload(
+        val uploadedFileFullUrl: String = awsS3UtilComponent.upload(
             inputVo.multipartFile,
             savedFileName,
             if (activeProfile == "prod80") {
@@ -315,7 +315,7 @@ class C4Service1TkV1FileTestService(
         httpServletResponse.status = HttpStatus.OK.value()
 
         return C4Service1TkV1FileTestController.Api7OutputVo(
-            awsS3UtilDi.getTextFileString(
+            awsS3UtilComponent.getTextFileString(
                 if (activeProfile == "prod80") {
                     "petlogon-contract-prod/test"
                 } else {
@@ -330,7 +330,7 @@ class C4Service1TkV1FileTestService(
     ////
     fun api8(httpServletResponse: HttpServletResponse, deleteFileName: String) {
         // AWS 파일 삭제
-        awsS3UtilDi.delete(
+        awsS3UtilComponent.delete(
             if (activeProfile == "prod80") {
                 "petlogon-contract-prod/test"
             } else {

@@ -12,7 +12,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 // [JWT 토큰 유틸]
-object JwtTokenUtilObject {
+object JwtTokenUtil {
     // <공개 메소드 공간>
     // (액세스 토큰 발행)
     // memberRoleList : 멤버 권한 리스트 (ex : ["ROLE_ADMIN", "ROLE_DEVELOPER"])
@@ -70,7 +70,7 @@ object JwtTokenUtilObject {
         val signature = tokenSplit[2]
 
         // base64 로 인코딩된 header 와 payload 를 . 로 묶은 후 이를 시크릿으로 HmacSha256 해싱을 적용하여 signature 를 생성
-        val newSig = CryptoUtilObject.hmacSha256("$header.$payload", jwtSecretKeyString)
+        val newSig = CryptoUtil.hmacSha256("$header.$payload", jwtSecretKeyString)
 
         // 위 방식으로 생성된 signature 가 token 으로 전달된 signature 와 동일하다면 위/변조되지 않은 토큰으로 판단 가능
         // = 발행시 사용한 시크릿과 검증시 사용된 시크릿이 동일
@@ -84,7 +84,7 @@ object JwtTokenUtilObject {
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String
     ): Long {
-        return CryptoUtilObject.decryptAES256(
+        return CryptoUtil.decryptAES256(
             parseJwtForPayload(token)["mu"].toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -98,7 +98,7 @@ object JwtTokenUtilObject {
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String
     ): String {
-        return CryptoUtilObject.decryptAES256(
+        return CryptoUtil.decryptAES256(
             parseJwtForPayload(token)["tu"].toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -112,7 +112,7 @@ object JwtTokenUtilObject {
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String
     ): List<String> {
-        val rl = CryptoUtilObject.decryptAES256(
+        val rl = CryptoUtil.decryptAES256(
             parseJwtForPayload(token)["rl"].toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -172,7 +172,7 @@ object JwtTokenUtilObject {
         val claimsMap = mutableMapOf<String, Any>()
 
         // member uid
-        claimsMap["mu"] = CryptoUtilObject.encryptAES256(
+        claimsMap["mu"] = CryptoUtil.encryptAES256(
             memberUid.toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -181,7 +181,7 @@ object JwtTokenUtilObject {
 
         // 멤버 권한 리스트
         if (roleList != null) {
-            claimsMap["rl"] = CryptoUtilObject.encryptAES256(
+            claimsMap["rl"] = CryptoUtil.encryptAES256(
                 Gson().toJson(roleList),
                 "AES/CBC/PKCS5Padding",
                 jwtClaimsAes256InitializationVector,
@@ -190,7 +190,7 @@ object JwtTokenUtilObject {
         }
 
         // token usage
-        claimsMap["tu"] = CryptoUtilObject.encryptAES256(
+        claimsMap["tu"] = CryptoUtil.encryptAES256(
             tokenUsage,
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -217,12 +217,12 @@ object JwtTokenUtilObject {
 
     // (base64 로 인코딩된 Header, Payload 를 base64 로 디코딩)
     private fun parseJwtForHeader(jwt: String): Map<String, Any> {
-        val header = CryptoUtilObject.base64Decode(jwt.split(".")[0])
+        val header = CryptoUtil.base64Decode(jwt.split(".")[0])
         return BasicJsonParser().parseMap(header)
     }
 
     private fun parseJwtForPayload(jwt: String): Map<String, Any> {
-        val payload = CryptoUtilObject.base64Decode(jwt.split(".")[1])
+        val payload = CryptoUtil.base64Decode(jwt.split(".")[1])
         return BasicJsonParser().parseMap(payload)
     }
 }

@@ -1,4 +1,4 @@
-package com.raillylinker.springboot_mvc_template.custom_dis
+package com.raillylinker.springboot_mvc_template.custom_components
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.DeleteObjectRequest
@@ -11,8 +11,9 @@ import java.net.URI
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 
+// [AWS S3 유틸]
 @Component
-class AwsS3UtilDi(
+class AwsS3UtilComponent(
     private val amazonS3Client: AmazonS3
 ) {
     // (S3 로 업로드하는 함수)

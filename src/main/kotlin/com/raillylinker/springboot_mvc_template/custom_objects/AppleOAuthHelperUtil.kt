@@ -11,7 +11,7 @@ import java.security.spec.RSAPublicKeySpec
 import java.util.*
 
 // [Apple OAuth2 검증 관련 유틸]
-object AppleOAuthHelperUtilObject {
+object AppleOAuthHelperUtil {
     // Retrofit2 요청 객체
     private val networkRetrofit2 = RepositoryNetworkRetrofit2.getInstance()
 
@@ -28,7 +28,7 @@ object AppleOAuthHelperUtilObject {
             val testEntityVoList = response.body()!!.keys
 
             // idToken 헤더의 암호화 알고리즘 정보 가져오기
-            val header = CryptoUtilObject.base64Decode(idToken.split(".")[0])
+            val header = CryptoUtil.base64Decode(idToken.split(".")[0])
             val headerMap = BasicJsonParser().parseMap(header)
 
             val idTokenKid = headerMap["kid"].toString()

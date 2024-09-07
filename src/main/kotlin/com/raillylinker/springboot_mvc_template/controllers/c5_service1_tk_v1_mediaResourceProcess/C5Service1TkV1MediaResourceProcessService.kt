@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c5_service1_tk_v1_mediaResourceProcess
 
-import com.raillylinker.springboot_mvc_template.custom_objects.GifUtilObject
-import com.raillylinker.springboot_mvc_template.custom_objects.ImageProcessUtilObject
+import com.raillylinker.springboot_mvc_template.custom_objects.GifUtil
+import com.raillylinker.springboot_mvc_template.custom_objects.ImageProcessUtil
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -78,7 +78,7 @@ class C5Service1TkV1MediaResourceProcessService(
         }).${inputVo.imageType.typeStr}"
 
         // 이미지 리사이징
-        val resizedImage = ImageProcessUtilObject.resizeImage(
+        val resizedImage = ImageProcessUtil.resizeImage(
             inputVo.multipartImageFile.bytes,
             inputVo.resizingWidth,
             inputVo.resizingHeight,
@@ -107,7 +107,7 @@ class C5Service1TkV1MediaResourceProcessService(
             Paths.get("$projectRootAbsolutePathString/src/main/resources/static/resource_c5_n2/test.gif")
 
         Files.newInputStream(gifFilePathObject).use { fileInputStream ->
-            val frameSplit = ImageProcessUtilObject.gifToImageList(fileInputStream)
+            val frameSplit = ImageProcessUtil.gifToImageList(fileInputStream)
 
             // 요청 시간을 문자열로
             val timeString = LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -166,10 +166,10 @@ class C5Service1TkV1MediaResourceProcessService(
         }.gif"
         val fileTargetPath = saveDirectoryPath.resolve(resultFileName).normalize()
 
-        val gifFrameList: ArrayList<GifUtilObject.GifFrame> = arrayListOf()
+        val gifFrameList: ArrayList<GifUtil.GifFrame> = arrayListOf()
         for (bufferedImage in bufferedImageList) {
             gifFrameList.add(
-                GifUtilObject.GifFrame(
+                GifUtil.GifFrame(
                     bufferedImage,
                     30
                 )
@@ -177,7 +177,7 @@ class C5Service1TkV1MediaResourceProcessService(
         }
 
         fileTargetPath.toFile().outputStream().use { fileOutputStream ->
-            ImageProcessUtilObject.imageListToGif(
+            ImageProcessUtil.imageListToGif(
                 gifFrameList,
                 fileOutputStream
             )
@@ -214,7 +214,7 @@ class C5Service1TkV1MediaResourceProcessService(
 
         // 리사이징
         val fileInputStream = inputVo.multipartImageFile.inputStream
-        val resizedImageByteArray = ImageProcessUtilObject.resizeGifImage(
+        val resizedImageByteArray = ImageProcessUtil.resizeGifImage(
             fileInputStream,
             inputVo.resizingWidth,
             inputVo.resizingHeight
@@ -245,7 +245,7 @@ class C5Service1TkV1MediaResourceProcessService(
         inputVo: C5Service1TkV1MediaResourceProcessController.Api5InputVo
     ) {
         // 서명 이미지 생성 및 저장
-        val signBufferedImage = ImageProcessUtilObject.createSignatureImage(
+        val signBufferedImage = ImageProcessUtil.createSignatureImage(
             inputVo.signatureText,
             400,
             100,

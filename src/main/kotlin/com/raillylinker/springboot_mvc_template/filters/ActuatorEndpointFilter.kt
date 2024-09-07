@@ -12,7 +12,9 @@ import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 
-// 민감한 정보를 지닌 actuator 접근 제한 필터
+// [민감한 정보를 지닌 actuator 접근 제한 필터]
+// ApplicationRuntimeConfigs.runtimeConfigData.actuatorAllowIpList
+// 위 변수에 담겨있는 IP 만을 허용하고, 나머지 접근은 404 를 반환합니다.
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class ActuatorEndpointFilter : Filter {

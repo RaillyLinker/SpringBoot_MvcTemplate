@@ -9,7 +9,7 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 // [암호화, 복호화 관련 유틸]
-object CryptoUtilObject {
+object CryptoUtil {
     // [암호화 / 복호화]
     // (AES256 암호화)
     fun encryptAES256(
@@ -78,7 +78,7 @@ object CryptoUtilObject {
     fun hashSHA256(str: String): String {
         val messageDigest = MessageDigest.getInstance("SHA-256")
         messageDigest.update(str.toByteArray(StandardCharsets.UTF_8))
-        return CustomUtilObject.bytesToHex(messageDigest.digest())
+        return CustomUtil.bytesToHex(messageDigest.digest())
     }
 
     // (HmacSHA256)

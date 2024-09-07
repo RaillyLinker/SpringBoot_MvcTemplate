@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c6_service1_tk_v1_test
 
-import com.raillylinker.springboot_mvc_template.custom_dis.EmailSenderUtilDi
-import com.raillylinker.springboot_mvc_template.custom_dis.NaverSmsUtilDi
+import com.raillylinker.springboot_mvc_template.custom_components.EmailSenderComponent
+import com.raillylinker.springboot_mvc_template.custom_components.NaverSmsSenderComponent
 import com.raillylinker.springboot_mvc_template.custom_objects.*
 import jakarta.servlet.http.HttpServletResponse
 import org.apache.fontbox.ttf.TTFParser
@@ -37,9 +37,9 @@ class C6Service1TkV1TestService(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     // 이메일 발송 유틸
-    private val emailSenderUtilDi: EmailSenderUtilDi,
+    private val emailSenderComponent: EmailSenderComponent,
     // 네이버 메시지 발송 유틸
-    private val naverSmsUtilDi: NaverSmsUtilDi,
+    private val naverSmsSenderComponent: NaverSmsSenderComponent,
     @Qualifier("kafkaProducer0") private val kafkaProducer0: KafkaTemplate<String, Any>,
 
     private var serverProperties: ServerProperties,
@@ -52,7 +52,7 @@ class C6Service1TkV1TestService(
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
     fun api1(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api1InputVo) {
-        emailSenderUtilDi.sendMessageMail(
+        emailSenderComponent.sendMessageMail(
             inputVo.senderName,
             inputVo.receiverEmailAddressList.toTypedArray(),
             inputVo.carbonCopyEmailAddressList?.toTypedArray(),
@@ -71,7 +71,7 @@ class C6Service1TkV1TestService(
     fun api2(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api2InputVo) {
         // CID 는 첨부파일을 보내는 것과 동일한 의미입니다.
         // 고로 전송시 서버 성능에 악영향을 끼칠 가능성이 크고, CID 처리도 번거로우므로, CDN 을 사용하고, CID 는 되도록 사용하지 마세요.
-        emailSenderUtilDi.sendThymeLeafHtmlMail(
+        emailSenderComponent.sendThymeLeafHtmlMail(
             inputVo.senderName,
             inputVo.receiverEmailAddressList.toTypedArray(),
             inputVo.carbonCopyEmailAddressList?.toTypedArray(),
@@ -105,8 +105,8 @@ class C6Service1TkV1TestService(
         val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
 
         // SMS 전송
-        val sendSmsResult = naverSmsUtilDi.sendSms(
-            NaverSmsUtilDi.SendSmsInputVo(
+        val sendSmsResult = naverSmsSenderComponent.sendSms(
+            NaverSmsSenderComponent.SendSmsInputVo(
                 "SMS",
                 countryCode,
                 phoneNumber,
@@ -134,12 +134,12 @@ class C6Service1TkV1TestService(
         val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
 
         // SMS 전송
-        naverSmsUtilDi.sendAlimTalk(
-            NaverSmsUtilDi.SendAlimTalkInputVo(
+        naverSmsSenderComponent.sendAlimTalk(
+            NaverSmsSenderComponent.SendAlimTalkInputVo(
                 inputVo.plusFriendId,
                 inputVo.templateCode,
                 arrayListOf(
-                    NaverSmsUtilDi.SendAlimTalkInputVo.MessageVo(
+                    NaverSmsSenderComponent.SendAlimTalkInputVo.MessageVo(
                         countryCode,
                         phoneNumber,
                         null,
@@ -149,7 +149,7 @@ class C6Service1TkV1TestService(
                         null,
                         null,
                         true,
-                        NaverSmsUtilDi.SendAlimTalkInputVo.MessageVo.FailOverConfigVo(
+                        NaverSmsSenderComponent.SendAlimTalkInputVo.MessageVo.FailOverConfigVo(
                             null,
                             null,
                             null,
@@ -171,7 +171,7 @@ class C6Service1TkV1TestService(
         inputVo: C6Service1TkV1TestController.Api4InputVo
     ): C6Service1TkV1TestController.Api4OutputVo? {
         val fileInputStream = inputVo.excelFile.inputStream
-        val excelData = ExcelFileUtilObject.readExcel(
+        val excelData = ExcelFileUtil.readExcel(
             fileInputStream,
             inputVo.sheetIdx,
             inputVo.rowRangeStartIdx,
@@ -220,7 +220,7 @@ class C6Service1TkV1TestService(
         )
 
         file.outputStream().use { fileOutputStream ->
-            ExcelFileUtilObject.writeExcel(fileOutputStream, inputExcelSheetDataMap)
+            ExcelFileUtil.writeExcel(fileOutputStream, inputExcelSheetDataMap)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -234,7 +234,7 @@ class C6Service1TkV1TestService(
     ): ResponseEntity<Resource>? {
         // thymeLeaf 엔진으로 파싱한 HTML String 가져오기
         // 여기서 가져온 HTML 내에 기입된 static resources 의 경로는 절대경로가 아님
-        val htmlString = ThymeleafParserUtilObject.parseHtmlFileToHtmlString(
+        val htmlString = CustomUtil.parseHtmlFileToHtmlString(
             "template_c6_n6/html_to_pdf_sample", // thymeLeaf Html 이름 (ModelAndView 의 사용과 동일)
             // thymeLeaf 에 전해줄 데이터 Map
             mapOf(
@@ -521,7 +521,7 @@ class C6Service1TkV1TestService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api10OutputVo(
-            CryptoUtilObject.encryptAES256(
+            CryptoUtil.encryptAES256(
                 plainText,
                 alg.alg,
                 initializationVector,
@@ -542,7 +542,7 @@ class C6Service1TkV1TestService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api11OutputVo(
-            CryptoUtilObject.decryptAES256(
+            CryptoUtil.decryptAES256(
                 encryptedText,
                 alg.alg,
                 initializationVector,

@@ -1,6 +1,6 @@
-package com.raillylinker.springboot_mvc_template.custom_dis
+package com.raillylinker.springboot_mvc_template.custom_components
 
-import com.raillylinker.springboot_mvc_template.custom_objects.CustomUtilObject
+import com.raillylinker.springboot_mvc_template.custom_objects.CustomUtil
 import jakarta.mail.internet.InternetAddress
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
@@ -12,7 +12,7 @@ import java.io.File
 
 // [Spring Email 유틸]
 @Component
-class EmailSenderUtilDi(
+class EmailSenderComponent(
     private val javaMailSender: JavaMailSender,
     @Value("\${customConfig.smtp.senderName}")
     var mailSenderName: String
@@ -85,7 +85,7 @@ class EmailSenderUtilDi(
 
         // 타임리프 HTML 랜더링
         val htmlString: String =
-            CustomUtilObject.parseHtmlFileToHtmlString(
+            CustomUtil.parseHtmlFileToHtmlString(
                 thymeLeafTemplateName,
                 thymeLeafDataVariables ?: mapOf()
             )

@@ -20,7 +20,8 @@ import java.io.UnsupportedEncodingException
 import java.time.Duration
 import java.time.LocalDateTime
 
-// (Request / Response 별 로깅 필터)
+// [API 별 Request / Response 로깅 필터]
+// API 호출시마다 Request 와 Response 를 로깅하도록 처리
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class LoggingFilter : OncePerRequestFilter() {
