@@ -1,8 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c8_service1_tk_v1_redisTest
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomRedisTransactional
-import com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redis_main.repositories.TestRepository
-import com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redis_main.value_types.Test
+import com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redis_main.TestRedisType
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -15,7 +14,7 @@ class C8Service1TkV1RedisTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
-    private val redis1TestRepository: TestRepository
+    private val redis1TestRedisType: TestRedisType
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -23,19 +22,19 @@ class C8Service1TkV1RedisTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    @CustomRedisTransactional([Test.TRANSACTION_NAME])
+    @CustomRedisTransactional([TestRedisType.TRANSACTION_NAME])
     fun api1(
         httpServletResponse: HttpServletResponse,
         inputVo: C8Service1TkV1RedisTestController.Api1InputVo
     ) {
-        redis1TestRepository.saveKeyValue(
+        redis1TestRedisType.saveKeyValue(
             inputVo.key,
-            Test(
+            TestRedisType.ValueVo(
                 inputVo.content,
-                Test.InnerVo("testObject", true),
+                TestRedisType.ValueVo.InnerVo("testObject", true),
                 arrayListOf(
-                    Test.InnerVo("testObject1", false),
-                    Test.InnerVo("testObject2", true)
+                    TestRedisType.ValueVo.InnerVo("testObject1", false),
+                    TestRedisType.ValueVo.InnerVo("testObject2", true)
                 )
             ),
             inputVo.expirationMs
@@ -49,7 +48,7 @@ class C8Service1TkV1RedisTestService(
     ////
     fun api2(httpServletResponse: HttpServletResponse, key: String): C8Service1TkV1RedisTestController.Api2OutputVo? {
         // 전체 조회 테스트
-        val keyValue = redis1TestRepository.findKeyValue(key)
+        val keyValue = redis1TestRedisType.findKeyValue(key)
 
         if (keyValue == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -60,7 +59,7 @@ class C8Service1TkV1RedisTestService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api2OutputVo(
-            Test.TABLE_NAME,
+            TestRedisType.TABLE_NAME,
             keyValue.key,
             keyValue.value.content,
             keyValue.expireTimeMs
@@ -71,7 +70,7 @@ class C8Service1TkV1RedisTestService(
     ////
     fun api3(httpServletResponse: HttpServletResponse): C8Service1TkV1RedisTestController.Api3OutputVo? {
         // 전체 조회 테스트
-        val keyValueList = redis1TestRepository.findAllKeyValues()
+        val keyValueList = redis1TestRedisType.findAllKeyValues()
 
         val testEntityListVoList = ArrayList<C8Service1TkV1RedisTestController.Api3OutputVo.KeyValueVo>()
         for (keyValue in keyValueList) {
@@ -87,16 +86,16 @@ class C8Service1TkV1RedisTestService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api3OutputVo(
-            Test.TABLE_NAME,
+            TestRedisType.TABLE_NAME,
             testEntityListVoList
         )
     }
 
 
     ////
-    @CustomRedisTransactional([Test.TRANSACTION_NAME])
+    @CustomRedisTransactional([TestRedisType.TRANSACTION_NAME])
     fun api4(httpServletResponse: HttpServletResponse, key: String) {
-        val keyValue = redis1TestRepository.findKeyValue(key)
+        val keyValue = redis1TestRedisType.findKeyValue(key)
 
         if (keyValue == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -104,7 +103,7 @@ class C8Service1TkV1RedisTestService(
             return
         }
 
-        redis1TestRepository.deleteKeyValue(key)
+        redis1TestRedisType.deleteKeyValue(key)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -112,9 +111,9 @@ class C8Service1TkV1RedisTestService(
 
 
     ////
-    @CustomRedisTransactional([Test.TRANSACTION_NAME])
+    @CustomRedisTransactional([TestRedisType.TRANSACTION_NAME])
     fun api5(httpServletResponse: HttpServletResponse) {
-        redis1TestRepository.deleteAllKeyValues()
+        redis1TestRedisType.deleteAllKeyValues()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -122,16 +121,16 @@ class C8Service1TkV1RedisTestService(
 
 
     ////
-    @CustomRedisTransactional([Test.TRANSACTION_NAME])
+    @CustomRedisTransactional([TestRedisType.TRANSACTION_NAME])
     fun api6(httpServletResponse: HttpServletResponse, inputVo: C8Service1TkV1RedisTestController.Api6InputVo) {
-        redis1TestRepository.saveKeyValue(
+        redis1TestRedisType.saveKeyValue(
             inputVo.key,
-            Test(
+            TestRedisType.ValueVo(
                 inputVo.content,
-                Test.InnerVo("testObject", true),
+                TestRedisType.ValueVo.InnerVo("testObject", true),
                 arrayListOf(
-                    Test.InnerVo("testObject1", false),
-                    Test.InnerVo("testObject2", true)
+                    TestRedisType.ValueVo.InnerVo("testObject1", false),
+                    TestRedisType.ValueVo.InnerVo("testObject2", true)
                 )
             ),
             inputVo.expirationMs
@@ -142,14 +141,14 @@ class C8Service1TkV1RedisTestService(
 
     ////
     fun api7(httpServletResponse: HttpServletResponse, inputVo: C8Service1TkV1RedisTestController.Api7InputVo) {
-        redis1TestRepository.saveKeyValue(
+        redis1TestRedisType.saveKeyValue(
             inputVo.key,
-            Test(
+            TestRedisType.ValueVo(
                 inputVo.content,
-                Test.InnerVo("testObject", true),
+                TestRedisType.ValueVo.InnerVo("testObject", true),
                 arrayListOf(
-                    Test.InnerVo("testObject1", false),
-                    Test.InnerVo("testObject2", true)
+                    TestRedisType.ValueVo.InnerVo("testObject1", false),
+                    TestRedisType.ValueVo.InnerVo("testObject2", true)
                 )
             ),
             inputVo.expirationMs
