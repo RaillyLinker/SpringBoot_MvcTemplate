@@ -3,6 +3,7 @@
     <!--로그 파일 저장 위치-->
     <property name="LOGS_PATH" value="./by_product_files/logs"/>
 
+
     <!--local 프로필 환경-->
     <springProfile name="local">
         <!-- File 에 로그 출력 세팅 -->
@@ -56,8 +57,8 @@
             <appender-ref ref="FILE"/>
             <appender-ref ref="CONSOLE"/>
         </root>
-
     </springProfile>
+
 
     <!--dev 프로필 환경-->
     <springProfile name="dev">

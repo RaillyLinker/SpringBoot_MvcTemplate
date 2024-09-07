@@ -13,8 +13,6 @@ spring:
       maxRequestSize: 50MB
 
   jpa:
-    # JPA 데이터베이스 플랫폼 지정
-    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       # 스키마, 테이블명 UpperCase 허용
       naming:
@@ -82,10 +80,7 @@ datasource-mongodb: # MongoDB 추가 (하위 요소를 추가하고 MongoDbConfi
     uri: mongodb://127.0.0.1:27017/db
 
 logging:
-  file:
-    name: ./by_product_files/logs/currentLog_prod.log # !!!로그 파일 경로!!!
   level:
-    org.springframework.r2dbc.core: DEBUG # R2DBC 로깅 설정
     org.springframework.data.mongodb: DEBUG # mongoDB 로깅 설정
 
 springdoc:
