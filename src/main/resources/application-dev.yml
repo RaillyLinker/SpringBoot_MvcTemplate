@@ -70,7 +70,8 @@ datasource:
 # Redis DataSource 설정
 datasource-redis: # Redis 추가 (하위 요소를 추가하고 RedisConfig 에 객체 추가)
   # !!!접속하려는 Redis 에 대한 정보를 아래와 같이 추가 할 것!!!
-  redis1:
+  # (주 사용 Redis)
+  redisMain:
     host: 127.0.0.1
     port: 6379
 

@@ -2,12 +2,10 @@ package com.raillylinker.springboot_mvc_template.aop_aspects
 
 import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
 import com.raillylinker.springboot_mvc_template.annotations.CustomRedisTransactional
-import com.raillylinker.springboot_mvc_template.configurations.RedisConfig
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.reflect.MethodSignature
-import org.springframework.context.ApplicationContext
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
@@ -15,10 +13,7 @@ import java.util.concurrent.TimeUnit
 // [Redis @CustomRedisTransactional 어노테이션 함수 처리 AOP]
 @Component
 @Aspect
-class RedisTransactionAnnotationAspect(
-    private val applicationContext: ApplicationContext,
-    private val redisConfig: RedisConfig
-) {
+class RedisTransactionAnnotationAspect {
     companion object {
         // Redis 트랜젝션용 어노테이션인 CustomRedisTransactional 파일의 프로젝트 경로
         const val REDIS_TRANSACTION_ANNOTATION_PATH =
@@ -48,7 +43,8 @@ class RedisTransactionAnnotationAspect(
                 // redisTemplate 객체와 redis table 이름을 분리
                 val redisTemplateBeanNameAndTableNameSplit = redisTemplateBeanNameAndTableName.split(":")
                 // redisTemplate 객체
-                val redisTemplate = redisConfig.redisTemplatesMap[redisTemplateBeanNameAndTableNameSplit[0].trim()]!!
+                val redisTemplate =
+                    GlobalVariables.redisTemplatesMap[redisTemplateBeanNameAndTableNameSplit[0].trim()]!!
                 // redis table 이름
                 val redisTableName = redisTemplateBeanNameAndTableNameSplit[1].trim()
 
