@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+// [SseClient 클래스]
 class SseClient(
     private val requestUrl: String
 ) {

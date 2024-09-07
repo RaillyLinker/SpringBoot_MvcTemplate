@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 
-//@Component
 /*
     !!!
     Kafka 사용시 @Component 주석을 푸세요.
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component
     명령어.txt 에 적힌 명령어를 입력하여 카프카를 실행시킬 수 있습니다.
     !!!
  */
+//@Component
 class KafkaConsumerForTestListeners {
     // <멤버 변수 공간>
     companion object {

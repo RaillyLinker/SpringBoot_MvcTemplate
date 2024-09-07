@@ -3,7 +3,6 @@ package com.raillylinker.springboot_mvc_template.custom_objects
 import kotlin.math.*
 
 // [지도 좌표계 관련 유틸]
-// 테스트 완료 및 이상없음
 object MapCoordinateUtil {
     // (지도 좌표 1 에서 지도 좌표 2 까지의 거리 (미터) 반환, 하버사인 공식)
     fun getDistanceMeterBetweenTwoLatLngCoordinate(

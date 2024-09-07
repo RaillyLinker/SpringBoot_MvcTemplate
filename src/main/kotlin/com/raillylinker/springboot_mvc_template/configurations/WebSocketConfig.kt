@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
-import com.raillylinker.springboot_mvc_template.web_socket_handler.TestWebSocketHandler
+import com.raillylinker.springboot_mvc_template.web_socket_handlers.TestWebSocketHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.socket.config.annotation.EnableWebSocket

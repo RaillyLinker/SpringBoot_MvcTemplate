@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.filters
 
-import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
+import com.raillylinker.springboot_mvc_template.data_sources.RuntimeConfig
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
@@ -13,8 +13,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 
 // [민감한 정보를 지닌 actuator 접근 제한 필터]
+// /actuator 로 시작되는 경로에 대한 모든 요청은,
 // ApplicationRuntimeConfigs.runtimeConfigData.actuatorAllowIpList
-// 위 변수에 담겨있는 IP 만을 허용하고, 나머지 접근은 404 를 반환합니다.
+// 위 변수에 담겨있는 IP 만을 허용하고, 나머지 접근은 404 를 반환하도록 처리하였습니다.
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class ActuatorEndpointFilter : Filter {
@@ -28,7 +29,7 @@ class ActuatorEndpointFilter : Filter {
         val clientAddressIp = httpServletRequest.remoteAddr
 
         var actuatorAllow = false
-        for (actuatorAllowIp in ApplicationRuntimeConfigs.runtimeConfigData.actuatorAllowIpList) {
+        for (actuatorAllowIp in RuntimeConfig.runtimeConfigData.actuatorAllowIpList) {
             if (clientAddressIp == actuatorAllowIp.ipString) {
                 actuatorAllow = true
                 break

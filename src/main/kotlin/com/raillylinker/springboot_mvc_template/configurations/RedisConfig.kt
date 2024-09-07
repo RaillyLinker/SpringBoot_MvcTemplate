@@ -9,7 +9,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
-// (Redis 설정)
+// [Redis 설정]
 /*
     !!!redis 리소스를 추가하려면 application.yml 의 datasource-redis 에 접근 url host, port 정보를 입력 후,
     아래 부분 코드처럼 한 블록을 복사 붙여넣기 한 후 이름만 바꿔주면 됩니다.!!!

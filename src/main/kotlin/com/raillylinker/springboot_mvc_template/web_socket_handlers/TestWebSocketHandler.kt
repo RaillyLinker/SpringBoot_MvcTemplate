@@ -1,4 +1,4 @@
-package com.raillylinker.springboot_mvc_template.web_socket_handler
+package com.raillylinker.springboot_mvc_template.web_socket_handlers
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 // [1대1 웹 소켓 테스팅 핸들러]
-// WebSocketConfig 에서 설정에 사용됨
+// configurations/WebSocketConfig 에서 핸들러 설정시 사용됩니다.
 // 텍스트 데이터 양방향 연결
 class TestWebSocketHandler : TextWebSocketHandler() {
     // <멤버 변수 공간>

@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.aop_aspects
 
-import com.raillylinker.springboot_mvc_template.ApplicationConstants
+import com.raillylinker.springboot_mvc_template.data_sources.GlobalConstants
 import com.raillylinker.springboot_mvc_template.annotations.CustomMongoDbTransactional
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
@@ -22,7 +22,7 @@ class MongoDbTransactionAnnotationAspect(
     companion object {
         // MongoDb 트랜젝션용 어노테이션인 CustomMongoDbTransactional 파일의 프로젝트 경로
         const val MONGO_DB_TRANSACTION_ANNOTATION_PATH =
-            "@annotation(${ApplicationConstants.PACKAGE_NAME}.annotations.CustomMongoDbTransactional)"
+            "@annotation(${GlobalConstants.PACKAGE_NAME}.annotations.CustomMongoDbTransactional)"
     }
 
 

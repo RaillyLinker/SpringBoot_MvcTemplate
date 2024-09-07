@@ -2,7 +2,7 @@ package com.raillylinker.springboot_mvc_template.custom_objects
 
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 
-// [SseEmitter 관련 유틸]
+// [SseEmitter 유틸]
 object SseEmitterUtil {
     // (SseEvent Builder 생성)
     fun makeSseEventBuilder(

@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_databaseTest
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.raillylinker.springboot_mvc_template.ApplicationConstants
+import com.raillylinker.springboot_mvc_template.data_sources.GlobalConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
@@ -58,7 +58,7 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("content")
         val content: String,
         @Schema(
-            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${GlobalConstants.SYSTEM_TIME_ZONE})",
             required = true,
             example = "2024_05_02_T_15_14_49_552"
         )
@@ -351,7 +351,7 @@ class C7Service1TkV1DatabaseTestController(
         httpServletResponse: HttpServletResponse,
         @Parameter(
             name = "dateString",
-            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${GlobalConstants.SYSTEM_TIME_ZONE})",
             example = "2024_05_02_T_15_14_49_552"
         )
         @RequestParam("dateString")
@@ -613,7 +613,7 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("content")
         val content: String,
         @Schema(
-            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${GlobalConstants.SYSTEM_TIME_ZONE})",
             required = true,
             example = "2024_05_02_T_15_14_49_552"
         )
@@ -705,7 +705,7 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("content")
         val content: String,
         @Schema(
-            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${GlobalConstants.SYSTEM_TIME_ZONE})",
             required = true,
             example = "2024_05_02_T_15_14_49_552"
         )
@@ -1934,7 +1934,7 @@ class C7Service1TkV1DatabaseTestController(
         @JsonProperty("content")
         val content: String,
         @Schema(
-            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${ApplicationConstants.SYSTEM_TIME_ZONE})",
+            description = "원하는 날짜(yyyy_MM_dd_'T'_HH_mm_ss_SSS, 타임존 = ${GlobalConstants.SYSTEM_TIME_ZONE})",
             required = true,
             example = "2024_05_02_T_15_14_49_552"
         )

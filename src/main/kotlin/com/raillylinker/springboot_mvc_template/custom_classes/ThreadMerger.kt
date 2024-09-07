@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Semaphore
 
-// (스레드 병합 클래스)
+// [스레드 병합 클래스]
 /*
     사용 예시 :
     val threadMerger =

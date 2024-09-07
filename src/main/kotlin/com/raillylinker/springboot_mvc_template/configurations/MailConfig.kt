@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.mail.javamail.JavaMailSenderImpl
 import java.util.*
 
+// [JavaMail 설정]
 @Configuration
 class MailConfig(
     @Value("\${customConfig.smtp.host}")

@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.configurations.database_configs
 
-import com.raillylinker.springboot_mvc_template.ApplicationConstants
+import com.raillylinker.springboot_mvc_template.data_sources.GlobalConstants
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
@@ -39,11 +39,11 @@ class Database1Config(
         // 위 설정을 조합한 변수
         // Database Repository 객체가 저장된 위치 (아래와 같이 위치 해야 함)
         const val REPOSITORY_PATH: String =
-            "${ApplicationConstants.PACKAGE_NAME}.data_sources.database_sources.${DATASOURCE_NAME}.repositories"
+            "${GlobalConstants.PACKAGE_NAME}.data_sources.database_sources.${DATASOURCE_NAME}.repositories"
 
         // Database Table 객체가 저장된 위치 작성 (아래와 같이 위치 해야 함)
         private const val TABLE_PATH: String =
-            "${ApplicationConstants.PACKAGE_NAME}.data_sources.database_sources.${DATASOURCE_NAME}.tables"
+            "${GlobalConstants.PACKAGE_NAME}.data_sources.database_sources.${DATASOURCE_NAME}.tables"
 
         const val LOCAL_CONTAINER_ENTITY_MANAGER_FACTORY_BEAN_NAME: String =
             "${DATASOURCE_NAME}_LocalContainerEntityManagerFactoryBean"

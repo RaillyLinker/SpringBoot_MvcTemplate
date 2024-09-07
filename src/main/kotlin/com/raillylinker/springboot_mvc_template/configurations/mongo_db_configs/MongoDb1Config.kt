@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs
 
-import com.raillylinker.springboot_mvc_template.ApplicationConstants
+import com.raillylinker.springboot_mvc_template.data_sources.GlobalConstants
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -26,7 +26,7 @@ class MongoDb1Config(
         // 위 설정을 조합한 변수
         // Database Repository 객체가 저장된 위치 (아래와 같이 위치 해야 함)
         const val REPOSITORY_PATH: String =
-            "${ApplicationConstants.PACKAGE_NAME}.data_sources.mongo_db_sources.${DATASOURCE_NAME}.repositories"
+            "${GlobalConstants.PACKAGE_NAME}.data_sources.mongo_db_sources.${DATASOURCE_NAME}.repositories"
 
         // Database 트랜젝션을 사용할 때 사용하는 이름 변수
         const val TRANSACTION_NAME: String =

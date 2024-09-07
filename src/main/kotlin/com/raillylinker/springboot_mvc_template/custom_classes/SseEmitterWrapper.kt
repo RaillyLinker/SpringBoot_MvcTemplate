@@ -8,7 +8,7 @@ import java.util.*
 import java.util.concurrent.Semaphore
 import kotlin.collections.ArrayList
 
-// [SseEmitter 사용 관련 클래스]
+// [SseEmitter 래핑 클래스]
 data class SseEmitterWrapper(
     // (SSE Emitter 의 만료시간 Milli Sec)
     val sseEmitterTimeMs: Long

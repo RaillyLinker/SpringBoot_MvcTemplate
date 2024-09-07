@@ -89,7 +89,6 @@
             </rollingPolicy>
         </appender>
 
-
         <!-- appender 별 세팅 -->
         <!-- 로그 전역 세팅 -->
         <!-- 로그 레벨 -->
@@ -136,7 +135,6 @@
                 <maxHistory>30</maxHistory>
             </rollingPolicy>
         </appender>
-
 
         <!-- appender 별 세팅 -->
         <!-- 로그 전역 세팅 -->

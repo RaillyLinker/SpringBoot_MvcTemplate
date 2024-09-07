@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.filters
 
-import com.raillylinker.springboot_mvc_template.ApplicationRuntimeConfigs
+import com.raillylinker.springboot_mvc_template.data_sources.RuntimeConfig
 import jakarta.servlet.AsyncEvent
 import jakarta.servlet.AsyncListener
 import jakarta.servlet.FilterChain
@@ -21,7 +21,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 
 // [API 별 Request / Response 로깅 필터]
-// API 호출시마다 Request 와 Response 를 로깅하도록 처리
+// API 호출시마다 Request 와 Response 를 로깅하도록 처리했습니다.
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class LoggingFilter : OncePerRequestFilter() {
@@ -48,12 +48,11 @@ class LoggingFilter : OncePerRequestFilter() {
     ) {
         val requestTime = LocalDateTime.now()
 
-        // (SpringAdmin 의 actuator 요청은 로깅에서 제외하기)
         // 요청자 Ip (ex : 127.0.0.1)
         val clientAddressIp = request.remoteAddr
 
         var loggingDeny = false
-        for (loggingDenyIp in ApplicationRuntimeConfigs.runtimeConfigData.loggingDenyIpList) {
+        for (loggingDenyIp in RuntimeConfig.runtimeConfigData.loggingDenyIpList) {
             if (loggingDenyIp.ipString == clientAddressIp) {
                 loggingDeny = true
                 break

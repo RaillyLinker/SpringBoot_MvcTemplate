@@ -39,8 +39,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
 import java.time.LocalDateTime
 
-
-// (서비스 보안 시큐리티 설정)
+// [서비스 보안 시큐리티 설정]
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
