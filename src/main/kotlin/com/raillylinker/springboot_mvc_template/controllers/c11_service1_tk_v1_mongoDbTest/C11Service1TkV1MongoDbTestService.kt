@@ -1,9 +1,9 @@
 package com.raillylinker.springboot_mvc_template.controllers.c11_service1_tk_v1_mongoDbTest
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
-import com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs.MongoDb1Config
-import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongoDb1.collections.TestCollection
-import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongoDb1.repositories.TestCollectionRepository
+import com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs.MongoDbMainConfig
+import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongoDbMain.collections.TestCollection
+import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongoDbMain.repositories.TestCollectionRepository
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -26,7 +26,7 @@ class C11Service1TkV1MongoDbTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    @CustomTransactional([MongoDb1Config.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
+    @CustomTransactional([MongoDbMainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
     fun api1(
         httpServletResponse: HttpServletResponse,
         inputVo: C11Service1TkV1MongoDbTestController.Api1InputVo
