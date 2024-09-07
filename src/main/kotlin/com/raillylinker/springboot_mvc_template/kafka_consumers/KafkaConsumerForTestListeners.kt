@@ -16,11 +16,11 @@ import org.springframework.stereotype.Component
     명령어.txt 에 적힌 명령어를 입력하여 카프카를 실행시킬 수 있습니다.
     !!!
  */
-class KafkaConsumer1Listeners {
+class KafkaConsumerForTestListeners {
     // <멤버 변수 공간>
     companion object {
         // !!!kafka consumer container factory 이름 - KafkaConsumerConfig 의 Bean 함수명을 입력하세요!!!
-        const val KAFKA_CONSUMER_CONTAINER_FACTORY = "kafkaConsumer0"
+        const val KAFKA_CONSUMER_CONTAINER_FACTORY = "kafkaConsumerForTest"
     }
 
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)

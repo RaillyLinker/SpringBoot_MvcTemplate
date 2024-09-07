@@ -16,7 +16,7 @@ class KafkaConsumerConfig {
     // !!!등록할 Kafka 앤드포인트가 있다면 아래에 Bean 으로 등록하세요!!!
     // 예시 :
     @Bean
-    fun kafkaConsumer0(): ConcurrentKafkaListenerContainerFactory<String, Any> {
+    fun kafkaConsumerForTest(): ConcurrentKafkaListenerContainerFactory<String, Any> {
         val config: MutableMap<String, Any> = HashMap()
         config[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092" // Kafka 접속 주소
         config[ConsumerConfig.GROUP_ID_CONFIG] = "group_0"

@@ -40,7 +40,7 @@ class C6Service1TkV1TestService(
     private val emailSenderComponent: EmailSenderComponent,
     // 네이버 메시지 발송 유틸
     private val naverSmsSenderComponent: NaverSmsSenderComponent,
-    @Qualifier("kafkaProducer0") private val kafkaProducer0: KafkaTemplate<String, Any>,
+    @Qualifier("kafkaProducerForTest") private val kafkaProducerForTest: KafkaTemplate<String, Any>,
 
     private var serverProperties: ServerProperties,
     private val resourceLoader: ResourceLoader
@@ -445,7 +445,7 @@ class C6Service1TkV1TestService(
     ////
     fun api7(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api7InputVo) {
         // kafkaProducer1 에 토픽 메세지 발행
-        kafkaProducer0.send(inputVo.topic, inputVo.message)
+        kafkaProducerForTest.send(inputVo.topic, inputVo.message)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
