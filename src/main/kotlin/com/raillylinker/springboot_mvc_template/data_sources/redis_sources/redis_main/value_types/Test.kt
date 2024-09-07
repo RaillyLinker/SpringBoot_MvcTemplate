@@ -1,9 +1,8 @@
-package com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redis_main.tables
+package com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redis_main.value_types
 
 import com.raillylinker.springboot_mvc_template.configurations.redis_configs.RedisMainConfig
 
-// (테스트 Redis Table)
-// 키 : 임의 값
+// [Redis Value Type - Test]
 class Test(
     // 기본 변수 타입 String 사용 예시
     var content: String,

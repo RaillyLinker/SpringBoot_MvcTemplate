@@ -3,7 +3,7 @@ package com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.raillylinker.springboot_mvc_template.configurations.redis_configs.RedisMainConfig
-import com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redis_main.tables.Test
+import com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redis_main.value_types.Test
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
