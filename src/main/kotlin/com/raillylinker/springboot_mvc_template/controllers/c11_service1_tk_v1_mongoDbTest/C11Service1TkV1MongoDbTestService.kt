@@ -2,8 +2,8 @@ package com.raillylinker.springboot_mvc_template.controllers.c11_service1_tk_v1_
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs.MongoDbMainConfig
-import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongoDbMain.collections.TestCollection
-import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongoDbMain.repositories.TestCollectionRepository
+import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongo_db_main.collections.TestCollection
+import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongo_db_main.repositories.TestCollectionRepository
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
