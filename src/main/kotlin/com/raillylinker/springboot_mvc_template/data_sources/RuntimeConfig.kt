@@ -6,13 +6,13 @@ import java.io.File
 
 /*
      [런타임에 변경 가능한 설정 정보를 모아둔 Object]
-     이곳에 저장되어 있는 runtimeConfigData 변수를 전역에서 사용 가능한 전역변수로 사용하면 됩니다.
+     이곳에 저장되어 있는 runtimeConfigData 변수를 전역변수로 사용하면 됩니다.
      이 데이터는 by_product_files/runtime_config.json 이 파일에 Json 형식으로 저장되고,
      by_product_files/runtime_config.json 파일에서 runtimeConfigData 변수로 데이터가 불러와지므로,
      외부에서 런타임으로 이 설정을 바꾸시려면, by_product_files/runtime_config.json 파일의 내용을 변경 후,
      loadRuntimeConfigData 함수를 호출하시면 됩니다.
 
-     여기서, 굳이 메모리상의 데이터를 그냥 코드로 조작하는 것이 아니라, runtime_config.json 파일의 내용으로 조작하냐면,
+     여기서, 굳이 메모리상의 데이터를 그냥 코드로 조작하는 것이 아니라, runtime_config.json 파일의 내용으로 조작하는 이유는,
      파일의 비휘발성 특성을 이용하기 위한 것입니다.
 
      재배포가 이루어 졌을 때도, ApplicationMain 에서 API 가 오픈되기 전에 loadRuntimeConfigData 를 호출하여 설정 파일에서
@@ -50,7 +50,7 @@ object RuntimeConfig {
     // 만약 configJsonString 의 JSON 형식이 다르거나 하여 에러가 일어났다면,
     // 설정 파일과 설정 변수는 아무 변화가 없이 넘어갈 것입니다.
     fun saveRuntimeConfigData(configJsonString: String): RuntimeConfigData? {
-        val runtimeConfigJsonFile = File(GlobalConstants.rootDirFile, "by_product_files/runtime_config.json")
+        val runtimeConfigJsonFile = File(GlobalVariables.rootDirFile, "by_product_files/runtime_config.json")
         try {
             val newConfigObject: RuntimeConfigData = Gson().fromJson(
                 configJsonString,
@@ -72,7 +72,7 @@ object RuntimeConfig {
     // 만약 불러오려는 설정 파일 내의 JSON 형식이 잘못되는 등의 일로인하여 에러가 나버린다면,
     // 설정 파일과 설정 변수는 아무 변화가 없이 넘어갈 것입니다.
     fun loadRuntimeConfigData(): RuntimeConfigData? {
-        val runtimeConfigJsonFile = File(GlobalConstants.rootDirFile, "by_product_files/runtime_config.json")
+        val runtimeConfigJsonFile = File(GlobalVariables.rootDirFile, "by_product_files/runtime_config.json")
         try {
             if (runtimeConfigJsonFile.exists()) {
                 runtimeConfigData = Gson().fromJson(

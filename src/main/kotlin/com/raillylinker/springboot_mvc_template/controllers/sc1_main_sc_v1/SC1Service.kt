@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 
-import com.raillylinker.springboot_mvc_template.data_sources.GlobalConstants
+import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
 import com.raillylinker.springboot_mvc_template.data_sources.RuntimeConfig
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database0Config
@@ -318,7 +318,7 @@ class SC1Service(
         session: HttpSession,
         currentPath: String?
     ): ModelAndView? {
-        val rootLogDirFile = File(GlobalConstants.rootDirFile, "by_product_files/logs")
+        val rootLogDirFile = File(GlobalVariables.rootDirFile, "by_product_files/logs")
 
         // 현재 화면의 부모 폴더
         // 현재 화면의 폴더
@@ -463,7 +463,7 @@ class SC1Service(
         fail: String?,
         complete: String?
     ): ModelAndView? {
-        val runtimeConfigFile = File(GlobalConstants.rootDirFile, "by_product_files/runtime_config.json")
+        val runtimeConfigFile = File(GlobalVariables.rootDirFile, "by_product_files/runtime_config.json")
 
         val configJsonString: String = if (runtimeConfigFile.exists()) {
             // 파일을 읽어 String 으로 저장
