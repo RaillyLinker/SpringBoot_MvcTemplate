@@ -5,7 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate
 import java.util.concurrent.TimeUnit
 
 // [RedisType 의 Abstract 클래스]
-abstract class RedisTypeAbstract<ValueVo>(
+abstract class BasicRedisType<ValueVo>(
     private val redisTemplate: RedisTemplate<String, Any>,
     private val tableName: String,
     private val clazz: Class<ValueVo>

@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redis_main
 
 import com.raillylinker.springboot_mvc_template.configurations.redis_configs.RedisMainConfig
-import com.raillylinker.springboot_mvc_template.custom_classes.RedisTypeAbstract
+import com.raillylinker.springboot_mvc_template.custom_classes.BasicRedisType
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 class TestRedisType(
     // !!!RedisConfig 종류 변경!!!
     @Qualifier(RedisMainConfig.REDIS_CONFIG_NAME) private val redisTemplate: RedisTemplate<String, Any>
-) : RedisTypeAbstract<TestRedisType.ValueVo>(redisTemplate, TABLE_NAME, ValueVo::class.java) {
+) : BasicRedisType<TestRedisType.ValueVo>(redisTemplate, TABLE_NAME, ValueVo::class.java) {
     // <멤버 변수 공간>
     companion object {
         // !!!Redis Table 클래스명을 TABLE_NAME 으로 설정하기!!!
