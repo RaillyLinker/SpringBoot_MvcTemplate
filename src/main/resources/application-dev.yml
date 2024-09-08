@@ -36,7 +36,9 @@ spring:
 
 # JPA DataSource 설정
 datasource:
-  # !!!접속하려는 DB 에 대한 정보를 아래와 같이 추가 할 것!!!
+  # Database 추가
+  # 작명법은, 앞에 db{index}-{제목} 형식으로 하여, datasource 별 충돌을 피하기
+
   # (사내 개발자 정보 테이블이 존재하는 데이터베이스)
   database0: # DB 추가
     # 데이터베이스 접속 경로
@@ -68,17 +70,22 @@ datasource:
     initialization-mode: always
 
 # Redis DataSource 설정
-datasource-redis: # Redis 추가 (하위 요소를 추가하고 RedisConfig 에 객체 추가)
-  # !!!접속하려는 Redis 에 대한 정보를 아래와 같이 추가 할 것!!!
+datasource-redis:
+  # Redis 추가
+  # 작명법은, 앞에 redis{index}-{제목} 형식으로 하기(다른 datasource 설정과의 통일성을 위해)
+
   # (주 사용 Redis)
-  redis-main:
+  redis1-main:
     host: 127.0.0.1
     port: 6379
 
 # MongoDB DataSource 설정
-datasource-mongodb: # MongoDB 추가 (하위 요소를 추가하고 MongoDbConfig 에 객체 추가)
+datasource-mongodb:
+  # MongoDB 추가
+  # 작명법은, 앞에 md{index}-{제목} 형식으로 하여, datasource 별 충돌을 피하기
+
   # (주 사용 MongoDB)
-  mongo-db-main:
+  md1-main:
     uri: mongodb://127.0.0.1:27017/db
 
 logging:

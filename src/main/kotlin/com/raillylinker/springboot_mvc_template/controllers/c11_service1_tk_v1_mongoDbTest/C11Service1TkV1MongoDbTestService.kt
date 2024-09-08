@@ -2,8 +2,8 @@ package com.raillylinker.springboot_mvc_template.controllers.c11_service1_tk_v1_
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs.MongoDbMainConfig
-import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongo_db_main.collections.TestCollection
-import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mongo_db_main.repositories.TestCollectionRepository
+import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.md1_main.documents.Md1_Test
+import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.md1_main.repositories.Md1_TestRepository
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 class C11Service1TkV1MongoDbTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
-    private val testCollectionRepository: TestCollectionRepository
+    private val md1TestCollectionRepository: Md1_TestRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -31,8 +31,8 @@ class C11Service1TkV1MongoDbTestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C11Service1TkV1MongoDbTestController.Api1InputVo
     ): C11Service1TkV1MongoDbTestController.Api1OutputVo? {
-        val resultCollection = testCollectionRepository.save(
-            TestCollection(
+        val resultCollection = md1TestCollectionRepository.save(
+            Md1_Test(
                 inputVo.content,
                 (0..99999999).random(),
                 true,
@@ -56,7 +56,7 @@ class C11Service1TkV1MongoDbTestService(
 
     ////
     fun api2(httpServletResponse: HttpServletResponse) {
-        testCollectionRepository.deleteAll()
+        md1TestCollectionRepository.deleteAll()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -64,7 +64,7 @@ class C11Service1TkV1MongoDbTestService(
 
     ////
     fun api3(httpServletResponse: HttpServletResponse, id: String) {
-        testCollectionRepository.deleteById(id)
+        md1TestCollectionRepository.deleteById(id)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -72,7 +72,7 @@ class C11Service1TkV1MongoDbTestService(
 
     ////
     fun api4(httpServletResponse: HttpServletResponse): C11Service1TkV1MongoDbTestController.Api4OutputVo? {
-        val testCollectionList = testCollectionRepository.findAll()
+        val testCollectionList = md1TestCollectionRepository.findAll()
 
         val resultVoList: ArrayList<C11Service1TkV1MongoDbTestController.Api4OutputVo.TestEntityVo> = arrayListOf()
 

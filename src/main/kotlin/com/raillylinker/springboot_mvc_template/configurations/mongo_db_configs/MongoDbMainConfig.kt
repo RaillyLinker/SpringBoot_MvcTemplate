@@ -13,23 +13,21 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 // [MongoDB 설정]
 @Configuration
 @EnableMongoRepositories(
-    basePackages = [MongoDbMainConfig.REPOSITORY_PATH],
+    basePackages = ["${GlobalVariables.PACKAGE_NAME}.data_sources.mongo_db_sources.${MongoDbMainConfig.MONGO_DB_DIRECTORY_NAME}.repositories"],
     mongoTemplateRef = MongoDbMainConfig.MONGO_DB_DIRECTORY_NAME
 )
 class MongoDbMainConfig {
     companion object {
         // !!!application.yml 의 datasource-mongodb 안에 작성된 이름 할당하기!!!
-        const val MONGO_DB_CONFIG_NAME: String = "mongo-db-main"
+        const val MONGO_DB_CONFIG_NAME: String = "md1-main"
 
         // !!!data_sources/mongo_db_sources 안의 서브 폴더(collections, repositories 를 가진 폴더)의 이름 할당하기!!!
-        const val MONGO_DB_DIRECTORY_NAME: String = "mongo_db_main"
+        const val MONGO_DB_DIRECTORY_NAME: String = "md1_main"
 
-        // 위 설정을 조합한 변수
-        // Database Repository 객체가 저장된 위치 (아래와 같이 위치 해야 함)
-        const val REPOSITORY_PATH: String =
-            "${GlobalVariables.PACKAGE_NAME}.data_sources.mongo_db_sources.${MONGO_DB_DIRECTORY_NAME}.repositories"
-
-        // Database 트랜젝션을 사용할 때 사용하는 이름 변수
+        // Database 트랜젝션 이름 변수
+        // 트랜젝션을 적용할 함수 위에, @CustomTransactional 어노테이션과 결합하여,
+        // @CustomTransactional([MongoDbMainConfig.TRANSACTION_NAME])
+        // 위와 같이 적용하세요.
         const val TRANSACTION_NAME: String =
             "${MONGO_DB_DIRECTORY_NAME}_PlatformTransactionManager"
     }
