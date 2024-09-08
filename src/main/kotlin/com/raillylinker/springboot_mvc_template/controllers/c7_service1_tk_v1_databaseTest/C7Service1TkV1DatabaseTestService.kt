@@ -4,9 +4,9 @@ import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database0Config
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_Template_TestsRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.tables.Database0_Template_TestData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.entities.Database0_Template_TestData
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.entities.*
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

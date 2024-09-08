@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories
 
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.tables.Database0_RaillyLinkerCompany_CompanyMemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.entities.Database0_RaillyLinkerCompany_CompanyMemberData
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

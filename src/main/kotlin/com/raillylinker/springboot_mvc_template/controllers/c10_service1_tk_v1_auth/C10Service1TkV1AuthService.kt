@@ -4,7 +4,7 @@ import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.entities.*
 import com.raillylinker.springboot_mvc_template.data_sources.network_retrofit2.RepositoryNetworkRetrofit2
 import com.raillylinker.springboot_mvc_template.custom_components.EmailSenderComponent
 import com.raillylinker.springboot_mvc_template.custom_components.NaverSmsSenderComponent

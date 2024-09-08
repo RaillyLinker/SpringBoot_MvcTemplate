@@ -642,58 +642,58 @@ class C11Service1TkV1MongoDbTestController(
 //    }
 //
 //
-//    ////
-//    @Operation(
-//        summary = "N12 : 트랜젝션 동작 테스트",
-//        description = "정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n"
-//    )
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(
-//                responseCode = "200",
-//                description = "정상 동작"
-//            )
-//        ]
-//    )
-//    @PostMapping(
-//        path = ["/transaction-rollback-sample"],
-//        consumes = [MediaType.ALL_VALUE],
-//        produces = [MediaType.ALL_VALUE]
-//    )
-//    @ResponseBody
-//    fun api12(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse
-//    ) {
-//        service.api12(httpServletResponse)
-//    }
-//
-//
-//    ////
-//    @Operation(
-//        summary = "N13 : 트랜젝션 비동작 테스트",
-//        description = "트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n"
-//    )
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(
-//                responseCode = "200",
-//                description = "정상 동작"
-//            )
-//        ]
-//    )
-//    @PostMapping(
-//        path = ["/no-transaction-exception-sample"],
-//        consumes = [MediaType.ALL_VALUE],
-//        produces = [MediaType.ALL_VALUE]
-//    )
-//    @ResponseBody
-//    fun api13(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse
-//    ) {
-//        service.api13(httpServletResponse)
-//    }
+    ////
+    @Operation(
+        summary = "N12 : 트랜젝션 동작 테스트",
+        description = "정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/transaction-rollback-sample"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api12(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api12(httpServletResponse)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N13 : 트랜젝션 비동작 테스트",
+        description = "트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/no-transaction-exception-sample"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api13(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api13(httpServletResponse)
+    }
 //
 //
 //    ////

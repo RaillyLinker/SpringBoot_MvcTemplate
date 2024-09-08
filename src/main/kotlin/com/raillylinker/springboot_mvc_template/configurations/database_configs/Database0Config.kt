@@ -43,7 +43,7 @@ class Database0Config(
 
         // Database Table 객체가 저장된 위치 작성 (아래와 같이 위치 해야 함)
         private const val TABLE_PATH: String =
-            "${GlobalVariables.PACKAGE_NAME}.data_sources.database_sources.${DATASOURCE_NAME}.tables"
+            "${GlobalVariables.PACKAGE_NAME}.data_sources.database_sources.${DATASOURCE_NAME}.entities"
 
         const val LOCAL_CONTAINER_ENTITY_MANAGER_FACTORY_BEAN_NAME: String =
             "${DATASOURCE_NAME}_LocalContainerEntityManagerFactoryBean"

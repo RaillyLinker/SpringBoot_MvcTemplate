@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories
 
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.tables.Database1_Template_TestData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.entities.Database1_Template_TestData
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository

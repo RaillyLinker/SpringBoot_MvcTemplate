@@ -85,7 +85,7 @@ datasource-mongodb:
   # 작명법은, 앞에 md{index}-{제목} 형식으로 하여, datasource 별 충돌을 피하기
 
   # (주 사용 MongoDB)
-  md1-main:
+  mdb1-main:
     uri: mongodb://127.0.0.1:27017/db
 
 logging:

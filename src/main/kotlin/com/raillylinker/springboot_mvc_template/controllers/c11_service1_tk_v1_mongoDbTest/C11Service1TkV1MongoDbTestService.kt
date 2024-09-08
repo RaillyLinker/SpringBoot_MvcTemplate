@@ -1,9 +1,9 @@
 package com.raillylinker.springboot_mvc_template.controllers.c11_service1_tk_v1_mongoDbTest
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
-import com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs.MongoDbMainConfig
-import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.md1_main.documents.Md1_Test
-import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.md1_main.repositories.Md1_TestRepository
+import com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs.MDb1MainConfig
+import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mdb1_main.documents.Mdb1_Test
+import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mdb1_main.repositories.Mdb1_TestRepository
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 class C11Service1TkV1MongoDbTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
-    private val md1TestCollectionRepository: Md1_TestRepository
+    private val md1TestCollectionRepository: Mdb1_TestRepository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -26,13 +26,13 @@ class C11Service1TkV1MongoDbTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    @CustomTransactional([MongoDbMainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
+    @CustomTransactional([MDb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
     fun api1(
         httpServletResponse: HttpServletResponse,
         inputVo: C11Service1TkV1MongoDbTestController.Api1InputVo
     ): C11Service1TkV1MongoDbTestController.Api1OutputVo? {
         val resultCollection = md1TestCollectionRepository.save(
-            Md1_Test(
+            Mdb1_Test(
                 inputVo.content,
                 (0..99999999).random(),
                 true,
@@ -95,5 +95,46 @@ class C11Service1TkV1MongoDbTestService(
         return C11Service1TkV1MongoDbTestController.Api4OutputVo(
             resultVoList
         )
+    }
+
+
+    @CustomTransactional([MDb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
+    fun api12(
+        httpServletResponse: HttpServletResponse
+    ) {
+        md1TestCollectionRepository.save(
+            Mdb1_Test(
+                "test",
+                (0..99999999).random(),
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+            )
+        )
+
+        throw Exception("Transaction Rollback Test!")
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
+
+
+    fun api13(
+        httpServletResponse: HttpServletResponse
+    ) {
+        md1TestCollectionRepository.save(
+            Mdb1_Test(
+                "test",
+                (0..99999999).random(),
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+            )
+        )
+
+        throw Exception("No Transaction Exception Test!")
+
+        httpServletResponse.setHeader("api-result-code", "")
+        httpServletResponse.status = HttpStatus.OK.value()
     }
 }
