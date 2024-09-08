@@ -48,29 +48,29 @@ cloud:
     stack:
       auto: false
 
-customConfig: # 프로젝트 내에서 사용하는 커스텀 설정
-  # cors 경로 리스트 설정 (설정하지 않으면 모든 요청 허용)
-  corsList: http://localhost:8081, http://127.0.0.1:8081, http://localhost:3000, http://127.0.0.1:3000
+custom-config: # 프로젝트 내에서 사용하는 커스텀 설정
+  # cors 허용 리스트 설정 (설정하지 않으면 모든 요청 허용)
+  cors-allow-list: http://localhost:8081, http://127.0.0.1:8081, http://localhost:3000, http://127.0.0.1:3000
 
   smtp: # SMTP 설정
     host: smtp.gmail.com # SMTP 호스트
     port: 587 # SMTP 포트
-    senderName: InputYourEmailId@test.com # SMTP 계정 아이디
-    senderPassword: InputYourSenderPassword # SMTP 계정 비밀번호
-    timeOutMillis: 10000 # 타임아웃 밀리초
+    sender-name: InputYourEmailId@test.com # SMTP 계정 아이디
+    sender-password: InputYourSenderPassword # SMTP 계정 비밀번호
+    time-out-millis: 10000 # 타임아웃 밀리초
 
   naverSms: # Naver SMS 설정
-    accessKey: InputYourAccessKey
-    secretKey: InputYourSecretKey
-    serviceId: ncp:sms:kr:test:test
-    phoneNumber: test
-    alimTalkServiceId: ncp:kkobizmsg:kr:test:test
+    access-key: InputYourAccessKey
+    secret-key: InputYourSecretKey
+    service-id: ncp:sms:kr:test:test
+    phone-number: test
+    alim-talk-service-id: ncp:kkobizmsg:kr:test:test
 
   swagger: # Swagger 문서 설정
-    documentVersion: 1.0.0
+    document-version: 1.0.0
     # !!!Swagger 문서 타이틀!!!
-    documentTitle: SpringBoot MVC Template APIs
-    documentDescription:
+    document-title: SpringBoot MVC Template APIs
+    document-description:
       |
       **[읽어주세요]**
 

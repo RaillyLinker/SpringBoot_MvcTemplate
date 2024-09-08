@@ -152,8 +152,8 @@
 
         spring.boot.admin 부분,
         datasource 부분,
-        customConfig.actuatorAllowIpList 부분,
-        customConfig.loggingDenyIpList 부분
+        custom-config.actuatorAllowIpList 부분,
+        custom-config.loggingDenyIpList 부분
 
         위 부분을 앞서 준비된 정보로 갱신하고 빌드를 해야합니다.
 

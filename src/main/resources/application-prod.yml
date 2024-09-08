@@ -71,14 +71,14 @@ datasource:
 datasource-redis: # Redis 추가 (하위 요소를 추가하고 RedisConfig 에 객체 추가)
   # !!!접속하려는 Redis 에 대한 정보를 아래와 같이 추가 할 것!!!
   # (주 사용 Redis)
-  redis_main:
+  redis-main:
     host: 127.0.0.1
     port: 6379
 
 # MongoDB DataSource 설정
 datasource-mongodb: # MongoDB 추가 (하위 요소를 추가하고 MongoDbConfig 에 객체 추가)
   # (주 사용 MongoDB)
-  mongo_db_main:
+  mongo-db-main:
     uri: mongodb://127.0.0.1:27017/db
 
 logging:

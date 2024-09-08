@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component
 class TestRedisType(
     // !!!RedisConfig 종류 변경!!!
     @Qualifier(RedisMainConfig.REDIS_CONFIG_NAME) private val redisTemplate: RedisTemplate<String, Any>
-) : BasicRedisType<TestRedisType.ValueVo>(redisTemplate, TABLE_NAME, ValueVo::class.java) {
+) : BasicRedisType<TestRedisType.ValueVo>(redisTemplate, TYPE_NAME, ValueVo::class.java) {
     // <멤버 변수 공간>
     companion object {
         // !!!Redis Table 클래스명을 TABLE_NAME 으로 설정하기!!!
-        const val TABLE_NAME = "TestRedisType"
+        const val TYPE_NAME = "TestRedisType"
 
         // Redis Transaction 이름
         // !!!RedisConfig 종류 변경!!!
-        const val TRANSACTION_NAME = "${RedisMainConfig.REDIS_CONFIG_NAME}:$TABLE_NAME"
+        const val TRANSACTION_NAME = "${RedisMainConfig.REDIS_CONFIG_NAME}:$TYPE_NAME"
     }
 
     // !!!본 Redis Type 의 Value 클래스 설정!!!

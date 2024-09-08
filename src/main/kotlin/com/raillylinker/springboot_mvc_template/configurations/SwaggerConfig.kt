@@ -19,15 +19,15 @@ import java.util.function.Consumer
 @Configuration
 class SwaggerConfig(
     // (버전 정보)
-    @Value("\${customConfig.swagger.documentVersion}")
+    @Value("\${custom-config.swagger.document-version}")
     private var documentVersion: String,
 
     // (문서 제목)
-    @Value("\${customConfig.swagger.documentTitle}")
+    @Value("\${custom-config.swagger.document-title}")
     private var documentTitle: String,
 
     // (문서 설명)
-    @Value("\${customConfig.swagger.documentDescription}")
+    @Value("\${custom-config.swagger.document-description}")
     private var documentDescription: String
 ) {
     // <멤버 변수 공간>

@@ -1,7 +1,7 @@
 [모니터링 툴 실행 가이드]
 
 1. prometheus.yml 에 actuator 요청을 보낼 주소를 입력합니다.
-    그리고 prometheus 가 실행되는 위치의 IP 주소를 서버 프로젝트의 application.yml 안의 customConfig.actuatorAllowIpList 와 customConfig.loggingDenyIpList 에 입력하여
+    그리고 prometheus 가 실행되는 위치의 IP 주소를 서버 프로젝트의 application.yml 안의 custom-config.actuatorAllowIpList 와 custom-config.loggingDenyIpList 에 입력하여
     로그 제외 및 actuator 접근을 허용해주고 서버를 다시 실행시켜줍니다.
 
 2. 도커 컨테이너를 실행시킵니다.
@@ -56,4 +56,4 @@
     http://127.0.0.1:8080/actuator/logfile
     위와 같이 로그파일에 접근이 가능합니다.
     해당 IP:Port 에 접근이 가능한지 인바운드 보안 설정을 확인하고,
-    Springboot application.yml 에서 customConfig.actuatorAllowIpList 에 actuator 접근 허용 설정을 해주어야 하는 것을 주의합시다.
+    Springboot application.yml 에서 custom-config.actuatorAllowIpList 에 actuator 접근 허용 설정을 해주어야 하는 것을 주의합시다.

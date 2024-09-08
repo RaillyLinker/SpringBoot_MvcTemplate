@@ -59,7 +59,7 @@ class C8Service1TkV1RedisTestService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api2OutputVo(
-            TestRedisType.TABLE_NAME,
+            TestRedisType.TYPE_NAME,
             keyValue.key,
             keyValue.value.content,
             keyValue.expireTimeMs
@@ -86,7 +86,7 @@ class C8Service1TkV1RedisTestService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api3OutputVo(
-            TestRedisType.TABLE_NAME,
+            TestRedisType.TYPE_NAME,
             testEntityListVoList
         )
     }

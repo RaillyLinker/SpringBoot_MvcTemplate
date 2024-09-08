@@ -11,15 +11,15 @@ import javax.crypto.spec.SecretKeySpec
 // [Naver SMS 발송 유틸 객체]
 @Component
 class NaverSmsSenderComponent(
-    @Value("\${customConfig.naverSms.accessKey}")
+    @Value("\${custom-config.naverSms.access-key}")
     private var accessKey: String,
-    @Value("\${customConfig.naverSms.secretKey}")
+    @Value("\${custom-config.naverSms.secret-key}")
     private var secretKey: String,
-    @Value("\${customConfig.naverSms.serviceId}")
+    @Value("\${custom-config.naverSms.service-id}")
     private var serviceId: String,
-    @Value("\${customConfig.naverSms.phoneNumber}")
+    @Value("\${custom-config.naverSms.phone-number}")
     private var phoneNumber: String,
-    @Value("\${customConfig.naverSms.alimTalkServiceId}")
+    @Value("\${custom-config.naverSms.alim-talk-service-id}")
     private var alimTalkServiceId: String
 ) {
     // <멤버 변수 공간>

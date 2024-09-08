@@ -17,7 +17,7 @@ class RedisMainConfig {
     // <멤버 변수 공간>
     companion object {
         // !!!application.yml 의 datasource-redis 안에 작성된 이름 할당하기!!!
-        const val REDIS_CONFIG_NAME = "redis_main"
+        const val REDIS_CONFIG_NAME = "redis-main"
     }
 
     // ---------------------------------------------------------------------------------------------

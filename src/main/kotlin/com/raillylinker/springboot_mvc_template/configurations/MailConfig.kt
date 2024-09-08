@@ -9,15 +9,15 @@ import java.util.*
 // [JavaMail 설정]
 @Configuration
 class MailConfig(
-    @Value("\${customConfig.smtp.host}")
+    @Value("\${custom-config.smtp.host}")
     var host: String,
-    @Value("\${customConfig.smtp.port}")
+    @Value("\${custom-config.smtp.port}")
     var port: Int,
-    @Value("\${customConfig.smtp.senderName}")
+    @Value("\${custom-config.smtp.sender-name}")
     var senderName: String,
-    @Value("\${customConfig.smtp.senderPassword}")
+    @Value("\${custom-config.smtp.sender-password}")
     var senderPassword: String,
-    @Value("\${customConfig.smtp.timeOutMillis}")
+    @Value("\${custom-config.smtp.time-out-millis}")
     var timeOutMillis: String
 ) {
     @Bean

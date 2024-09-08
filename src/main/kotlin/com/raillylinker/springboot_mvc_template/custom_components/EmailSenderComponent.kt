@@ -14,7 +14,7 @@ import java.io.File
 @Component
 class EmailSenderComponent(
     private val javaMailSender: JavaMailSender,
-    @Value("\${customConfig.smtp.senderName}")
+    @Value("\${custom-config.smtp.sender-name}")
     var mailSenderName: String
 ) {
     fun sendMessageMail(

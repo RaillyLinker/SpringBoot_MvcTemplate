@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @EnableWebMvc
 class WebConfig(
     // (Cors 설정)
-    @Value("\${customConfig.corsList:}#{T(java.util.Collections).emptyList()}")
+    @Value("\${custom-config.cors-allow-list:}#{T(java.util.Collections).emptyList()}")
     private var corsList: List<String>
 ) : WebMvcConfigurer {
     // [Cors 설정]
