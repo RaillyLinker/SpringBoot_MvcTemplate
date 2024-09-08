@@ -1,12 +1,12 @@
 package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_databaseTest
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
-import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database0Config
-import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_Template_Tests_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.entities.Database0_Template_TestData
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.entities.*
+import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db0ForDevelopersConfig
+import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db1MainConfig
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Database0_Template_Tests_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Database0_Template_TestData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.entities.*
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -40,7 +40,7 @@ class C7Service1TkV1DatabaseTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api1(
         httpServletResponse: HttpServletResponse,
         inputVo: C7Service1TkV1DatabaseTestController.Api1InputVo
@@ -71,7 +71,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api2(httpServletResponse: HttpServletResponse, deleteLogically: Boolean) {
         if (deleteLogically) {
             val entityList = database1TemplateTestRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
@@ -91,7 +91,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api3(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
         val entity = database1TemplateTestRepository.findByUidAndRowDeleteDateStr(index, "/")
 
@@ -320,7 +320,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api9(
         httpServletResponse: HttpServletResponse,
         testTableUid: Long,
@@ -357,7 +357,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api10(
         httpServletResponse: HttpServletResponse,
         testTableUid: Long,
@@ -426,7 +426,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api12(
         httpServletResponse: HttpServletResponse
     ) {
@@ -545,7 +545,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api18(
         httpServletResponse: HttpServletResponse,
         inputVo: C7Service1TkV1DatabaseTestController.Api18InputVo
@@ -616,7 +616,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api20(
         httpServletResponse: HttpServletResponse,
         testTableUid: Long,
@@ -662,7 +662,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api21(httpServletResponse: HttpServletResponse, index: Long) {
         val entity = database1TemplateLogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(index, "/")
 
@@ -683,7 +683,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api22(
         httpServletResponse: HttpServletResponse,
         inputVo: C7Service1TkV1DatabaseTestController.Api22InputVo
@@ -708,7 +708,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api23(
         httpServletResponse: HttpServletResponse,
         parentUid: Long,
@@ -984,7 +984,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api28(httpServletResponse: HttpServletResponse, index: Long) {
         val entityOpt = database1TemplateFkTestOneToManyChildRepository.findById(index)
 
@@ -1002,7 +1002,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api29(httpServletResponse: HttpServletResponse, index: Long) {
         val entityOpt = database1TemplateFkTestParentRepository.findById(index)
 
@@ -1020,7 +1020,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database0Config.TRANSACTION_NAME])
+    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
     fun api30(
         httpServletResponse: HttpServletResponse,
         inputVo: C7Service1TkV1DatabaseTestController.Api30InputVo
@@ -1051,7 +1051,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database0Config.TRANSACTION_NAME])
+    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
     fun api31(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
         val entity = database0TemplateTestRepository.findByUidAndRowDeleteDateStr(index, "/")
 
@@ -1127,7 +1127,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database0Config.TRANSACTION_NAME])
+    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
     fun api33(
         httpServletResponse: HttpServletResponse
     ) {
@@ -1158,7 +1158,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api35(
         httpServletResponse: HttpServletResponse
     ) {

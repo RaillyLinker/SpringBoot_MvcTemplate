@@ -3,13 +3,13 @@ package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
 import com.raillylinker.springboot_mvc_template.data_sources.RuntimeConfig
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
-import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database0Config
+import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db0ForDevelopersConfig
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api3ViewModel.LockInfo
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberData_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.entities.Database0_RaillyLinkerCompany_CompanyMemberData
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.entities.Database0_RaillyLinkerCompany_CompanyMemberLockHistory
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Database0_RaillyLinkerCompany_CompanyMemberData_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Database0_RaillyLinkerCompany_CompanyMemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Database0_RaillyLinkerCompany_CompanyMemberLockHistory
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
@@ -282,7 +282,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database0Config.TRANSACTION_NAME])
+    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
     fun api5(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -494,7 +494,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database0Config.TRANSACTION_NAME])
+    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
     fun api10(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -551,7 +551,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database0Config.TRANSACTION_NAME])
+    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
     fun api12(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -600,7 +600,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database0Config.TRANSACTION_NAME])
+    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
     fun api14(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -661,7 +661,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database0Config.TRANSACTION_NAME])
+    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
     fun api16(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
@@ -734,7 +734,7 @@ class SC1Service(
     )
 
     ////
-    @CustomTransactional([Database0Config.TRANSACTION_NAME])
+    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
     fun api19(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,

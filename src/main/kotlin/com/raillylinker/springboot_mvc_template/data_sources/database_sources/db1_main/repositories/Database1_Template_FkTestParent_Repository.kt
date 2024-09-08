@@ -1,0 +1,10 @@
+package com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories
+
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.entities.Database1_Template_FkTestParent
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
+
+@Repository
+interface Database1_Template_FkTestParent_Repository : JpaRepository<Database1_Template_FkTestParent, Long> {
+    fun findAllByOrderByRowCreateDate(): List<Database1_Template_FkTestParent>
+}

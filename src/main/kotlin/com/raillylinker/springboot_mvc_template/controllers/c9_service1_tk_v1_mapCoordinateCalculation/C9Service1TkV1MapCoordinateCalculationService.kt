@@ -1,10 +1,10 @@
 package com.raillylinker.springboot_mvc_template.controllers.c9_service1_tk_v1_mapCoordinateCalculation
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
-import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Native_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_TestMap_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.entities.Database1_Template_TestMap
+import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db1MainConfig
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.Database1_Native_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.Database1_Template_TestMap_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.entities.Database1_Template_TestMap
 import com.raillylinker.springboot_mvc_template.custom_objects.MapCoordinateUtil
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
@@ -28,7 +28,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api0(httpServletResponse: HttpServletResponse) {
         database1TemplateTestMapRepository.deleteAll()
 
@@ -114,7 +114,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api3(
         httpServletResponse: HttpServletResponse,
         inputVo: C9Service1TkV1MapCoordinateCalculationController.Api3InputVo
@@ -159,7 +159,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api4(httpServletResponse: HttpServletResponse) {
         database1TemplateTestMapRepository.deleteAll()
         httpServletResponse.setHeader("api-result-code", "")

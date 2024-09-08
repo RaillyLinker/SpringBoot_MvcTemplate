@@ -2,9 +2,9 @@ package com.raillylinker.springboot_mvc_template.controllers.c10_service1_tk_v1_
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig
-import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.entities.*
+import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db1MainConfig
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.entities.*
 import com.raillylinker.springboot_mvc_template.data_sources.network_retrofit2.RepositoryNetworkRetrofit2
 import com.raillylinker.springboot_mvc_template.custom_components.EmailSenderComponent
 import com.raillylinker.springboot_mvc_template.custom_components.NaverSmsSenderComponent
@@ -138,7 +138,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api4Dot9(
         httpServletResponse: HttpServletResponse,
         memberUid: Long,
@@ -174,7 +174,7 @@ class C10Service1TkV1AuthService(
     }
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api5(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api5InputVo
@@ -417,7 +417,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api7(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api7InputVo
@@ -578,7 +578,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api7Dot1(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api7Dot1InputVo
@@ -689,7 +689,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api8(authorization: String, httpServletResponse: HttpServletResponse) {
         val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
         val token = authorizationSplit[1].trim() // (ex : "abcd1234")
@@ -717,7 +717,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api9(
         authorization: String?,
         inputVo: C10Service1TkV1AuthController.Api9InputVo,
@@ -983,7 +983,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api10(authorization: String, httpServletResponse: HttpServletResponse) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
@@ -1110,7 +1110,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api12(httpServletResponse: HttpServletResponse, authorization: String, id: String) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
@@ -1136,7 +1136,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api12Dot9(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api12Dot9InputVo) {
         if (inputVo.apiSecret != "aadke234!@") {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1288,7 +1288,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api13(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api13InputVo
@@ -1382,7 +1382,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api15(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api15InputVo) {
         val emailVerificationOpt =
             database1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
@@ -1534,7 +1534,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api16(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api16InputVo
@@ -1635,7 +1635,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api18(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api18InputVo) {
         val phoneNumberVerificationOpt =
             database1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
@@ -1790,7 +1790,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api19(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api19InputVo
@@ -1963,7 +1963,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api19Dot1(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api19Dot1InputVo
@@ -2036,7 +2036,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api20(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api20InputVo) {
         // oauth2 종류 (1 : GOOGLE, 2 : NAVER, 3 : KAKAO)
         val oauth2TypeCode: Int
@@ -2216,7 +2216,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api21(
         httpServletResponse: HttpServletResponse,
         authorization: String,
@@ -2285,7 +2285,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api22(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api22InputVo
@@ -2378,7 +2378,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api24(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api24InputVo) {
         val emailVerificationOpt =
             database1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
@@ -2468,7 +2468,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api25(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api25InputVo
@@ -2568,7 +2568,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api27(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api27InputVo) {
         val phoneNumberVerificationOpt =
             database1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
@@ -2759,7 +2759,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api32(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api32InputVo,
@@ -2870,7 +2870,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api34(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api34InputVo,
@@ -2949,7 +2949,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api35(
         httpServletResponse: HttpServletResponse,
         emailUid: Long,
@@ -3016,7 +3016,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api36(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api36InputVo,
@@ -3135,7 +3135,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api38(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api38InputVo,
@@ -3216,7 +3216,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api39(
         httpServletResponse: HttpServletResponse,
         phoneUid: Long,
@@ -3282,7 +3282,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api40(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api40InputVo,
@@ -3391,7 +3391,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api40Dot1(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api40Dot1InputVo,
@@ -3458,7 +3458,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api41(
         httpServletResponse: HttpServletResponse,
         oAuth2Uid: Long,
@@ -3519,7 +3519,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api42(
         httpServletResponse: HttpServletResponse,
         authorization: String
@@ -3625,7 +3625,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api45(httpServletResponse: HttpServletResponse, authorization: String, profileUid: Long?) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
@@ -3678,7 +3678,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api46(authorization: String, httpServletResponse: HttpServletResponse, profileUid: Long) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
@@ -3712,7 +3712,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api47(
         httpServletResponse: HttpServletResponse,
         authorization: String,
@@ -3867,7 +3867,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api50(httpServletResponse: HttpServletResponse, authorization: String, emailUid: Long?) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
@@ -3953,7 +3953,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    @CustomTransactional([Database1Config.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api52(httpServletResponse: HttpServletResponse, authorization: String, phoneNumberUid: Long?) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),

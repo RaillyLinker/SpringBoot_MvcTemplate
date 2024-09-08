@@ -26,7 +26,7 @@ class Mdb1MainConfig {
 
         // Database 트랜젝션 이름 변수
         // 트랜젝션을 적용할 함수 위에, @CustomMongoDbTransactional 어노테이션과 결합하여,
-        // @CustomMongoDbTransactional([MongoDbMainConfig.TRANSACTION_NAME])
+        // @CustomMongoDbTransactional([MongoDbConfig.TRANSACTION_NAME])
         // 위와 같이 적용하세요.
         const val TRANSACTION_NAME: String =
             "${MONGO_DB_DIRECTORY_NAME}_PlatformTransactionManager"

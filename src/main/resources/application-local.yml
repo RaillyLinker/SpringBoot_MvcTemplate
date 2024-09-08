@@ -40,7 +40,7 @@ datasource:
   # 작명법은, 앞에 db{index}-{제목} 형식으로 하여, datasource 별 충돌을 피하기
 
   # (사내 개발자 정보 테이블이 존재하는 데이터베이스)
-  database0: # DB 추가
+  db0-for-developers: # DB 추가
     # 데이터베이스 접속 경로
     # !!!serverTimezone 설정을 데이터베이스의 타임존 설정과 일치시켜주세요.!!!
     # 로컬 DB 접속은 localhost 를 사용하고, 도커에서 로컬 DB 접속시엔 host.docker.internal 를 사용하세요.
@@ -55,7 +55,7 @@ datasource:
     initialization-mode: always
 
   # (서비스 데이터베이스)
-  database1: # DB 추가
+  db1-main: # DB 추가
     # 데이터베이스 접속 경로
     # !!!serverTimezone 설정을 데이터베이스의 타임존 설정과 일치시켜주세요.!!!
     # 로컬 DB 접속은 localhost 를 사용하고, 도커에서 로컬 DB 접속시엔 host.docker.internal 를 사용하세요.
