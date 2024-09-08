@@ -6,10 +6,10 @@ import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db0ForDevelopersConfig
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api3ViewModel.LockInfo
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Database0_RaillyLinkerCompany_CompanyMemberData_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Database0_RaillyLinkerCompany_CompanyMemberData
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Database0_RaillyLinkerCompany_CompanyMemberLockHistory
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberData_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberLockHistory
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
@@ -65,8 +65,8 @@ class SC1Service(
     private val sessionRegistry: SessionRegistry,
 
     // (Database Repository)
-    private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberData_Repository,
-    private val database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
+    private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository,
+    private val database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -178,7 +178,7 @@ class SC1Service(
         if (lock == null) {
             lockInfo = null
         } else {
-            val lockEntity: Database0_RaillyLinkerCompany_CompanyMemberLockHistory?
+            val lockEntity: Db0_RaillyLinkerCompany_CompanyMemberLockHistory?
             val memberEntity = database0RaillyLinkerCompanyCompanyMemberDataRepository.findById(lock).get()
             val lockList = database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository.findAllNowLocks(
                 memberEntity, LocalDateTime.now()
@@ -301,7 +301,7 @@ class SC1Service(
 
         // 회원가입
         database0RaillyLinkerCompanyCompanyMemberDataRepository.save(
-            Database0_RaillyLinkerCompany_CompanyMemberData(
+            Db0_RaillyLinkerCompany_CompanyMemberData(
                 accountId,
                 passwordEnc
             )

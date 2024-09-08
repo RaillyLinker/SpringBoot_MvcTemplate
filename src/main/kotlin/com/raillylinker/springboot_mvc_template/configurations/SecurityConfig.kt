@@ -2,10 +2,10 @@ package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig.UserDetailsServiceMainSc.Companion.getMemberEntity
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtil
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Database0_RaillyLinkerCompany_CompanyMemberData_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Database0_RaillyLinkerCompany_CompanyMemberRoleData_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Database0_RaillyLinkerCompany_CompanyMemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberData_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberRoleData_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberData
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -44,7 +44,7 @@ import java.time.LocalDateTime
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class SecurityConfig(
-    private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberData_Repository
+    private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
 ) {
     // <멤버 변수 공간>
     companion object {
@@ -153,7 +153,7 @@ class SecurityConfig(
                     is LockedException -> {
                         // 계정 정지로 인한 실패
                         val userName = request.getParameter("username")
-                        val memberDataEntity: Database0_RaillyLinkerCompany_CompanyMemberData =
+                        val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData =
                             getMemberEntity(userName, database0RaillyLinkerCompanyCompanyMemberDataRepository)
                         response.sendRedirect("/main/sc/v1/login?lock=${memberDataEntity.uid}")
                     }
@@ -226,15 +226,15 @@ class SecurityConfig(
 
     @Service
     class UserDetailsServiceMainSc(
-        private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberData_Repository,
-        private val database0RaillyLinkerCompanyCompanyMemberRoleDataRepository: Database0_RaillyLinkerCompany_CompanyMemberRoleData_Repository,
-        private val database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
+        private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository,
+        private val database0RaillyLinkerCompanyCompanyMemberRoleDataRepository: Db0_RaillyLinkerCompany_CompanyMemberRoleData_Repository,
+        private val database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
     ) : UserDetailsService {
         companion object {
             fun getMemberEntity(
                 userName: String,
-                database0RaillyLinkerCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberData_Repository
-            ): Database0_RaillyLinkerCompany_CompanyMemberData {
+                database0RaillyLinkerCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
+            ): Db0_RaillyLinkerCompany_CompanyMemberData {
                 // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
                 // 예를들어 email 로그인의 test@test.com 계정의 로그인시에는,
                 // email_test@test.com 이라는 값이 userName 에 담겨져 올 것입니다.
@@ -247,7 +247,7 @@ class SecurityConfig(
                 val userNameType = userName.substring(0, userNameSplitIdx)
                 val userNameValue = userName.substring(userNameSplitIdx + 1)
 
-                val memberDataEntity: Database0_RaillyLinkerCompany_CompanyMemberData
+                val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData
                 when (userNameType) {
                     // 아이디 로그인
                     "accountId" -> {
@@ -266,7 +266,7 @@ class SecurityConfig(
 
         override fun loadUserByUsername(userName: String): UserDetails {
             // 로그인 타입별 멤버 정보 가져오기(없다면 UsernameNotFoundException)
-            val memberDataEntity: Database0_RaillyLinkerCompany_CompanyMemberData =
+            val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData =
                 getMemberEntity(userName, database0RaillyLinkerCompanyCompanyMemberDataRepository)
 
             // 회원 권한을 가져와 변환

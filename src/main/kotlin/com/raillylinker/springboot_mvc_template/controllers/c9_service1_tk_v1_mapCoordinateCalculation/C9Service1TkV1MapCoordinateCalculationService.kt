@@ -2,9 +2,9 @@ package com.raillylinker.springboot_mvc_template.controllers.c9_service1_tk_v1_m
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db1MainConfig
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.Database1_Native_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.Database1_Template_TestMap_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.entities.Database1_Template_TestMap
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.Db1_Native_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.Db1_Template_TestMap_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.entities.Db1_Template_TestMap
 import com.raillylinker.springboot_mvc_template.custom_objects.MapCoordinateUtil
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
@@ -19,8 +19,8 @@ class C9Service1TkV1MapCoordinateCalculationService(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     // (Database Repository)
-    private val database1TemplateTestMapRepository: Database1_Template_TestMap_Repository,
-    private val database1NativeRepository: Database1_Native_Repository
+    private val database1TemplateTestMapRepository: Db1_Template_TestMap_Repository,
+    private val database1NativeRepository: Db1_Native_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -57,7 +57,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
         for (latLng in latLngList) {
             database1TemplateTestMapRepository.save(
-                Database1_Template_TestMap(
+                Db1_Template_TestMap(
                     latLng.first,
                     latLng.second
                 )
@@ -120,7 +120,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         inputVo: C9Service1TkV1MapCoordinateCalculationController.Api3InputVo
     ): C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo? {
         database1TemplateTestMapRepository.save(
-            Database1_Template_TestMap(
+            Db1_Template_TestMap(
                 inputVo.latitude,
                 inputVo.longitude
             )

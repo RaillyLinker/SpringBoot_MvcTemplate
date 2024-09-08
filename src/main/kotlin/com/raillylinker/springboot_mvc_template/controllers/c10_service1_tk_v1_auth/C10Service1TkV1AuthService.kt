@@ -44,21 +44,21 @@ class C10Service1TkV1AuthService(
     private val naverSmsSenderComponent: NaverSmsSenderComponent,
 
     // (Database Repository)
-    private val database1RaillyLinkerCompanyService1MemberDataRepository: Database1_RaillyLinkerCompany_Service1MemberData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberRoleDataRepository: Database1_RaillyLinkerCompany_Service1MemberRoleData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberEmailDataRepository: Database1_RaillyLinkerCompany_Service1MemberEmailData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberPhoneDataRepository: Database1_RaillyLinkerCompany_Service1MemberPhoneData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository: Database1_RaillyLinkerCompany_Service1MemberOauth2LoginData_Repository,
-    private val database1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository: Database1_RaillyLinkerCompany_Service1JoinTheMembershipWithPhoneNumberVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository: Database1_RaillyLinkerCompany_Service1JoinTheMembershipWithEmailVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository: Database1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository: Database1_RaillyLinkerCompany_Service1FindPasswordWithPhoneNumberVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository: Database1_RaillyLinkerCompany_Service1FindPasswordWithEmailVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1AddEmailVerificationDataRepository: Database1_RaillyLinkerCompany_Service1AddEmailVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository: Database1_RaillyLinkerCompany_Service1AddPhoneNumberVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberProfileDataRepository: Database1_RaillyLinkerCompany_Service1MemberProfileData_Repository,
-    private val database1RaillyLinkerCompanyService1LogInTokenHistoryRepository: Database1_RaillyLinkerCompany_Service1LogInTokenHistory_Repository,
-    private val database1RaillyLinkerCompanyService1MemberLockHistoryRepository: Database1_RaillyLinkerCompany_Service1MemberLockHistory_Repository
+    private val database1RaillyLinkerCompanyService1MemberDataRepository: Db1_RaillyLinkerCompany_Service1MemberData_Repository,
+    private val database1RaillyLinkerCompanyService1MemberRoleDataRepository: Db1_RaillyLinkerCompany_Service1MemberRoleData_Repository,
+    private val database1RaillyLinkerCompanyService1MemberEmailDataRepository: Db1_RaillyLinkerCompany_Service1MemberEmailData_Repository,
+    private val database1RaillyLinkerCompanyService1MemberPhoneDataRepository: Db1_RaillyLinkerCompany_Service1MemberPhoneData_Repository,
+    private val database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository: Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData_Repository,
+    private val database1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository: Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithPhoneNumberVerificationData_Repository,
+    private val database1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository: Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithEmailVerificationData_Repository,
+    private val database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository: Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData_Repository,
+    private val database1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository: Db1_RaillyLinkerCompany_Service1FindPasswordWithPhoneNumberVerificationData_Repository,
+    private val database1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository: Db1_RaillyLinkerCompany_Service1FindPasswordWithEmailVerificationData_Repository,
+    private val database1RaillyLinkerCompanyService1AddEmailVerificationDataRepository: Db1_RaillyLinkerCompany_Service1AddEmailVerificationData_Repository,
+    private val database1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository: Db1_RaillyLinkerCompany_Service1AddPhoneNumberVerificationData_Repository,
+    private val database1RaillyLinkerCompanyService1MemberProfileDataRepository: Db1_RaillyLinkerCompany_Service1MemberProfileData_Repository,
+    private val database1RaillyLinkerCompanyService1LogInTokenHistoryRepository: Db1_RaillyLinkerCompany_Service1LogInTokenHistory_Repository,
+    private val database1RaillyLinkerCompanyService1MemberLockHistoryRepository: Db1_RaillyLinkerCompany_Service1MemberLockHistory_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -179,7 +179,7 @@ class C10Service1TkV1AuthService(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api5InputVo
     ): C10Service1TkV1AuthController.Api5OutputVo? {
-        val memberData: Database1_RaillyLinkerCompany_Service1MemberData
+        val memberData: Db1_RaillyLinkerCompany_Service1MemberData
         when (inputVo.loginTypeCode) {
             0 -> { // 아이디
                 // (정보 검증 로직 수행)
@@ -277,7 +277,7 @@ class C10Service1TkV1AuthService(
 
         // 로그인 정보 저장
         database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
-            Database1_RaillyLinkerCompany_Service1LogInTokenHistory(
+            Db1_RaillyLinkerCompany_Service1LogInTokenHistory(
                 memberData,
                 "Bearer",
                 LocalDateTime.now(),
@@ -422,7 +422,7 @@ class C10Service1TkV1AuthService(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api7InputVo
     ): C10Service1TkV1AuthController.Api5OutputVo? {
-        val snsOauth2: Database1_RaillyLinkerCompany_Service1MemberOauth2LoginData?
+        val snsOauth2: Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData?
 
         // (정보 검증 로직 수행)
         when (inputVo.oauth2TypeCode) {
@@ -550,7 +550,7 @@ class C10Service1TkV1AuthService(
 
         // 로그인 정보 저장
         database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
-            Database1_RaillyLinkerCompany_Service1LogInTokenHistory(
+            Db1_RaillyLinkerCompany_Service1LogInTokenHistory(
                 snsOauth2.service1MemberData,
                 "Bearer",
                 LocalDateTime.now(),
@@ -583,7 +583,7 @@ class C10Service1TkV1AuthService(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1AuthController.Api7Dot1InputVo
     ): C10Service1TkV1AuthController.Api5OutputVo? {
-        val snsOauth2: Database1_RaillyLinkerCompany_Service1MemberOauth2LoginData?
+        val snsOauth2: Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData?
 
         // (정보 검증 로직 수행)
         when (inputVo.oauth2TypeCode) {
@@ -661,7 +661,7 @@ class C10Service1TkV1AuthService(
 
         // 로그인 정보 저장
         database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
-            Database1_RaillyLinkerCompany_Service1LogInTokenHistory(
+            Db1_RaillyLinkerCompany_Service1LogInTokenHistory(
                 snsOauth2.service1MemberData,
                 "Bearer",
                 LocalDateTime.now(),
@@ -937,7 +937,7 @@ class C10Service1TkV1AuthService(
 
                         // 로그인 정보 저장
                         database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
-                            Database1_RaillyLinkerCompany_Service1LogInTokenHistory(
+                            Db1_RaillyLinkerCompany_Service1LogInTokenHistory(
                                 tokenInfo.service1MemberData,
                                 "Bearer",
                                 LocalDateTime.now(),
@@ -1173,7 +1173,7 @@ class C10Service1TkV1AuthService(
 
         // 회원가입
         val memberEntity = database1RaillyLinkerCompanyService1MemberDataRepository.save(
-            Database1_RaillyLinkerCompany_Service1MemberData(
+            Db1_RaillyLinkerCompany_Service1MemberData(
                 inputVo.id,
                 password,
                 null,
@@ -1244,7 +1244,7 @@ class C10Service1TkV1AuthService(
 
             val memberProfileData =
                 database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
-                    Database1_RaillyLinkerCompany_Service1MemberProfileData(
+                    Db1_RaillyLinkerCompany_Service1MemberProfileData(
                         memberEntity,
                         savedProfileImageUrl
                     )
@@ -1257,7 +1257,7 @@ class C10Service1TkV1AuthService(
             // 이메일 저장
             val memberEmailData =
                 database1RaillyLinkerCompanyService1MemberEmailDataRepository.save(
-                    Database1_RaillyLinkerCompany_Service1MemberEmailData(
+                    Db1_RaillyLinkerCompany_Service1MemberEmailData(
                         memberEntity,
                         inputVo.email
                     )
@@ -1270,7 +1270,7 @@ class C10Service1TkV1AuthService(
             // 전화번호 저장
             val memberPhoneData =
                 database1RaillyLinkerCompanyService1MemberPhoneDataRepository.save(
-                    Database1_RaillyLinkerCompany_Service1MemberPhoneData(
+                    Db1_RaillyLinkerCompany_Service1MemberPhoneData(
                         memberEntity,
                         inputVo.phoneNumber
                     )
@@ -1307,7 +1307,7 @@ class C10Service1TkV1AuthService(
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberRegisterEmailVerificationData =
             database1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1JoinTheMembershipWithEmailVerificationData(
+                Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithEmailVerificationData(
                     inputVo.email,
                     verificationCode,
                     LocalDateTime.now().plusSeconds(verificationTimeSec)
@@ -1427,7 +1427,7 @@ class C10Service1TkV1AuthService(
 
             // 회원가입
             val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1MemberData(
+                Db1_RaillyLinkerCompany_Service1MemberData(
                     inputVo.id,
                     password,
                     null,
@@ -1438,7 +1438,7 @@ class C10Service1TkV1AuthService(
 
             // 이메일 저장
             val memberEmailData = database1RaillyLinkerCompanyService1MemberEmailDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1MemberEmailData(
+                Db1_RaillyLinkerCompany_Service1MemberEmailData(
                     memberData,
                     inputVo.email
                 )
@@ -1508,7 +1508,7 @@ class C10Service1TkV1AuthService(
 
                 val memberProfileData =
                     database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
-                        Database1_RaillyLinkerCompany_Service1MemberProfileData(
+                        Db1_RaillyLinkerCompany_Service1MemberProfileData(
                             memberData,
                             savedProfileImageUrl
                         )
@@ -1554,7 +1554,7 @@ class C10Service1TkV1AuthService(
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberRegisterPhoneNumberVerificationData =
             database1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1JoinTheMembershipWithPhoneNumberVerificationData(
+                Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithPhoneNumberVerificationData(
                     inputVo.phoneNumber,
                     verificationCode,
                     LocalDateTime.now().plusSeconds(verificationTimeSec)
@@ -1681,7 +1681,7 @@ class C10Service1TkV1AuthService(
 
             // 회원가입
             val memberUser = database1RaillyLinkerCompanyService1MemberDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1MemberData(
+                Db1_RaillyLinkerCompany_Service1MemberData(
                     inputVo.id,
                     password,
                     null,
@@ -1693,7 +1693,7 @@ class C10Service1TkV1AuthService(
             // 전화번호 저장
             val memberPhoneData =
                 database1RaillyLinkerCompanyService1MemberPhoneDataRepository.save(
-                    Database1_RaillyLinkerCompany_Service1MemberPhoneData(
+                    Db1_RaillyLinkerCompany_Service1MemberPhoneData(
                         memberUser,
                         inputVo.phoneNumber
                     )
@@ -1762,7 +1762,7 @@ class C10Service1TkV1AuthService(
                 //----------------------------------------------------------------------------------------------------------
 
                 val memberProfileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
-                    Database1_RaillyLinkerCompany_Service1MemberProfileData(
+                    Db1_RaillyLinkerCompany_Service1MemberProfileData(
                         memberUser,
                         savedProfileImageUrl
                     )
@@ -1835,7 +1835,7 @@ class C10Service1TkV1AuthService(
                 verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
                 val memberRegisterOauth2VerificationData =
                     database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
-                        Database1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
+                        Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
                             1,
                             loginId,
                             verificationCode,
@@ -1882,7 +1882,7 @@ class C10Service1TkV1AuthService(
                 verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
                 val memberRegisterOauth2VerificationData =
                     database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
-                        Database1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
+                        Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
                             2,
                             loginId,
                             verificationCode,
@@ -1929,7 +1929,7 @@ class C10Service1TkV1AuthService(
                 verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
                 val memberRegisterOauth2VerificationData =
                     database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
-                        Database1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
+                        Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
                             3,
                             loginId,
                             verificationCode,
@@ -2002,7 +2002,7 @@ class C10Service1TkV1AuthService(
                 verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
                 val memberRegisterOauth2VerificationData =
                     database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
-                        Database1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
+                        Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
                             4,
                             loginId,
                             verificationCode,
@@ -2111,7 +2111,7 @@ class C10Service1TkV1AuthService(
 
             // 회원가입
             val memberEntity = database1RaillyLinkerCompanyService1MemberDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1MemberData(
+                Db1_RaillyLinkerCompany_Service1MemberData(
                     inputVo.id,
                     null,
                     null,
@@ -2122,7 +2122,7 @@ class C10Service1TkV1AuthService(
 
             // SNS OAUth2 저장
             database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1MemberOauth2LoginData(
+                Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData(
                     memberEntity,
                     inputVo.oauth2TypeCode.toByte(),
                     inputVo.oauth2Id
@@ -2190,7 +2190,7 @@ class C10Service1TkV1AuthService(
                 //----------------------------------------------------------------------------------------------------------
 
                 val memberProfileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
-                    Database1_RaillyLinkerCompany_Service1MemberProfileData(
+                    Db1_RaillyLinkerCompany_Service1MemberProfileData(
                         memberEntity,
                         savedProfileImageUrl
                     )
@@ -2303,7 +2303,7 @@ class C10Service1TkV1AuthService(
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberFindPasswordEmailVerificationData =
             database1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1FindPasswordWithEmailVerificationData(
+                Db1_RaillyLinkerCompany_Service1FindPasswordWithEmailVerificationData(
                     inputVo.email,
                     verificationCode,
                     LocalDateTime.now().plusSeconds(verificationTimeSec)
@@ -2487,7 +2487,7 @@ class C10Service1TkV1AuthService(
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberFindPasswordPhoneNumberVerificationData =
             database1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1FindPasswordWithPhoneNumberVerificationData(
+                Db1_RaillyLinkerCompany_Service1FindPasswordWithPhoneNumberVerificationData(
                     inputVo.phoneNumber,
                     verificationCode,
                     LocalDateTime.now().plusSeconds(verificationTimeSec)
@@ -2785,7 +2785,7 @@ class C10Service1TkV1AuthService(
         val verificationTimeSec: Long = 60 * 10
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberRegisterEmailVerificationData = database1RaillyLinkerCompanyService1AddEmailVerificationDataRepository.save(
-            Database1_RaillyLinkerCompany_Service1AddEmailVerificationData(
+            Db1_RaillyLinkerCompany_Service1AddEmailVerificationData(
                 memberData,
                 inputVo.email,
                 verificationCode,
@@ -2920,7 +2920,7 @@ class C10Service1TkV1AuthService(
 
             // 이메일 추가
             val memberEmailData = database1RaillyLinkerCompanyService1MemberEmailDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1MemberEmailData(
+                Db1_RaillyLinkerCompany_Service1MemberEmailData(
                     memberData,
                     inputVo.email
                 )
@@ -2971,7 +2971,7 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        var myEmailVo: Database1_RaillyLinkerCompany_Service1MemberEmailData? = null
+        var myEmailVo: Db1_RaillyLinkerCompany_Service1MemberEmailData? = null
 
         for (myEmail in myEmailList) {
             if (myEmail.uid == emailUid) {
@@ -3044,7 +3044,7 @@ class C10Service1TkV1AuthService(
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberAddPhoneNumberVerificationData =
             database1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1AddPhoneNumberVerificationData(
+                Db1_RaillyLinkerCompany_Service1AddPhoneNumberVerificationData(
                     memberData,
                     inputVo.phoneNumber,
                     verificationCode,
@@ -3187,7 +3187,7 @@ class C10Service1TkV1AuthService(
 
             // 추가
             val memberPhoneData = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.save(
-                Database1_RaillyLinkerCompany_Service1MemberPhoneData(
+                Db1_RaillyLinkerCompany_Service1MemberPhoneData(
                     memberData,
                     inputVo.phoneNumber
                 )
@@ -3238,7 +3238,7 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        var myPhoneVo: Database1_RaillyLinkerCompany_Service1MemberPhoneData? = null
+        var myPhoneVo: Db1_RaillyLinkerCompany_Service1MemberPhoneData? = null
 
         for (myPhone in myPhoneList) {
             if (myPhone.uid == phoneUid) {
@@ -3378,7 +3378,7 @@ class C10Service1TkV1AuthService(
 
         // SNS 인증 추가
         database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.save(
-            Database1_RaillyLinkerCompany_Service1MemberOauth2LoginData(
+            Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData(
                 memberData,
                 snsTypeCode.toByte(),
                 snsId
@@ -3445,7 +3445,7 @@ class C10Service1TkV1AuthService(
 
         // SNS 인증 추가
         database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.save(
-            Database1_RaillyLinkerCompany_Service1MemberOauth2LoginData(
+            Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData(
                 memberData,
                 snsTypeCode.toByte(),
                 snsId
@@ -3480,7 +3480,7 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        var myOAuth2Vo: Database1_RaillyLinkerCompany_Service1MemberOauth2LoginData? = null
+        var myOAuth2Vo: Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData? = null
 
         for (myOAuth2 in myOAuth2List) {
             if (myOAuth2.uid == oAuth2Uid) {
@@ -3654,7 +3654,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 프로필
-        var selectedProfile: Database1_RaillyLinkerCompany_Service1MemberProfileData? = null
+        var selectedProfile: Db1_RaillyLinkerCompany_Service1MemberProfileData? = null
         for (profile in profileDataList) {
             if (profileUid == profile.uid) {
                 selectedProfile = profile
@@ -3773,7 +3773,7 @@ class C10Service1TkV1AuthService(
         //----------------------------------------------------------------------------------------------------------
 
         val profileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
-            Database1_RaillyLinkerCompany_Service1MemberProfileData(
+            Db1_RaillyLinkerCompany_Service1MemberProfileData(
                 memberData,
                 savedProfileImageUrl
             )
@@ -3896,7 +3896,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 이메일
-        var selectedEmail: Database1_RaillyLinkerCompany_Service1MemberEmailData? = null
+        var selectedEmail: Db1_RaillyLinkerCompany_Service1MemberEmailData? = null
         for (email in emailDataList) {
             if (emailUid == email.uid) {
                 selectedEmail = email
@@ -3982,7 +3982,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 이번에 선택하려는 전화번호
-        var selectedPhone: Database1_RaillyLinkerCompany_Service1MemberPhoneData? = null
+        var selectedPhone: Db1_RaillyLinkerCompany_Service1MemberPhoneData? = null
         for (phone in phoneNumberData) {
             if (phoneNumberUid == phone.uid) {
                 selectedPhone = phone

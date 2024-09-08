@@ -3,8 +3,8 @@ package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_d
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db0ForDevelopersConfig
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db1MainConfig
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Database0_Template_Tests_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Database0_Template_TestData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_Template_Tests_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_Template_TestData
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.*
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.entities.*
 import jakarta.servlet.http.HttpServletResponse
@@ -25,14 +25,14 @@ class C7Service1TkV1DatabaseTestService(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     // (Database Repository)
-    private val database1NativeRepository: Database1_Native_Repository,
-    private val database1TemplateTestRepository: Database1_Template_Tests_Repository,
-    private val database1TemplateFkTestParentRepository: Database1_Template_FkTestParent_Repository,
-    private val database1TemplateFkTestOneToManyChildRepository: Database1_Template_FkTestManyToOneChild_Repository,
-    private val database1TemplateLogicalDeleteUniqueDataRepository: Database1_Template_LogicalDeleteUniqueData_Repository,
-    private val database1TemplateJustBooleanTestRepository: Database1_Template_JustBooleanTest_Repository,
+    private val database1NativeRepository: Db1_Native_Repository,
+    private val database1TemplateTestRepository: Db1_Template_Tests_Repository,
+    private val database1TemplateFkTestParentRepository: Db1_Template_FkTestParent_Repository,
+    private val database1TemplateFkTestOneToManyChildRepository: Db1_Template_FkTestManyToOneChild_Repository,
+    private val database1TemplateLogicalDeleteUniqueDataRepository: Db1_Template_LogicalDeleteUniqueData_Repository,
+    private val database1TemplateJustBooleanTestRepository: Db1_Template_JustBooleanTest_Repository,
 
-    private val database0TemplateTestRepository: Database0_Template_Tests_Repository
+    private val database0TemplateTestRepository: Db0_Template_Tests_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -46,7 +46,7 @@ class C7Service1TkV1DatabaseTestService(
         inputVo: C7Service1TkV1DatabaseTestController.Api1InputVo
     ): C7Service1TkV1DatabaseTestController.Api1OutputVo? {
         val result = database1TemplateTestRepository.save(
-            Database1_Template_TestData(
+            Db1_Template_TestData(
                 inputVo.content,
                 (0..99999999).random(),
                 LocalDateTime.parse(inputVo.dateString, DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS"))
@@ -431,7 +431,7 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse
     ) {
         database1TemplateTestRepository.save(
-            Database1_Template_TestData(
+            Db1_Template_TestData(
                 "error test",
                 (0..99999999).random(),
                 LocalDateTime.now()
@@ -445,7 +445,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api13(httpServletResponse: HttpServletResponse) {
         database1TemplateTestRepository.save(
-            Database1_Template_TestData(
+            Db1_Template_TestData(
                 "error test",
                 (0..99999999).random(),
                 LocalDateTime.now()
@@ -551,7 +551,7 @@ class C7Service1TkV1DatabaseTestService(
         inputVo: C7Service1TkV1DatabaseTestController.Api18InputVo
     ): C7Service1TkV1DatabaseTestController.Api18OutputVo? {
         val result = database1TemplateLogicalDeleteUniqueDataRepository.save(
-            Database1_Template_LogicalDeleteUniqueData(
+            Db1_Template_LogicalDeleteUniqueData(
                 inputVo.uniqueValue
             )
         )
@@ -689,7 +689,7 @@ class C7Service1TkV1DatabaseTestService(
         inputVo: C7Service1TkV1DatabaseTestController.Api22InputVo
     ): C7Service1TkV1DatabaseTestController.Api22OutputVo? {
         val result = database1TemplateFkTestParentRepository.save(
-            Database1_Template_FkTestParent(
+            Db1_Template_FkTestParent(
                 inputVo.fkParentName
             )
         )
@@ -725,7 +725,7 @@ class C7Service1TkV1DatabaseTestService(
         val parentEntity = parentEntityOpt.get()
 
         val result = database1TemplateFkTestOneToManyChildRepository.save(
-            Database1_Template_FkTestManyToOneChild(
+            Db1_Template_FkTestManyToOneChild(
                 inputVo.fkChildName,
                 parentEntity
             )
@@ -829,7 +829,7 @@ class C7Service1TkV1DatabaseTestService(
         val justBooleanEntity = database1TemplateJustBooleanTestRepository.findAll()
         if (justBooleanEntity.isEmpty()) {
             database1TemplateJustBooleanTestRepository.save(
-                Database1_Template_JustBooleanTest(
+                Db1_Template_JustBooleanTest(
                     true
                 )
             )
@@ -1026,7 +1026,7 @@ class C7Service1TkV1DatabaseTestService(
         inputVo: C7Service1TkV1DatabaseTestController.Api30InputVo
     ): C7Service1TkV1DatabaseTestController.Api30OutputVo? {
         val result = database0TemplateTestRepository.save(
-            Database0_Template_TestData(
+            Db0_Template_TestData(
                 inputVo.content,
                 (0..99999999).random(),
                 LocalDateTime.parse(inputVo.dateString, DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS"))
@@ -1132,7 +1132,7 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse
     ) {
         database0TemplateTestRepository.save(
-            Database0_Template_TestData(
+            Db0_Template_TestData(
                 "error test",
                 (0..99999999).random(),
                 LocalDateTime.now()
@@ -1146,7 +1146,7 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api34(httpServletResponse: HttpServletResponse) {
         database0TemplateTestRepository.save(
-            Database0_Template_TestData(
+            Db0_Template_TestData(
                 "error test",
                 (0..99999999).random(),
                 LocalDateTime.now()
@@ -1163,20 +1163,20 @@ class C7Service1TkV1DatabaseTestService(
         httpServletResponse: HttpServletResponse
     ) {
         val parentEntity = database1TemplateFkTestParentRepository.save(
-            Database1_Template_FkTestParent(
+            Db1_Template_FkTestParent(
                 "transaction test"
             )
         )
 
         database1TemplateFkTestOneToManyChildRepository.save(
-            Database1_Template_FkTestManyToOneChild(
+            Db1_Template_FkTestManyToOneChild(
                 "transaction test1",
                 parentEntity
             )
         )
 
         database1TemplateFkTestOneToManyChildRepository.save(
-            Database1_Template_FkTestManyToOneChild(
+            Db1_Template_FkTestManyToOneChild(
                 "transaction test2",
                 parentEntity
             )
@@ -1189,20 +1189,20 @@ class C7Service1TkV1DatabaseTestService(
     ////
     fun api36(httpServletResponse: HttpServletResponse) {
         val parentEntity = database1TemplateFkTestParentRepository.save(
-            Database1_Template_FkTestParent(
+            Db1_Template_FkTestParent(
                 "transaction test"
             )
         )
 
         database1TemplateFkTestOneToManyChildRepository.save(
-            Database1_Template_FkTestManyToOneChild(
+            Db1_Template_FkTestManyToOneChild(
                 "transaction test1",
                 parentEntity
             )
         )
 
         database1TemplateFkTestOneToManyChildRepository.save(
-            Database1_Template_FkTestManyToOneChild(
+            Db1_Template_FkTestManyToOneChild(
                 "transaction test2",
                 parentEntity
             )
