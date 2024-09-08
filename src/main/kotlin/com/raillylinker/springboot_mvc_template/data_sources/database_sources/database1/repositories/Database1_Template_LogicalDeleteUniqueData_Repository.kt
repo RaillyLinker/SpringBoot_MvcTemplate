@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface Database1_Template_LogicalDeleteUniqueDataRepository :
+interface Database1_Template_LogicalDeleteUniqueData_Repository :
     JpaRepository<Database1_Template_LogicalDeleteUniqueData, Long> {
     fun findByUidAndRowDeleteDateStr(
         uid: Long,

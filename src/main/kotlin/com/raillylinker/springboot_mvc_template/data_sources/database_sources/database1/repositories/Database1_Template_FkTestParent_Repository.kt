@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface Database1_Template_FkTestParentRepository : JpaRepository<Database1_Template_FkTestParent, Long> {
+interface Database1_Template_FkTestParent_Repository : JpaRepository<Database1_Template_FkTestParent, Long> {
     fun findAllByOrderByRowCreateDate(): List<Database1_Template_FkTestParent>
 }

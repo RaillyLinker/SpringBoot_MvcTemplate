@@ -24,7 +24,7 @@ import java.time.LocalDateTime
     7. ORDER BY 절: 결과 집합을 정렬합니다. ORDER BY 절은 SELECT 문이 실행된 후에 적용됩니다.
  */
 @Repository
-interface Database1_NativeRepository : JpaRepository<Database1_Template_TestData, Long> {
+interface Database1_Native_Repository : JpaRepository<Database1_Template_TestData, Long> {
     // <C7>
     @Query(
         nativeQuery = true,

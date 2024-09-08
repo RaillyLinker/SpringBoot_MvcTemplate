@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface Database0_Template_TestsRepository : JpaRepository<Database0_Template_TestData, Long> {
+interface Database0_Template_Tests_Repository : JpaRepository<Database0_Template_TestData, Long> {
     fun findByUidAndRowDeleteDateStr(
         uid: Long,
         rowDeleteDateStr: String

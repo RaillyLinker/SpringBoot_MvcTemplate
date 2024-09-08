@@ -1,9 +1,9 @@
 package com.raillylinker.springboot_mvc_template.controllers.c11_service1_tk_v1_mongoDbTest
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
-import com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs.MDb1MainConfig
+import com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs.Mdb1MainConfig
 import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mdb1_main.documents.Mdb1_Test
-import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mdb1_main.repositories.Mdb1_TestRepository
+import com.raillylinker.springboot_mvc_template.data_sources.mongo_db_sources.mdb1_main.repositories.Mdb1_Test_Repository
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 class C11Service1TkV1MongoDbTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
-    private val md1TestCollectionRepository: Mdb1_TestRepository
+    private val md1TestCollectionRepository: Mdb1_Test_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -26,7 +26,7 @@ class C11Service1TkV1MongoDbTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    @CustomTransactional([MDb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
+    @CustomTransactional([Mdb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
     fun api1(
         httpServletResponse: HttpServletResponse,
         inputVo: C11Service1TkV1MongoDbTestController.Api1InputVo
@@ -98,7 +98,7 @@ class C11Service1TkV1MongoDbTestService(
     }
 
 
-    @CustomTransactional([MDb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
+    @CustomTransactional([Mdb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
     fun api12(
         httpServletResponse: HttpServletResponse
     ) {

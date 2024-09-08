@@ -2,8 +2,8 @@ package com.raillylinker.springboot_mvc_template.controllers.c9_service1_tk_v1_m
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_NativeRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_TestMapRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Native_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.Database1_Template_TestMap_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.entities.Database1_Template_TestMap
 import com.raillylinker.springboot_mvc_template.custom_objects.MapCoordinateUtil
 import jakarta.servlet.http.HttpServletResponse
@@ -19,8 +19,8 @@ class C9Service1TkV1MapCoordinateCalculationService(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     // (Database Repository)
-    private val database1TemplateTestMapRepository: Database1_Template_TestMapRepository,
-    private val database1NativeRepository: Database1_NativeRepository
+    private val database1TemplateTestMapRepository: Database1_Template_TestMap_Repository,
+    private val database1NativeRepository: Database1_Native_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 import org.springframework.data.repository.query.Param;
 
 @Repository
-interface Database1_Template_TestsRepository : JpaRepository<Database1_Template_TestData, Long> {
+interface Database1_Template_Tests_Repository : JpaRepository<Database1_Template_TestData, Long> {
     fun findAllByRowDeleteDateStrOrderByRowCreateDate(
         rowDeleteDateStr: String,
         pageable: Pageable

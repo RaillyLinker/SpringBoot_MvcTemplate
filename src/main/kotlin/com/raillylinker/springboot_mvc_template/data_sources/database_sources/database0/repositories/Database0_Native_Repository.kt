@@ -18,5 +18,5 @@ import org.springframework.stereotype.Repository
     7. ORDER BY 절: 결과 집합을 정렬합니다. ORDER BY 절은 SELECT 문이 실행된 후에 적용됩니다.
  */
 @Repository
-interface Database0_NativeRepository : JpaRepository<Database0_RaillyLinkerCompany_CompanyMemberData, Long> {
+interface Database0_Native_Repository : JpaRepository<Database0_RaillyLinkerCompany_CompanyMemberData, Long> {
 }

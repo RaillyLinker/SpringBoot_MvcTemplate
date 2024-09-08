@@ -3,7 +3,7 @@ package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_d
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database0Config
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database1Config
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_Template_TestsRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_Template_Tests_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.entities.Database0_Template_TestData
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.repositories.*
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database1.entities.*
@@ -25,14 +25,14 @@ class C7Service1TkV1DatabaseTestService(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     // (Database Repository)
-    private val database1NativeRepository: Database1_NativeRepository,
-    private val database1TemplateTestRepository: Database1_Template_TestsRepository,
-    private val database1TemplateFkTestParentRepository: Database1_Template_FkTestParentRepository,
-    private val database1TemplateFkTestOneToManyChildRepository: Database1_Template_FkTestManyToOneChildRepository,
-    private val database1TemplateLogicalDeleteUniqueDataRepository: Database1_Template_LogicalDeleteUniqueDataRepository,
-    private val database1TemplateJustBooleanTestRepository: Database1_Template_JustBooleanTestRepository,
+    private val database1NativeRepository: Database1_Native_Repository,
+    private val database1TemplateTestRepository: Database1_Template_Tests_Repository,
+    private val database1TemplateFkTestParentRepository: Database1_Template_FkTestParent_Repository,
+    private val database1TemplateFkTestOneToManyChildRepository: Database1_Template_FkTestManyToOneChild_Repository,
+    private val database1TemplateLogicalDeleteUniqueDataRepository: Database1_Template_LogicalDeleteUniqueData_Repository,
+    private val database1TemplateJustBooleanTestRepository: Database1_Template_JustBooleanTest_Repository,
 
-    private val database0TemplateTestRepository: Database0_Template_TestsRepository
+    private val database0TemplateTestRepository: Database0_Template_Tests_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)

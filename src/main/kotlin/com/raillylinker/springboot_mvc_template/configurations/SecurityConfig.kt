@@ -2,9 +2,9 @@ package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig.UserDetailsServiceMainSc.Companion.getMemberEntity
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtil
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberLockHistoryRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberDataRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberRoleDataRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberData_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberRoleData_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.entities.Database0_RaillyLinkerCompany_CompanyMemberData
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -44,7 +44,7 @@ import java.time.LocalDateTime
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class SecurityConfig(
-    private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberDataRepository
+    private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberData_Repository
 ) {
     // <멤버 변수 공간>
     companion object {
@@ -226,14 +226,14 @@ class SecurityConfig(
 
     @Service
     class UserDetailsServiceMainSc(
-        private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberDataRepository,
-        private val database0RaillyLinkerCompanyCompanyMemberRoleDataRepository: Database0_RaillyLinkerCompany_CompanyMemberRoleDataRepository,
-        private val database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Database0_RaillyLinkerCompany_CompanyMemberLockHistoryRepository
+        private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberData_Repository,
+        private val database0RaillyLinkerCompanyCompanyMemberRoleDataRepository: Database0_RaillyLinkerCompany_CompanyMemberRoleData_Repository,
+        private val database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
     ) : UserDetailsService {
         companion object {
             fun getMemberEntity(
                 userName: String,
-                database0RaillyLinkerCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberDataRepository
+                database0RaillyLinkerCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberData_Repository
             ): Database0_RaillyLinkerCompany_CompanyMemberData {
                 // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
                 // 예를들어 email 로그인의 test@test.com 계정의 로그인시에는,

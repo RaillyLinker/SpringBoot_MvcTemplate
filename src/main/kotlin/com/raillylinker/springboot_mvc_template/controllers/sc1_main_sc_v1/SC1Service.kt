@@ -6,8 +6,8 @@ import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Database0Config
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api3ViewModel.LockInfo
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberDataRepository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberLockHistoryRepository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberData_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.repositories.Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.entities.Database0_RaillyLinkerCompany_CompanyMemberData
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.database0.entities.Database0_RaillyLinkerCompany_CompanyMemberLockHistory
 import jakarta.servlet.http.HttpServletRequest
@@ -65,8 +65,8 @@ class SC1Service(
     private val sessionRegistry: SessionRegistry,
 
     // (Database Repository)
-    private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberDataRepository,
-    private val database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Database0_RaillyLinkerCompany_CompanyMemberLockHistoryRepository
+    private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Database0_RaillyLinkerCompany_CompanyMemberData_Repository,
+    private val database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)

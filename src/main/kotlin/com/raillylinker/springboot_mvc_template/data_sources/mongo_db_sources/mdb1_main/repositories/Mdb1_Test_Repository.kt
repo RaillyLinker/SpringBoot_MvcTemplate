@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface Mdb1_TestRepository : MongoRepository<Mdb1_Test, String> {
+interface Mdb1_Test_Repository : MongoRepository<Mdb1_Test, String> {
 }

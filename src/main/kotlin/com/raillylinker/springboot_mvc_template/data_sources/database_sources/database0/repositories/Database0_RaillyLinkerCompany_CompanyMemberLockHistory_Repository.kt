@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 // (JPA 레포지토리)
 // : 함수 작성 명명법에 따라 데이터베이스 SQL 동작을 자동지원
 @Repository
-interface Database0_RaillyLinkerCompany_CompanyMemberLockHistoryRepository :
+interface Database0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository :
     JpaRepository<Database0_RaillyLinkerCompany_CompanyMemberLockHistory, Long> {
     @Query(
         """

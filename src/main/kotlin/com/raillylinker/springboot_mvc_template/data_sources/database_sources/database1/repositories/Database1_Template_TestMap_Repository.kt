@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface Database1_Template_TestMapRepository : JpaRepository<Database1_Template_TestMap, Long> {
+interface Database1_Template_TestMap_Repository : JpaRepository<Database1_Template_TestMap, Long> {
 }
