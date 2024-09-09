@@ -459,7 +459,7 @@ class C6Service1TkV1TestService(
         val javaEnv = javaEnvironmentPath ?: "java"
 
         // JAR 파일 실행 명령어 설정
-        val javaJarPb = ProcessBuilder(javaEnv, "-jar", "./external_files/samples/JarExample/Counter.jar")
+        val javaJarPb = ProcessBuilder(javaEnv, "-jar", "./external_files/files_for_api_test/JarExample/Counter.jar")
         javaJarPb.directory(File(".")) // 현재 작업 디렉토리 설정
 
         // 프로세스 시작
