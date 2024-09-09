@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 class C11Service1TkV1MongoDbTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
-    private val md1TestCollectionRepository: Mdb1_Test_Repository
+    private val mdb1TestRepository: Mdb1_Test_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -31,7 +31,7 @@ class C11Service1TkV1MongoDbTestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C11Service1TkV1MongoDbTestController.Api1InputVo
     ): C11Service1TkV1MongoDbTestController.Api1OutputVo? {
-        val resultCollection = md1TestCollectionRepository.save(
+        val resultCollection = mdb1TestRepository.save(
             Mdb1_Test(
                 inputVo.content,
                 (0..99999999).random(),
@@ -56,7 +56,7 @@ class C11Service1TkV1MongoDbTestService(
 
     ////
     fun api2(httpServletResponse: HttpServletResponse) {
-        md1TestCollectionRepository.deleteAll()
+        mdb1TestRepository.deleteAll()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -64,7 +64,7 @@ class C11Service1TkV1MongoDbTestService(
 
     ////
     fun api3(httpServletResponse: HttpServletResponse, id: String) {
-        md1TestCollectionRepository.deleteById(id)
+        mdb1TestRepository.deleteById(id)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -72,7 +72,7 @@ class C11Service1TkV1MongoDbTestService(
 
     ////
     fun api4(httpServletResponse: HttpServletResponse): C11Service1TkV1MongoDbTestController.Api4OutputVo? {
-        val testCollectionList = md1TestCollectionRepository.findAll()
+        val testCollectionList = mdb1TestRepository.findAll()
 
         val resultVoList: ArrayList<C11Service1TkV1MongoDbTestController.Api4OutputVo.TestEntityVo> = arrayListOf()
 
@@ -102,7 +102,7 @@ class C11Service1TkV1MongoDbTestService(
     fun api12(
         httpServletResponse: HttpServletResponse
     ) {
-        md1TestCollectionRepository.save(
+        mdb1TestRepository.save(
             Mdb1_Test(
                 "test",
                 (0..99999999).random(),
@@ -122,7 +122,7 @@ class C11Service1TkV1MongoDbTestService(
     fun api13(
         httpServletResponse: HttpServletResponse
     ) {
-        md1TestCollectionRepository.save(
+        mdb1TestRepository.save(
             Mdb1_Test(
                 "test",
                 (0..99999999).random(),

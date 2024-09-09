@@ -19,8 +19,8 @@ class C9Service1TkV1MapCoordinateCalculationService(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     // (Database Repository)
-    private val database1TemplateTestMapRepository: Db1_Template_TestMap_Repository,
-    private val database1NativeRepository: Db1_Native_Repository
+    private val db1TemplateTestMapRepository: Db1_Template_TestMap_Repository,
+    private val db1NativeRepository: Db1_Native_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -30,7 +30,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
     // <공개 메소드 공간>
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api0(httpServletResponse: HttpServletResponse) {
-        database1TemplateTestMapRepository.deleteAll()
+        db1TemplateTestMapRepository.deleteAll()
 
         val latLngList: List<Pair<Double, Double>> = listOf(
             Pair(37.5845885, 127.0001891),
@@ -56,7 +56,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         )
 
         for (latLng in latLngList) {
-            database1TemplateTestMapRepository.save(
+            db1TemplateTestMapRepository.save(
                 Db1_Template_TestMap(
                     latLng.first,
                     latLng.second
@@ -119,7 +119,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         httpServletResponse: HttpServletResponse,
         inputVo: C9Service1TkV1MapCoordinateCalculationController.Api3InputVo
     ): C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo? {
-        database1TemplateTestMapRepository.save(
+        db1TemplateTestMapRepository.save(
             Db1_Template_TestMap(
                 inputVo.latitude,
                 inputVo.longitude
@@ -129,7 +129,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         val coordinateList = ArrayList<C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo.Coordinate>()
         val latLngCoordinate = ArrayList<Pair<Double, Double>>()
 
-        for (testMap in database1TemplateTestMapRepository.findAll()) {
+        for (testMap in db1TemplateTestMapRepository.findAll()) {
             coordinateList.add(
                 C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo.Coordinate(
                     testMap.latitude,
@@ -161,7 +161,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api4(httpServletResponse: HttpServletResponse) {
-        database1TemplateTestMapRepository.deleteAll()
+        db1TemplateTestMapRepository.deleteAll()
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
@@ -175,7 +175,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         radiusKiloMeter: Double
     ): C9Service1TkV1MapCoordinateCalculationController.Api5OutputVo? {
         val entityList =
-            database1NativeRepository.forC9N5(
+            db1NativeRepository.forC9N5(
                 anchorLatitude,
                 anchorLongitude,
                 radiusKiloMeter
@@ -211,7 +211,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
         westLongitude: Double // 남경도 (ex : 126.587602)
     ): C9Service1TkV1MapCoordinateCalculationController.Api6OutputVo? {
         val entityList =
-            database1NativeRepository.forC9N6(
+            db1NativeRepository.forC9N6(
                 northLatitude,
                 eastLongitude,
                 southLatitude,

@@ -44,7 +44,7 @@ import java.time.LocalDateTime
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class SecurityConfig(
-    private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
+    private val db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
 ) {
     // <멤버 변수 공간>
     companion object {
@@ -154,7 +154,7 @@ class SecurityConfig(
                         // 계정 정지로 인한 실패
                         val userName = request.getParameter("username")
                         val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData =
-                            getMemberEntity(userName, database0RaillyLinkerCompanyCompanyMemberDataRepository)
+                            getMemberEntity(userName, db0RaillyLinkerCompanyCompanyMemberDataRepository)
                         response.sendRedirect("/main/sc/v1/login?lock=${memberDataEntity.uid}")
                     }
 
@@ -226,14 +226,14 @@ class SecurityConfig(
 
     @Service
     class UserDetailsServiceMainSc(
-        private val database0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository,
-        private val database0RaillyLinkerCompanyCompanyMemberRoleDataRepository: Db0_RaillyLinkerCompany_CompanyMemberRoleData_Repository,
-        private val database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
+        private val db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository,
+        private val db0RaillyLinkerCompanyCompanyMemberRoleDataRepository: Db0_RaillyLinkerCompany_CompanyMemberRoleData_Repository,
+        private val db0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
     ) : UserDetailsService {
         companion object {
             fun getMemberEntity(
                 userName: String,
-                database0RaillyLinkerCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
+                db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
             ): Db0_RaillyLinkerCompany_CompanyMemberData {
                 // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
                 // 예를들어 email 로그인의 test@test.com 계정의 로그인시에는,
@@ -252,7 +252,7 @@ class SecurityConfig(
                     // 아이디 로그인
                     "accountId" -> {
                         memberDataEntity =
-                            database0RaillyLinkerCompanyMemberDataRepository.findByAccountId(userNameValue)
+                            db0RaillyLinkerCompanyCompanyMemberDataRepository.findByAccountId(userNameValue)
                                 ?: throw UsernameNotFoundException("아이디 유저 정보가 존재하지 않습니다 : $userNameValue")
                     }
 
@@ -267,18 +267,18 @@ class SecurityConfig(
         override fun loadUserByUsername(userName: String): UserDetails {
             // 로그인 타입별 멤버 정보 가져오기(없다면 UsernameNotFoundException)
             val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData =
-                getMemberEntity(userName, database0RaillyLinkerCompanyCompanyMemberDataRepository)
+                getMemberEntity(userName, db0RaillyLinkerCompanyCompanyMemberDataRepository)
 
             // 회원 권한을 가져와 변환
             val memberRoleDataEntityList =
-                database0RaillyLinkerCompanyCompanyMemberRoleDataRepository.findAllByCompanyMemberData(memberDataEntity)
+                db0RaillyLinkerCompanyCompanyMemberRoleDataRepository.findAllByCompanyMemberData(memberDataEntity)
             val authorities: MutableCollection<GrantedAuthority> = memberRoleDataEntityList
                 .map { roleData -> SimpleGrantedAuthority(roleData.role) }
                 .toMutableList()
 
             // 정지 여부 파악
             val lockList =
-                database0RaillyLinkerCompanyCompanyMemberLockHistoryRepository.findAllNowLocks(
+                db0RaillyLinkerCompanyCompanyMemberLockHistoryRepository.findAllNowLocks(
                     memberDataEntity,
                     LocalDateTime.now()
                 )

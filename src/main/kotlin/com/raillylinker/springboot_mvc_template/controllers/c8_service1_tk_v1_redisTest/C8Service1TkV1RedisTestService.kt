@@ -14,7 +14,7 @@ class C8Service1TkV1RedisTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
-    private val redis1Redis1TestRedisType: Redis1_Test
+    private val redis1Test: Redis1_Test
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -27,7 +27,7 @@ class C8Service1TkV1RedisTestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C8Service1TkV1RedisTestController.Api1InputVo
     ) {
-        redis1Redis1TestRedisType.saveKeyValue(
+        redis1Test.saveKeyValue(
             inputVo.key,
             Redis1_Test.ValueVo(
                 inputVo.content,
@@ -48,7 +48,7 @@ class C8Service1TkV1RedisTestService(
     ////
     fun api2(httpServletResponse: HttpServletResponse, key: String): C8Service1TkV1RedisTestController.Api2OutputVo? {
         // 전체 조회 테스트
-        val keyValue = redis1Redis1TestRedisType.findKeyValue(key)
+        val keyValue = redis1Test.findKeyValue(key)
 
         if (keyValue == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -70,7 +70,7 @@ class C8Service1TkV1RedisTestService(
     ////
     fun api3(httpServletResponse: HttpServletResponse): C8Service1TkV1RedisTestController.Api3OutputVo? {
         // 전체 조회 테스트
-        val keyValueList = redis1Redis1TestRedisType.findAllKeyValues()
+        val keyValueList = redis1Test.findAllKeyValues()
 
         val testEntityListVoList = ArrayList<C8Service1TkV1RedisTestController.Api3OutputVo.KeyValueVo>()
         for (keyValue in keyValueList) {
@@ -95,7 +95,7 @@ class C8Service1TkV1RedisTestService(
     ////
     @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api4(httpServletResponse: HttpServletResponse, key: String) {
-        val keyValue = redis1Redis1TestRedisType.findKeyValue(key)
+        val keyValue = redis1Test.findKeyValue(key)
 
         if (keyValue == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -103,7 +103,7 @@ class C8Service1TkV1RedisTestService(
             return
         }
 
-        redis1Redis1TestRedisType.deleteKeyValue(key)
+        redis1Test.deleteKeyValue(key)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -113,7 +113,7 @@ class C8Service1TkV1RedisTestService(
     ////
     @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api5(httpServletResponse: HttpServletResponse) {
-        redis1Redis1TestRedisType.deleteAllKeyValues()
+        redis1Test.deleteAllKeyValues()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -123,7 +123,7 @@ class C8Service1TkV1RedisTestService(
     ////
     @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api6(httpServletResponse: HttpServletResponse, inputVo: C8Service1TkV1RedisTestController.Api6InputVo) {
-        redis1Redis1TestRedisType.saveKeyValue(
+        redis1Test.saveKeyValue(
             inputVo.key,
             Redis1_Test.ValueVo(
                 inputVo.content,
@@ -141,7 +141,7 @@ class C8Service1TkV1RedisTestService(
 
     ////
     fun api7(httpServletResponse: HttpServletResponse, inputVo: C8Service1TkV1RedisTestController.Api7InputVo) {
-        redis1Redis1TestRedisType.saveKeyValue(
+        redis1Test.saveKeyValue(
             inputVo.key,
             Redis1_Test.ValueVo(
                 inputVo.content,

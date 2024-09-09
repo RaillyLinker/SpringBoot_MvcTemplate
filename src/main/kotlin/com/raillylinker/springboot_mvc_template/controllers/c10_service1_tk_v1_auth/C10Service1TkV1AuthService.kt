@@ -44,21 +44,21 @@ class C10Service1TkV1AuthService(
     private val naverSmsSenderComponent: NaverSmsSenderComponent,
 
     // (Database Repository)
-    private val database1RaillyLinkerCompanyService1MemberDataRepository: Db1_RaillyLinkerCompany_Service1MemberData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberRoleDataRepository: Db1_RaillyLinkerCompany_Service1MemberRoleData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberEmailDataRepository: Db1_RaillyLinkerCompany_Service1MemberEmailData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberPhoneDataRepository: Db1_RaillyLinkerCompany_Service1MemberPhoneData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository: Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData_Repository,
-    private val database1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository: Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithPhoneNumberVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository: Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithEmailVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository: Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository: Db1_RaillyLinkerCompany_Service1FindPasswordWithPhoneNumberVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository: Db1_RaillyLinkerCompany_Service1FindPasswordWithEmailVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1AddEmailVerificationDataRepository: Db1_RaillyLinkerCompany_Service1AddEmailVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository: Db1_RaillyLinkerCompany_Service1AddPhoneNumberVerificationData_Repository,
-    private val database1RaillyLinkerCompanyService1MemberProfileDataRepository: Db1_RaillyLinkerCompany_Service1MemberProfileData_Repository,
-    private val database1RaillyLinkerCompanyService1LogInTokenHistoryRepository: Db1_RaillyLinkerCompany_Service1LogInTokenHistory_Repository,
-    private val database1RaillyLinkerCompanyService1MemberLockHistoryRepository: Db1_RaillyLinkerCompany_Service1MemberLockHistory_Repository
+    private val db1RaillyLinkerCompanyService1MemberDataRepository: Db1_RaillyLinkerCompany_Service1MemberData_Repository,
+    private val db1RaillyLinkerCompanyService1MemberRoleDataRepository: Db1_RaillyLinkerCompany_Service1MemberRoleData_Repository,
+    private val db1RaillyLinkerCompanyService1MemberEmailDataRepository: Db1_RaillyLinkerCompany_Service1MemberEmailData_Repository,
+    private val db1RaillyLinkerCompanyService1MemberPhoneDataRepository: Db1_RaillyLinkerCompany_Service1MemberPhoneData_Repository,
+    private val db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository: Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData_Repository,
+    private val db1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository: Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithPhoneNumberVerificationData_Repository,
+    private val db1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository: Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithEmailVerificationData_Repository,
+    private val db1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository: Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData_Repository,
+    private val db1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository: Db1_RaillyLinkerCompany_Service1FindPasswordWithPhoneNumberVerificationData_Repository,
+    private val db1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository: Db1_RaillyLinkerCompany_Service1FindPasswordWithEmailVerificationData_Repository,
+    private val db1RaillyLinkerCompanyService1AddEmailVerificationDataRepository: Db1_RaillyLinkerCompany_Service1AddEmailVerificationData_Repository,
+    private val db1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository: Db1_RaillyLinkerCompany_Service1AddPhoneNumberVerificationData_Repository,
+    private val db1RaillyLinkerCompanyService1MemberProfileDataRepository: Db1_RaillyLinkerCompany_Service1MemberProfileData_Repository,
+    private val db1RaillyLinkerCompanyService1LogInTokenHistoryRepository: Db1_RaillyLinkerCompany_Service1LogInTokenHistory_Repository,
+    private val db1RaillyLinkerCompanyService1MemberLockHistoryRepository: Db1_RaillyLinkerCompany_Service1MemberLockHistory_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -150,7 +150,7 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        val memberEntity = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid)
+        val memberEntity = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid)
 
         if (memberEntity.isEmpty) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -158,7 +158,7 @@ class C10Service1TkV1AuthService(
             return
         } else {
             val tokenEntityList =
-                database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndAccessTokenExpireWhenAfter(
+                db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndAccessTokenExpireWhenAfter(
                     memberEntity.get(),
                     LocalDateTime.now()
                 )
@@ -183,7 +183,7 @@ class C10Service1TkV1AuthService(
         when (inputVo.loginTypeCode) {
             0 -> { // 아이디
                 // (정보 검증 로직 수행)
-                val member = database1RaillyLinkerCompanyService1MemberDataRepository.findByAccountId(inputVo.id)
+                val member = db1RaillyLinkerCompanyService1MemberDataRepository.findByAccountId(inputVo.id)
 
                 if (member == null) { // 가입된 회원이 없음
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -195,7 +195,7 @@ class C10Service1TkV1AuthService(
 
             1 -> { // 이메일
                 // (정보 검증 로직 수행)
-                val memberEmail = database1RaillyLinkerCompanyService1MemberEmailDataRepository.findByEmailAddress(inputVo.id)
+                val memberEmail = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findByEmailAddress(inputVo.id)
 
                 if (memberEmail == null) { // 가입된 회원이 없음
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -207,7 +207,7 @@ class C10Service1TkV1AuthService(
 
             2 -> { // 전화번호
                 // (정보 검증 로직 수행)
-                val memberPhone = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.findByPhoneNumber(inputVo.id)
+                val memberPhone = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findByPhoneNumber(inputVo.id)
 
                 if (memberPhone == null) { // 가입된 회원이 없음
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -234,7 +234,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 계정 정지 검증
-        val lockList = database1RaillyLinkerCompanyService1MemberLockHistoryRepository.findAllNowLocks(memberData, LocalDateTime.now())
+        val lockList = db1RaillyLinkerCompanyService1MemberLockHistoryRepository.findAllNowLocks(memberData, LocalDateTime.now())
         if (lockList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -243,7 +243,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 멤버의 권한 리스트를 조회 후 반환
-        val memberRoleList = database1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(memberData)
+        val memberRoleList = db1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(memberData)
         val roleList: ArrayList<String> = arrayListOf()
         for (userRole in memberRoleList) {
             roleList.add(userRole.role)
@@ -276,7 +276,7 @@ class C10Service1TkV1AuthService(
         val refreshTokenExpireWhen = JwtTokenUtil.getExpirationDateTime(jwtRefreshToken)
 
         // 로그인 정보 저장
-        database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
+        db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
             Db1_RaillyLinkerCompany_Service1LogInTokenHistory(
                 memberData,
                 "Bearer",
@@ -442,7 +442,7 @@ class C10Service1TkV1AuthService(
                 }
 
                 snsOauth2 =
-                    database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2Id(
+                    db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2Id(
                         1,
                         response.body()!!.id!!
                     )
@@ -464,7 +464,7 @@ class C10Service1TkV1AuthService(
                 }
 
                 snsOauth2 =
-                    database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2Id(
+                    db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2Id(
                         2,
                         response.body()!!.response.id
                     )
@@ -486,7 +486,7 @@ class C10Service1TkV1AuthService(
                 }
 
                 snsOauth2 =
-                    database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2Id(
+                    db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2Id(
                         3,
                         response.body()!!.id.toString()
                     )
@@ -507,7 +507,7 @@ class C10Service1TkV1AuthService(
 
         // 계정 정지 검증
         val lockList =
-            database1RaillyLinkerCompanyService1MemberLockHistoryRepository.findAllNowLocks(snsOauth2.service1MemberData, LocalDateTime.now())
+            db1RaillyLinkerCompanyService1MemberLockHistoryRepository.findAllNowLocks(snsOauth2.service1MemberData, LocalDateTime.now())
         if (lockList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -516,7 +516,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 멤버의 권한 리스트를 조회 후 반환
-        val memberRoleList = database1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(snsOauth2.service1MemberData)
+        val memberRoleList = db1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(snsOauth2.service1MemberData)
         val roleList: ArrayList<String> = arrayListOf()
         for (memberRole in memberRoleList) {
             roleList.add(memberRole.role)
@@ -549,7 +549,7 @@ class C10Service1TkV1AuthService(
         val refreshTokenExpireWhen = JwtTokenUtil.getExpirationDateTime(jwtRefreshToken)
 
         // 로그인 정보 저장
-        database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
+        db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
             Db1_RaillyLinkerCompany_Service1LogInTokenHistory(
                 snsOauth2.service1MemberData,
                 "Bearer",
@@ -600,7 +600,7 @@ class C10Service1TkV1AuthService(
                 }
 
                 snsOauth2 =
-                    database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2Id(4, loginId)
+                    db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findByOauth2TypeCodeAndOauth2Id(4, loginId)
             }
 
             else -> {
@@ -618,7 +618,7 @@ class C10Service1TkV1AuthService(
 
         // 계정 정지 검증
         val lockList =
-            database1RaillyLinkerCompanyService1MemberLockHistoryRepository.findAllNowLocks(snsOauth2.service1MemberData, LocalDateTime.now())
+            db1RaillyLinkerCompanyService1MemberLockHistoryRepository.findAllNowLocks(snsOauth2.service1MemberData, LocalDateTime.now())
         if (lockList.isNotEmpty()) {
             // 계정 정지 당한 상황
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -627,7 +627,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 멤버의 권한 리스트를 조회 후 반환
-        val memberRoleList = database1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(snsOauth2.service1MemberData)
+        val memberRoleList = db1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(snsOauth2.service1MemberData)
         val roleList: ArrayList<String> = arrayListOf()
         for (userRole in memberRoleList) {
             roleList.add(userRole.role)
@@ -660,7 +660,7 @@ class C10Service1TkV1AuthService(
         val refreshTokenExpireWhen = JwtTokenUtil.getExpirationDateTime(jwtRefreshToken)
 
         // 로그인 정보 저장
-        database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
+        db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
             Db1_RaillyLinkerCompany_Service1LogInTokenHistory(
                 snsOauth2.service1MemberData,
                 "Bearer",
@@ -697,7 +697,7 @@ class C10Service1TkV1AuthService(
         // 해당 멤버의 토큰 발행 정보 삭제
         val tokenType = authorizationSplit[0].trim().lowercase() // (ex : "bearer")
 
-        val tokenInfo = database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
+        val tokenInfo = db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
             tokenType,
             token,
             null
@@ -705,7 +705,7 @@ class C10Service1TkV1AuthService(
 
         if (tokenInfo != null) {
             tokenInfo.logoutDate = LocalDateTime.now()
-            database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
+            db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
             // 토큰 만료처리
             SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
@@ -787,7 +787,7 @@ class C10Service1TkV1AuthService(
                     SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
                     SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
                 )
-                val memberDataOpt = database1RaillyLinkerCompanyService1MemberDataRepository.findById(accessTokenMemberUid)
+                val memberDataOpt = db1RaillyLinkerCompanyService1MemberDataRepository.findById(accessTokenMemberUid)
 
                 if (memberDataOpt.isEmpty) {
                     // 멤버 탈퇴
@@ -800,7 +800,7 @@ class C10Service1TkV1AuthService(
 
                 // 정지 여부 파악
                 val lockList =
-                    database1RaillyLinkerCompanyService1MemberLockHistoryRepository.findAllNowLocks(memberData, LocalDateTime.now())
+                    db1RaillyLinkerCompanyService1MemberLockHistoryRepository.findAllNowLocks(memberData, LocalDateTime.now())
                 if (lockList.isNotEmpty()) {
                     // 계정 정지 당한 상황
                     httpServletResponse.setHeader("api-result-code", "6")
@@ -811,7 +811,7 @@ class C10Service1TkV1AuthService(
 
                 // 로그아웃 여부 파악
                 val tokenInfo =
-                    database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
+                    db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findByTokenTypeAndAccessTokenAndLogoutDate(
                         accessTokenType,
                         accessToken,
                         null
@@ -898,14 +898,14 @@ class C10Service1TkV1AuthService(
 
                         // 먼저 로그아웃 처리
                         tokenInfo.logoutDate = LocalDateTime.now()
-                        database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
+                        db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
                         // 토큰 만료처리
                         SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
 
                         // 멤버의 권한 리스트를 조회 후 반환
                         val memberRoleList =
-                            database1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(tokenInfo.service1MemberData)
+                            db1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(tokenInfo.service1MemberData)
                         val roleList: ArrayList<String> = arrayListOf()
                         for (userRole in memberRoleList) {
                             roleList.add(userRole.role)
@@ -936,7 +936,7 @@ class C10Service1TkV1AuthService(
                         val refreshTokenExpireWhen = JwtTokenUtil.getExpirationDateTime(newRefreshToken)
 
                         // 로그인 정보 저장
-                        database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
+                        db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(
                             Db1_RaillyLinkerCompany_Service1LogInTokenHistory(
                                 tokenInfo.service1MemberData,
                                 "Bearer",
@@ -990,10 +990,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // loginAccessToken 의 Iterable 가져오기
-        val tokenInfoList = database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndLogoutDate(
+        val tokenInfoList = db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndLogoutDate(
             memberData,
             null
         )
@@ -1001,7 +1001,7 @@ class C10Service1TkV1AuthService(
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
         for (tokenInfo in tokenInfoList) {
             tokenInfo.logoutDate = LocalDateTime.now()
-            database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
+            db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
             // 토큰 만료처리
             SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
@@ -1022,17 +1022,17 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 멤버의 권한 리스트를 조회 후 반환
-        val memberRoleList = database1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(memberData)
+        val memberRoleList = db1RaillyLinkerCompanyService1MemberRoleDataRepository.findAllByService1MemberData(memberData)
 
         val roleList: ArrayList<String> = arrayListOf()
         for (userRole in memberRoleList) {
             roleList.add(userRole.role)
         }
 
-        val profileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
+        val profileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
         val myProfileList: ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.ProfileInfo> = arrayListOf()
         for (profile in profileData) {
             myProfileList.add(
@@ -1044,7 +1044,7 @@ class C10Service1TkV1AuthService(
             )
         }
 
-        val emailEntityList = database1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
+        val emailEntityList = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
         val myEmailList: ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.EmailInfo> = arrayListOf()
         for (emailEntity in emailEntityList) {
             myEmailList.add(
@@ -1056,7 +1056,7 @@ class C10Service1TkV1AuthService(
             )
         }
 
-        val phoneEntityList = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
+        val phoneEntityList = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
         val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.PhoneNumberInfo> =
             arrayListOf()
         for (phoneEntity in phoneEntityList) {
@@ -1069,7 +1069,7 @@ class C10Service1TkV1AuthService(
             )
         }
 
-        val oAuth2EntityList = database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
+        val oAuth2EntityList = db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
         val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
             myOAuth2List.add(
@@ -1104,7 +1104,7 @@ class C10Service1TkV1AuthService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api11OutputVo(
-            database1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(id.trim())
+            db1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(id.trim())
         )
     }
 
@@ -1117,16 +1117,16 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
-        if (database1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(id)) {
+        if (db1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(id)) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
         }
 
         memberData.accountId = id
-        database1RaillyLinkerCompanyService1MemberDataRepository.save(
+        db1RaillyLinkerCompanyService1MemberDataRepository.save(
             memberData
         )
 
@@ -1144,14 +1144,14 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        if (database1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
+        if (db1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "2")
             return
         }
 
         if (inputVo.email != null) {
-            val isUserExists = database1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
+            val isUserExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "3")
@@ -1161,7 +1161,7 @@ class C10Service1TkV1AuthService(
 
         if (inputVo.phoneNumber != null) {
             val isUserExists =
-                database1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
+                db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
@@ -1172,7 +1172,7 @@ class C10Service1TkV1AuthService(
         val password = passwordEncoder.encode(inputVo.password)!! // 비밀번호 암호화
 
         // 회원가입
-        val memberEntity = database1RaillyLinkerCompanyService1MemberDataRepository.save(
+        val memberEntity = db1RaillyLinkerCompanyService1MemberDataRepository.save(
             Db1_RaillyLinkerCompany_Service1MemberData(
                 inputVo.id,
                 password,
@@ -1243,7 +1243,7 @@ class C10Service1TkV1AuthService(
             //----------------------------------------------------------------------------------------------------------
 
             val memberProfileData =
-                database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
+                db1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
                     Db1_RaillyLinkerCompany_Service1MemberProfileData(
                         memberEntity,
                         savedProfileImageUrl
@@ -1256,7 +1256,7 @@ class C10Service1TkV1AuthService(
         if (inputVo.email != null) {
             // 이메일 저장
             val memberEmailData =
-                database1RaillyLinkerCompanyService1MemberEmailDataRepository.save(
+                db1RaillyLinkerCompanyService1MemberEmailDataRepository.save(
                     Db1_RaillyLinkerCompany_Service1MemberEmailData(
                         memberEntity,
                         inputVo.email
@@ -1269,7 +1269,7 @@ class C10Service1TkV1AuthService(
         if (inputVo.phoneNumber != null) {
             // 전화번호 저장
             val memberPhoneData =
-                database1RaillyLinkerCompanyService1MemberPhoneDataRepository.save(
+                db1RaillyLinkerCompanyService1MemberPhoneDataRepository.save(
                     Db1_RaillyLinkerCompany_Service1MemberPhoneData(
                         memberEntity,
                         inputVo.phoneNumber
@@ -1279,7 +1279,7 @@ class C10Service1TkV1AuthService(
             memberEntity.frontService1MemberPhoneData = memberPhoneData
         }
 
-        database1RaillyLinkerCompanyService1MemberDataRepository.save(memberEntity)
+        db1RaillyLinkerCompanyService1MemberDataRepository.save(memberEntity)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -1294,7 +1294,7 @@ class C10Service1TkV1AuthService(
         inputVo: C10Service1TkV1AuthController.Api13InputVo
     ): C10Service1TkV1AuthController.Api13OutputVo? {
         // 입력 데이터 검증
-        val memberExists = database1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
+        val memberExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
 
         if (memberExists) { // 기존 회원 존재
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1306,7 +1306,7 @@ class C10Service1TkV1AuthService(
         val verificationTimeSec: Long = 60 * 10
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberRegisterEmailVerificationData =
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.save(
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithEmailVerificationData(
                     inputVo.email,
                     verificationCode,
@@ -1347,7 +1347,7 @@ class C10Service1TkV1AuthService(
         verificationCode: String
     ) {
         val emailVerificationOpt =
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.findById(verificationUid)
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1385,7 +1385,7 @@ class C10Service1TkV1AuthService(
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api15(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api15InputVo) {
         val emailVerificationOpt =
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1410,14 +1410,14 @@ class C10Service1TkV1AuthService(
 
         // 입력 코드와 발급된 코드와의 매칭
         if (emailVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
-            val isUserExists = database1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
+            val isUserExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return
             }
 
-            if (database1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
+            if (db1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "5")
                 return
@@ -1426,7 +1426,7 @@ class C10Service1TkV1AuthService(
             val password = passwordEncoder.encode(inputVo.password)!! // 비밀번호 암호화
 
             // 회원가입
-            val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.save(
+            val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1MemberData(
                     inputVo.id,
                     password,
@@ -1437,7 +1437,7 @@ class C10Service1TkV1AuthService(
             )
 
             // 이메일 저장
-            val memberEmailData = database1RaillyLinkerCompanyService1MemberEmailDataRepository.save(
+            val memberEmailData = db1RaillyLinkerCompanyService1MemberEmailDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1MemberEmailData(
                     memberData,
                     inputVo.email
@@ -1507,7 +1507,7 @@ class C10Service1TkV1AuthService(
                 //----------------------------------------------------------------------------------------------------------
 
                 val memberProfileData =
-                    database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
+                    db1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
                         Db1_RaillyLinkerCompany_Service1MemberProfileData(
                             memberData,
                             savedProfileImageUrl
@@ -1517,10 +1517,10 @@ class C10Service1TkV1AuthService(
                 memberData.frontService1MemberProfileData = memberProfileData
             }
 
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
             // 확인 완료된 검증 요청 정보 삭제
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.deleteById(emailVerification.uid!!)
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.deleteById(emailVerification.uid!!)
 
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
@@ -1541,7 +1541,7 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api16OutputVo? {
         // 입력 데이터 검증
         val memberExists =
-            database1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
+            db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
 
         if (memberExists) { // 기존 회원 존재
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1553,7 +1553,7 @@ class C10Service1TkV1AuthService(
         val verificationTimeSec: Long = 60 * 10
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberRegisterPhoneNumberVerificationData =
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.save(
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithPhoneNumberVerificationData(
                     inputVo.phoneNumber,
                     verificationCode,
@@ -1600,7 +1600,7 @@ class C10Service1TkV1AuthService(
         verificationCode: String
     ) {
         val phoneNumberVerificationOpt =
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.findById(verificationUid)
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.findById(verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1638,7 +1638,7 @@ class C10Service1TkV1AuthService(
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api18(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api18InputVo) {
         val phoneNumberVerificationOpt =
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1664,14 +1664,14 @@ class C10Service1TkV1AuthService(
         // 입력 코드와 발급된 코드와의 매칭
         if (phoneNumberVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             val isUserExists =
-                database1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
+                db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
                 return
             }
 
-            if (database1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
+            if (db1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "5")
                 return
@@ -1680,7 +1680,7 @@ class C10Service1TkV1AuthService(
             val password: String = passwordEncoder.encode(inputVo.password)!! // 비밀번호 암호화
 
             // 회원가입
-            val memberUser = database1RaillyLinkerCompanyService1MemberDataRepository.save(
+            val memberUser = db1RaillyLinkerCompanyService1MemberDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1MemberData(
                     inputVo.id,
                     password,
@@ -1692,7 +1692,7 @@ class C10Service1TkV1AuthService(
 
             // 전화번호 저장
             val memberPhoneData =
-                database1RaillyLinkerCompanyService1MemberPhoneDataRepository.save(
+                db1RaillyLinkerCompanyService1MemberPhoneDataRepository.save(
                     Db1_RaillyLinkerCompany_Service1MemberPhoneData(
                         memberUser,
                         inputVo.phoneNumber
@@ -1761,7 +1761,7 @@ class C10Service1TkV1AuthService(
                 savedProfileImageUrl = "${externalAccessAddress}/service1/tk/v1/auth/member-profile/$savedFileName"
                 //----------------------------------------------------------------------------------------------------------
 
-                val memberProfileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
+                val memberProfileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
                     Db1_RaillyLinkerCompany_Service1MemberProfileData(
                         memberUser,
                         savedProfileImageUrl
@@ -1771,10 +1771,10 @@ class C10Service1TkV1AuthService(
                 memberUser.frontService1MemberProfileData = memberProfileData
             }
 
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberUser)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberUser)
 
             // 확인 완료된 검증 요청 정보 삭제
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.deleteById(
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.deleteById(
                 phoneNumberVerification.uid!!
             )
 
@@ -1821,7 +1821,7 @@ class C10Service1TkV1AuthService(
                 loginId = response.body()!!.id!!
 
                 val memberExists =
-                    database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
+                    db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
                         1,
                         loginId
                     )
@@ -1834,7 +1834,7 @@ class C10Service1TkV1AuthService(
 
                 verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
                 val memberRegisterOauth2VerificationData =
-                    database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
+                    db1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
                         Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
                             1,
                             loginId,
@@ -1868,7 +1868,7 @@ class C10Service1TkV1AuthService(
                 loginId = response.body()!!.response.id
 
                 val memberExists =
-                    database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
+                    db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
                         2,
                         loginId
                     )
@@ -1881,7 +1881,7 @@ class C10Service1TkV1AuthService(
 
                 verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
                 val memberRegisterOauth2VerificationData =
-                    database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
+                    db1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
                         Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
                             2,
                             loginId,
@@ -1915,7 +1915,7 @@ class C10Service1TkV1AuthService(
                 loginId = response.body()!!.id.toString()
 
                 val memberExists =
-                    database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
+                    db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
                         3,
                         loginId
                     )
@@ -1928,7 +1928,7 @@ class C10Service1TkV1AuthService(
 
                 verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
                 val memberRegisterOauth2VerificationData =
-                    database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
+                    db1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
                         Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
                             3,
                             loginId,
@@ -1988,7 +1988,7 @@ class C10Service1TkV1AuthService(
                 }
 
                 val memberExists =
-                    database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
+                    db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
                         4,
                         loginId
                     )
@@ -2001,7 +2001,7 @@ class C10Service1TkV1AuthService(
 
                 verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
                 val memberRegisterOauth2VerificationData =
-                    database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
+                    db1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.save(
                         Db1_RaillyLinkerCompany_Service1JoinTheMembershipWithOauth2VerificationData(
                             4,
                             loginId,
@@ -2065,7 +2065,7 @@ class C10Service1TkV1AuthService(
         }
 
         val oauth2VerificationOpt =
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.findById(inputVo.verificationUid)
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.findById(inputVo.verificationUid)
 
         if (oauth2VerificationOpt.isEmpty) { // 해당 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2093,7 +2093,7 @@ class C10Service1TkV1AuthService(
         // 입력 코드와 발급된 코드와의 매칭
         if (oauth2Verification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             val isUserExists =
-                database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
+                db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
                     inputVo.oauth2TypeCode.toByte(),
                     inputVo.oauth2Id
                 )
@@ -2103,14 +2103,14 @@ class C10Service1TkV1AuthService(
                 return
             }
 
-            if (database1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
+            if (db1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(inputVo.id.trim())) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "5")
                 return
             }
 
             // 회원가입
-            val memberEntity = database1RaillyLinkerCompanyService1MemberDataRepository.save(
+            val memberEntity = db1RaillyLinkerCompanyService1MemberDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1MemberData(
                     inputVo.id,
                     null,
@@ -2121,7 +2121,7 @@ class C10Service1TkV1AuthService(
             )
 
             // SNS OAUth2 저장
-            database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.save(
+            db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData(
                     memberEntity,
                     inputVo.oauth2TypeCode.toByte(),
@@ -2189,7 +2189,7 @@ class C10Service1TkV1AuthService(
                 savedProfileImageUrl = "${externalAccessAddress}/service1/tk/v1/auth/member-profile/$savedFileName"
                 //----------------------------------------------------------------------------------------------------------
 
-                val memberProfileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
+                val memberProfileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
                     Db1_RaillyLinkerCompany_Service1MemberProfileData(
                         memberEntity,
                         savedProfileImageUrl
@@ -2199,10 +2199,10 @@ class C10Service1TkV1AuthService(
                 memberEntity.frontService1MemberProfileData = memberProfileData
             }
 
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberEntity)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberEntity)
 
             // 확인 완료된 검증 요청 정보 삭제
-            database1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.deleteById(oauth2Verification.uid!!)
+            db1RaillyLinkerCompanyService1JoinTheMembershipWithOauth2VerificationDataRepository.deleteById(oauth2Verification.uid!!)
 
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
@@ -2227,7 +2227,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         if (memberData.accountPassword == null) { // 기존 비번이 존재하지 않음
             if (inputVo.oldPassword != null) { // 비밀번호 불일치
@@ -2248,7 +2248,7 @@ class C10Service1TkV1AuthService(
         }
 
         if (inputVo.newPassword == null) {
-            val oAuth2EntityList = database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
+            val oAuth2EntityList = db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
 
             if (oAuth2EntityList.isEmpty()) {
                 // null 로 만들려고 할 때 account 외의 OAuth2 인증이 없다면 제거 불가
@@ -2261,11 +2261,11 @@ class C10Service1TkV1AuthService(
         } else {
             memberData.accountPassword = passwordEncoder.encode(inputVo.newPassword) // 비밀번호는 암호화
         }
-        database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+        db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
         // 모든 토큰 비활성화 처리
         // loginAccessToken 의 Iterable 가져오기
-        val tokenInfoList = database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndLogoutDate(
+        val tokenInfoList = db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndLogoutDate(
             memberData,
             null
         )
@@ -2273,7 +2273,7 @@ class C10Service1TkV1AuthService(
         // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
         for (tokenInfo in tokenInfoList) {
             tokenInfo.logoutDate = LocalDateTime.now()
-            database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
+            db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
             // 토큰 만료처리
             SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
@@ -2291,7 +2291,7 @@ class C10Service1TkV1AuthService(
         inputVo: C10Service1TkV1AuthController.Api22InputVo
     ): C10Service1TkV1AuthController.Api22OutputVo? {
         // 입력 데이터 검증
-        val memberExists = database1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
+        val memberExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
         if (!memberExists) { // 회원 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
@@ -2302,7 +2302,7 @@ class C10Service1TkV1AuthService(
         val verificationTimeSec: Long = 60 * 10
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberFindPasswordEmailVerificationData =
-            database1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.save(
+            db1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1FindPasswordWithEmailVerificationData(
                     inputVo.email,
                     verificationCode,
@@ -2341,7 +2341,7 @@ class C10Service1TkV1AuthService(
         verificationCode: String
     ) {
         val emailVerificationOpt =
-            database1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.findById(verificationUid)
+            db1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2381,7 +2381,7 @@ class C10Service1TkV1AuthService(
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api24(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api24InputVo) {
         val emailVerificationOpt =
-            database1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
+            db1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2407,7 +2407,7 @@ class C10Service1TkV1AuthService(
         // 입력 코드와 발급된 코드와의 매칭
         if (emailVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             // 입력 데이터 검증
-            val memberEmail = database1RaillyLinkerCompanyService1MemberEmailDataRepository.findByEmailAddress(inputVo.email)
+            val memberEmail = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findByEmailAddress(inputVo.email)
 
             if (memberEmail == null) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2418,7 +2418,7 @@ class C10Service1TkV1AuthService(
             // 랜덤 비번 생성 후 세팅
             val newPassword = String.format("%09d", Random().nextInt(999999999)) // 랜덤 9자리 숫자
             memberEmail.service1MemberData.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberEmail.service1MemberData)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberEmail.service1MemberData)
 
             // 생성된 비번 이메일 전송
             emailSenderComponent.sendThymeLeafHtmlMail(
@@ -2437,12 +2437,12 @@ class C10Service1TkV1AuthService(
             )
 
             // 확인 완료된 검증 요청 정보 삭제
-            database1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.deleteById(emailVerification.uid!!)
+            db1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.deleteById(emailVerification.uid!!)
 
             // 모든 토큰 비활성화 처리
             // loginAccessToken 의 Iterable 가져오기
             val tokenInfoList =
-                database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndLogoutDate(
+                db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndLogoutDate(
                     memberEmail.service1MemberData,
                     null
                 )
@@ -2450,7 +2450,7 @@ class C10Service1TkV1AuthService(
             // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
             for (tokenInfo in tokenInfoList) {
                 tokenInfo.logoutDate = LocalDateTime.now()
-                database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
+                db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
                 // 토큰 만료처리
                 SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
@@ -2475,7 +2475,7 @@ class C10Service1TkV1AuthService(
     ): C10Service1TkV1AuthController.Api25OutputVo? {
         // 입력 데이터 검증
         val memberExists =
-            database1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
+            db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
         if (!memberExists) { // 회원 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
@@ -2486,7 +2486,7 @@ class C10Service1TkV1AuthService(
         val verificationTimeSec: Long = 60 * 10
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberFindPasswordPhoneNumberVerificationData =
-            database1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.save(
+            db1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1FindPasswordWithPhoneNumberVerificationData(
                     inputVo.phoneNumber,
                     verificationCode,
@@ -2531,7 +2531,7 @@ class C10Service1TkV1AuthService(
         verificationCode: String
     ) {
         val phoneNumberVerificationOpt =
-            database1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.findById(verificationUid)
+            db1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.findById(verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2571,7 +2571,7 @@ class C10Service1TkV1AuthService(
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     fun api27(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api27InputVo) {
         val phoneNumberVerificationOpt =
-            database1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
+            db1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2597,7 +2597,7 @@ class C10Service1TkV1AuthService(
         // 입력 코드와 발급된 코드와의 매칭
         if (phoneNumberVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
             // 입력 데이터 검증
-            val memberPhone = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.findByPhoneNumber(inputVo.phoneNumber)
+            val memberPhone = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findByPhoneNumber(inputVo.phoneNumber)
 
             if (memberPhone == null) {
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2608,7 +2608,7 @@ class C10Service1TkV1AuthService(
             // 랜덤 비번 생성 후 세팅
             val newPassword = String.format("%09d", Random().nextInt(999999999)) // 랜덤 9자리 숫자
             memberPhone.service1MemberData.accountPassword = passwordEncoder.encode(newPassword) // 비밀번호는 암호화
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberPhone.service1MemberData)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberPhone.service1MemberData)
 
             val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
 
@@ -2632,12 +2632,12 @@ class C10Service1TkV1AuthService(
             }
 
             // 확인 완료된 검증 요청 정보 삭제
-            database1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.deleteById(phoneNumberVerification.uid!!)
+            db1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.deleteById(phoneNumberVerification.uid!!)
 
             // 모든 토큰 비활성화 처리
             // loginAccessToken 의 Iterable 가져오기
             val tokenInfoList =
-                database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndLogoutDate(
+                db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndLogoutDate(
                     memberPhone.service1MemberData,
                     null
                 )
@@ -2645,7 +2645,7 @@ class C10Service1TkV1AuthService(
             // 발행되었던 모든 액세스 토큰 무효화 (다른 디바이스에선 사용중 로그아웃된 것과 동일한 효과)
             for (tokenInfo in tokenInfoList) {
                 tokenInfo.logoutDate = LocalDateTime.now()
-                database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
+                db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
                 // 토큰 만료처리
                 SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
@@ -2672,9 +2672,9 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
-        val emailEntityList = database1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
+        val emailEntityList = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
         val emailList = ArrayList<C10Service1TkV1AuthController.Api29OutputVo.EmailInfo>()
         for (emailEntity in emailEntityList) {
             emailList.add(
@@ -2704,9 +2704,9 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
-        val phoneEntityList = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
+        val phoneEntityList = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
         val phoneNumberList = ArrayList<C10Service1TkV1AuthController.Api30OutputVo.PhoneInfo>()
         for (phoneEntity in phoneEntityList) {
             phoneNumberList.add(
@@ -2736,9 +2736,9 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
-        val oAuth2EntityList = database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
+        val oAuth2EntityList = db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
         val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api31OutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
             myOAuth2List.add(
@@ -2770,10 +2770,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 입력 데이터 검증
-        val memberExists = database1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
+        val memberExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
 
         if (memberExists) { // 기존 회원 존재
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2784,7 +2784,7 @@ class C10Service1TkV1AuthService(
         // 정보 저장 후 이메일 발송
         val verificationTimeSec: Long = 60 * 10
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
-        val memberRegisterEmailVerificationData = database1RaillyLinkerCompanyService1AddEmailVerificationDataRepository.save(
+        val memberRegisterEmailVerificationData = db1RaillyLinkerCompanyService1AddEmailVerificationDataRepository.save(
             Db1_RaillyLinkerCompany_Service1AddEmailVerificationData(
                 memberData,
                 inputVo.email,
@@ -2831,7 +2831,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val emailVerificationOpt = database1RaillyLinkerCompanyService1AddEmailVerificationDataRepository.findById(verificationUid)
+        val emailVerificationOpt = db1RaillyLinkerCompanyService1AddEmailVerificationDataRepository.findById(verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2881,10 +2881,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         val emailVerificationOpt =
-            database1RaillyLinkerCompanyService1AddEmailVerificationDataRepository.findById(inputVo.verificationUid)
+            db1RaillyLinkerCompanyService1AddEmailVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (emailVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2911,7 +2911,7 @@ class C10Service1TkV1AuthService(
 
         // 입력 코드와 발급된 코드와의 매칭
         if (emailVerification.verificationSecret == inputVo.verificationCode) { // 코드 일치
-            val isUserExists = database1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
+            val isUserExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
@@ -2919,7 +2919,7 @@ class C10Service1TkV1AuthService(
             }
 
             // 이메일 추가
-            val memberEmailData = database1RaillyLinkerCompanyService1MemberEmailDataRepository.save(
+            val memberEmailData = db1RaillyLinkerCompanyService1MemberEmailDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1MemberEmailData(
                     memberData,
                     inputVo.email
@@ -2927,12 +2927,12 @@ class C10Service1TkV1AuthService(
             )
 
             // 확인 완료된 검증 요청 정보 삭제
-            database1RaillyLinkerCompanyService1AddEmailVerificationDataRepository.deleteById(emailVerification.uid!!)
+            db1RaillyLinkerCompanyService1AddEmailVerificationDataRepository.deleteById(emailVerification.uid!!)
 
             if (inputVo.frontEmail) {
                 // 대표 이메일로 설정
                 memberData.frontService1MemberEmailData = memberEmailData
-                database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+                db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
             }
 
             httpServletResponse.setHeader("api-result-code", "")
@@ -2960,10 +2960,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 내 계정에 등록된 모든 이메일 리스트 가져오기
-        val myEmailList = database1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
+        val myEmailList = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
 
         if (myEmailList.isEmpty()) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -2986,21 +2986,21 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        val isOauth2Exists = database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByService1MemberData(memberData)
+        val isOauth2Exists = db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByService1MemberData(memberData)
 
-        val isMemberPhoneExists = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByService1MemberData(memberData)
+        val isMemberPhoneExists = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByService1MemberData(memberData)
 
         if (isOauth2Exists ||
             (memberData.accountPassword != null && myEmailList.size > 1) ||
             (memberData.accountPassword != null && isMemberPhoneExists)
         ) {
             // 이메일 지우기
-            database1RaillyLinkerCompanyService1MemberEmailDataRepository.deleteById(myEmailVo.uid!!)
+            db1RaillyLinkerCompanyService1MemberEmailDataRepository.deleteById(myEmailVo.uid!!)
 
             if (memberData.frontService1MemberEmailData?.uid == emailUid) {
                 // 대표 이메일 삭제
                 memberData.frontService1MemberEmailData = null
-                database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+                db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
             }
 
             httpServletResponse.setHeader("api-result-code", "")
@@ -3027,11 +3027,11 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 입력 데이터 검증
         val memberExists =
-            database1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
+            db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
 
         if (memberExists) { // 기존 회원 존재
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3043,7 +3043,7 @@ class C10Service1TkV1AuthService(
         val verificationTimeSec: Long = 60 * 10
         val verificationCode = String.format("%06d", Random().nextInt(999999)) // 랜덤 6자리 숫자
         val memberAddPhoneNumberVerificationData =
-            database1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository.save(
+            db1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1AddPhoneNumberVerificationData(
                     memberData,
                     inputVo.phoneNumber,
@@ -3098,7 +3098,7 @@ class C10Service1TkV1AuthService(
         )
 
         val phoneNumberVerificationOpt =
-            database1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository.findById(verificationUid)
+            db1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository.findById(verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3146,10 +3146,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         val phoneNumberVerificationOpt =
-            database1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
+            db1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
 
         if (phoneNumberVerificationOpt.isEmpty) { // 해당 이메일 검증을 요청한적이 없음
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3178,7 +3178,7 @@ class C10Service1TkV1AuthService(
         val codeMatched = phoneNumberVerification.verificationSecret == inputVo.verificationCode
 
         if (codeMatched) { // 코드 일치
-            val isUserExists = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
+            val isUserExists = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
             if (isUserExists) { // 기존 회원이 있을 때
                 httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                 httpServletResponse.setHeader("api-result-code", "4")
@@ -3186,7 +3186,7 @@ class C10Service1TkV1AuthService(
             }
 
             // 추가
-            val memberPhoneData = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.save(
+            val memberPhoneData = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.save(
                 Db1_RaillyLinkerCompany_Service1MemberPhoneData(
                     memberData,
                     inputVo.phoneNumber
@@ -3194,12 +3194,12 @@ class C10Service1TkV1AuthService(
             )
 
             // 확인 완료된 검증 요청 정보 삭제
-            database1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository.deleteById(phoneNumberVerification.uid!!)
+            db1RaillyLinkerCompanyService1AddPhoneNumberVerificationDataRepository.deleteById(phoneNumberVerification.uid!!)
 
             if (inputVo.frontPhoneNumber) {
                 // 대표 전화로 설정
                 memberData.frontService1MemberPhoneData = memberPhoneData
-                database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+                db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
             }
 
             httpServletResponse.setHeader("api-result-code", "")
@@ -3227,10 +3227,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 내 계정에 등록된 모든 전화번호 리스트 가져오기
-        val myPhoneList = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
+        val myPhoneList = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
 
         if (myPhoneList.isEmpty()) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3253,20 +3253,20 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        val isOauth2Exists = database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByService1MemberData(memberData)
+        val isOauth2Exists = db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByService1MemberData(memberData)
 
-        val isMemberEmailExists = database1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByService1MemberData(memberData)
+        val isMemberEmailExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByService1MemberData(memberData)
 
         if (isOauth2Exists ||
             (memberData.accountPassword != null && myPhoneList.size > 1) ||
             (memberData.accountPassword != null && isMemberEmailExists)
         ) {
             // 전화번호 지우기
-            database1RaillyLinkerCompanyService1MemberPhoneDataRepository.deleteById(myPhoneVo.uid!!)
+            db1RaillyLinkerCompanyService1MemberPhoneDataRepository.deleteById(myPhoneVo.uid!!)
 
             if (memberData.frontService1MemberPhoneData?.uid == phoneUid) {
                 memberData.frontService1MemberPhoneData = null
-                database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+                db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
             }
 
             httpServletResponse.setHeader("api-result-code", "")
@@ -3293,7 +3293,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         val snsTypeCode: Int
         val snsId: String
@@ -3365,7 +3365,7 @@ class C10Service1TkV1AuthService(
 
         // 사용중인지 아닌지 검증
         val memberExists =
-            database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
+            db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
                 snsTypeCode.toByte(),
                 snsId
             )
@@ -3377,7 +3377,7 @@ class C10Service1TkV1AuthService(
         }
 
         // SNS 인증 추가
-        database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.save(
+        db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.save(
             Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData(
                 memberData,
                 snsTypeCode.toByte(),
@@ -3402,7 +3402,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         val snsTypeCode: Int
         val snsId: String
@@ -3432,7 +3432,7 @@ class C10Service1TkV1AuthService(
 
         // 사용중인지 아닌지 검증
         val memberExists =
-            database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
+            db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.existsByOauth2TypeCodeAndOauth2Id(
                 snsTypeCode.toByte(),
                 snsId
             )
@@ -3444,7 +3444,7 @@ class C10Service1TkV1AuthService(
         }
 
         // SNS 인증 추가
-        database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.save(
+        db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.save(
             Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData(
                 memberData,
                 snsTypeCode.toByte(),
@@ -3469,10 +3469,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 내 계정에 등록된 모든 인증 리스트 가져오기
-        val myOAuth2List = database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
+        val myOAuth2List = db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
 
         if (myOAuth2List.isEmpty()) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3495,16 +3495,16 @@ class C10Service1TkV1AuthService(
             return
         }
 
-        val isMemberEmailExists = database1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByService1MemberData(memberData)
+        val isMemberEmailExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByService1MemberData(memberData)
 
-        val isMemberPhoneExists = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByService1MemberData(memberData)
+        val isMemberPhoneExists = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByService1MemberData(memberData)
 
         if (myOAuth2List.size > 1 ||
             (memberData.accountPassword != null && isMemberEmailExists) ||
             (memberData.accountPassword != null && isMemberPhoneExists)
         ) {
             // 로그인 정보 지우기
-            database1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.deleteById(myOAuth2Vo.uid!!)
+            db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.deleteById(myOAuth2Vo.uid!!)
 
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
@@ -3529,7 +3529,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // member_phone, member_email, member_role, member_sns_oauth2, member_profile, loginAccessToken 비활성화
 
@@ -3542,7 +3542,7 @@ class C10Service1TkV1AuthService(
 
         // 이미 발행된 토큰 만료처리
         val tokenEntityList =
-            database1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndAccessTokenExpireWhenAfter(
+            db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.findAllByService1MemberDataAndAccessTokenExpireWhenAfter(
                 memberData,
                 LocalDateTime.now()
             )
@@ -3551,7 +3551,7 @@ class C10Service1TkV1AuthService(
         }
 
         // 회원탈퇴 처리
-        database1RaillyLinkerCompanyService1MemberDataRepository.deleteById(memberData.uid!!)
+        db1RaillyLinkerCompanyService1MemberDataRepository.deleteById(memberData.uid!!)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -3568,9 +3568,9 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
-        val profileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
+        val profileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
 
         val myProfileList: ArrayList<C10Service1TkV1AuthController.Api43OutputVo.ProfileInfo> = ArrayList()
         for (profile in profileData) {
@@ -3601,9 +3601,9 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
-        val profileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
+        val profileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
 
         var myProfile: C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo? = null
         for (profile in profileData) {
@@ -3632,10 +3632,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 내 프로필 리스트 가져오기
-        val profileDataList = database1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
+        val profileDataList = db1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
 
         if (profileDataList.isEmpty()) {
             // 내 프로필이 하나도 없을 때
@@ -3646,7 +3646,7 @@ class C10Service1TkV1AuthService(
 
         if (profileUid == null) {
             memberData.frontService1MemberProfileData = null
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
@@ -3670,7 +3670,7 @@ class C10Service1TkV1AuthService(
 
         // 이번에 선택하려는 프로필을 선택하기
         memberData.frontService1MemberProfileData = selectedProfile
-        database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+        db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -3685,10 +3685,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 프로필 가져오기
-        val profileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.findByUidAndService1MemberData(profileUid, memberData)
+        val profileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.findByUidAndService1MemberData(profileUid, memberData)
 
         if (profileData == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -3697,13 +3697,13 @@ class C10Service1TkV1AuthService(
         }
 
         // 프로필 비활성화
-        database1RaillyLinkerCompanyService1MemberProfileDataRepository.deleteById(profileData.uid!!)
+        db1RaillyLinkerCompanyService1MemberProfileDataRepository.deleteById(profileData.uid!!)
         // !!!프로필 이미지 파일 삭제하세요!!!
 
         if (memberData.frontService1MemberProfileData?.uid == profileUid) {
             // 대표 프로필을 삭제했을 때 멤버 데이터에 반영
             memberData.frontService1MemberProfileData = null
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -3723,7 +3723,7 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 저장된 프로필 이미지 파일을 다운로드 할 수 있는 URL
         val savedProfileImageUrl: String
@@ -3772,7 +3772,7 @@ class C10Service1TkV1AuthService(
         savedProfileImageUrl = "${externalAccessAddress}/service1/tk/v1/auth/member-profile/$savedFileName"
         //----------------------------------------------------------------------------------------------------------
 
-        val profileData = database1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
+        val profileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.save(
             Db1_RaillyLinkerCompany_Service1MemberProfileData(
                 memberData,
                 savedProfileImageUrl
@@ -3781,7 +3781,7 @@ class C10Service1TkV1AuthService(
 
         if (inputVo.frontProfile) {
             memberData.frontService1MemberProfileData = profileData
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
         }
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -3843,9 +3843,9 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
-        val emailData = database1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
+        val emailData = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
 
         var myEmail: C10Service1TkV1AuthController.Api49OutputVo.EmailInfo? = null
         for (email in emailData) {
@@ -3874,10 +3874,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 내 이메일 리스트 가져오기
-        val emailDataList = database1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
+        val emailDataList = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
 
         if (emailDataList.isEmpty()) {
             // 내 이메일이 하나도 없을 때
@@ -3888,7 +3888,7 @@ class C10Service1TkV1AuthService(
 
         if (emailUid == null) {
             memberData.frontService1MemberEmailData = null
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
@@ -3912,7 +3912,7 @@ class C10Service1TkV1AuthService(
 
         // 이번에 선택하려는 프로필을 선택하기
         memberData.frontService1MemberEmailData = selectedEmail
-        database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+        db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -3929,9 +3929,9 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
-        val phoneNumberData = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
+        val phoneNumberData = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
 
         var myPhone: C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo? = null
         for (phone in phoneNumberData) {
@@ -3960,10 +3960,10 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
-        val memberData = database1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
+        val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         // 내 전화번호 리스트 가져오기
-        val phoneNumberData = database1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
+        val phoneNumberData = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
 
         if (phoneNumberData.isEmpty()) {
             // 내 전화번호가 하나도 없을 때
@@ -3974,7 +3974,7 @@ class C10Service1TkV1AuthService(
 
         if (phoneNumberUid == null) {
             memberData.frontService1MemberPhoneData = null
-            database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+            db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
@@ -3998,7 +3998,7 @@ class C10Service1TkV1AuthService(
 
         // 이번에 선택하려는 프로필을 선택하기
         memberData.frontService1MemberPhoneData = selectedPhone
-        database1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
+        db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
