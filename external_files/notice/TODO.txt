@@ -6,5 +6,5 @@
 - sc 더 잘 할 수 없는지
 - 이름 수정(controllers, static resource, templates)
 - 구조 개선(controllers, static resource, templates)
-- 전수 검증 및 리펙토링
-- 전수 테스트
+- controller 전수 검증 및 리펙토링
+- 인증/인가 전수 테스트
