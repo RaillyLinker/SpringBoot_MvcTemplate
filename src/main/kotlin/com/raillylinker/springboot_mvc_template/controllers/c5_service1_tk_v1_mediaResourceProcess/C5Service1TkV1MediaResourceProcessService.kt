@@ -39,8 +39,8 @@ class C5Service1TkV1MediaResourceProcessService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1(
-        inputVo: C5Service1TkV1MediaResourceProcessController.Api1InputVo,
+    fun api1ResizeImage(
+        inputVo: C5Service1TkV1MediaResourceProcessController.Api1ResizeImageInputVo,
         httpServletResponse: HttpServletResponse
     ): ResponseEntity<Resource>? {
         // 이미지 파일의 확장자 확인
@@ -97,14 +97,14 @@ class C5Service1TkV1MediaResourceProcessService(
 
 
     ////
-    fun api2(
+    fun api2SplitAnimatedGif(
         httpServletResponse: HttpServletResponse
     ) {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
         val gifFilePathObject =
-            Paths.get("$projectRootAbsolutePathString/src/main/resources/static/resource_c5_n2/test.gif")
+            Paths.get("$projectRootAbsolutePathString/src/main/resources/static/for_c5_n2_split_animated_gif/test.gif")
 
         Files.newInputStream(gifFilePathObject).use { fileInputStream ->
             val frameSplit = ImageProcessUtil.gifToImageList(fileInputStream)
@@ -140,7 +140,7 @@ class C5Service1TkV1MediaResourceProcessService(
 
 
     ////
-    fun api3(httpServletResponse: HttpServletResponse) {
+    fun api3MergeImagesToAnimatedGif(httpServletResponse: HttpServletResponse) {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
@@ -148,7 +148,7 @@ class C5Service1TkV1MediaResourceProcessService(
         val bufferedImageList = ArrayList<BufferedImage>()
         for (idx in 1..15) {
             val imageFilePathString =
-                "$projectRootAbsolutePathString/src/main/resources/static/resource_c5_n3/gif_frame_images/${idx}.png"
+                "$projectRootAbsolutePathString/src/main/resources/static/for_c5_n3_merge_images_to_animated_gif/gif_frame_images/${idx}.png"
             bufferedImageList.add(
                 ImageIO.read(
                     Paths.get(imageFilePathString).toFile()
@@ -189,8 +189,8 @@ class C5Service1TkV1MediaResourceProcessService(
 
 
     ////
-    fun api4(
-        inputVo: C5Service1TkV1MediaResourceProcessController.Api4InputVo,
+    fun api4ResizeGifImage(
+        inputVo: C5Service1TkV1MediaResourceProcessController.Api4ResizeGifImageInputVo,
         httpServletResponse: HttpServletResponse
     ): ResponseEntity<Resource>? {
         val contentType = inputVo.multipartImageFile.contentType
@@ -240,9 +240,9 @@ class C5Service1TkV1MediaResourceProcessService(
 
 
     ////
-    fun api5(
+    fun api5CreateSignature(
         httpServletResponse: HttpServletResponse,
-        inputVo: C5Service1TkV1MediaResourceProcessController.Api5InputVo
+        inputVo: C5Service1TkV1MediaResourceProcessController.Api5CreateSignatureInputVo
     ) {
         // 서명 이미지 생성 및 저장
         val signBufferedImage = ImageProcessUtil.createSignatureImage(

@@ -62,17 +62,17 @@ class C5Service1TkV1MediaResourceProcessController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @ResponseBody
-    fun api1(
+    fun api1ResizeImage(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api1InputVo
+        inputVo: Api1ResizeImageInputVo
     ): ResponseEntity<Resource>? {
-        return service.api1(inputVo, httpServletResponse)
+        return service.api1ResizeImage(inputVo, httpServletResponse)
     }
 
-    data class Api1InputVo(
+    data class Api1ResizeImageInputVo(
         @Schema(description = "업로드 이미지 파일", required = true)
         @JsonProperty("multipartImageFile")
         val multipartImageFile: MultipartFile,
@@ -107,11 +107,11 @@ class C5Service1TkV1MediaResourceProcessController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api2(
+    fun api2SplitAnimatedGif(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api2(httpServletResponse)
+        service.api2SplitAnimatedGif(httpServletResponse)
     }
 
 
@@ -134,11 +134,11 @@ class C5Service1TkV1MediaResourceProcessController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api3(
+    fun api3MergeImagesToAnimatedGif(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api3(httpServletResponse)
+        service.api3MergeImagesToAnimatedGif(httpServletResponse)
     }
 
 
@@ -175,17 +175,17 @@ class C5Service1TkV1MediaResourceProcessController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @ResponseBody
-    fun api4(
+    fun api4ResizeGifImage(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api4InputVo
+        inputVo: Api4ResizeGifImageInputVo
     ): ResponseEntity<Resource>? {
-        return service.api4(inputVo, httpServletResponse)
+        return service.api4ResizeGifImage(inputVo, httpServletResponse)
     }
 
-    data class Api4InputVo(
+    data class Api4ResizeGifImageInputVo(
         @Schema(description = "업로드 이미지 파일", required = true)
         @JsonProperty("multipartImageFile")
         val multipartImageFile: MultipartFile,
@@ -217,16 +217,16 @@ class C5Service1TkV1MediaResourceProcessController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api5(
+    fun api5CreateSignature(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api5InputVo
+        inputVo: Api5CreateSignatureInputVo
     ) {
-        service.api5(httpServletResponse, inputVo)
+        service.api5CreateSignature(httpServletResponse, inputVo)
     }
 
-    data class Api5InputVo(
+    data class Api5CreateSignatureInputVo(
         @Schema(description = "서명 문자", required = true, example = "홍길동")
         @JsonProperty("signatureText")
         val signatureText: String
