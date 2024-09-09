@@ -44,16 +44,16 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api1(
+    fun api1InsertDataSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api1InputVo
-    ): Api1OutputVo? {
-        return service.api1(httpServletResponse, inputVo)
+        inputVo: Api1InsertDataSampleInputVo
+    ): Api1InsertDataSampleOutputVo? {
+        return service.api1InsertDataSample(httpServletResponse, inputVo)
     }
 
-    data class Api1InputVo(
+    data class Api1InsertDataSampleInputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
         val content: String,
@@ -66,7 +66,7 @@ class C7Service1TkV1DatabaseTestController(
         val dateString: String
     )
 
-    data class Api1OutputVo(
+    data class Api1InsertDataSampleOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
@@ -122,14 +122,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api2(
+    fun api2DeleteRowsSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "deleteLogically", description = "논리적 삭제 여부", example = "true")
         @RequestParam("deleteLogically")
         deleteLogically: Boolean
     ) {
-        service.api2(httpServletResponse, deleteLogically)
+        service.api2DeleteRowsSample(httpServletResponse, deleteLogically)
     }
 
 
@@ -166,7 +166,7 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api3(
+    fun api3DeleteRowSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "index", description = "글 인덱스", example = "1")
@@ -176,7 +176,7 @@ class C7Service1TkV1DatabaseTestController(
         @RequestParam("deleteLogically")
         deleteLogically: Boolean
     ) {
-        service.api3(httpServletResponse, index, deleteLogically)
+        service.api3DeleteRowSample(httpServletResponse, index, deleteLogically)
     }
 
 
@@ -199,14 +199,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api4(
+    fun api4SelectRowsSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api4OutputVo? {
-        return service.api4(httpServletResponse)
+    ): Api4SelectRowsSampleOutputVo? {
+        return service.api4SelectRowsSample(httpServletResponse)
     }
 
-    data class Api4OutputVo(
+    data class Api4SelectRowsSampleOutputVo(
         @Schema(description = "아이템 리스트", required = true)
         @JsonProperty("testEntityVoList")
         val testEntityVoList: List<TestEntityVo>,
@@ -273,17 +273,17 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api5(
+    fun api5SelectRowsOrderByRandomNumSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "num", description = "근사값 정렬의 기준", example = "1")
         @RequestParam("num")
         num: Int
-    ): Api5OutputVo? {
-        return service.api5(httpServletResponse, num)
+    ): Api5SelectRowsOrderByRandomNumSampleOutputVo? {
+        return service.api5SelectRowsOrderByRandomNumSample(httpServletResponse, num)
     }
 
-    data class Api5OutputVo(
+    data class Api5SelectRowsOrderByRandomNumSampleOutputVo(
         @Schema(description = "아이템 리스트", required = true)
         @JsonProperty("testEntityVoList")
         val testEntityVoList: List<TestEntityVo>
@@ -346,7 +346,7 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api6(
+    fun api6SelectRowsOrderByRowCreateDateSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(
@@ -356,11 +356,11 @@ class C7Service1TkV1DatabaseTestController(
         )
         @RequestParam("dateString")
         dateString: String
-    ): Api6OutputVo? {
-        return service.api6(httpServletResponse, dateString)
+    ): Api6SelectRowsOrderByRowCreateDateSampleOutputVo? {
+        return service.api6SelectRowsOrderByRowCreateDateSample(httpServletResponse, dateString)
     }
 
-    data class Api6OutputVo(
+    data class Api6SelectRowsOrderByRowCreateDateSampleOutputVo(
         @Schema(description = "아이템 리스트", required = true)
         @JsonProperty("testEntityVoList")
         val testEntityVoList: List<TestEntityVo>
@@ -423,7 +423,7 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api7(
+    fun api7SelectRowsPageSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "page", description = "원하는 페이지(1 부터 시작)", example = "1")
@@ -432,11 +432,11 @@ class C7Service1TkV1DatabaseTestController(
         @Parameter(name = "pageElementsCount", description = "페이지 아이템 개수", example = "10")
         @RequestParam("pageElementsCount")
         pageElementsCount: Int
-    ): Api7OutputVo? {
-        return service.api7(httpServletResponse, page, pageElementsCount)
+    ): Api7SelectRowsPageSampleOutputVo? {
+        return service.api7SelectRowsPageSample(httpServletResponse, page, pageElementsCount)
     }
 
-    data class Api7OutputVo(
+    data class Api7SelectRowsPageSampleOutputVo(
         @Schema(description = "아이템 전체 개수", required = true, example = "100")
         @JsonProperty("totalElements")
         val totalElements: Long,
@@ -500,7 +500,7 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api8(
+    fun api8SelectRowsNativeQueryPageSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "page", description = "원하는 페이지(1 부터 시작)", example = "1")
@@ -512,11 +512,11 @@ class C7Service1TkV1DatabaseTestController(
         @Parameter(name = "num", description = "근사값의 기준", example = "1")
         @RequestParam("num")
         num: Int
-    ): Api8OutputVo? {
-        return service.api8(httpServletResponse, page, pageElementsCount, num)
+    ): Api8SelectRowsNativeQueryPageSampleOutputVo? {
+        return service.api8SelectRowsNativeQueryPageSample(httpServletResponse, page, pageElementsCount, num)
     }
 
-    data class Api8OutputVo(
+    data class Api8SelectRowsNativeQueryPageSampleOutputVo(
         @Schema(description = "아이템 전체 개수", required = true, example = "100")
         @JsonProperty("totalElements")
         val totalElements: Long,
@@ -596,19 +596,19 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api9(
+    fun api9UpdateRowSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "testTableUid", description = "test 테이블의 uid", example = "1")
         @PathVariable("testTableUid")
         testTableUid: Long,
         @RequestBody
-        inputVo: Api9InputVo
-    ): Api9OutputVo? {
-        return service.api9(httpServletResponse, testTableUid, inputVo)
+        inputVo: Api9UpdateRowSampleInputVo
+    ): Api9UpdateRowSampleOutputVo? {
+        return service.api9UpdateRowSample(httpServletResponse, testTableUid, inputVo)
     }
 
-    data class Api9InputVo(
+    data class Api9UpdateRowSampleInputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트 수정글입니다.")
         @JsonProperty("content")
         val content: String,
@@ -621,7 +621,7 @@ class C7Service1TkV1DatabaseTestController(
         val dateString: String
     )
 
-    data class Api9OutputVo(
+    data class Api9UpdateRowSampleOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
@@ -688,19 +688,19 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api10(
+    fun api10UpdateRowNativeQuerySample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "testTableUid", description = "test 테이블의 uid", example = "1")
         @PathVariable("testTableUid")
         testTableUid: Long,
         @RequestBody
-        inputVo: Api10InputVo
+        inputVo: Api10UpdateRowNativeQuerySampleInputVo
     ) {
-        return service.api10(httpServletResponse, testTableUid, inputVo)
+        return service.api10UpdateRowNativeQuerySample(httpServletResponse, testTableUid, inputVo)
     }
 
-    data class Api10InputVo(
+    data class Api10UpdateRowNativeQuerySampleInputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트 수정글입니다.")
         @JsonProperty("content")
         val content: String,
@@ -733,7 +733,7 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api11(
+    fun api11SelectRowWhereSearchingKeywordSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "page", description = "원하는 페이지(1 부터 시작)", example = "1")
@@ -745,11 +745,16 @@ class C7Service1TkV1DatabaseTestController(
         @Parameter(name = "searchKeyword", description = "검색어", example = "테스트")
         @RequestParam("searchKeyword")
         searchKeyword: String
-    ): Api11OutputVo? {
-        return service.api11(httpServletResponse, page, pageElementsCount, searchKeyword)
+    ): Api11SelectRowWhereSearchingKeywordSampleOutputVo? {
+        return service.api11SelectRowWhereSearchingKeywordSample(
+            httpServletResponse,
+            page,
+            pageElementsCount,
+            searchKeyword
+        )
     }
 
-    data class Api11OutputVo(
+    data class Api11SelectRowWhereSearchingKeywordSampleOutputVo(
         @Schema(description = "아이템 전체 개수", required = true, example = "100")
         @JsonProperty("totalElements")
         val totalElements: Long,
@@ -812,11 +817,11 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api12(
+    fun api12TransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api12(httpServletResponse)
+        service.api12TransactionTest(httpServletResponse)
     }
 
 
@@ -839,11 +844,11 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api13(
+    fun api13NonTransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api13(httpServletResponse)
+        service.api13NonTransactionTest(httpServletResponse)
     }
 
 
@@ -867,7 +872,7 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api14(
+    fun api14SelectRowsNoDuplicatePagingSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "lastItemUid", description = "이전 페이지에서 받은 마지막 아이템의 Uid (첫 요청이면 null)", example = "1")
@@ -876,11 +881,11 @@ class C7Service1TkV1DatabaseTestController(
         @Parameter(name = "pageElementsCount", description = "페이지 아이템 개수", example = "10")
         @RequestParam("pageElementsCount")
         pageElementsCount: Int
-    ): Api14OutputVo? {
-        return service.api14(httpServletResponse, lastItemUid, pageElementsCount)
+    ): Api14SelectRowsNoDuplicatePagingSampleOutputVo? {
+        return service.api14SelectRowsNoDuplicatePagingSample(httpServletResponse, lastItemUid, pageElementsCount)
     }
 
-    data class Api14OutputVo(
+    data class Api14SelectRowsNoDuplicatePagingSampleOutputVo(
         @Schema(description = "아이템 전체 개수", required = true, example = "100")
         @JsonProperty("totalElements")
         val totalElements: Long,
@@ -943,14 +948,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api15(
+    fun api15SelectRowsCountSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api15OutputVo? {
-        return service.api15(httpServletResponse)
+    ): Api15SelectRowsCountSampleOutputVo? {
+        return service.api15SelectRowsCountSample(httpServletResponse)
     }
 
-    data class Api15OutputVo(
+    data class Api15SelectRowsCountSampleOutputVo(
         @Schema(description = "아이템 전체 개수", required = true, example = "100")
         @JsonProperty("totalElements")
         val totalElements: Long
@@ -976,14 +981,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api16(
+    fun api16SelectRowsCountByNativeQuerySample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api16OutputVo? {
-        return service.api16(httpServletResponse)
+    ): Api16SelectRowsCountByNativeQuerySampleOutputVo? {
+        return service.api16SelectRowsCountByNativeQuerySample(httpServletResponse)
     }
 
-    data class Api16OutputVo(
+    data class Api16SelectRowsCountByNativeQuerySampleOutputVo(
         @Schema(description = "아이템 전체 개수", required = true, example = "100")
         @JsonProperty("totalElements")
         val totalElements: Long
@@ -1023,17 +1028,17 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api17(
+    fun api17SelectRowByNativeQuerySample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "testTableUid", description = "test 테이블의 uid", example = "1")
         @PathVariable("testTableUid")
         testTableUid: Long
-    ): Api17OutputVo? {
-        return service.api17(httpServletResponse, testTableUid)
+    ): Api17SelectRowByNativeQuerySampleOutputVo? {
+        return service.api17SelectRowByNativeQuerySample(httpServletResponse, testTableUid)
     }
 
-    data class Api17OutputVo(
+    data class Api17SelectRowByNativeQuerySampleOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
@@ -1087,22 +1092,22 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api18(
+    fun api18InsertUniqueTestTableRowSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api18InputVo
-    ): Api18OutputVo? {
-        return service.api18(httpServletResponse, inputVo)
+        inputVo: Api18InsertUniqueTestTableRowSampleInputVo
+    ): Api18InsertUniqueTestTableRowSampleOutputVo? {
+        return service.InsertUniqueTestTableRowSample(httpServletResponse, inputVo)
     }
 
-    data class Api18InputVo(
+    data class Api18InsertUniqueTestTableRowSampleInputVo(
         @Schema(description = "유니크 값", required = true, example = "1")
         @JsonProperty("uniqueValue")
         val uniqueValue: Int
     )
 
-    data class Api18OutputVo(
+    data class Api18InsertUniqueTestTableRowSampleOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
@@ -1148,14 +1153,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api19(
+    fun api19SelectUniqueTestTableRowsSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api19OutputVo? {
-        return service.api19(httpServletResponse)
+    ): Api19SelectUniqueTestTableRowsSampleOutputVo? {
+        return service.api19SelectUniqueTestTableRowsSample(httpServletResponse)
     }
 
-    data class Api19OutputVo(
+    data class Api19SelectUniqueTestTableRowsSampleOutputVo(
         @Schema(description = "아이템 리스트", required = true)
         @JsonProperty("testEntityVoList")
         val testEntityVoList: List<TestEntityVo>,
@@ -1227,25 +1232,25 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api20(
+    fun api20UpdateUniqueTestTableRowSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "uniqueTestTableUid", description = "unique test 테이블의 uid", example = "1")
         @PathVariable("uniqueTestTableUid")
         uniqueTestTableUid: Long,
         @RequestBody
-        inputVo: Api20InputVo
-    ): Api20OutputVo? {
-        return service.api20(httpServletResponse, uniqueTestTableUid, inputVo)
+        inputVo: Api20UpdateUniqueTestTableRowSampleInputVo
+    ): Api20UpdateUniqueTestTableRowSampleOutputVo? {
+        return service.api20UpdateUniqueTestTableRowSample(httpServletResponse, uniqueTestTableUid, inputVo)
     }
 
-    data class Api20InputVo(
+    data class Api20UpdateUniqueTestTableRowSampleInputVo(
         @Schema(description = "유니크 값", required = true, example = "1")
         @JsonProperty("uniqueValue")
         val uniqueValue: Int
     )
 
-    data class Api20OutputVo(
+    data class Api20UpdateUniqueTestTableRowSampleOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
@@ -1302,14 +1307,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api21(
+    fun api21DeleteUniqueTestTableRowSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "index", description = "글 인덱스", example = "1")
         @PathVariable("index")
         index: Long
     ) {
-        service.api21(httpServletResponse, index)
+        service.api21DeleteUniqueTestTableRowSample(httpServletResponse, index)
     }
 
 
@@ -1332,22 +1337,22 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api22(
+    fun api22InsertFkParentRowSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api22InputVo
-    ): Api22OutputVo? {
-        return service.api22(httpServletResponse, inputVo)
+        inputVo: Api22InsertFkParentRowSampleInputVo
+    ): Api22InsertFkParentRowSampleOutputVo? {
+        return service.api22InsertFkParentRowSample(httpServletResponse, inputVo)
     }
 
-    data class Api22InputVo(
+    data class Api22InsertFkParentRowSampleInputVo(
         @Schema(description = "외래키 테이블 부모 이름", required = true, example = "홍길동")
         @JsonProperty("fkParentName")
         val fkParentName: String
     )
 
-    data class Api22OutputVo(
+    data class Api22InsertFkParentRowSampleOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
@@ -1404,25 +1409,25 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api23(
+    fun api23InsertFkChildRowSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "parentUid", description = "외래키 부모 테이블 고유번호", example = "1")
         @PathVariable("parentUid")
         parentUid: Long,
         @RequestBody
-        inputVo: Api23InputVo
-    ): Api23OutputVo? {
-        return service.api23(httpServletResponse, parentUid, inputVo)
+        inputVo: Api23InsertFkChildRowSampleInputVo
+    ): Api23InsertFkChildRowSampleOutputVo? {
+        return service.api23InsertFkChildRowSample(httpServletResponse, parentUid, inputVo)
     }
 
-    data class Api23InputVo(
+    data class Api23InsertFkChildRowSampleInputVo(
         @Schema(description = "외래키 테이블 자식 이름", required = true, example = "홍길동")
         @JsonProperty("fkChildName")
         val fkChildName: String
     )
 
-    data class Api23OutputVo(
+    data class Api23InsertFkChildRowSampleOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
@@ -1468,14 +1473,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api24(
+    fun api24SelectFkTestTableRowsSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api24OutputVo? {
-        return service.api24(httpServletResponse)
+    ): Api24SelectFkTestTableRowsSampleOutputVo? {
+        return service.api24SelectFkTestTableRowsSample(httpServletResponse)
     }
 
-    data class Api24OutputVo(
+    data class Api24SelectFkTestTableRowsSampleOutputVo(
         @Schema(description = "부모 아이템 리스트", required = true)
         @JsonProperty("parentEntityVoList")
         val parentEntityVoList: List<ParentEntityVo>
@@ -1552,14 +1557,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api24Dot1(
+    fun api24Dot1SelectFkTestTableRowsByNativeQuerySample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api24Dot1OutputVo? {
-        return service.api24Dot1(httpServletResponse)
+    ): Api24SelectFkTestTableRowsByNativeQuerySampleDot1OutputVo? {
+        return service.api24Dot1SelectFkTestTableRowsByNativeQuerySample(httpServletResponse)
     }
 
-    data class Api24Dot1OutputVo(
+    data class Api24SelectFkTestTableRowsByNativeQuerySampleDot1OutputVo(
         @Schema(description = "자식 아이템 리스트", required = true)
         @JsonProperty("childEntityVoList")
         val childEntityVoList: List<ChildEntityVo>
@@ -1615,20 +1620,20 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api25(
+    fun api25GetNativeQueryReturnValueTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "inputVal", description = "Native Query 비교문에 사용되는 파라미터", example = "true")
         @RequestParam("inputVal")
         inputVal: Boolean
-    ): Api25OutputVo? {
-        return service.api25(
+    ): Api25GetNativeQueryReturnValueTestOutputVo? {
+        return service.api25GetNativeQueryReturnValueTest(
             httpServletResponse,
             inputVal
         )
     }
 
-    data class Api25OutputVo(
+    data class Api25GetNativeQueryReturnValueTestOutputVo(
         @Schema(description = "Select 문에서 직접적으로 true 를 반환한 예시", required = true, example = "true")
         @JsonProperty("normalBoolValue")
         val normalBoolValue: Boolean,
@@ -1668,20 +1673,20 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api26(
+    fun api26SqlInjectionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "searchKeyword", description = "Select 문 검색에 사용되는 키워드", example = "test OR 1 = 1")
         @RequestParam("searchKeyword")
         searchKeyword: String
-    ): Api26OutputVo? {
-        return service.api26(
+    ): Api26SqlInjectionTestOutputVo? {
+        return service.api26SqlInjectionTest(
             httpServletResponse,
             searchKeyword
         )
     }
 
-    data class Api26OutputVo(
+    data class Api26SqlInjectionTestOutputVo(
         @Schema(description = "JpaRepository 로 조회했을 때의 아이템 리스트", required = true)
         @JsonProperty("jpaRepositoryResultList")
         val jpaRepositoryResultList: List<TestEntityVo>,
@@ -1748,14 +1753,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api27(
+    fun api27SelectFkTableRowsWithLatestChildSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api27OutputVo? {
-        return service.api27(httpServletResponse)
+    ): Api27SelectFkTableRowsWithLatestChildSampleOutputVo? {
+        return service.api27SelectFkTableRowsWithLatestChildSample(httpServletResponse)
     }
 
-    data class Api27OutputVo(
+    data class Api27SelectFkTableRowsWithLatestChildSampleOutputVo(
         @Schema(description = "부모 아이템 리스트", required = true)
         @JsonProperty("parentEntityVoList")
         val parentEntityVoList: List<ParentEntityVo>
@@ -1846,14 +1851,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api28(
+    fun api28DeleteFkChildRowSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "index", description = "글 인덱스", example = "1")
         @PathVariable("index")
         index: Long
     ) {
-        service.api28(httpServletResponse, index)
+        service.api28DeleteFkChildRowSample(httpServletResponse, index)
     }
 
 
@@ -1891,14 +1896,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api29(
+    fun api29DeleteFkParentRowSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "index", description = "글 인덱스", example = "1")
         @PathVariable("index")
         index: Long
     ) {
-        service.api29(httpServletResponse, index)
+        service.api29DeleteFkParentRowSample(httpServletResponse, index)
     }
 
     ////
@@ -1920,16 +1925,16 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api30(
+    fun api30InsertRowToDb0Sample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api30InputVo
-    ): Api30OutputVo? {
-        return service.api30(httpServletResponse, inputVo)
+        inputVo: Api30InsertRowToDb0SampleInputVo
+    ): Api30InsertRowToDb0SampleOutputVo? {
+        return service.api30InsertRowToDb0Sample(httpServletResponse, inputVo)
     }
 
-    data class Api30InputVo(
+    data class Api30InsertRowToDb0SampleInputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
         val content: String,
@@ -1942,7 +1947,7 @@ class C7Service1TkV1DatabaseTestController(
         val dateString: String
     )
 
-    data class Api30OutputVo(
+    data class Api30InsertRowToDb0SampleOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
@@ -2012,7 +2017,7 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api31(
+    fun api31DeleteRowFromDb0Sample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "index", description = "글 인덱스", example = "1")
@@ -2022,7 +2027,7 @@ class C7Service1TkV1DatabaseTestController(
         @RequestParam("deleteLogically")
         deleteLogically: Boolean
     ) {
-        service.api31(httpServletResponse, index, deleteLogically)
+        service.api31DeleteRowFromDb0Sample(httpServletResponse, index, deleteLogically)
     }
 
 
@@ -2045,14 +2050,14 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api32(
+    fun api32SelectRowsFromDb0Sample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api32OutputVo? {
-        return service.api32(httpServletResponse)
+    ): Api32SelectRowsFromDb0SampleOutputVo? {
+        return service.api32SelectRowsFromDb0Sample(httpServletResponse)
     }
 
-    data class Api32OutputVo(
+    data class Api32SelectRowsFromDb0SampleOutputVo(
         @Schema(description = "아이템 리스트", required = true)
         @JsonProperty("testEntityVoList")
         val testEntityVoList: List<TestEntityVo>,
@@ -2119,11 +2124,11 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api33(
+    fun api33Db0TransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api33(httpServletResponse)
+        service.api33Db0TransactionTest(httpServletResponse)
     }
 
 
@@ -2146,11 +2151,11 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api34(
+    fun api34Db0NonTransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api34(httpServletResponse)
+        service.api34Db0NonTransactionTest(httpServletResponse)
     }
 
 
@@ -2173,11 +2178,11 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api35(
+    fun api35FkTableTransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api35(httpServletResponse)
+        service.api35FkTableTransactionTest(httpServletResponse)
     }
 
 
@@ -2200,10 +2205,10 @@ class C7Service1TkV1DatabaseTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api36(
+    fun api36FkTableNonTransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api36(httpServletResponse)
+        service.api36FkTableNonTransactionTest(httpServletResponse)
     }
 }

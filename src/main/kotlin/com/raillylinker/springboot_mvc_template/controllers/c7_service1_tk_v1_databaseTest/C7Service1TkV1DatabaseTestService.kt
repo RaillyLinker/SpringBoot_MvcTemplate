@@ -41,10 +41,10 @@ class C7Service1TkV1DatabaseTestService(
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api1(
+    fun api1InsertDataSample(
         httpServletResponse: HttpServletResponse,
-        inputVo: C7Service1TkV1DatabaseTestController.Api1InputVo
-    ): C7Service1TkV1DatabaseTestController.Api1OutputVo? {
+        inputVo: C7Service1TkV1DatabaseTestController.Api1InsertDataSampleInputVo
+    ): C7Service1TkV1DatabaseTestController.Api1InsertDataSampleOutputVo? {
         val result = db1TemplateTestsRepository.save(
             Db1_Template_TestData(
                 inputVo.content,
@@ -55,7 +55,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api1OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api1InsertDataSampleOutputVo(
             result.uid!!,
             result.content,
             result.randomNum,
@@ -72,7 +72,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api2(httpServletResponse: HttpServletResponse, deleteLogically: Boolean) {
+    fun api2DeleteRowsSample(httpServletResponse: HttpServletResponse, deleteLogically: Boolean) {
         if (deleteLogically) {
             val entityList = db1TemplateTestsRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
             for (entity in entityList) {
@@ -92,7 +92,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api3(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
+    fun api3DeleteRowSample(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
         val entity = db1TemplateTestsRepository.findByUidAndRowDeleteDateStr(index, "/")
 
         if (entity == null) {
@@ -116,13 +116,13 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api4(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api4OutputVo? {
+    fun api4SelectRowsSample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api4SelectRowsSampleOutputVo? {
         val resultEntityList =
             db1TemplateTestsRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
-        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api4OutputVo.TestEntityVo>()
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api4SelectRowsSampleOutputVo.TestEntityVo>()
         for (resultEntity in resultEntityList) {
             entityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api4OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api4SelectRowsSampleOutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
@@ -139,10 +139,10 @@ class C7Service1TkV1DatabaseTestService(
 
         val logicalDeleteEntityVoList =
             db1TemplateTestsRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("/")
-        val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api4OutputVo.TestEntityVo>()
+        val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api4SelectRowsSampleOutputVo.TestEntityVo>()
         for (resultEntity in logicalDeleteEntityVoList) {
             logicalDeleteVoList.add(
-                C7Service1TkV1DatabaseTestController.Api4OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api4SelectRowsSampleOutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
@@ -159,7 +159,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api4OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api4SelectRowsSampleOutputVo(
             entityVoList,
             logicalDeleteVoList
         )
@@ -167,18 +167,18 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api5(
+    fun api5SelectRowsOrderByRandomNumSample(
         httpServletResponse: HttpServletResponse,
         num: Int
-    ): C7Service1TkV1DatabaseTestController.Api5OutputVo? {
+    ): C7Service1TkV1DatabaseTestController.Api5SelectRowsOrderByRandomNumSampleOutputVo? {
         val foundEntityList = db1NativeRepository.forC7N5(num)
 
         val testEntityVoList =
-            ArrayList<C7Service1TkV1DatabaseTestController.Api5OutputVo.TestEntityVo>()
+            ArrayList<C7Service1TkV1DatabaseTestController.Api5SelectRowsOrderByRandomNumSampleOutputVo.TestEntityVo>()
 
         for (entity in foundEntityList) {
             testEntityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api5OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api5SelectRowsOrderByRandomNumSampleOutputVo.TestEntityVo(
                     entity.uid,
                     entity.content,
                     entity.randomNum,
@@ -195,17 +195,17 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api5OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api5SelectRowsOrderByRandomNumSampleOutputVo(
             testEntityVoList
         )
     }
 
 
     ////
-    fun api6(
+    fun api6SelectRowsOrderByRowCreateDateSample(
         httpServletResponse: HttpServletResponse,
         dateString: String
-    ): C7Service1TkV1DatabaseTestController.Api6OutputVo? {
+    ): C7Service1TkV1DatabaseTestController.Api6SelectRowsOrderByRowCreateDateSampleOutputVo? {
         val foundEntityList = db1NativeRepository.forC7N6(
             LocalDateTime.parse(
                 dateString,
@@ -214,11 +214,11 @@ class C7Service1TkV1DatabaseTestService(
         )
 
         val testEntityVoList =
-            ArrayList<C7Service1TkV1DatabaseTestController.Api6OutputVo.TestEntityVo>()
+            ArrayList<C7Service1TkV1DatabaseTestController.Api6SelectRowsOrderByRowCreateDateSampleOutputVo.TestEntityVo>()
 
         for (entity in foundEntityList) {
             testEntityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api6OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api6SelectRowsOrderByRowCreateDateSampleOutputVo.TestEntityVo(
                     entity.uid,
                     entity.content,
                     entity.randomNum,
@@ -235,28 +235,28 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api6OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api6SelectRowsOrderByRowCreateDateSampleOutputVo(
             testEntityVoList
         )
     }
 
 
     ////
-    fun api7(
+    fun api7SelectRowsPageSample(
         httpServletResponse: HttpServletResponse,
         page: Int,
         pageElementsCount: Int
-    ): C7Service1TkV1DatabaseTestController.Api7OutputVo? {
+    ): C7Service1TkV1DatabaseTestController.Api7SelectRowsPageSampleOutputVo? {
         val pageable: Pageable = PageRequest.of(page - 1, pageElementsCount)
         val entityList = db1TemplateTestsRepository.findAllByRowDeleteDateStrOrderByRowCreateDate(
             "/",
             pageable
         )
 
-        val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api7OutputVo.TestEntityVo>()
+        val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api7SelectRowsPageSampleOutputVo.TestEntityVo>()
         for (entity in entityList) {
             testEntityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api7OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api7SelectRowsPageSampleOutputVo.TestEntityVo(
                     entity.uid!!,
                     entity.content,
                     entity.randomNum,
@@ -272,7 +272,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api7OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api7SelectRowsPageSampleOutputVo(
             entityList.totalElements,
             testEntityVoList
         )
@@ -280,22 +280,22 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api8(
+    fun api8SelectRowsNativeQueryPageSample(
         httpServletResponse: HttpServletResponse,
         page: Int,
         pageElementsCount: Int,
         num: Int
-    ): C7Service1TkV1DatabaseTestController.Api8OutputVo? {
+    ): C7Service1TkV1DatabaseTestController.Api8SelectRowsNativeQueryPageSampleOutputVo? {
         val pageable: Pageable = PageRequest.of(page - 1, pageElementsCount)
         val voList = db1NativeRepository.forC7N8(
             num,
             pageable
         )
 
-        val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api8OutputVo.TestEntityVo>()
+        val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api8SelectRowsNativeQueryPageSampleOutputVo.TestEntityVo>()
         for (vo in voList) {
             testEntityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api8OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api8SelectRowsNativeQueryPageSampleOutputVo.TestEntityVo(
                     vo.uid,
                     vo.content,
                     vo.randomNum,
@@ -312,7 +312,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api8OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api8SelectRowsNativeQueryPageSampleOutputVo(
             voList.totalElements,
             testEntityVoList
         )
@@ -321,11 +321,11 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api9(
+    fun api9UpdateRowSample(
         httpServletResponse: HttpServletResponse,
         testTableUid: Long,
-        inputVo: C7Service1TkV1DatabaseTestController.Api9InputVo
-    ): C7Service1TkV1DatabaseTestController.Api9OutputVo? {
+        inputVo: C7Service1TkV1DatabaseTestController.Api9UpdateRowSampleInputVo
+    ): C7Service1TkV1DatabaseTestController.Api9UpdateRowSampleOutputVo? {
         val oldEntity = db1TemplateTestsRepository.findByUidAndRowDeleteDateStr(testTableUid, "/")
 
         if (oldEntity == null || oldEntity.rowDeleteDateStr != "/") {
@@ -342,7 +342,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api9OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api9UpdateRowSampleOutputVo(
             result.uid!!,
             result.content,
             result.randomNum,
@@ -358,10 +358,10 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api10(
+    fun api10UpdateRowNativeQuerySample(
         httpServletResponse: HttpServletResponse,
         testTableUid: Long,
-        inputVo: C7Service1TkV1DatabaseTestController.Api10InputVo
+        inputVo: C7Service1TkV1DatabaseTestController.Api10UpdateRowNativeQuerySampleInputVo
     ) {
         // !! 아래는 네이티브 쿼리로 수정하는 예시를 보인 것으로,
         // 이 경우에는 @UpdateTimestamp, @Version 기능이 자동 적용 되지 않습니다.
@@ -387,22 +387,22 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api11(
+    fun api11SelectRowWhereSearchingKeywordSample(
         httpServletResponse: HttpServletResponse,
         page: Int,
         pageElementsCount: Int,
         searchKeyword: String
-    ): C7Service1TkV1DatabaseTestController.Api11OutputVo? {
+    ): C7Service1TkV1DatabaseTestController.Api11SelectRowWhereSearchingKeywordSampleOutputVo? {
         val pageable: Pageable = PageRequest.of(page - 1, pageElementsCount)
         val voList = db1NativeRepository.forC7N11(
             searchKeyword,
             pageable
         )
 
-        val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api11OutputVo.TestEntityVo>()
+        val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api11SelectRowWhereSearchingKeywordSampleOutputVo.TestEntityVo>()
         for (vo in voList) {
             testEntityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api11OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api11SelectRowWhereSearchingKeywordSampleOutputVo.TestEntityVo(
                     vo.uid,
                     vo.content,
                     vo.randomNum,
@@ -418,7 +418,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api11OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api11SelectRowWhereSearchingKeywordSampleOutputVo(
             voList.totalElements,
             testEntityVoList
         )
@@ -427,7 +427,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api12(
+    fun api12TransactionTest(
         httpServletResponse: HttpServletResponse
     ) {
         db1TemplateTestsRepository.save(
@@ -443,7 +443,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api13(httpServletResponse: HttpServletResponse) {
+    fun api13NonTransactionTest(httpServletResponse: HttpServletResponse) {
         db1TemplateTestsRepository.save(
             Db1_Template_TestData(
                 "error test",
@@ -457,11 +457,11 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api14(
+    fun api14SelectRowsNoDuplicatePagingSample(
         httpServletResponse: HttpServletResponse,
         lastItemUid: Long?,
         pageElementsCount: Int
-    ): C7Service1TkV1DatabaseTestController.Api14OutputVo? {
+    ): C7Service1TkV1DatabaseTestController.Api14SelectRowsNoDuplicatePagingSampleOutputVo? {
         // 중복 없는 페이징 쿼리를 사용합니다.
         val voList = db1NativeRepository.forC7N14(
             lastItemUid,
@@ -471,10 +471,10 @@ class C7Service1TkV1DatabaseTestService(
         // 전체 개수 카운팅은 따로 해주어야 합니다.
         val count = db1NativeRepository.forC7N14I1()
 
-        val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api14OutputVo.TestEntityVo>()
+        val testEntityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api14SelectRowsNoDuplicatePagingSampleOutputVo.TestEntityVo>()
         for (vo in voList) {
             testEntityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api14OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api14SelectRowsNoDuplicatePagingSampleOutputVo.TestEntityVo(
                     vo.uid,
                     vo.content,
                     vo.randomNum,
@@ -490,35 +490,35 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api14OutputVo(count, testEntityVoList)
+        return C7Service1TkV1DatabaseTestController.Api14SelectRowsNoDuplicatePagingSampleOutputVo(count, testEntityVoList)
     }
 
 
     ////
-    fun api15(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api15OutputVo? {
+    fun api15SelectRowsCountSample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api15SelectRowsCountSampleOutputVo? {
         val count = db1TemplateTestsRepository.countByRowDeleteDateStr("/")
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api15OutputVo(count)
+        return C7Service1TkV1DatabaseTestController.Api15SelectRowsCountSampleOutputVo(count)
     }
 
 
     ////
-    fun api16(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api16OutputVo? {
+    fun api16SelectRowsCountByNativeQuerySample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api16SelectRowsCountByNativeQuerySampleOutputVo? {
         val count = db1NativeRepository.forC7N16()
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api16OutputVo(count)
+        return C7Service1TkV1DatabaseTestController.Api16SelectRowsCountByNativeQuerySampleOutputVo(count)
     }
 
 
     ////
-    fun api17(
+    fun api17SelectRowByNativeQuerySample(
         httpServletResponse: HttpServletResponse,
         testTableUid: Long
-    ): C7Service1TkV1DatabaseTestController.Api17OutputVo? {
+    ): C7Service1TkV1DatabaseTestController.Api17SelectRowByNativeQuerySampleOutputVo? {
         val entity = db1NativeRepository.forC7N17(testTableUid)
 
         if (entity == null) {
@@ -530,7 +530,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api17OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api17SelectRowByNativeQuerySampleOutputVo(
             entity.uid,
             entity.content,
             entity.randomNum,
@@ -546,10 +546,10 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api18(
+    fun InsertUniqueTestTableRowSample(
         httpServletResponse: HttpServletResponse,
-        inputVo: C7Service1TkV1DatabaseTestController.Api18InputVo
-    ): C7Service1TkV1DatabaseTestController.Api18OutputVo? {
+        inputVo: C7Service1TkV1DatabaseTestController.Api18InsertUniqueTestTableRowSampleInputVo
+    ): C7Service1TkV1DatabaseTestController.Api18InsertUniqueTestTableRowSampleOutputVo? {
         val result = db1TemplateLogicalDeleteUniqueDataRepository.save(
             Db1_Template_LogicalDeleteUniqueData(
                 inputVo.uniqueValue
@@ -558,7 +558,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api18OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api18InsertUniqueTestTableRowSampleOutputVo(
             result.uid!!,
             result.uniqueValue,
             result.rowCreateDate!!.atZone(ZoneId.systemDefault())
@@ -571,13 +571,13 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api19(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api19OutputVo? {
+    fun api19SelectUniqueTestTableRowsSample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api19SelectUniqueTestTableRowsSampleOutputVo? {
         val resultEntityList =
             db1TemplateLogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
-        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo>()
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api19SelectUniqueTestTableRowsSampleOutputVo.TestEntityVo>()
         for (resultEntity in resultEntityList) {
             entityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api19SelectUniqueTestTableRowsSampleOutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.uniqueValue,
                     resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
@@ -591,10 +591,10 @@ class C7Service1TkV1DatabaseTestService(
 
         val logicalDeleteEntityVoList =
             db1TemplateLogicalDeleteUniqueDataRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("/")
-        val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo>()
+        val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api19SelectUniqueTestTableRowsSampleOutputVo.TestEntityVo>()
         for (resultEntity in logicalDeleteEntityVoList) {
             logicalDeleteVoList.add(
-                C7Service1TkV1DatabaseTestController.Api19OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api19SelectUniqueTestTableRowsSampleOutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.uniqueValue,
                     resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
@@ -608,7 +608,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api19OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api19SelectUniqueTestTableRowsSampleOutputVo(
             entityVoList,
             logicalDeleteVoList
         )
@@ -617,11 +617,11 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api20(
+    fun api20UpdateUniqueTestTableRowSample(
         httpServletResponse: HttpServletResponse,
         testTableUid: Long,
-        inputVo: C7Service1TkV1DatabaseTestController.Api20InputVo
-    ): C7Service1TkV1DatabaseTestController.Api20OutputVo? {
+        inputVo: C7Service1TkV1DatabaseTestController.Api20UpdateUniqueTestTableRowSampleInputVo
+    ): C7Service1TkV1DatabaseTestController.Api20UpdateUniqueTestTableRowSampleOutputVo? {
         val oldEntity =
             db1TemplateLogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(testTableUid, "/")
 
@@ -650,7 +650,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api20OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api20UpdateUniqueTestTableRowSampleOutputVo(
             result.uid!!,
             result.uniqueValue,
             result.rowCreateDate!!.atZone(ZoneId.systemDefault())
@@ -663,7 +663,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api21(httpServletResponse: HttpServletResponse, index: Long) {
+    fun api21DeleteUniqueTestTableRowSample(httpServletResponse: HttpServletResponse, index: Long) {
         val entity = db1TemplateLogicalDeleteUniqueDataRepository.findByUidAndRowDeleteDateStr(index, "/")
 
         if (entity == null) {
@@ -684,10 +684,10 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api22(
+    fun api22InsertFkParentRowSample(
         httpServletResponse: HttpServletResponse,
-        inputVo: C7Service1TkV1DatabaseTestController.Api22InputVo
-    ): C7Service1TkV1DatabaseTestController.Api22OutputVo? {
+        inputVo: C7Service1TkV1DatabaseTestController.Api22InsertFkParentRowSampleInputVo
+    ): C7Service1TkV1DatabaseTestController.Api22InsertFkParentRowSampleOutputVo? {
         val result = db1TemplateFkTestParentRepository.save(
             Db1_Template_FkTestParent(
                 inputVo.fkParentName
@@ -696,7 +696,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api22OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api22InsertFkParentRowSampleOutputVo(
             result.uid!!,
             result.parentName,
             result.rowCreateDate!!.atZone(ZoneId.systemDefault())
@@ -709,11 +709,11 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api23(
+    fun api23InsertFkChildRowSample(
         httpServletResponse: HttpServletResponse,
         parentUid: Long,
-        inputVo: C7Service1TkV1DatabaseTestController.Api23InputVo
-    ): C7Service1TkV1DatabaseTestController.Api23OutputVo? {
+        inputVo: C7Service1TkV1DatabaseTestController.Api23InsertFkChildRowSampleInputVo
+    ): C7Service1TkV1DatabaseTestController.Api23InsertFkChildRowSampleOutputVo? {
         val parentEntityOpt = db1TemplateFkTestParentRepository.findById(parentUid)
 
         if (parentEntityOpt.isEmpty) {
@@ -733,7 +733,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api23OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api23InsertFkChildRowSampleOutputVo(
             result.uid!!,
             result.childName,
             result.fkTestParent.parentName,
@@ -746,13 +746,13 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api24(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api24OutputVo? {
+    fun api24SelectFkTestTableRowsSample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsSampleOutputVo? {
         val resultEntityList =
             db1TemplateFkTestParentRepository.findAllByOrderByRowCreateDate()
 
-        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo>()
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsSampleOutputVo.ParentEntityVo>()
         for (resultEntity in resultEntityList) {
-            val childEntityVoList: ArrayList<C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo.ChildEntityVo> =
+            val childEntityVoList: ArrayList<C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsSampleOutputVo.ParentEntityVo.ChildEntityVo> =
                 arrayListOf()
 
             val childList =
@@ -760,7 +760,7 @@ class C7Service1TkV1DatabaseTestService(
 
             for (childEntity in childList) {
                 childEntityVoList.add(
-                    C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo.ChildEntityVo(
+                    C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsSampleOutputVo.ParentEntityVo.ChildEntityVo(
                         childEntity.uid!!,
                         childEntity.childName,
                         childEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
@@ -772,7 +772,7 @@ class C7Service1TkV1DatabaseTestService(
             }
 
             entityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api24OutputVo.ParentEntityVo(
+                C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsSampleOutputVo.ParentEntityVo(
                     resultEntity.uid!!,
                     resultEntity.parentName,
                     resultEntity.rowCreateDate!!.atZone(ZoneId.systemDefault())
@@ -786,20 +786,20 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api24OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsSampleOutputVo(
             entityVoList
         )
     }
 
 
     ////
-    fun api24Dot1(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api24Dot1OutputVo? {
+    fun api24Dot1SelectFkTestTableRowsByNativeQuerySample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsByNativeQuerySampleDot1OutputVo? {
         val resultEntityList = db1NativeRepository.forC7N24Dot1()
 
-        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api24Dot1OutputVo.ChildEntityVo>()
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsByNativeQuerySampleDot1OutputVo.ChildEntityVo>()
         for (resultEntity in resultEntityList) {
             entityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api24Dot1OutputVo.ChildEntityVo(
+                C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsByNativeQuerySampleDot1OutputVo.ChildEntityVo(
                     resultEntity.childUid,
                     resultEntity.childName,
                     resultEntity.childCreateDate.atZone(ZoneId.systemDefault())
@@ -814,17 +814,17 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api24Dot1OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api24SelectFkTestTableRowsByNativeQuerySampleDot1OutputVo(
             entityVoList
         )
     }
 
 
     ////
-    fun api25(
+    fun api25GetNativeQueryReturnValueTest(
         httpServletResponse: HttpServletResponse,
         inputVal: Boolean
-    ): C7Service1TkV1DatabaseTestController.Api25OutputVo? {
+    ): C7Service1TkV1DatabaseTestController.Api25GetNativeQueryReturnValueTestOutputVo? {
         // boolean 값을 갖고오기 위한 테스트 테이블이 존재하지 않는다면 하나 생성하기
         val justBooleanEntity = db1TemplateJustBooleanTestRepository.findAll()
         if (justBooleanEntity.isEmpty()) {
@@ -839,7 +839,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api25OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api25GetNativeQueryReturnValueTestOutputVo(
             // 쿼리문 내에서 True, False 로 반환하는 값은 Long 타입으로 받습니다.
             resultEntity.normalBoolValue == 1L,
             resultEntity.funcBoolValue == 1L,
@@ -853,21 +853,21 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api26(
+    fun api26SqlInjectionTest(
         httpServletResponse: HttpServletResponse,
         searchKeyword: String
-    ): C7Service1TkV1DatabaseTestController.Api26OutputVo? {
+    ): C7Service1TkV1DatabaseTestController.Api26SqlInjectionTestOutputVo? {
         // jpaRepository : Injection Safe
         val jpaRepositoryResultEntityList =
             db1TemplateTestsRepository.findAllByContentOrderByRowCreateDate(
                 searchKeyword
             )
 
-        val jpaRepositoryResultList: ArrayList<C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo> =
+        val jpaRepositoryResultList: ArrayList<C7Service1TkV1DatabaseTestController.Api26SqlInjectionTestOutputVo.TestEntityVo> =
             arrayListOf()
         for (jpaRepositoryResultEntity in jpaRepositoryResultEntityList) {
             jpaRepositoryResultList.add(
-                C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api26SqlInjectionTestOutputVo.TestEntityVo(
                     jpaRepositoryResultEntity.uid!!,
                     jpaRepositoryResultEntity.content,
                     jpaRepositoryResultEntity.randomNum,
@@ -887,11 +887,11 @@ class C7Service1TkV1DatabaseTestService(
                 searchKeyword
             )
 
-        val jpqlResultList: ArrayList<C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo> =
+        val jpqlResultList: ArrayList<C7Service1TkV1DatabaseTestController.Api26SqlInjectionTestOutputVo.TestEntityVo> =
             arrayListOf()
         for (jpqlEntity in jpqlResultEntityList) {
             jpqlResultList.add(
-                C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api26SqlInjectionTestOutputVo.TestEntityVo(
                     jpqlEntity.uid!!,
                     jpqlEntity.content,
                     jpqlEntity.randomNum,
@@ -911,11 +911,11 @@ class C7Service1TkV1DatabaseTestService(
                 searchKeyword
             )
 
-        val nativeQueryResultList: ArrayList<C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo> =
+        val nativeQueryResultList: ArrayList<C7Service1TkV1DatabaseTestController.Api26SqlInjectionTestOutputVo.TestEntityVo> =
             arrayListOf()
         for (nativeQueryEntity in nativeQueryResultEntityList) {
             nativeQueryResultList.add(
-                C7Service1TkV1DatabaseTestController.Api26OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api26SqlInjectionTestOutputVo.TestEntityVo(
                     nativeQueryEntity.uid,
                     nativeQueryEntity.content,
                     nativeQueryEntity.randomNum,
@@ -937,7 +937,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api26OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api26SqlInjectionTestOutputVo(
             jpaRepositoryResultList,
             jpqlResultList,
             nativeQueryResultList
@@ -946,13 +946,13 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api27(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api27OutputVo? {
+    fun api27SelectFkTableRowsWithLatestChildSample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api27SelectFkTableRowsWithLatestChildSampleOutputVo? {
         val resultEntityList = db1NativeRepository.forC7N27()
 
-        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api27OutputVo.ParentEntityVo>()
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api27SelectFkTableRowsWithLatestChildSampleOutputVo.ParentEntityVo>()
         for (resultEntity in resultEntityList) {
             entityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api27OutputVo.ParentEntityVo(
+                C7Service1TkV1DatabaseTestController.Api27SelectFkTableRowsWithLatestChildSampleOutputVo.ParentEntityVo(
                     resultEntity.parentUid,
                     resultEntity.parentName,
                     resultEntity.parentCreateDate.atZone(ZoneId.systemDefault())
@@ -962,7 +962,7 @@ class C7Service1TkV1DatabaseTestService(
                     if (resultEntity.childUid == null) {
                         null
                     } else {
-                        C7Service1TkV1DatabaseTestController.Api27OutputVo.ParentEntityVo.ChildEntityVo(
+                        C7Service1TkV1DatabaseTestController.Api27SelectFkTableRowsWithLatestChildSampleOutputVo.ParentEntityVo.ChildEntityVo(
                             resultEntity.childUid!!,
                             resultEntity.childName!!,
                             resultEntity.childCreateDate!!.atZone(ZoneId.systemDefault())
@@ -977,7 +977,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api27OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api27SelectFkTableRowsWithLatestChildSampleOutputVo(
             entityVoList
         )
     }
@@ -985,7 +985,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api28(httpServletResponse: HttpServletResponse, index: Long) {
+    fun api28DeleteFkChildRowSample(httpServletResponse: HttpServletResponse, index: Long) {
         val entityOpt = db1TemplateFkTestManyToOneChildRepository.findById(index)
 
         if (entityOpt.isEmpty) {
@@ -1003,7 +1003,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api29(httpServletResponse: HttpServletResponse, index: Long) {
+    fun api29DeleteFkParentRowSample(httpServletResponse: HttpServletResponse, index: Long) {
         val entityOpt = db1TemplateFkTestParentRepository.findById(index)
 
         if (entityOpt.isEmpty) {
@@ -1021,10 +1021,10 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api30(
+    fun api30InsertRowToDb0Sample(
         httpServletResponse: HttpServletResponse,
-        inputVo: C7Service1TkV1DatabaseTestController.Api30InputVo
-    ): C7Service1TkV1DatabaseTestController.Api30OutputVo? {
+        inputVo: C7Service1TkV1DatabaseTestController.Api30InsertRowToDb0SampleInputVo
+    ): C7Service1TkV1DatabaseTestController.Api30InsertRowToDb0SampleOutputVo? {
         val result = db0TemplateTestsRepository.save(
             Db0_Template_TestData(
                 inputVo.content,
@@ -1035,7 +1035,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api30OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api30InsertRowToDb0SampleOutputVo(
             result.uid!!,
             result.content,
             result.randomNum,
@@ -1052,7 +1052,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api31(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
+    fun api31DeleteRowFromDb0Sample(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
         val entity = db0TemplateTestsRepository.findByUidAndRowDeleteDateStr(index, "/")
 
         if (entity == null) {
@@ -1076,13 +1076,13 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api32(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api32OutputVo? {
+    fun api32SelectRowsFromDb0Sample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo? {
         val resultEntityList =
             db0TemplateTestsRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
-        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api32OutputVo.TestEntityVo>()
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo.TestEntityVo>()
         for (resultEntity in resultEntityList) {
             entityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api32OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
@@ -1099,10 +1099,10 @@ class C7Service1TkV1DatabaseTestService(
 
         val logicalDeleteEntityVoList =
             db0TemplateTestsRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("/")
-        val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api32OutputVo.TestEntityVo>()
+        val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo.TestEntityVo>()
         for (resultEntity in logicalDeleteEntityVoList) {
             logicalDeleteVoList.add(
-                C7Service1TkV1DatabaseTestController.Api32OutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
@@ -1119,7 +1119,7 @@ class C7Service1TkV1DatabaseTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api32OutputVo(
+        return C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo(
             entityVoList,
             logicalDeleteVoList
         )
@@ -1128,7 +1128,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api33(
+    fun api33Db0TransactionTest(
         httpServletResponse: HttpServletResponse
     ) {
         db0TemplateTestsRepository.save(
@@ -1144,7 +1144,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api34(httpServletResponse: HttpServletResponse) {
+    fun api34Db0NonTransactionTest(httpServletResponse: HttpServletResponse) {
         db0TemplateTestsRepository.save(
             Db0_Template_TestData(
                 "error test",
@@ -1159,7 +1159,7 @@ class C7Service1TkV1DatabaseTestService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api35(
+    fun api35FkTableTransactionTest(
         httpServletResponse: HttpServletResponse
     ) {
         val parentEntity = db1TemplateFkTestParentRepository.save(
@@ -1187,7 +1187,7 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api36(httpServletResponse: HttpServletResponse) {
+    fun api36FkTableNonTransactionTest(httpServletResponse: HttpServletResponse) {
         val parentEntity = db1TemplateFkTestParentRepository.save(
             Db1_Template_FkTestParent(
                 "transaction test"
