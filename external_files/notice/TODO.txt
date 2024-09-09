@@ -4,3 +4,4 @@
 - 영상 통신
 - 영상 통신(필터)
 - sc 더 잘 할 수 없는지
+- Controller, Service 함수명 변경, resources static, templates 폴더명 변경
