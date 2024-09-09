@@ -53,15 +53,15 @@ class C8Service1TkV1RedisTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api1(
+    fun api1InsertRedisKeyValueTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @RequestBody inputVo: Api1InputVo
+        @RequestBody inputVo: Api1InsertRedisKeyValueTestInputVo
     ) {
-        service.api1(httpServletResponse, inputVo)
+        service.api1InsertRedisKeyValueTest(httpServletResponse, inputVo)
     }
 
-    data class Api1InputVo(
+    data class Api1InsertRedisKeyValueTestInputVo(
         @Schema(description = "redis 키", required = true, example = "test_key")
         @JsonProperty("key")
         val key: String,
@@ -107,17 +107,17 @@ class C8Service1TkV1RedisTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api2(
+    fun api2SelectRedisValueSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "key", description = "redis 키", example = "test_key")
         @RequestParam("key")
         key: String
-    ): Api2OutputVo? {
-        return service.api2(httpServletResponse, key)
+    ): Api2SelectRedisValueSampleOutputVo? {
+        return service.api2SelectRedisValueSample(httpServletResponse, key)
     }
 
-    data class Api2OutputVo(
+    data class Api2SelectRedisValueSampleOutputVo(
         @Schema(description = "Table 이름", required = true, example = "Redis1_Test")
         @JsonProperty("tableName")
         val tableName: String,
@@ -152,16 +152,16 @@ class C8Service1TkV1RedisTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api3(
+    fun api3SelectAllRedisKeyValueSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api3OutputVo? {
-        return service.api3(
+    ): Api3SelectAllRedisKeyValueSampleOutputVo? {
+        return service.api3SelectAllRedisKeyValueSample(
             httpServletResponse
         )
     }
 
-    data class Api3OutputVo(
+    data class Api3SelectAllRedisKeyValueSampleOutputVo(
         @Schema(description = "Table 이름", required = true, example = "Redis1_Test")
         @JsonProperty("tableName")
         val tableName: String,
@@ -218,14 +218,14 @@ class C8Service1TkV1RedisTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api4(
+    fun api4DeleteRedisKeySample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "key", description = "redis 키", example = "test_key")
         @RequestParam("key")
         key: String
     ) {
-        return service.api4(httpServletResponse, key)
+        return service.api4DeleteRedisKeySample(httpServletResponse, key)
     }
 
 
@@ -248,11 +248,11 @@ class C8Service1TkV1RedisTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api5(
+    fun api5DeleteAllRedisKeySample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        return service.api5(httpServletResponse)
+        return service.api5DeleteAllRedisKeySample(httpServletResponse)
     }
 
 
@@ -277,15 +277,15 @@ class C8Service1TkV1RedisTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api6(
+    fun api6RedisTransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @RequestBody inputVo: Api6InputVo
+        @RequestBody inputVo: Api6RedisTransactionTestInputVo
     ) {
-        return service.api6(httpServletResponse, inputVo)
+        return service.api6RedisTransactionTest(httpServletResponse, inputVo)
     }
 
-    data class Api6InputVo(
+    data class Api6RedisTransactionTestInputVo(
         @Schema(description = "redis 키", required = true, example = "test_key")
         @JsonProperty("key")
         val key: String,
@@ -319,15 +319,15 @@ class C8Service1TkV1RedisTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api7(
+    fun api7RedisNonTransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
-        @RequestBody inputVo: Api7InputVo
+        @RequestBody inputVo: Api7RedisNonTransactionTestInputVo
     ) {
-        return service.api7(httpServletResponse, inputVo)
+        return service.api7RedisNonTransactionTest(httpServletResponse, inputVo)
     }
 
-    data class Api7InputVo(
+    data class Api7RedisNonTransactionTestInputVo(
         @Schema(description = "redis 키", required = true, example = "test_key")
         @JsonProperty("key")
         val key: String,
