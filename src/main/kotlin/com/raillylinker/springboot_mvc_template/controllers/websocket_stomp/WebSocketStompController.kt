@@ -13,13 +13,13 @@ class WebSocketStompController(
 ) {
     // 메세지 함수 호출 경로 (WebSocketStompConfig 의 setApplicationDestinationPrefixes 설정과 합쳐서 호출 : /app/test)
     @MessageMapping("/test")
-    // 이 함수의 리턴값 반환 위치
+    // 이 함수의 리턴값 반환 위치(/topic 을 구독중인 유저에게 return 값을 반환)
     @SendTo("/topic")
-    fun api1(inputVo: Api1InputVo): TopicVo {
-        return service.api1(inputVo)
+    fun api1SendToTopicTest(inputVo: Api1SendToTopicTestInputVo): TopicVo {
+        return service.api1SendToTopicTest(inputVo)
     }
 
-    data class Api1InputVo(
+    data class Api1SendToTopicTestInputVo(
         @JsonProperty("chat")
         val chat: String
     )
