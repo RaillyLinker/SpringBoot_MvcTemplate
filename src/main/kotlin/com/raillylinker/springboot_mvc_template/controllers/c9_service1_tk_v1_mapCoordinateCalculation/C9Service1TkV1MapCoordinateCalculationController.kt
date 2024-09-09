@@ -42,11 +42,11 @@ class C9Service1TkV1MapCoordinateCalculationController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api0(
+    fun api0InsertDefaultCoordinateDataToDatabase(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api0(httpServletResponse)
+        service.api0InsertDefaultCoordinateDataToDatabase(httpServletResponse)
     }
 
 
@@ -69,7 +69,7 @@ class C9Service1TkV1MapCoordinateCalculationController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api1(
+    fun api1GetDistanceMeterBetweenTwoCoordinate(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "latitude1", description = "위도1", example = "37.675683")
@@ -84,11 +84,17 @@ class C9Service1TkV1MapCoordinateCalculationController(
         @Parameter(name = "longitude2", description = "경도2", example = "126.764777")
         @RequestParam("longitude2")
         longitude2: Double
-    ): Api1OutputVo? {
-        return service.api1(httpServletResponse, latitude1, longitude1, latitude2, longitude2)
+    ): Api1GetDistanceMeterBetweenTwoCoordinateOutputVo? {
+        return service.api1GetDistanceMeterBetweenTwoCoordinate(
+            httpServletResponse,
+            latitude1,
+            longitude1,
+            latitude2,
+            longitude2
+        )
     }
 
-    data class Api1OutputVo(
+    data class Api1GetDistanceMeterBetweenTwoCoordinateOutputVo(
         @Schema(description = "좌표간 거리 (Meter)", required = true, example = "325.42")
         @JsonProperty("distanceMeter")
         val distanceMeter: Double
@@ -114,16 +120,16 @@ class C9Service1TkV1MapCoordinateCalculationController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api2(
+    fun api2ReturnCenterCoordinate(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api2InputVo
-    ): Api2OutputVo? {
-        return service.api2(httpServletResponse, inputVo)
+        inputVo: Api2ReturnCenterCoordinateInputVo
+    ): Api2ReturnCenterCoordinateOutputVo? {
+        return service.api2ReturnCenterCoordinate(httpServletResponse, inputVo)
     }
 
-    data class Api2InputVo(
+    data class Api2ReturnCenterCoordinateInputVo(
         @Schema(description = "좌표 리스트", required = true)
         @JsonProperty("coordinateList")
         val coordinateList: List<Coordinate>
@@ -139,7 +145,7 @@ class C9Service1TkV1MapCoordinateCalculationController(
         )
     }
 
-    data class Api2OutputVo(
+    data class Api2ReturnCenterCoordinateOutputVo(
         @Schema(description = "중심좌표 위도", required = true, example = "37.676563")
         @JsonProperty("centerLatitude")
         val centerLatitude: Double,
@@ -168,16 +174,16 @@ class C9Service1TkV1MapCoordinateCalculationController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api3(
+    fun api3InsertCoordinateDataToDatabase(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api3InputVo
-    ): Api3OutputVo? {
-        return service.api3(httpServletResponse, inputVo)
+        inputVo: Api3InsertCoordinateDataToDatabaseInputVo
+    ): Api3InsertCoordinateDataToDatabaseOutputVo? {
+        return service.api3InsertCoordinateDataToDatabase(httpServletResponse, inputVo)
     }
 
-    data class Api3InputVo(
+    data class Api3InsertCoordinateDataToDatabaseInputVo(
         @Schema(description = "좌표 위도", required = true, example = "37.676563")
         @JsonProperty("latitude")
         val latitude: Double,
@@ -186,7 +192,7 @@ class C9Service1TkV1MapCoordinateCalculationController(
         val longitude: Double
     )
 
-    data class Api3OutputVo(
+    data class Api3InsertCoordinateDataToDatabaseOutputVo(
         @Schema(description = "DB 좌표 리스트", required = true)
         @JsonProperty("coordinateList")
         val coordinateList: List<Coordinate>,
@@ -225,11 +231,11 @@ class C9Service1TkV1MapCoordinateCalculationController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api4(
+    fun api4DeleteAllCoordinateDataFromDatabase(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api4(httpServletResponse)
+        service.api4DeleteAllCoordinateDataFromDatabase(httpServletResponse)
     }
 
 
@@ -252,7 +258,7 @@ class C9Service1TkV1MapCoordinateCalculationController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api5(
+    fun api5SelectCoordinateDataRowsInRadiusKiloMeterSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "anchorLatitude", description = "기준 좌표 위도", example = "37.675683")
@@ -268,11 +274,16 @@ class C9Service1TkV1MapCoordinateCalculationController(
         )
         @RequestParam("radiusKiloMeter")
         radiusKiloMeter: Double
-    ): Api5OutputVo? {
-        return service.api5(httpServletResponse, anchorLatitude, anchorLongitude, radiusKiloMeter)
+    ): Api5SelectCoordinateDataRowsInRadiusKiloMeterSampleOutputVo? {
+        return service.api5SelectCoordinateDataRowsInRadiusKiloMeterSample(
+            httpServletResponse,
+            anchorLatitude,
+            anchorLongitude,
+            radiusKiloMeter
+        )
     }
 
-    data class Api5OutputVo(
+    data class Api5SelectCoordinateDataRowsInRadiusKiloMeterSampleOutputVo(
         @Schema(description = "결과 리스트", required = true)
         @JsonProperty("resultList")
         val resultList: List<CoordinateCalcResult>
@@ -314,7 +325,7 @@ class C9Service1TkV1MapCoordinateCalculationController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api6(
+    fun api6SelectCoordinateDataRowsInCoordinateBoxSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "northLatitude", description = "북위도", example = "37.771848")
@@ -329,11 +340,17 @@ class C9Service1TkV1MapCoordinateCalculationController(
         @Parameter(name = "westLongitude", description = "서경도", example = "126.587602")
         @RequestParam("westLongitude")
         westLongitude: Double
-    ): Api6OutputVo? {
-        return service.api6(httpServletResponse, northLatitude, eastLongitude, southLatitude, westLongitude)
+    ): Api6SelectCoordinateDataRowsInCoordinateBoxSampleOutputVo? {
+        return service.api6SelectCoordinateDataRowsInCoordinateBoxSample(
+            httpServletResponse,
+            northLatitude,
+            eastLongitude,
+            southLatitude,
+            westLongitude
+        )
     }
 
-    data class Api6OutputVo(
+    data class Api6SelectCoordinateDataRowsInCoordinateBoxSampleOutputVo(
         @Schema(description = "결과 좌표 리스트", required = true)
         @JsonProperty("resultList")
         val resultList: List<CoordinateCalcResult>

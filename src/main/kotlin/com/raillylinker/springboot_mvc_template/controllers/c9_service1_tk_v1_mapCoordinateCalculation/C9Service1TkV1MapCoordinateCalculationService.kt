@@ -29,7 +29,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api0(httpServletResponse: HttpServletResponse) {
+    fun api0InsertDefaultCoordinateDataToDatabase(httpServletResponse: HttpServletResponse) {
         db1TemplateTestMapRepository.deleteAll()
 
         val latLngList: List<Pair<Double, Double>> = listOf(
@@ -69,16 +69,16 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
 
     ////
-    fun api1(
+    fun api1GetDistanceMeterBetweenTwoCoordinate(
         httpServletResponse: HttpServletResponse,
         latitude1: Double,
         longitude1: Double,
         latitude2: Double,
         longitude2: Double
-    ): C9Service1TkV1MapCoordinateCalculationController.Api1OutputVo? {
+    ): C9Service1TkV1MapCoordinateCalculationController.Api1GetDistanceMeterBetweenTwoCoordinateOutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C9Service1TkV1MapCoordinateCalculationController.Api1OutputVo(
+        return C9Service1TkV1MapCoordinateCalculationController.Api1GetDistanceMeterBetweenTwoCoordinateOutputVo(
             MapCoordinateUtil.getDistanceMeterBetweenTwoLatLngCoordinate(
                 Pair(latitude1, longitude1),
                 Pair(latitude2, longitude2)
@@ -88,10 +88,10 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
 
     ////
-    fun api2(
+    fun api2ReturnCenterCoordinate(
         httpServletResponse: HttpServletResponse,
-        inputVo: C9Service1TkV1MapCoordinateCalculationController.Api2InputVo
-    ): C9Service1TkV1MapCoordinateCalculationController.Api2OutputVo? {
+        inputVo: C9Service1TkV1MapCoordinateCalculationController.Api2ReturnCenterCoordinateInputVo
+    ): C9Service1TkV1MapCoordinateCalculationController.Api2ReturnCenterCoordinateOutputVo? {
         val latLngCoordinate = ArrayList<Pair<Double, Double>>()
 
         for (coordinate in inputVo.coordinateList) {
@@ -106,7 +106,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C9Service1TkV1MapCoordinateCalculationController.Api2OutputVo(
+        return C9Service1TkV1MapCoordinateCalculationController.Api2ReturnCenterCoordinateOutputVo(
             centerCoordinate.first,
             centerCoordinate.second
         )
@@ -115,10 +115,10 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api3(
+    fun api3InsertCoordinateDataToDatabase(
         httpServletResponse: HttpServletResponse,
-        inputVo: C9Service1TkV1MapCoordinateCalculationController.Api3InputVo
-    ): C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo? {
+        inputVo: C9Service1TkV1MapCoordinateCalculationController.Api3InsertCoordinateDataToDatabaseInputVo
+    ): C9Service1TkV1MapCoordinateCalculationController.Api3InsertCoordinateDataToDatabaseOutputVo? {
         db1TemplateTestMapRepository.save(
             Db1_Template_TestMap(
                 inputVo.latitude,
@@ -126,12 +126,13 @@ class C9Service1TkV1MapCoordinateCalculationService(
             )
         )
 
-        val coordinateList = ArrayList<C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo.Coordinate>()
+        val coordinateList =
+            ArrayList<C9Service1TkV1MapCoordinateCalculationController.Api3InsertCoordinateDataToDatabaseOutputVo.Coordinate>()
         val latLngCoordinate = ArrayList<Pair<Double, Double>>()
 
         for (testMap in db1TemplateTestMapRepository.findAll()) {
             coordinateList.add(
-                C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo.Coordinate(
+                C9Service1TkV1MapCoordinateCalculationController.Api3InsertCoordinateDataToDatabaseOutputVo.Coordinate(
                     testMap.latitude,
                     testMap.longitude
                 )
@@ -148,9 +149,9 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo(
+        return C9Service1TkV1MapCoordinateCalculationController.Api3InsertCoordinateDataToDatabaseOutputVo(
             coordinateList,
-            C9Service1TkV1MapCoordinateCalculationController.Api3OutputVo.Coordinate(
+            C9Service1TkV1MapCoordinateCalculationController.Api3InsertCoordinateDataToDatabaseOutputVo.Coordinate(
                 centerCoordinate.first,
                 centerCoordinate.second
             )
@@ -160,7 +161,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api4(httpServletResponse: HttpServletResponse) {
+    fun api4DeleteAllCoordinateDataFromDatabase(httpServletResponse: HttpServletResponse) {
         db1TemplateTestMapRepository.deleteAll()
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -168,12 +169,12 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
 
     ////
-    fun api5(
+    fun api5SelectCoordinateDataRowsInRadiusKiloMeterSample(
         httpServletResponse: HttpServletResponse,
         anchorLatitude: Double,
         anchorLongitude: Double,
         radiusKiloMeter: Double
-    ): C9Service1TkV1MapCoordinateCalculationController.Api5OutputVo? {
+    ): C9Service1TkV1MapCoordinateCalculationController.Api5SelectCoordinateDataRowsInRadiusKiloMeterSampleOutputVo? {
         val entityList =
             db1NativeRepository.forC9N5(
                 anchorLatitude,
@@ -182,10 +183,10 @@ class C9Service1TkV1MapCoordinateCalculationService(
             )
 
         val coordinateCalcResultList =
-            ArrayList<C9Service1TkV1MapCoordinateCalculationController.Api5OutputVo.CoordinateCalcResult>()
+            ArrayList<C9Service1TkV1MapCoordinateCalculationController.Api5SelectCoordinateDataRowsInRadiusKiloMeterSampleOutputVo.CoordinateCalcResult>()
         for (entity in entityList) {
             coordinateCalcResultList.add(
-                C9Service1TkV1MapCoordinateCalculationController.Api5OutputVo.CoordinateCalcResult(
+                C9Service1TkV1MapCoordinateCalculationController.Api5SelectCoordinateDataRowsInRadiusKiloMeterSampleOutputVo.CoordinateCalcResult(
                     entity.uid,
                     entity.latitude,
                     entity.longitude,
@@ -196,20 +197,20 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C9Service1TkV1MapCoordinateCalculationController.Api5OutputVo(
+        return C9Service1TkV1MapCoordinateCalculationController.Api5SelectCoordinateDataRowsInRadiusKiloMeterSampleOutputVo(
             coordinateCalcResultList
         )
     }
 
 
     ////
-    fun api6(
+    fun api6SelectCoordinateDataRowsInCoordinateBoxSample(
         httpServletResponse: HttpServletResponse,
         northLatitude: Double, // 북위도 (ex : 37.771848)
         eastLongitude: Double, // 동경도 (ex : 127.433549)
         southLatitude: Double, // 남위도 (ex : 37.245683)
         westLongitude: Double // 남경도 (ex : 126.587602)
-    ): C9Service1TkV1MapCoordinateCalculationController.Api6OutputVo? {
+    ): C9Service1TkV1MapCoordinateCalculationController.Api6SelectCoordinateDataRowsInCoordinateBoxSampleOutputVo? {
         val entityList =
             db1NativeRepository.forC9N6(
                 northLatitude,
@@ -219,10 +220,10 @@ class C9Service1TkV1MapCoordinateCalculationService(
             )
 
         val coordinateCalcResultList =
-            ArrayList<C9Service1TkV1MapCoordinateCalculationController.Api6OutputVo.CoordinateCalcResult>()
+            ArrayList<C9Service1TkV1MapCoordinateCalculationController.Api6SelectCoordinateDataRowsInCoordinateBoxSampleOutputVo.CoordinateCalcResult>()
         for (entity in entityList) {
             coordinateCalcResultList.add(
-                C9Service1TkV1MapCoordinateCalculationController.Api6OutputVo.CoordinateCalcResult(
+                C9Service1TkV1MapCoordinateCalculationController.Api6SelectCoordinateDataRowsInCoordinateBoxSampleOutputVo.CoordinateCalcResult(
                     entity.uid,
                     entity.latitude,
                     entity.longitude
@@ -232,7 +233,7 @@ class C9Service1TkV1MapCoordinateCalculationService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C9Service1TkV1MapCoordinateCalculationController.Api6OutputVo(
+        return C9Service1TkV1MapCoordinateCalculationController.Api6SelectCoordinateDataRowsInCoordinateBoxSampleOutputVo(
             coordinateCalcResultList
         )
     }
