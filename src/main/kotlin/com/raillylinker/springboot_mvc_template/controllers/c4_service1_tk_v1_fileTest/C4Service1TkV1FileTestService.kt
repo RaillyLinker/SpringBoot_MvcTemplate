@@ -40,10 +40,10 @@ class C4Service1TkV1FileTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1(
+    fun api1UploadToServerTest(
         httpServletResponse: HttpServletResponse,
-        inputVo: C4Service1TkV1FileTestController.Api1InputVo
-    ): C4Service1TkV1FileTestController.Api1OutputVo? {
+        inputVo: C4Service1TkV1FileTestController.Api1UploadToServerTestInputVo
+    ): C4Service1TkV1FileTestController.Api1UploadToServerTestOutputVo? {
         // 파일 저장 기본 디렉토리 경로
         val saveDirectoryPath: Path = Paths.get("./by_product_files/test").toAbsolutePath().normalize()
 
@@ -84,10 +84,10 @@ class C4Service1TkV1FileTestService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
 
-        return C4Service1TkV1FileTestController.Api1OutputVo("http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/$savedFileName")
+        return C4Service1TkV1FileTestController.Api1UploadToServerTestOutputVo("http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/$savedFileName")
     }
 
-    fun api2(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
+    fun api2FileDownloadTest(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
@@ -127,16 +127,16 @@ class C4Service1TkV1FileTestService(
 
 
     ////
-    fun api3(httpServletResponse: HttpServletResponse) {
+    fun api3FilesToZipTest(httpServletResponse: HttpServletResponse) {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
         // 파일 경로 리스트
         val filePathList = listOf(
-            "$projectRootAbsolutePathString/src/main/resources/static/resource_c4_n3/1.txt",
-            "$projectRootAbsolutePathString/src/main/resources/static/resource_c4_n3/2.xlsx",
-            "$projectRootAbsolutePathString/src/main/resources/static/resource_c4_n3/3.png",
-            "$projectRootAbsolutePathString/src/main/resources/static/resource_c4_n3/4.mp4"
+            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test/1.txt",
+            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test/2.xlsx",
+            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test/3.png",
+            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test/4.mp4"
         )
 
         // 파일 저장 디렉토리 경로
@@ -171,12 +171,12 @@ class C4Service1TkV1FileTestService(
 
 
     ////
-    fun api3Dot1(httpServletResponse: HttpServletResponse) {
+    fun api3Dot1FolderToZipTest(httpServletResponse: HttpServletResponse) {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
         // 압축 대상 디렉토리
-        val sourceDir = File("$projectRootAbsolutePathString/src/main/resources/static/resource_c4_n3")
+        val sourceDir = File("$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test")
 
         // 파일 저장 디렉토리 경로
         val saveDirectoryPathString = "./by_product_files/test"
@@ -205,11 +205,11 @@ class C4Service1TkV1FileTestService(
 
 
     ////
-    fun api4(httpServletResponse: HttpServletResponse) {
+    fun api4UnzipTest(httpServletResponse: HttpServletResponse) {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
         val filePathString =
-            "$projectRootAbsolutePathString/src/main/resources/static/resource_c4_n4/test.zip"
+            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n4_unzip_test/test.zip"
 
         // 파일 저장 디렉토리 경로
         val saveDirectoryPathString = "./by_product_files/test"
@@ -234,7 +234,7 @@ class C4Service1TkV1FileTestService(
 
 
     ////
-    fun api5(httpServletResponse: HttpServletResponse, delayTimeSecond: Int): ResponseEntity<Resource>? {
+    fun api5ForClientSideImageTest(httpServletResponse: HttpServletResponse, delayTimeSecond: Int): ResponseEntity<Resource>? {
         if (delayTimeSecond < 0) {
             httpServletResponse.status = HttpStatus.BAD_REQUEST.value()
             return null
@@ -242,7 +242,7 @@ class C4Service1TkV1FileTestService(
 
         Thread.sleep(delayTimeSecond * 1000L)
 
-        val file: Resource = ClassPathResource("static/resource_c4_n5/client_image_test.jpg")
+        val file: Resource = ClassPathResource("static/for_c4_n5_for_client_side_image_test/client_image_test.jpg")
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -260,10 +260,10 @@ class C4Service1TkV1FileTestService(
 
 
     ////
-    fun api6(
+    fun api6AwsS3UploadTest(
         httpServletResponse: HttpServletResponse,
-        inputVo: C4Service1TkV1FileTestController.Api6InputVo
-    ): C4Service1TkV1FileTestController.Api6OutputVo? {
+        inputVo: C4Service1TkV1FileTestController.Api6AwsS3UploadTestInputVo
+    ): C4Service1TkV1FileTestController.Api6AwsS3UploadTestOutputVo? {
         // 원본 파일명(with suffix)
         val multiPartFileNameString = StringUtils.cleanPath(inputVo.multipartFile.originalFilename!!)
 
@@ -302,19 +302,19 @@ class C4Service1TkV1FileTestService(
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
 
-        return C4Service1TkV1FileTestController.Api6OutputVo(uploadedFileFullUrl)
+        return C4Service1TkV1FileTestController.Api6AwsS3UploadTestOutputVo(uploadedFileFullUrl)
     }
 
 
     ////
-    fun api7(
+    fun api7GetFileContentToStringTest(
         httpServletResponse: HttpServletResponse,
         uploadFileName: String
-    ): C4Service1TkV1FileTestController.Api7OutputVo? {
+    ): C4Service1TkV1FileTestController.Api7GetFileContentToStringTestOutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
 
-        return C4Service1TkV1FileTestController.Api7OutputVo(
+        return C4Service1TkV1FileTestController.Api7GetFileContentToStringTestOutputVo(
             awsS3UtilComponent.getTextFileString(
                 if (activeProfile == "prod80") {
                     "petlogon-contract-prod/test"
@@ -328,7 +328,7 @@ class C4Service1TkV1FileTestService(
 
 
     ////
-    fun api8(httpServletResponse: HttpServletResponse, deleteFileName: String) {
+    fun api8DeleteAwsS3FileTest(httpServletResponse: HttpServletResponse, deleteFileName: String) {
         // AWS 파일 삭제
         awsS3UtilComponent.delete(
             if (activeProfile == "prod80") {

@@ -46,23 +46,23 @@ class C4Service1TkV1FileTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api1(
+    fun api1UploadToServerTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api1InputVo
-    ): Api1OutputVo? {
-        return service.api1(httpServletResponse, inputVo)
+        inputVo: Api1UploadToServerTestInputVo
+    ): Api1UploadToServerTestOutputVo? {
+        return service.api1UploadToServerTest(httpServletResponse, inputVo)
     }
 
-    data class Api1InputVo(
+    data class Api1UploadToServerTestInputVo(
         @Schema(description = "업로드 파일", required = true)
         @JsonProperty("multipartFile")
         val multipartFile: MultipartFile
     )
 
-    data class Api1OutputVo(
+    data class Api1UploadToServerTestOutputVo(
         @Schema(
             description = "파일 다운로드 경로", required = true,
             example = "http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/file.txt"
@@ -105,14 +105,14 @@ class C4Service1TkV1FileTestController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @ResponseBody
-    fun api2(
+    fun api2FileDownloadTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "fileName", description = "by_product_files/test 폴더 안의 파일명", example = "sample.txt")
         @PathVariable("fileName")
         fileName: String
     ): ResponseEntity<Resource>? {
-        return service.api2(httpServletResponse, fileName)
+        return service.api2FileDownloadTest(httpServletResponse, fileName)
     }
 
 
@@ -135,11 +135,11 @@ class C4Service1TkV1FileTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api3(
+    fun api3FilesToZipTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api3(httpServletResponse)
+        service.api3FilesToZipTest(httpServletResponse)
     }
 
 
@@ -162,11 +162,11 @@ class C4Service1TkV1FileTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api3Dot1(
+    fun api3Dot1FolderToZipTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api3Dot1(httpServletResponse)
+        service.api3Dot1FolderToZipTest(httpServletResponse)
     }
 
 
@@ -189,11 +189,11 @@ class C4Service1TkV1FileTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api4(
+    fun api4UnzipTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api4(httpServletResponse)
+        service.api4UnzipTest(httpServletResponse)
     }
 
 
@@ -216,14 +216,14 @@ class C4Service1TkV1FileTestController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @ResponseBody
-    fun api5(
+    fun api5ForClientSideImageTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "delayTimeSecond", description = "이미지 파일 반환 대기 시간(0 은 바로, 음수는 에러 발생)", example = "0")
         @RequestParam("delayTimeSecond")
         delayTimeSecond: Int
     ): ResponseEntity<Resource>? {
-        return service.api5(httpServletResponse, delayTimeSecond)
+        return service.api5ForClientSideImageTest(httpServletResponse, delayTimeSecond)
     }
 
 
@@ -246,23 +246,23 @@ class C4Service1TkV1FileTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api6(
+    fun api6AwsS3UploadTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api6InputVo
-    ): Api6OutputVo? {
-        return service.api6(httpServletResponse, inputVo)
+        inputVo: Api6AwsS3UploadTestInputVo
+    ): Api6AwsS3UploadTestOutputVo? {
+        return service.api6AwsS3UploadTest(httpServletResponse, inputVo)
     }
 
-    data class Api6InputVo(
+    data class Api6AwsS3UploadTestInputVo(
         @Schema(description = "업로드 파일", required = true)
         @JsonProperty("multipartFile")
         val multipartFile: MultipartFile
     )
 
-    data class Api6OutputVo(
+    data class Api6AwsS3UploadTestOutputVo(
         @Schema(
             description = "파일 다운로드 경로", required = true,
             example = "http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/file.txt"
@@ -291,7 +291,7 @@ class C4Service1TkV1FileTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api7(
+    fun api7GetFileContentToStringTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(
@@ -301,14 +301,14 @@ class C4Service1TkV1FileTestController(
         )
         @RequestParam("uploadFileName")
         uploadFileName: String
-    ): Api7OutputVo? {
-        return service.api7(
+    ): Api7GetFileContentToStringTestOutputVo? {
+        return service.api7GetFileContentToStringTest(
             httpServletResponse,
             uploadFileName
         )
     }
 
-    data class Api7OutputVo(
+    data class Api7GetFileContentToStringTestOutputVo(
         @Schema(description = "읽은 파일 내용", required = true, example = "testString")
         @JsonProperty("fileContent")
         val v: String
@@ -334,7 +334,7 @@ class C4Service1TkV1FileTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api8(
+    fun api8DeleteAwsS3FileTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(
@@ -345,7 +345,7 @@ class C4Service1TkV1FileTestController(
         @RequestParam("deleteFileName")
         deleteFileName: String
     ) {
-        service.api8(
+        service.api8DeleteAwsS3FileTest(
             httpServletResponse,
             deleteFileName
         )
