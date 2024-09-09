@@ -51,7 +51,7 @@ class C6Service1TkV1TestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api1InputVo) {
+    fun api1SendEmailTest(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api1SendEmailTestInputVo) {
         emailSenderComponent.sendMessageMail(
             inputVo.senderName,
             inputVo.receiverEmailAddressList.toTypedArray(),
@@ -68,7 +68,7 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api2(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api2InputVo) {
+    fun api2SendHtmlEmailTest(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api2SendHtmlEmailTestInputVo) {
         // CID 는 첨부파일을 보내는 것과 동일한 의미입니다.
         // 고로 전송시 서버 성능에 악영향을 끼칠 가능성이 크고, CID 처리도 번거로우므로, CDN 을 사용하고, CID 는 되도록 사용하지 마세요.
         emailSenderComponent.sendThymeLeafHtmlMail(
@@ -76,14 +76,14 @@ class C6Service1TkV1TestService(
             inputVo.receiverEmailAddressList.toTypedArray(),
             inputVo.carbonCopyEmailAddressList?.toTypedArray(),
             inputVo.subject,
-            "template_c6_n2/html_email_sample",
+            "for_c6_n2_send_html_email_test/html_email_sample",
             hashMapOf(
                 Pair("message", inputVo.message)
             ),
             null,
             hashMapOf(
-                "html_email_sample_css" to ClassPathResource("static/resource_c6_n2/html_email_sample.css"),
-                "image_sample" to ClassPathResource("static/resource_c6_n2/image_sample.jpg")
+                "html_email_sample_css" to ClassPathResource("static/for_c6_n2_send_html_email_test/html_email_sample.css"),
+                "image_sample" to ClassPathResource("static/for_c6_n2_send_html_email_test/image_sample.jpg")
             ),
             null,
             inputVo.multipartFileList
@@ -95,7 +95,7 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api3(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api3InputVo) {
+    fun api3NaverSmsSample(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api3NaverSmsSampleInputVo) {
         val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
 
         // 국가 코드 (ex : 82)
@@ -124,7 +124,7 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api3Dot1(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api3Dot1InputVo) {
+    fun api3Dot1NaverAlimTalkSample(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api3Dot1NaverAlimTalkSampleInputVo) {
         val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
 
         // 국가 코드 (ex : 82)
@@ -166,10 +166,10 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api4(
+    fun api4ReadExcelFileSample(
         httpServletResponse: HttpServletResponse,
-        inputVo: C6Service1TkV1TestController.Api4InputVo
-    ): C6Service1TkV1TestController.Api4OutputVo? {
+        inputVo: C6Service1TkV1TestController.Api4ReadExcelFileSampleInputVo
+    ): C6Service1TkV1TestController.Api4ReadExcelFileSampleOutputVo? {
         val fileInputStream = inputVo.excelFile.inputStream
         val excelData = ExcelFileUtil.readExcel(
             fileInputStream,
@@ -183,7 +183,7 @@ class C6Service1TkV1TestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C6Service1TkV1TestController.Api4OutputVo(
+        return C6Service1TkV1TestController.Api4ReadExcelFileSampleOutputVo(
             excelData?.size ?: 0,
             excelData.toString()
         )
@@ -191,7 +191,7 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api5(httpServletResponse: HttpServletResponse) {
+    fun api5WriteExcelFileSample(httpServletResponse: HttpServletResponse) {
         // 파일 저장 디렉토리 경로
         val saveDirectoryPathString = "./by_product_files/test"
         val saveDirectoryPath = Paths.get(saveDirectoryPathString).toAbsolutePath().normalize()
@@ -229,13 +229,13 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api6(
+    fun api6HtmlToPdfSample(
         httpServletResponse: HttpServletResponse
     ): ResponseEntity<Resource>? {
         // thymeLeaf 엔진으로 파싱한 HTML String 가져오기
         // 여기서 가져온 HTML 내에 기입된 static resources 의 경로는 절대경로가 아님
         val htmlString = CustomUtil.parseHtmlFileToHtmlString(
-            "template_c6_n6/html_to_pdf_sample", // thymeLeaf Html 이름 (ModelAndView 의 사용과 동일)
+            "for_c6_n6_html_to_pdf_sample/html_to_pdf_sample", // thymeLeaf Html 이름 (ModelAndView 의 사용과 동일)
             // thymeLeaf 에 전해줄 데이터 Map
             mapOf(
                 "title" to "PDF 변환 테스트"
@@ -247,13 +247,13 @@ class C6Service1TkV1TestService(
         // htmlString 을 PDF 로 변환하여 저장
         // XHTML 1.0(strict), CSS 2.1 (@page 의 size 는 가능)
         savedFontFileNameMap["NanumGothicFile.ttf"] =
-            "http://127.0.0.1:${serverProperties.port}/resource_c6_n6/NanumGothic.ttf"
+            "http://127.0.0.1:${serverProperties.port}/for_c6_n6_html_to_pdf_sample/NanumGothic.ttf"
 
         savedFontFileNameMap["NanumMyeongjo.ttf"] =
-            "http://127.0.0.1:${serverProperties.port}/resource_c6_n6/NanumMyeongjo.ttf"
+            "http://127.0.0.1:${serverProperties.port}/for_c6_n6_html_to_pdf_sample/NanumMyeongjo.ttf"
 
         savedImgFilePathMap["html_to_pdf_sample.jpg"] =
-            resourceLoader.getResource("classpath:static/resource_c6_n6/html_to_pdf_sample.jpg").file.absolutePath
+            resourceLoader.getResource("classpath:static/for_c6_n6_html_to_pdf_sample/html_to_pdf_sample.jpg").file.absolutePath
 
         val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
             htmlString,
@@ -282,9 +282,9 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api6Dot1(
+    fun api6Dot1MultipartHtmlToPdfSample(
         httpServletResponse: HttpServletResponse,
-        inputVo: C6Service1TkV1TestController.Api6Dot1InputVo,
+        inputVo: C6Service1TkV1TestController.Api6Dot1MultipartHtmlToPdfSampleInputVo,
         controllerBasicMapping: String?
     ): ResponseEntity<Resource>? {
         val savedFontFileNameMap: HashMap<String, String> = hashMapOf()
@@ -403,7 +403,7 @@ class C6Service1TkV1TestService(
     }
 
     ////
-    fun api6Dot2(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
+    fun api6Dot2DownloadFontFile(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
@@ -443,7 +443,7 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api7(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api7InputVo) {
+    fun api7SendKafkaTopicMessageTest(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api7SendKafkaTopicMessageTestInputVo) {
         // kafkaProducer1 에 토픽 메세지 발행
         kafkaProducerForTest.send(inputVo.topic, inputVo.message)
 
@@ -452,10 +452,10 @@ class C6Service1TkV1TestService(
     }
 
     ////
-    fun api8(
+    fun api8ProcessBuilderTest(
         httpServletResponse: HttpServletResponse,
         javaEnvironmentPath: String?
-    ): C6Service1TkV1TestController.Api8OutputVo? {
+    ): C6Service1TkV1TestController.Api8ProcessBuilderTestOutputVo? {
         val javaEnv = javaEnvironmentPath ?: "java"
 
         // JAR 파일 실행 명령어 설정
@@ -482,17 +482,17 @@ class C6Service1TkV1TestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C6Service1TkV1TestController.Api8OutputVo(
+        return C6Service1TkV1TestController.Api8ProcessBuilderTestOutputVo(
             result
         )
     }
 
 
     ////
-    fun api9(
+    fun api9CheckFontFileInnerName(
         httpServletResponse: HttpServletResponse,
-        inputVo: C6Service1TkV1TestController.Api9InputVo
-    ): C6Service1TkV1TestController.Api9OutputVo? {
+        inputVo: C6Service1TkV1TestController.Api9CheckFontFileInnerNameInputVo
+    ): C6Service1TkV1TestController.Api9CheckFontFileInnerNameOutputVo? {
         // MultipartFile에서 InputStream을 얻어옴
         val fontInputStream = inputVo.fontFile.inputStream
 
@@ -504,23 +504,23 @@ class C6Service1TkV1TestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C6Service1TkV1TestController.Api9OutputVo(
+        return C6Service1TkV1TestController.Api9CheckFontFileInnerNameOutputVo(
             fontName
         )
     }
 
 
     ////
-    fun api10(
+    fun api10Aes256EncryptTest(
         httpServletResponse: HttpServletResponse,
         plainText: String,
-        alg: C6Service1TkV1TestController.Api10CryptoAlgEnum,
+        alg: C6Service1TkV1TestController.Api10Aes256EncryptTestCryptoAlgEnum,
         initializationVector: String,
         encryptionKey: String
-    ): C6Service1TkV1TestController.Api10OutputVo? {
+    ): C6Service1TkV1TestController.Api10Aes256EncryptTestOutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C6Service1TkV1TestController.Api10OutputVo(
+        return C6Service1TkV1TestController.Api10Aes256EncryptTestOutputVo(
             CryptoUtil.encryptAES256(
                 plainText,
                 alg.alg,
@@ -532,16 +532,16 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api11(
+    fun api11Aes256DecryptTest(
         httpServletResponse: HttpServletResponse,
         encryptedText: String,
-        alg: C6Service1TkV1TestController.Api11CryptoAlgEnum,
+        alg: C6Service1TkV1TestController.Api11Aes256DecryptTestCryptoAlgEnum,
         initializationVector: String,
         encryptionKey: String
-    ): C6Service1TkV1TestController.Api11OutputVo? {
+    ): C6Service1TkV1TestController.Api11Aes256DecryptTestOutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C6Service1TkV1TestController.Api11OutputVo(
+        return C6Service1TkV1TestController.Api11Aes256DecryptTestOutputVo(
             CryptoUtil.decryptAES256(
                 encryptedText,
                 alg.alg,
@@ -553,7 +553,7 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api12(httpServletResponse: HttpServletResponse, fix: Boolean): String? {
+    fun api12JsoupTest(httpServletResponse: HttpServletResponse, fix: Boolean): String? {
         val htmlString =
             """
                 <!DOCTYPE HTML>

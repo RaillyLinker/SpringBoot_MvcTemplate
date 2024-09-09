@@ -102,7 +102,7 @@ object PdfGenerator {
                         element.getAttribute("src") // HTML 태그의 src 속성에 적힌 값(ex : "html_to_pdf_sample.jpg")
 
                     if (nodeName == "img" && srcPath.startsWith("classpath:")) {
-                        // img 태그에, <img src="classpath:/static/resource_c6_n6/html_to_pdf_sample.jpg"/> 처럼 내부 파일 참고시
+                        // img 태그에, <img src="classpath:/static/for_c6_n6_html_to_pdf_sample/html_to_pdf_sample.jpg"/> 처럼 내부 파일 참고시
                         val fsImage = ITextFSImage(
                             Image.getInstance(
                                 Files.readAllBytes(
@@ -120,7 +120,7 @@ object PdfGenerator {
 
                         return ITextImageElement(fsImage)
                     } else if (nodeName == "img" && !srcPath.startsWith("http") && !srcPath.startsWith("classpath:")) {
-                        // img 태그에,http 이미지, 혹은 classpath:/static/resource_c6_n6/html_to_pdf_sample.jpg 이렇게 서버 내 이미지 파일이 아닌 경우
+                        // img 태그에,http 이미지, 혹은 classpath:/static/for_c6_n6_html_to_pdf_sample/html_to_pdf_sample.jpg 이렇게 서버 내 이미지 파일이 아닌 경우
                         // 여기선 html_to_pdf_sample.jpg 같이 파일명을 가정
                         val fsImage = ITextFSImage(
                             Image.getInstance(File(savedImgFilePathMap[srcPath]!!).readBytes())

@@ -46,17 +46,17 @@ class C6Service1TkV1TestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api1(
+    fun api1SendEmailTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api1InputVo
+        inputVo: Api1SendEmailTestInputVo
     ) {
-        service.api1(httpServletResponse, inputVo)
+        service.api1SendEmailTest(httpServletResponse, inputVo)
     }
 
-    data class Api1InputVo(
+    data class Api1SendEmailTestInputVo(
         @Schema(description = "수신자 이메일 배열", required = true, example = "[\"test1@gmail.com\"]")
         @JsonProperty("receiverEmailAddressList")
         val receiverEmailAddressList: List<String>,
@@ -97,17 +97,17 @@ class C6Service1TkV1TestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api2(
+    fun api2SendHtmlEmailTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api2InputVo
+        inputVo: Api2SendHtmlEmailTestInputVo
     ) {
-        service.api2(httpServletResponse, inputVo)
+        service.api2SendHtmlEmailTest(httpServletResponse, inputVo)
     }
 
-    data class Api2InputVo(
+    data class Api2SendHtmlEmailTestInputVo(
         @Schema(description = "수신자 이메일 배열", required = true, example = "[\"test1@gmail.com\"]")
         @JsonProperty("receiverEmailAddressList")
         val receiverEmailAddressList: List<String>,
@@ -149,16 +149,16 @@ class C6Service1TkV1TestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api3(
+    fun api3NaverSmsSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api3InputVo
+        inputVo: Api3NaverSmsSampleInputVo
     ) {
-        return service.api3(httpServletResponse, inputVo)
+        return service.api3NaverSmsSample(httpServletResponse, inputVo)
     }
 
-    data class Api3InputVo(
+    data class Api3NaverSmsSampleInputVo(
         @Schema(description = "SMS 수신측 휴대전화 번호", required = true, example = "82)010-1111-1111")
         @JsonProperty("phoneNumber")
         val phoneNumber: String,
@@ -188,16 +188,16 @@ class C6Service1TkV1TestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api3Dot1(
+    fun api3Dot1NaverAlimTalkSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api3Dot1InputVo
+        inputVo: Api3Dot1NaverAlimTalkSampleInputVo
     ) {
-        return service.api3Dot1(httpServletResponse, inputVo)
+        return service.api3Dot1NaverAlimTalkSample(httpServletResponse, inputVo)
     }
 
-    data class Api3Dot1InputVo(
+    data class Api3Dot1NaverAlimTalkSampleInputVo(
         @Schema(description = "카카오톡 채널명 ((구)플러스친구 아이디)", required = true, example = "@test")
         @JsonProperty("plusFriendId")
         val plusFriendId: String,
@@ -232,17 +232,17 @@ class C6Service1TkV1TestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api4(
+    fun api4ReadExcelFileSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api4InputVo
-    ): Api4OutputVo? {
-        return service.api4(httpServletResponse, inputVo)
+        inputVo: Api4ReadExcelFileSampleInputVo
+    ): Api4ReadExcelFileSampleOutputVo? {
+        return service.api4ReadExcelFileSample(httpServletResponse, inputVo)
     }
 
-    data class Api4InputVo(
+    data class Api4ReadExcelFileSampleInputVo(
         @Schema(description = "가져오려는 시트 인덱스 (0부터 시작)", required = true, example = "0")
         @JsonProperty("sheetIdx")
         val sheetIdx: Int,
@@ -263,7 +263,7 @@ class C6Service1TkV1TestController(
         val excelFile: MultipartFile
     )
 
-    data class Api4OutputVo(
+    data class Api4ReadExcelFileSampleOutputVo(
         @Schema(description = "행 카운트", required = true, example = "1")
         @JsonProperty("rowCount")
         val rowCount: Int,
@@ -292,11 +292,11 @@ class C6Service1TkV1TestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api5(
+    fun api5WriteExcelFileSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api5(httpServletResponse)
+        service.api5WriteExcelFileSample(httpServletResponse)
     }
 
 
@@ -319,11 +319,11 @@ class C6Service1TkV1TestController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @ResponseBody
-    fun api6(
+    fun api6HtmlToPdfSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ): ResponseEntity<Resource>? {
-        return service.api6(httpServletResponse)
+        return service.api6HtmlToPdfSample(httpServletResponse)
     }
 
 
@@ -361,12 +361,12 @@ class C6Service1TkV1TestController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @ResponseBody
-    fun api6Dot1(
+    fun api6Dot1MultipartHtmlToPdfSample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api6Dot1InputVo
+        inputVo: Api6Dot1MultipartHtmlToPdfSampleInputVo
     ): ResponseEntity<Resource>? {
         var controllerBasicMapping: String? = null
         for (requestMappingAnnotation in this.javaClass.getAnnotationsByType(org.springframework.web.bind.annotation.RequestMapping::class.java)) {
@@ -377,10 +377,10 @@ class C6Service1TkV1TestController(
             }
         }
 
-        return service.api6Dot1(httpServletResponse, inputVo, controllerBasicMapping)
+        return service.api6Dot1MultipartHtmlToPdfSample(httpServletResponse, inputVo, controllerBasicMapping)
     }
 
-    data class Api6Dot1InputVo(
+    data class Api6Dot1MultipartHtmlToPdfSampleInputVo(
         @Schema(description = "업로드 HTML 파일", required = true)
         @JsonProperty("htmlFile")
         val htmlFile: MultipartFile,
@@ -441,14 +441,14 @@ class C6Service1TkV1TestController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @ResponseBody
-    fun api6Dot2(
+    fun api6Dot2DownloadFontFile(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "fileName", description = "by_product_files/test 폴더 안의 파일명", example = "sample.txt")
         @PathVariable("fileName")
         fileName: String
     ): ResponseEntity<Resource>? {
-        return service.api6Dot2(httpServletResponse, fileName)
+        return service.api6Dot2DownloadFontFile(httpServletResponse, fileName)
     }
 
 
@@ -471,19 +471,19 @@ class C6Service1TkV1TestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api7(
+    fun api7SendKafkaTopicMessageTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api7InputVo
+        inputVo: Api7SendKafkaTopicMessageTestInputVo
     ) {
-        service.api7(
+        service.api7SendKafkaTopicMessageTest(
             httpServletResponse,
             inputVo
         )
     }
 
-    data class Api7InputVo(
+    data class Api7SendKafkaTopicMessageTestInputVo(
         @Schema(description = "토픽", required = true, example = "testTopic")
         @JsonProperty("topic")
         val topic: String,
@@ -512,7 +512,7 @@ class C6Service1TkV1TestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api8(
+    fun api8ProcessBuilderTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(
@@ -522,14 +522,14 @@ class C6Service1TkV1TestController(
         )
         @RequestParam("javaEnvironmentPath")
         javaEnvironmentPath: String?
-    ): Api8OutputVo? {
-        return service.api8(
+    ): Api8ProcessBuilderTestOutputVo? {
+        return service.api8ProcessBuilderTest(
             httpServletResponse,
             javaEnvironmentPath
         )
     }
 
-    data class Api8OutputVo(
+    data class Api8ProcessBuilderTestOutputVo(
         @Schema(description = "jar 실행 결과", required = true, example = "3333")
         @JsonProperty("jarResult")
         val jarResult: Long
@@ -555,23 +555,23 @@ class C6Service1TkV1TestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api9(
+    fun api9CheckFontFileInnerName(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api9InputVo
-    ): Api9OutputVo? {
-        return service.api9(httpServletResponse, inputVo)
+        inputVo: Api9CheckFontFileInnerNameInputVo
+    ): Api9CheckFontFileInnerNameOutputVo? {
+        return service.api9CheckFontFileInnerName(httpServletResponse, inputVo)
     }
 
-    data class Api9InputVo(
+    data class Api9CheckFontFileInnerNameInputVo(
         @Schema(description = "업로드 폰트 파일", required = true)
         @JsonProperty("fontFile")
         val fontFile: MultipartFile
     )
 
-    data class Api9OutputVo(
+    data class Api9CheckFontFileInnerNameOutputVo(
         @Schema(description = "폰트 파일의 내부 이름", required = true, example = "NanumGothic")
         @JsonProperty("innerName")
         val innerName: String
@@ -596,7 +596,7 @@ class C6Service1TkV1TestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api10(
+    fun api10Aes256EncryptTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "plainText", description = "암호화 하려는 평문", example = "testString")
@@ -604,7 +604,7 @@ class C6Service1TkV1TestController(
         plainText: String,
         @Parameter(name = "alg", description = "암호화 알고리즘", example = "AES_CBC_PKCS5")
         @RequestParam("alg")
-        alg: Api10CryptoAlgEnum,
+        alg: Api10Aes256EncryptTestCryptoAlgEnum,
         @Parameter(name = "initializationVector", description = "초기화 벡터 16byte = 16char", example = "1q2w3e4r5t6y7u8i")
         @RequestParam("initializationVector")
         initializationVector: String,
@@ -615,8 +615,8 @@ class C6Service1TkV1TestController(
         )
         @RequestParam("encryptionKey")
         encryptionKey: String
-    ): Api10OutputVo? {
-        return service.api10(
+    ): Api10Aes256EncryptTestOutputVo? {
+        return service.api10Aes256EncryptTest(
             httpServletResponse,
             plainText,
             alg,
@@ -625,11 +625,11 @@ class C6Service1TkV1TestController(
         )
     }
 
-    enum class Api10CryptoAlgEnum(val alg: String) {
+    enum class Api10Aes256EncryptTestCryptoAlgEnum(val alg: String) {
         AES_CBC_PKCS5("AES/CBC/PKCS5Padding")
     }
 
-    data class Api10OutputVo(
+    data class Api10Aes256EncryptTestOutputVo(
         @Schema(description = "암호화된 결과물", required = true, example = "testString")
         @JsonProperty("cryptoResult")
         val cryptoResult: String
@@ -654,7 +654,7 @@ class C6Service1TkV1TestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api11(
+    fun api11Aes256DecryptTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "encryptedText", description = "복호화 하려는 암호문", example = "DwH1WCA3Bzqf6xq+udBI1Q==")
@@ -662,7 +662,7 @@ class C6Service1TkV1TestController(
         encryptedText: String,
         @Parameter(name = "alg", description = "암호화 알고리즘", example = "AES_CBC_PKCS5")
         @RequestParam("alg")
-        alg: Api11CryptoAlgEnum,
+        alg: Api11Aes256DecryptTestCryptoAlgEnum,
         @Parameter(name = "initializationVector", description = "초기화 벡터 16byte = 16char", example = "1q2w3e4r5t6y7u8i")
         @RequestParam("initializationVector")
         initializationVector: String,
@@ -673,8 +673,8 @@ class C6Service1TkV1TestController(
         )
         @RequestParam("encryptionKey")
         encryptionKey: String
-    ): Api11OutputVo? {
-        return service.api11(
+    ): Api11Aes256DecryptTestOutputVo? {
+        return service.api11Aes256DecryptTest(
             httpServletResponse,
             encryptedText,
             alg,
@@ -683,11 +683,11 @@ class C6Service1TkV1TestController(
         )
     }
 
-    enum class Api11CryptoAlgEnum(val alg: String) {
+    enum class Api11Aes256DecryptTestCryptoAlgEnum(val alg: String) {
         AES_CBC_PKCS5("AES/CBC/PKCS5Padding")
     }
 
-    data class Api11OutputVo(
+    data class Api11Aes256DecryptTestOutputVo(
         @Schema(description = "암호화된 결과물", required = true, example = "testString")
         @JsonProperty("cryptoResult")
         val cryptoResult: String
@@ -712,14 +712,14 @@ class C6Service1TkV1TestController(
         produces = ["text/html;charset=utf-8"]
     )
     @ResponseBody
-    fun api12(
+    fun api12JsoupTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "fix", description = "변환 여부", example = "true")
         @RequestParam("fix")
         fix: Boolean
     ): String? {
-        return service.api12(
+        return service.api12JsoupTest(
             httpServletResponse,
             fix
         )
