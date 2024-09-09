@@ -3,6 +3,8 @@ package com.raillylinker.springboot_mvc_template.controllers.c11_service1_tk_v1_
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -49,22 +51,22 @@ class C11Service1TkV1MongoDbTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api1(
+    fun api1InsertDocumentTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api1InputVo
-    ): Api1OutputVo? {
-        return service.api1(httpServletResponse, inputVo)
+        inputVo: Api1InsertDocumentTestInputVo
+    ): Api1InsertDocumentTestOutputVo? {
+        return service.api1InsertDocumentTest(httpServletResponse, inputVo)
     }
 
-    data class Api1InputVo(
+    data class Api1InsertDocumentTestInputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
         val content: String
     )
 
-    data class Api1OutputVo(
+    data class Api1InsertDocumentTestOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: String,
@@ -110,16 +112,15 @@ class C11Service1TkV1MongoDbTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api2(
+    fun api2DeleteAllDocumentTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api2(httpServletResponse)
+        service.api2DeleteAllDocumentTest(httpServletResponse)
     }
 
 
     ////
-    // todo : 행 존재 여부 확인
     @Operation(
         summary = "N3 : DB Row 삭제 테스트",
         description = "테스트 테이블의 Row 하나를 삭제합니다.\n\n"
@@ -129,6 +130,20 @@ class C11Service1TkV1MongoDbTestController(
             ApiResponse(
                 responseCode = "200",
                 description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : id 에 해당하는 데이터가 데이터베이스에 존재하지 않습니다.\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
             )
         ]
     )
@@ -138,14 +153,14 @@ class C11Service1TkV1MongoDbTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api3(
+    fun api3DeleteDocumentTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "id", description = "글 Id", example = "1")
         @PathVariable("id")
         id: String
     ) {
-        service.api3(httpServletResponse, id)
+        service.api3DeleteDocumentTest(httpServletResponse, id)
     }
 
 
@@ -168,14 +183,14 @@ class C11Service1TkV1MongoDbTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api4(
+    fun api4SelectAllDocumentsTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api4OutputVo? {
-        return service.api4(httpServletResponse)
+    ): Api4SelectAllDocumentsTestOutputVo? {
+        return service.api4SelectAllDocumentsTest(httpServletResponse)
     }
 
-    data class Api4OutputVo(
+    data class Api4SelectAllDocumentsTestOutputVo(
         @Schema(description = "아이템 리스트", required = true)
         @JsonProperty("testEntityVoList")
         val testEntityVoList: List<TestEntityVo>
@@ -209,7 +224,7 @@ class C11Service1TkV1MongoDbTestController(
     }
 
 
-// todo
+// todo 아래는 MongoDB 사용이 필요할 때에 추가하기
 
 //    ////
 //    @Operation(
@@ -661,11 +676,11 @@ class C11Service1TkV1MongoDbTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api12(
+    fun api12TransactionRollbackTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api12(httpServletResponse)
+        service.api12TransactionRollbackTest(httpServletResponse)
     }
 
 
@@ -688,11 +703,11 @@ class C11Service1TkV1MongoDbTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api13(
+    fun api13NoTransactionRollbackTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api13(httpServletResponse)
+        service.api13NoTransactionRollbackTest(httpServletResponse)
     }
 //
 //

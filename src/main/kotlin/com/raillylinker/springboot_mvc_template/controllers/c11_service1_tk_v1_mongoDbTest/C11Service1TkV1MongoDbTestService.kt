@@ -27,10 +27,10 @@ class C11Service1TkV1MongoDbTestService(
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
     @CustomTransactional([Mdb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
-    fun api1(
+    fun api1InsertDocumentTest(
         httpServletResponse: HttpServletResponse,
-        inputVo: C11Service1TkV1MongoDbTestController.Api1InputVo
-    ): C11Service1TkV1MongoDbTestController.Api1OutputVo? {
+        inputVo: C11Service1TkV1MongoDbTestController.Api1InsertDocumentTestInputVo
+    ): C11Service1TkV1MongoDbTestController.Api1InsertDocumentTestOutputVo? {
         val resultCollection = mdb1TestRepository.save(
             Mdb1_Test(
                 inputVo.content,
@@ -43,7 +43,7 @@ class C11Service1TkV1MongoDbTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C11Service1TkV1MongoDbTestController.Api1OutputVo(
+        return C11Service1TkV1MongoDbTestController.Api1InsertDocumentTestOutputVo(
             resultCollection.uid!!.toString(),
             resultCollection.content,
             resultCollection.randomNum,
@@ -55,7 +55,7 @@ class C11Service1TkV1MongoDbTestService(
     }
 
     ////
-    fun api2(httpServletResponse: HttpServletResponse) {
+    fun api2DeleteAllDocumentTest(httpServletResponse: HttpServletResponse) {
         mdb1TestRepository.deleteAll()
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -63,7 +63,15 @@ class C11Service1TkV1MongoDbTestService(
     }
 
     ////
-    fun api3(httpServletResponse: HttpServletResponse, id: String) {
+    fun api3DeleteDocumentTest(httpServletResponse: HttpServletResponse, id: String) {
+        val testDocument = mdb1TestRepository.findById(id)
+
+        if(testDocument.isEmpty){
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return
+        }
+
         mdb1TestRepository.deleteById(id)
 
         httpServletResponse.setHeader("api-result-code", "")
@@ -71,14 +79,14 @@ class C11Service1TkV1MongoDbTestService(
     }
 
     ////
-    fun api4(httpServletResponse: HttpServletResponse): C11Service1TkV1MongoDbTestController.Api4OutputVo? {
+    fun api4SelectAllDocumentsTest(httpServletResponse: HttpServletResponse): C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo? {
         val testCollectionList = mdb1TestRepository.findAll()
 
-        val resultVoList: ArrayList<C11Service1TkV1MongoDbTestController.Api4OutputVo.TestEntityVo> = arrayListOf()
+        val resultVoList: ArrayList<C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo.TestEntityVo> = arrayListOf()
 
         for (testCollection in testCollectionList) {
             resultVoList.add(
-                C11Service1TkV1MongoDbTestController.Api4OutputVo.TestEntityVo(
+                C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo.TestEntityVo(
                     testCollection.uid!!.toString(),
                     testCollection.content,
                     testCollection.randomNum,
@@ -92,14 +100,14 @@ class C11Service1TkV1MongoDbTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C11Service1TkV1MongoDbTestController.Api4OutputVo(
+        return C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo(
             resultVoList
         )
     }
 
 
     @CustomTransactional([Mdb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
-    fun api12(
+    fun api12TransactionRollbackTest(
         httpServletResponse: HttpServletResponse
     ) {
         mdb1TestRepository.save(
@@ -119,7 +127,7 @@ class C11Service1TkV1MongoDbTestService(
     }
 
 
-    fun api13(
+    fun api13NoTransactionRollbackTest(
         httpServletResponse: HttpServletResponse
     ) {
         mdb1TestRepository.save(
