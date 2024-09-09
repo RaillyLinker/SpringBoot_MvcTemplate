@@ -32,7 +32,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1(httpServletResponse: HttpServletResponse): String? {
+    fun api1BasicRequestTest(httpServletResponse: HttpServletResponse): String? {
         try {
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTest().execute()
@@ -58,7 +58,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api2(httpServletResponse: HttpServletResponse): String? {
+    fun api2RedirectTest(httpServletResponse: HttpServletResponse): String? {
         try {
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestRedirectToBlank().execute()
@@ -84,7 +84,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api3(httpServletResponse: HttpServletResponse): String? {
+    fun api3ForwardTest(httpServletResponse: HttpServletResponse): String? {
         try {
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestForwardToBlank().execute()
@@ -110,7 +110,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api4(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api4OutputVo? {
+    fun api4GetRequestTest(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api4GetRequestTestOutputVo? {
         try {
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestGetRequest(
@@ -131,7 +131,7 @@ class C3Service1TkV1RequestFromServerTestService(
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
-                C3Service1TkV1RequestFromServerTestController.Api4OutputVo(
+                C3Service1TkV1RequestFromServerTestController.Api4GetRequestTestOutputVo(
                     responseBody.queryParamString,
                     responseBody.queryParamStringNullable,
                     responseBody.queryParamInt,
@@ -159,7 +159,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api5(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api5OutputVo? {
+    fun api5GetRequestTestWithPathParam(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api5GetRequestTestWithPathParamOutputVo? {
         try {
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestGetRequestPathParamInt(
@@ -171,7 +171,7 @@ class C3Service1TkV1RequestFromServerTestService(
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
-                C3Service1TkV1RequestFromServerTestController.Api5OutputVo(
+                C3Service1TkV1RequestFromServerTestController.Api5GetRequestTestWithPathParamOutputVo(
                     responseBody.pathParamInt
                 )
             } else {
@@ -190,7 +190,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api6(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api6OutputVo? {
+    fun api6PostRequestTestWithApplicationJsonTypeRequestBody(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api6PostRequestTestWithApplicationJsonTypeRequestBodyOutputVo? {
         try {
             // 네트워크 요청
             val responseObj =
@@ -214,7 +214,7 @@ class C3Service1TkV1RequestFromServerTestService(
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
-                C3Service1TkV1RequestFromServerTestController.Api6OutputVo(
+                C3Service1TkV1RequestFromServerTestController.Api6PostRequestTestWithApplicationJsonTypeRequestBodyOutputVo(
                     responseBody.requestBodyString,
                     responseBody.requestBodyStringNullable,
                     responseBody.requestBodyInt,
@@ -242,7 +242,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api7(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api7OutputVo? {
+    fun api7PostRequestTestWithFormTypeRequestBody(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api7PostRequestTestWithFormTypeRequestBodyOutputVo? {
         try {
             // 네트워크 요청
             val responseObj =
@@ -264,7 +264,7 @@ class C3Service1TkV1RequestFromServerTestService(
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
-                C3Service1TkV1RequestFromServerTestController.Api7OutputVo(
+                C3Service1TkV1RequestFromServerTestController.Api7PostRequestTestWithFormTypeRequestBodyOutputVo(
                     responseBody.requestFormString,
                     responseBody.requestFormStringNullable,
                     responseBody.requestFormInt,
@@ -292,7 +292,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api8(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api8OutputVo? {
+    fun api8PostRequestTestWithMultipartFormTypeRequestBody(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api8PostRequestTestWithMultipartFormTypeRequestBodyOutputVo? {
         try {
             // 네트워크 요청
             val requestFormString = MultipartBody.Part.createFormData("requestFormString", "paramFromServer")
@@ -311,7 +311,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
             // 전송 하려는 File
             val serverFile =
-                Paths.get("${File("").absolutePath}/src/main/resources/static/resource_c3_n8/test.txt")
+                Paths.get("${File("").absolutePath}/src/main/resources/static/for_c3_n8_post_request_test_with_multipart_form_type_request_body/test.txt")
                     .toFile()
             val multipartFileFormData = MultipartBody.Part.createFormData(
                 "multipartFile",
@@ -340,7 +340,7 @@ class C3Service1TkV1RequestFromServerTestService(
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
-                C3Service1TkV1RequestFromServerTestController.Api8OutputVo(
+                C3Service1TkV1RequestFromServerTestController.Api8PostRequestTestWithMultipartFormTypeRequestBodyOutputVo(
                     responseBody.requestFormString,
                     responseBody.requestFormStringNullable,
                     responseBody.requestFormInt,
@@ -368,7 +368,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api9(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api9OutputVo? {
+    fun api9PostRequestTestWithMultipartFormTypeRequestBody2(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api9PostRequestTestWithMultipartFormTypeRequestBody2OutputVo? {
         try {
             // 네트워크 요청
             val requestFormString = MultipartBody.Part.createFormData("requestFormString", "paramFromServer")
@@ -387,10 +387,10 @@ class C3Service1TkV1RequestFromServerTestService(
 
             // 전송 하려는 File
             val serverFile1 =
-                Paths.get("${File("").absolutePath}/src/main/resources/static/resource_c3_n9/test1.txt")
+                Paths.get("${File("").absolutePath}/src/main/resources/static/for_c3_n9_post_request_test_with_multipart_form_type_request_body2/test1.txt")
                     .toFile()
             val serverFile2 =
-                Paths.get("${File("").absolutePath}/src/main/resources/static/resource_c3_n9/test2.txt")
+                Paths.get("${File("").absolutePath}/src/main/resources/static/for_c3_n9_post_request_test_with_multipart_form_type_request_body2/test2.txt")
                     .toFile()
 
             val multipartFileListFormData = listOf(
@@ -431,7 +431,7 @@ class C3Service1TkV1RequestFromServerTestService(
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
-                C3Service1TkV1RequestFromServerTestController.Api9OutputVo(
+                C3Service1TkV1RequestFromServerTestController.Api9PostRequestTestWithMultipartFormTypeRequestBody2OutputVo(
                     responseBody.requestFormString,
                     responseBody.requestFormStringNullable,
                     responseBody.requestFormInt,
@@ -459,7 +459,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api10(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api10OutputVo? {
+    fun api10PostRequestTestWithMultipartFormTypeRequestBody3(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api10PostRequestTestWithMultipartFormTypeRequestBody3OutputVo? {
         try {
             // 네트워크 요청
             val jsonStringFormData = MultipartBody.Part.createFormData(
@@ -481,7 +481,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
             // 전송 하려는 File
             val serverFile =
-                Paths.get("${File("").absolutePath}/src/main/resources/static/resource_c3_n10/test.txt")
+                Paths.get("${File("").absolutePath}/src/main/resources/static/for_c3_n10_post_request_test_with_multipart_form_type_request_body3/test.txt")
                     .toFile()
             val multipartFileFormData = MultipartBody.Part.createFormData(
                 "multipartFile",
@@ -501,7 +501,7 @@ class C3Service1TkV1RequestFromServerTestService(
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
-                C3Service1TkV1RequestFromServerTestController.Api10OutputVo(
+                C3Service1TkV1RequestFromServerTestController.Api10PostRequestTestWithMultipartFormTypeRequestBody3OutputVo(
                     responseBody.requestFormString,
                     responseBody.requestFormStringNullable,
                     responseBody.requestFormInt,
@@ -529,7 +529,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api11(httpServletResponse: HttpServletResponse) {
+    fun api11GenerateErrorTest(httpServletResponse: HttpServletResponse) {
         try {
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.postService1TkV1RequestTestGenerateError().execute()
@@ -552,7 +552,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api12(httpServletResponse: HttpServletResponse) {
+    fun api12ReturnResultCodeThroughHeaders(httpServletResponse: HttpServletResponse) {
         try {
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.postService1TkV1RequestTestApiResultCodeTest(
@@ -606,7 +606,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api13(httpServletResponse: HttpServletResponse, delayTimeSec: Long) {
+    fun api13ResponseDelayTest(httpServletResponse: HttpServletResponse, delayTimeSec: Long) {
         try {
             // 네트워크 요청
             val responseObj =
@@ -631,7 +631,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api14(httpServletResponse: HttpServletResponse): String? {
+    fun api14ReturnTextStringTest(httpServletResponse: HttpServletResponse): String? {
         try {
             // 네트워크 요청
             val responseObj =
@@ -658,7 +658,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api15(httpServletResponse: HttpServletResponse): String? {
+    fun api15ReturnTextHtmlTest(httpServletResponse: HttpServletResponse): String? {
         try {
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestReturnTextHtml().execute()
@@ -684,7 +684,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api16(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api16OutputVo? {
+    fun api16AsynchronousResponseTest(httpServletResponse: HttpServletResponse): C3Service1TkV1RequestFromServerTestController.Api16AsynchronousResponseTestOutputVo? {
         try {
             // 네트워크 요청
             val responseObj = networkRetrofit2.localHostRequestApi.getService1TkV1RequestTestAsyncResult().execute()
@@ -694,7 +694,7 @@ class C3Service1TkV1RequestFromServerTestService(
                 httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
-                C3Service1TkV1RequestFromServerTestController.Api16OutputVo(
+                C3Service1TkV1RequestFromServerTestController.Api16AsynchronousResponseTestOutputVo(
                     responseBody.resultMessage
                 )
             } else {
@@ -713,7 +713,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api17(httpServletResponse: HttpServletResponse) {
+    fun api17SseSubscribeTest(httpServletResponse: HttpServletResponse) {
         // SSE Subscribe Url 연결 객체 생성
         val sseClient =
             SseClient("http://127.0.0.1:8080/service1/tk/v1/request-test/sse-test/subscribe")
@@ -773,7 +773,7 @@ class C3Service1TkV1RequestFromServerTestService(
 
 
     ////
-    fun api18(httpServletResponse: HttpServletResponse) {
+    fun api18WebsocketConnectTest(httpServletResponse: HttpServletResponse) {
         val client = OkHttpClient()
 
         val maxCount = 5

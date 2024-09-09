@@ -61,11 +61,11 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @ResponseBody
-    fun api1(
+    fun api1BasicRequestTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ): String? {
-        return service.api1(httpServletResponse)
+        return service.api1BasicRequestTest(httpServletResponse)
     }
 
 
@@ -103,11 +103,11 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @ResponseBody
-    fun api2(
+    fun api2RedirectTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ): String? {
-        return service.api2(httpServletResponse)
+        return service.api2RedirectTest(httpServletResponse)
     }
 
 
@@ -145,11 +145,11 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @ResponseBody
-    fun api3(
+    fun api3ForwardTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ): String? {
-        return service.api3(httpServletResponse)
+        return service.api3ForwardTest(httpServletResponse)
     }
 
 
@@ -187,14 +187,14 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api4(
+    fun api4GetRequestTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api4OutputVo? {
-        return service.api4(httpServletResponse)
+    ): Api4GetRequestTestOutputVo? {
+        return service.api4GetRequestTest(httpServletResponse)
     }
 
-    data class Api4OutputVo(
+    data class Api4GetRequestTestOutputVo(
         @Schema(description = "입력한 String Query 파라미터", required = true, example = "testString")
         @JsonProperty("queryParamString")
         val queryParamString: String,
@@ -270,14 +270,14 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api5(
+    fun api5GetRequestTestWithPathParam(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api5OutputVo? {
-        return service.api5(httpServletResponse)
+    ): Api5GetRequestTestWithPathParamOutputVo? {
+        return service.api5GetRequestTestWithPathParam(httpServletResponse)
     }
 
-    data class Api5OutputVo(
+    data class Api5GetRequestTestWithPathParamOutputVo(
         @Schema(description = "입력한 Int Path 파라미터", required = true, example = "1")
         @JsonProperty("pathParamInt")
         val pathParamInt: Int
@@ -318,14 +318,14 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api6(
+    fun api6PostRequestTestWithApplicationJsonTypeRequestBody(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api6OutputVo? {
-        return service.api6(httpServletResponse)
+    ): Api6PostRequestTestWithApplicationJsonTypeRequestBodyOutputVo? {
+        return service.api6PostRequestTestWithApplicationJsonTypeRequestBody(httpServletResponse)
     }
 
-    data class Api6OutputVo(
+    data class Api6PostRequestTestWithApplicationJsonTypeRequestBodyOutputVo(
         @Schema(description = "입력한 String Body 파라미터", required = true, example = "testString")
         @JsonProperty("requestBodyString")
         val requestBodyString: String,
@@ -401,14 +401,14 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api7(
+    fun api7PostRequestTestWithFormTypeRequestBody(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api7OutputVo? {
-        return service.api7(httpServletResponse)
+    ): Api7PostRequestTestWithFormTypeRequestBodyOutputVo? {
+        return service.api7PostRequestTestWithFormTypeRequestBody(httpServletResponse)
     }
 
-    data class Api7OutputVo(
+    data class Api7PostRequestTestWithFormTypeRequestBodyOutputVo(
         @Schema(description = "입력한 String Body 파라미터", required = true, example = "testString")
         @JsonProperty("requestFormString")
         val requestFormString: String,
@@ -484,14 +484,14 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api8(
+    fun api8PostRequestTestWithMultipartFormTypeRequestBody(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api8OutputVo? {
-        return service.api8(httpServletResponse)
+    ): Api8PostRequestTestWithMultipartFormTypeRequestBodyOutputVo? {
+        return service.api8PostRequestTestWithMultipartFormTypeRequestBody(httpServletResponse)
     }
 
-    data class Api8OutputVo(
+    data class Api8PostRequestTestWithMultipartFormTypeRequestBodyOutputVo(
         @Schema(description = "입력한 String Body 파라미터", required = true, example = "testString")
         @JsonProperty("requestFormString")
         val requestFormString: String,
@@ -568,14 +568,14 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api9(
+    fun api9PostRequestTestWithMultipartFormTypeRequestBody2(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api9OutputVo? {
-        return service.api9(httpServletResponse)
+    ): Api9PostRequestTestWithMultipartFormTypeRequestBody2OutputVo? {
+        return service.api9PostRequestTestWithMultipartFormTypeRequestBody2(httpServletResponse)
     }
 
-    data class Api9OutputVo(
+    data class Api9PostRequestTestWithMultipartFormTypeRequestBody2OutputVo(
         @Schema(description = "입력한 String Body 파라미터", required = true, example = "testString")
         @JsonProperty("requestFormString")
         val requestFormString: String,
@@ -652,14 +652,14 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api10(
+    fun api10PostRequestTestWithMultipartFormTypeRequestBody3(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api10OutputVo? {
-        return service.api10(httpServletResponse)
+    ): Api10PostRequestTestWithMultipartFormTypeRequestBody3OutputVo? {
+        return service.api10PostRequestTestWithMultipartFormTypeRequestBody3(httpServletResponse)
     }
 
-    data class Api10OutputVo(
+    data class Api10PostRequestTestWithMultipartFormTypeRequestBody3OutputVo(
         @Schema(description = "입력한 String Body 파라미터", required = true, example = "testString")
         @JsonProperty("requestFormString")
         val requestFormString: String,
@@ -735,11 +735,11 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api11(
+    fun api11GenerateErrorTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api11(httpServletResponse)
+        service.api11GenerateErrorTest(httpServletResponse)
     }
 
 
@@ -780,11 +780,11 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api12(
+    fun api12ReturnResultCodeThroughHeaders(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api12(httpServletResponse)
+        service.api12ReturnResultCodeThroughHeaders(httpServletResponse)
     }
 
 
@@ -822,14 +822,14 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api13(
+    fun api13ResponseDelayTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "delayTimeSec", description = "지연 시간(초)", example = "1")
         @RequestParam("delayTimeSec")
         delayTimeSec: Long
     ) {
-        service.api13(httpServletResponse, delayTimeSec)
+        service.api13ResponseDelayTest(httpServletResponse, delayTimeSec)
     }
 
 
@@ -867,11 +867,11 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @ResponseBody
-    fun api14(
+    fun api14ReturnTextStringTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ): String? {
-        return service.api14(
+        return service.api14ReturnTextStringTest(
             httpServletResponse
         )
     }
@@ -911,11 +911,11 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @ResponseBody
-    fun api15(
+    fun api15ReturnTextHtmlTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ): String? {
-        return service.api15(
+        return service.api15ReturnTextHtmlTest(
             httpServletResponse
         )
     }
@@ -955,16 +955,16 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api16(
+    fun api16AsynchronousResponseTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api16OutputVo? {
-        return service.api16(
+    ): Api16AsynchronousResponseTestOutputVo? {
+        return service.api16AsynchronousResponseTest(
             httpServletResponse
         )
     }
 
-    data class Api16OutputVo(
+    data class Api16AsynchronousResponseTestOutputVo(
         @Schema(description = "결과 메세지", required = true, example = "n 초 경과 후 반환했습니다.")
         @JsonProperty("resultMessage")
         val resultMessage: String
@@ -1006,11 +1006,11 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api17(
+    fun api17SseSubscribeTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api17(
+        service.api17SseSubscribeTest(
             httpServletResponse
         )
     }
@@ -1051,11 +1051,11 @@ class C3Service1TkV1RequestFromServerTestController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api18(
+    fun api18WebsocketConnectTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api18(
+        service.api18WebsocketConnectTest(
             httpServletResponse
         )
     }
