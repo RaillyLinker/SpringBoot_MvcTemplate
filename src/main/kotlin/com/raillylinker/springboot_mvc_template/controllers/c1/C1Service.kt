@@ -18,7 +18,7 @@ class C1Service(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1(
+    fun api1GetRoot(
         httpServletResponse: HttpServletResponse
     ): ModelAndView? {
         val mv = ModelAndView()

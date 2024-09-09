@@ -42,7 +42,7 @@ class C2Service1TkV1RequestTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1(httpServletResponse: HttpServletResponse): String? {
+    fun api1BasicRequestTest(httpServletResponse: HttpServletResponse): String? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return activeProfile
@@ -50,7 +50,7 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api2(httpServletResponse: HttpServletResponse): ModelAndView? {
+    fun api2RedirectTest(httpServletResponse: HttpServletResponse): ModelAndView? {
         val mv = ModelAndView()
         mv.viewName = "redirect:/service1/tk/v1/request-test"
 
@@ -59,7 +59,7 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api3(httpServletResponse: HttpServletResponse): ModelAndView? {
+    fun api3ForwardTest(httpServletResponse: HttpServletResponse): ModelAndView? {
         val mv = ModelAndView()
         mv.viewName = "forward:/service1/tk/v1/request-test"
 
@@ -68,7 +68,7 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api4(
+    fun api4GetRequestTest(
         httpServletResponse: HttpServletResponse,
         queryParamString: String,
         queryParamStringNullable: String?,
@@ -80,10 +80,10 @@ class C2Service1TkV1RequestTestService(
         queryParamBooleanNullable: Boolean?,
         queryParamStringList: List<String>,
         queryParamStringListNullable: List<String>?
-    ): C2Service1TkV1RequestTestController.Api4OutputVo? {
+    ): C2Service1TkV1RequestTestController.Api4GetRequestTestOutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C2Service1TkV1RequestTestController.Api4OutputVo(
+        return C2Service1TkV1RequestTestController.Api4GetRequestTestOutputVo(
             queryParamString,
             queryParamStringNullable,
             queryParamInt,
@@ -99,24 +99,24 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api5(
+    fun api5GetRequestTestWithPathParam(
         httpServletResponse: HttpServletResponse,
         pathParamInt: Int
-    ): C2Service1TkV1RequestTestController.Api5OutputVo? {
+    ): C2Service1TkV1RequestTestController.Api5GetRequestTestWithPathParamOutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C2Service1TkV1RequestTestController.Api5OutputVo(pathParamInt)
+        return C2Service1TkV1RequestTestController.Api5GetRequestTestWithPathParamOutputVo(pathParamInt)
     }
 
 
     ////
-    fun api6(
+    fun api6PostRequestTestWithApplicationJsonTypeRequestBody(
         httpServletResponse: HttpServletResponse,
-        inputVo: C2Service1TkV1RequestTestController.Api6InputVo
-    ): C2Service1TkV1RequestTestController.Api6OutputVo? {
+        inputVo: C2Service1TkV1RequestTestController.Api6PostRequestTestWithApplicationJsonTypeRequestBodyInputVo
+    ): C2Service1TkV1RequestTestController.Api6PostRequestTestWithApplicationJsonTypeRequestBodyOutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C2Service1TkV1RequestTestController.Api6OutputVo(
+        return C2Service1TkV1RequestTestController.Api6PostRequestTestWithApplicationJsonTypeRequestBodyOutputVo(
             inputVo.requestBodyString,
             inputVo.requestBodyStringNullable,
             inputVo.requestBodyInt,
@@ -132,18 +132,19 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api6Dot1(
+    fun api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2(
         httpServletResponse: HttpServletResponse,
-        inputVo: C2Service1TkV1RequestTestController.Api6Dot1InputVo
-    ): C2Service1TkV1RequestTestController.Api6Dot1OutputVo? {
-        val objectList: MutableList<C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo> = mutableListOf()
+        inputVo: C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2InputVo
+    ): C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo? {
+        val objectList: MutableList<C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo.ObjectVo> =
+            mutableListOf()
 
         for (objectVo in inputVo.objectVoList) {
-            val subObjectVoList: MutableList<C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo> =
+            val subObjectVoList: MutableList<C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo.ObjectVo.SubObjectVo> =
                 mutableListOf()
             for (subObject in objectVo.subObjectVoList) {
                 subObjectVoList.add(
-                    C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo(
+                    C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo.ObjectVo.SubObjectVo(
                         subObject.requestBodyString,
                         subObject.requestBodyStringList
                     )
@@ -151,10 +152,10 @@ class C2Service1TkV1RequestTestService(
             }
 
             objectList.add(
-                C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo(
+                C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo.ObjectVo(
                     objectVo.requestBodyString,
                     objectVo.requestBodyStringList,
-                    C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo(
+                    C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo.ObjectVo.SubObjectVo(
                         objectVo.subObjectVo.requestBodyString,
                         objectVo.subObjectVo.requestBodyStringList
                     ),
@@ -163,29 +164,30 @@ class C2Service1TkV1RequestTestService(
             )
         }
 
-        val subObjectVoList: MutableList<C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo> =
+        val subObjectVoList: MutableList<C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo.ObjectVo.SubObjectVo> =
             mutableListOf()
         for (subObject in inputVo.objectVo.subObjectVoList) {
             subObjectVoList.add(
-                C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo(
+                C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo.ObjectVo.SubObjectVo(
                     subObject.requestBodyString,
                     subObject.requestBodyStringList
                 )
             )
         }
 
-        val outputVo = C2Service1TkV1RequestTestController.Api6Dot1OutputVo(
-            C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo(
-                inputVo.objectVo.requestBodyString,
-                inputVo.objectVo.requestBodyStringList,
-                C2Service1TkV1RequestTestController.Api6Dot1OutputVo.ObjectVo.SubObjectVo(
-                    inputVo.objectVo.subObjectVo.requestBodyString,
-                    inputVo.objectVo.subObjectVo.requestBodyStringList
+        val outputVo =
+            C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo(
+                C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo.ObjectVo(
+                    inputVo.objectVo.requestBodyString,
+                    inputVo.objectVo.requestBodyStringList,
+                    C2Service1TkV1RequestTestController.Api6Dot1PostRequestTestWithApplicationJsonTypeRequestBody2OutputVo.ObjectVo.SubObjectVo(
+                        inputVo.objectVo.subObjectVo.requestBodyString,
+                        inputVo.objectVo.subObjectVo.requestBodyStringList
+                    ),
+                    subObjectVoList
                 ),
-                subObjectVoList
-            ),
-            objectList
-        )
+                objectList
+            )
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -194,7 +196,7 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api6Dot2(
+    fun api6Dot2PostRequestTestWithNoInputAndOutput(
         httpServletResponse: HttpServletResponse
     ) {
         httpServletResponse.setHeader("api-result-code", "")
@@ -203,13 +205,13 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api7(
+    fun api7PostRequestTestWithFormTypeRequestBody(
         httpServletResponse: HttpServletResponse,
-        inputVo: C2Service1TkV1RequestTestController.Api7InputVo
-    ): C2Service1TkV1RequestTestController.Api7OutputVo? {
+        inputVo: C2Service1TkV1RequestTestController.Api7PostRequestTestWithFormTypeRequestBodyInputVo
+    ): C2Service1TkV1RequestTestController.Api7PostRequestTestWithFormTypeRequestBodyOutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C2Service1TkV1RequestTestController.Api7OutputVo(
+        return C2Service1TkV1RequestTestController.Api7PostRequestTestWithFormTypeRequestBodyOutputVo(
             inputVo.requestFormString,
             inputVo.requestFormStringNullable,
             inputVo.requestFormInt,
@@ -225,10 +227,10 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api8(
+    fun api8PostRequestTestWithMultipartFormTypeRequestBody(
         httpServletResponse: HttpServletResponse,
-        inputVo: C2Service1TkV1RequestTestController.Api8InputVo
-    ): C2Service1TkV1RequestTestController.Api8OutputVo? {
+        inputVo: C2Service1TkV1RequestTestController.Api8PostRequestTestWithMultipartFormTypeRequestBodyInputVo
+    ): C2Service1TkV1RequestTestController.Api8PostRequestTestWithMultipartFormTypeRequestBodyOutputVo? {
         // 파일 저장 기본 디렉토리 경로
         val saveDirectoryPath: Path = Paths.get("./by_product_files/test").toAbsolutePath().normalize()
 
@@ -306,7 +308,7 @@ class C2Service1TkV1RequestTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C2Service1TkV1RequestTestController.Api8OutputVo(
+        return C2Service1TkV1RequestTestController.Api8PostRequestTestWithMultipartFormTypeRequestBodyOutputVo(
             inputVo.requestFormString,
             inputVo.requestFormStringNullable,
             inputVo.requestFormInt,
@@ -322,10 +324,10 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api9(
+    fun api9PostRequestTestWithMultipartFormTypeRequestBody2(
         httpServletResponse: HttpServletResponse,
-        inputVo: C2Service1TkV1RequestTestController.Api9InputVo
-    ): C2Service1TkV1RequestTestController.Api9OutputVo? {
+        inputVo: C2Service1TkV1RequestTestController.Api9PostRequestTestWithMultipartFormTypeRequestBody2InputVo
+    ): C2Service1TkV1RequestTestController.Api9PostRequestTestWithMultipartFormTypeRequestBody2OutputVo? {
         // 파일 저장 기본 디렉토리 경로
         val saveDirectoryPath: Path = Paths.get("./by_product_files/test").toAbsolutePath().normalize()
 
@@ -407,7 +409,7 @@ class C2Service1TkV1RequestTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C2Service1TkV1RequestTestController.Api9OutputVo(
+        return C2Service1TkV1RequestTestController.Api9PostRequestTestWithMultipartFormTypeRequestBody2OutputVo(
             inputVo.requestFormString,
             inputVo.requestFormStringNullable,
             inputVo.requestFormInt,
@@ -423,16 +425,17 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api10(
+    fun api10PostRequestTestWithMultipartFormTypeRequestBody3(
         httpServletResponse: HttpServletResponse,
-        inputVo: C2Service1TkV1RequestTestController.Api10InputVo
-    ): C2Service1TkV1RequestTestController.Api10OutputVo? {
+        inputVo: C2Service1TkV1RequestTestController.Api10PostRequestTestWithMultipartFormTypeRequestBody3InputVo
+    ): C2Service1TkV1RequestTestController.Api10PostRequestTestWithMultipartFormTypeRequestBody3OutputVo? {
         // input Json String to Object
-        val inputJsonObject = Gson().fromJson<C2Service1TkV1RequestTestController.Api10InputVo.InputJsonObject>(
-            inputVo.jsonString, // 해석하려는 json 형식의 String
-            object :
-                TypeToken<C2Service1TkV1RequestTestController.Api10InputVo.InputJsonObject>() {}.type // 파싱할 데이터 객체 타입
-        )
+        val inputJsonObject =
+            Gson().fromJson<C2Service1TkV1RequestTestController.Api10PostRequestTestWithMultipartFormTypeRequestBody3InputVo.InputJsonObject>(
+                inputVo.jsonString, // 해석하려는 json 형식의 String
+                object :
+                    TypeToken<C2Service1TkV1RequestTestController.Api10PostRequestTestWithMultipartFormTypeRequestBody3InputVo.InputJsonObject>() {}.type // 파싱할 데이터 객체 타입
+            )
 
         // 파일 저장 기본 디렉토리 경로
         val saveDirectoryPath: Path = Paths.get("./by_product_files/test").toAbsolutePath().normalize()
@@ -512,7 +515,7 @@ class C2Service1TkV1RequestTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C2Service1TkV1RequestTestController.Api10OutputVo(
+        return C2Service1TkV1RequestTestController.Api10PostRequestTestWithMultipartFormTypeRequestBody3OutputVo(
             inputJsonObject.requestFormString,
             inputJsonObject.requestFormStringNullable,
             inputJsonObject.requestFormInt,
@@ -528,31 +531,31 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api11(httpServletResponse: HttpServletResponse) {
+    fun api11GenerateErrorTest(httpServletResponse: HttpServletResponse) {
         throw RuntimeException("Test Error")
     }
 
     ////
-    fun api12(
+    fun api12ReturnResultCodeThroughHeaders(
         httpServletResponse: HttpServletResponse,
-        errorType: C2Service1TkV1RequestTestController.Api12ErrorTypeEnum?
+        errorType: C2Service1TkV1RequestTestController.Api12ReturnResultCodeThroughHeadersErrorTypeEnum?
     ) {
         if (errorType == null) {
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
         } else {
             when (errorType) {
-                C2Service1TkV1RequestTestController.Api12ErrorTypeEnum.A -> {
+                C2Service1TkV1RequestTestController.Api12ReturnResultCodeThroughHeadersErrorTypeEnum.A -> {
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "1")
                 }
 
-                C2Service1TkV1RequestTestController.Api12ErrorTypeEnum.B -> {
+                C2Service1TkV1RequestTestController.Api12ReturnResultCodeThroughHeadersErrorTypeEnum.B -> {
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "2")
                 }
 
-                C2Service1TkV1RequestTestController.Api12ErrorTypeEnum.C -> {
+                C2Service1TkV1RequestTestController.Api12ReturnResultCodeThroughHeadersErrorTypeEnum.C -> {
                     httpServletResponse.status = HttpStatus.NO_CONTENT.value()
                     httpServletResponse.setHeader("api-result-code", "3")
                 }
@@ -562,7 +565,7 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api13(httpServletResponse: HttpServletResponse, delayTimeSec: Long) {
+    fun api13ResponseDelayTest(httpServletResponse: HttpServletResponse, delayTimeSec: Long) {
         val endTime = System.currentTimeMillis() + (delayTimeSec * 1000)
 
         while (System.currentTimeMillis() < endTime) {
@@ -576,7 +579,7 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api14(httpServletResponse: HttpServletResponse): String? {
+    fun api14ReturnTextStringTest(httpServletResponse: HttpServletResponse): String? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return "test Complete!"
@@ -584,9 +587,9 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api15(httpServletResponse: HttpServletResponse): ModelAndView? {
+    fun api15ReturnTextHtmlTest(httpServletResponse: HttpServletResponse): ModelAndView? {
         val modelAndView = ModelAndView()
-        modelAndView.viewName = "template_c2_n15/html_response_example"
+        modelAndView.viewName = "for_c2_n15_return_text_html_test/html_response_example"
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
@@ -595,7 +598,7 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api16(httpServletResponse: HttpServletResponse): Resource? {
+    fun api16ReturnByteDataTest(httpServletResponse: HttpServletResponse): Resource? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ByteArrayResource(
@@ -612,32 +615,32 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api17(
-        videoHeight: C2Service1TkV1RequestTestController.Api17VideoHeight,
+    fun api17VideoStreamingTest(
+        videoHeight: C2Service1TkV1RequestTestController.Api17VideoStreamingTestVideoHeight,
         httpServletResponse: HttpServletResponse
     ): Resource? {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
         // 파일 절대 경로 및 파일명
-        val serverFileAbsolutePathString = "$projectRootAbsolutePathString/src/main/resources/static/resource_c2_n17"
+        val serverFileAbsolutePathString = "$projectRootAbsolutePathString/src/main/resources/static/for_c2_n17_video_streaming_test"
 
         // 멤버십 등의 정보로 해상도 제한을 걸 수도 있음
         val serverFileNameString =
             when (videoHeight) {
-                C2Service1TkV1RequestTestController.Api17VideoHeight.H240 -> {
+                C2Service1TkV1RequestTestController.Api17VideoStreamingTestVideoHeight.H240 -> {
                     "test_240p.mp4"
                 }
 
-                C2Service1TkV1RequestTestController.Api17VideoHeight.H360 -> {
+                C2Service1TkV1RequestTestController.Api17VideoStreamingTestVideoHeight.H360 -> {
                     "test_360p.mp4"
                 }
 
-                C2Service1TkV1RequestTestController.Api17VideoHeight.H480 -> {
+                C2Service1TkV1RequestTestController.Api17VideoStreamingTestVideoHeight.H480 -> {
                     "test_480p.mp4"
                 }
 
-                C2Service1TkV1RequestTestController.Api17VideoHeight.H720 -> {
+                C2Service1TkV1RequestTestController.Api17VideoStreamingTestVideoHeight.H720 -> {
                     "test_720p.mp4"
                 }
             }
@@ -654,12 +657,12 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api18(httpServletResponse: HttpServletResponse): Resource? {
+    fun api18AudioStreamingTest(httpServletResponse: HttpServletResponse): Resource? {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
         // 파일 절대 경로 및 파일명
-        val serverFileAbsolutePathString = "$projectRootAbsolutePathString/src/main/resources/static/resource_c2_n18"
+        val serverFileAbsolutePathString = "$projectRootAbsolutePathString/src/main/resources/static/for_c2_n18_audio_streaming_test"
         val serverFileNameString = "test.mp3"
 
         // 반환값에 전해줄 FIS
@@ -674,10 +677,12 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api19(httpServletResponse: HttpServletResponse): DeferredResult<C2Service1TkV1RequestTestController.Api19OutputVo>? {
+    fun api19AsynchronousResponseTest(httpServletResponse: HttpServletResponse): DeferredResult<C2Service1TkV1RequestTestController.Api19AsynchronousResponseTestOutputVo>? {
         // 연결 타임아웃 밀리초
         val deferredResultTimeoutMs = 1000L * 60
-        val deferredResult = DeferredResult<C2Service1TkV1RequestTestController.Api19OutputVo>(deferredResultTimeoutMs)
+        val deferredResult = DeferredResult<C2Service1TkV1RequestTestController.Api19AsynchronousResponseTestOutputVo>(
+            deferredResultTimeoutMs
+        )
 
         // 비동기 처리
         executorService.execute {
@@ -686,7 +691,7 @@ class C2Service1TkV1RequestTestService(
             Thread.sleep(delayMs)
 
             // 결과 반환
-            deferredResult.setResult(C2Service1TkV1RequestTestController.Api19OutputVo("${delayMs / 1000} 초 경과 후 반환했습니다."))
+            deferredResult.setResult(C2Service1TkV1RequestTestController.Api19AsynchronousResponseTestOutputVo("${delayMs / 1000} 초 경과 후 반환했습니다."))
         }
 
         // 결과 대기 객체를 먼저 반환
@@ -699,7 +704,7 @@ class C2Service1TkV1RequestTestService(
     ////
     // api20 에서 발급한 Emitter 객체
     private val api20SseEmitterWrapperMbr = SseEmitterWrapper(1000L * 10L)
-    fun api20(httpServletResponse: HttpServletResponse, lastSseEventId: String?): SseEmitter? {
+    fun api20SseTestSubscribe(httpServletResponse: HttpServletResponse, lastSseEventId: String?): SseEmitter? {
         api20SseEmitterWrapperMbr.emitterMapSemaphore.acquire()
         api20SseEmitterWrapperMbr.emitterEventMapSemaphore.acquire()
 
@@ -726,7 +731,7 @@ class C2Service1TkV1RequestTestService(
 
     ////
     private var api21TriggerTestCountMbr = 0
-    fun api21(httpServletResponse: HttpServletResponse) {
+    fun api21SseTestEventTrigger(httpServletResponse: HttpServletResponse) {
         // emitter 이벤트 전송
         api20SseEmitterWrapperMbr.emitterMapSemaphore.acquire()
         api20SseEmitterWrapperMbr.emitterEventMapSemaphore.acquire()
@@ -770,15 +775,15 @@ class C2Service1TkV1RequestTestService(
 
 
     ////
-    fun api22(
+    fun api22EmptyListRequestTest(
         httpServletResponse: HttpServletResponse,
         stringList: List<String>,
-        inputVo: C2Service1TkV1RequestTestController.Api22InputVo
-    ): C2Service1TkV1RequestTestController.Api22OutputVo? {
+        inputVo: C2Service1TkV1RequestTestController.Api22EmptyListRequestTestInputVo
+    ): C2Service1TkV1RequestTestController.Api22EmptyListRequestTestOutputVo? {
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C2Service1TkV1RequestTestController.Api22OutputVo(
+        return C2Service1TkV1RequestTestController.Api22EmptyListRequestTestOutputVo(
             stringList,
             inputVo.requestBodyStringList
         )

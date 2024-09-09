@@ -38,10 +38,10 @@ class C1Controller(
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
-    fun api1(
+    fun api1GetRoot(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ): ModelAndView? {
-        return service.api1(httpServletResponse)
+        return service.api1GetRoot(httpServletResponse)
     }
 }
