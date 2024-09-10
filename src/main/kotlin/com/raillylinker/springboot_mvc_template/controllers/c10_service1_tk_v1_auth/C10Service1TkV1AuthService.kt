@@ -90,7 +90,7 @@ class C10Service1TkV1AuthService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1(httpServletResponse: HttpServletResponse): String? {
+    fun api1NoLoggedInAccessTest(httpServletResponse: HttpServletResponse): String? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return externalAccessAddress
@@ -98,7 +98,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api2(httpServletResponse: HttpServletResponse, authorization: String): String? {
+    fun api2LoggedInAccessTest(httpServletResponse: HttpServletResponse, authorization: String): String? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -111,7 +111,7 @@ class C10Service1TkV1AuthService(
     }
 
     ////
-    fun api3(httpServletResponse: HttpServletResponse, authorization: String): String? {
+    fun api3AdminAccessTest(httpServletResponse: HttpServletResponse, authorization: String): String? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -124,7 +124,7 @@ class C10Service1TkV1AuthService(
     }
 
     ////
-    fun api4(httpServletResponse: HttpServletResponse, authorization: String): String? {
+    fun api4DeveloperAccessTest(httpServletResponse: HttpServletResponse, authorization: String): String? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -139,10 +139,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api4Dot9(
+    fun api4Dot9DoExpireAccessToken(
         httpServletResponse: HttpServletResponse,
         memberUid: Long,
-        inputVo: C10Service1TkV1AuthController.Api4Dot9InputVo
+        inputVo: C10Service1TkV1AuthController.Api4Dot9DoExpireAccessTokenInputVo
     ) {
         if (inputVo.apiSecret != "aadke234!@") {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -175,10 +175,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api5(
+    fun api5LoginWithPassword(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api5InputVo
-    ): C10Service1TkV1AuthController.Api5OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api5LoginWithPasswordInputVo
+    ): C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo? {
         val memberData: Db1_RaillyLinkerCompany_Service1MemberData
         when (inputVo.loginTypeCode) {
             0 -> { // 아이디
@@ -291,7 +291,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api5OutputVo(
+        return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
             memberData.uid!!,
             "Bearer",
             jwtAccessToken,
@@ -305,11 +305,11 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api6(
+    fun api6GetOAuth2AccessToken(
         httpServletResponse: HttpServletResponse,
         oauth2TypeCode: Int,
         oauth2Code: String
-    ): C10Service1TkV1AuthController.Api6OutputVo? {
+    ): C10Service1TkV1AuthController.Api6GetOAuth2AccessTokenOutputVo? {
         val snsAccessTokenType: String
         val snsAccessToken: String
 
@@ -409,7 +409,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api6OutputVo(
+        return C10Service1TkV1AuthController.Api6GetOAuth2AccessTokenOutputVo(
             snsAccessTokenType,
             snsAccessToken
         )
@@ -418,10 +418,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api7(
+    fun api7LoginWithOAuth2AccessToken(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api7InputVo
-    ): C10Service1TkV1AuthController.Api5OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api7LoginWithOAuth2AccessTokenInputVo
+    ): C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo? {
         val snsOauth2: Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData?
 
         // (정보 검증 로직 수행)
@@ -564,7 +564,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api5OutputVo(
+        return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
             snsOauth2.service1MemberData.uid!!,
             "Bearer",
             jwtAccessToken,
@@ -579,10 +579,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api7Dot1(
+    fun api7Dot1LoginWithOAuth2IdToken(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api7Dot1InputVo
-    ): C10Service1TkV1AuthController.Api5OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api7Dot1LoginWithOAuth2IdTokenInputVo
+    ): C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo? {
         val snsOauth2: Db1_RaillyLinkerCompany_Service1MemberOauth2LoginData?
 
         // (정보 검증 로직 수행)
@@ -675,7 +675,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api5OutputVo(
+        return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
             snsOauth2.service1MemberData.uid!!,
             "Bearer",
             jwtAccessToken,
@@ -690,7 +690,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api8(authorization: String, httpServletResponse: HttpServletResponse) {
+    fun api8Logout(authorization: String, httpServletResponse: HttpServletResponse) {
         val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
         val token = authorizationSplit[1].trim() // (ex : "abcd1234")
 
@@ -718,11 +718,11 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api9(
+    fun api9ReissueJwt(
         authorization: String?,
-        inputVo: C10Service1TkV1AuthController.Api9InputVo,
+        inputVo: C10Service1TkV1AuthController.Api9ReissueJwtInputVo,
         httpServletResponse: HttpServletResponse
-    ): C10Service1TkV1AuthController.Api5OutputVo? {
+    ): C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo? {
         if (authorization == null) {
             // 올바르지 않은 Authorization Token
             httpServletResponse.setHeader("api-result-code", "3")
@@ -951,7 +951,7 @@ class C10Service1TkV1AuthService(
 
                         httpServletResponse.setHeader("api-result-code", "")
                         httpServletResponse.status = HttpStatus.OK.value()
-                        return C10Service1TkV1AuthController.Api5OutputVo(
+                        return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
                             tokenInfo.service1MemberData.uid!!,
                             "Bearer",
                             newJwtAccessToken,
@@ -984,7 +984,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api10(authorization: String, httpServletResponse: HttpServletResponse) {
+    fun api10DeleteAllJwtOfAMember(authorization: String, httpServletResponse: HttpServletResponse) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -1013,10 +1013,10 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api10Dot1(
+    fun api10Dot1GetMemberInfo(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api10Dot1OutputVo? {
+    ): C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -1033,10 +1033,10 @@ class C10Service1TkV1AuthService(
         }
 
         val profileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
-        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.ProfileInfo> = arrayListOf()
+        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo.ProfileInfo> = arrayListOf()
         for (profile in profileData) {
             myProfileList.add(
-                C10Service1TkV1AuthController.Api10Dot1OutputVo.ProfileInfo(
+                C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
                     profile.uid == memberData.frontService1MemberProfileData?.uid
@@ -1045,10 +1045,10 @@ class C10Service1TkV1AuthService(
         }
 
         val emailEntityList = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
-        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.EmailInfo> = arrayListOf()
+        val myEmailList: ArrayList<C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo.EmailInfo> = arrayListOf()
         for (emailEntity in emailEntityList) {
             myEmailList.add(
-                C10Service1TkV1AuthController.Api10Dot1OutputVo.EmailInfo(
+                C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
                     emailEntity.uid == memberData.frontService1MemberEmailData?.uid
@@ -1057,11 +1057,11 @@ class C10Service1TkV1AuthService(
         }
 
         val phoneEntityList = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
-        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.PhoneNumberInfo> =
+        val myPhoneNumberList: ArrayList<C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo.PhoneNumberInfo> =
             arrayListOf()
         for (phoneEntity in phoneEntityList) {
             myPhoneNumberList.add(
-                C10Service1TkV1AuthController.Api10Dot1OutputVo.PhoneNumberInfo(
+                C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo.PhoneNumberInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
                     phoneEntity.uid == memberData.frontService1MemberPhoneData?.uid
@@ -1070,10 +1070,10 @@ class C10Service1TkV1AuthService(
         }
 
         val oAuth2EntityList = db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
-        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api10Dot1OutputVo.OAuth2Info>()
+        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
             myOAuth2List.add(
-                C10Service1TkV1AuthController.Api10Dot1OutputVo.OAuth2Info(
+                C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo.OAuth2Info(
                     oAuth2Entity.uid!!,
                     oAuth2Entity.oauth2TypeCode.toInt(),
                     oAuth2Entity.oauth2Id
@@ -1084,7 +1084,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api10Dot1OutputVo(
+        return C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo(
             memberData.accountId,
             roleList,
             myOAuth2List,
@@ -1097,13 +1097,13 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api11(
+    fun api11CheckIdDuplicate(
         httpServletResponse: HttpServletResponse,
         id: String
-    ): C10Service1TkV1AuthController.Api11OutputVo? {
+    ): C10Service1TkV1AuthController.Api11CheckIdDuplicateOutputVo? {
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api11OutputVo(
+        return C10Service1TkV1AuthController.Api11CheckIdDuplicateOutputVo(
             db1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(id.trim())
         )
     }
@@ -1111,7 +1111,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api12(httpServletResponse: HttpServletResponse, authorization: String, id: String) {
+    fun api12UpdateId(httpServletResponse: HttpServletResponse, authorization: String, id: String) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -1137,7 +1137,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api12Dot9(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api12Dot9InputVo) {
+    fun api12Dot9JoinTheMembershipForTest(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api12Dot9JoinTheMembershipForTestInputVo) {
         if (inputVo.apiSecret != "aadke234!@") {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
@@ -1289,10 +1289,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api13(
+    fun api13SendEmailVerificationForJoin(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api13InputVo
-    ): C10Service1TkV1AuthController.Api13OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api13SendEmailVerificationForJoinInputVo
+    ): C10Service1TkV1AuthController.Api13SendEmailVerificationForJoinOutputVo? {
         // 입력 데이터 검증
         val memberExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
 
@@ -1319,7 +1319,7 @@ class C10Service1TkV1AuthService(
             arrayOf(inputVo.email),
             null,
             "Springboot Mvc Project Template 회원가입 - 본인 계정 확인용 이메일입니다.",
-            "template_c10_n13/email_verification_email",
+            "for_c10_n13_send_email_verification_for_join/email_verification_email",
             hashMapOf(
                 Pair("verificationCode", verificationCode)
             ),
@@ -1331,7 +1331,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api13OutputVo(
+        return C10Service1TkV1AuthController.Api13SendEmailVerificationForJoinOutputVo(
             memberRegisterEmailVerificationData.uid!!,
             memberRegisterEmailVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
@@ -1340,7 +1340,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api14(
+    fun api14CheckEmailVerificationForJoin(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         email: String,
@@ -1383,7 +1383,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api15(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api15InputVo) {
+    fun api15JoinTheMembershipWithEmail(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api15JoinTheMembershipWithEmailInputVo) {
         val emailVerificationOpt =
             db1RaillyLinkerCompanyService1JoinTheMembershipWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
 
@@ -1535,10 +1535,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api16(
+    fun api16SendPhoneVerificationForJoin(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api16InputVo
-    ): C10Service1TkV1AuthController.Api16OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api16SendPhoneVerificationForJoinInputVo
+    ): C10Service1TkV1AuthController.Api16SendPhoneVerificationForJoinOutputVo? {
         // 입력 데이터 검증
         val memberExists =
             db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
@@ -1584,7 +1584,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api16OutputVo(
+        return C10Service1TkV1AuthController.Api16SendPhoneVerificationForJoinOutputVo(
             memberRegisterPhoneNumberVerificationData.uid!!,
             memberRegisterPhoneNumberVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
@@ -1593,7 +1593,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api17(
+    fun api17CheckPhoneVerificationForJoin(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         phoneNumber: String,
@@ -1636,7 +1636,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api18(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api18InputVo) {
+    fun api18JoinTheMembershipWithPhoneNumber(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api18JoinTheMembershipWithPhoneNumberInputVo) {
         val phoneNumberVerificationOpt =
             db1RaillyLinkerCompanyService1JoinTheMembershipWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
 
@@ -1791,10 +1791,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api19(
+    fun api19CheckOauth2AccessTokenVerificationForJoin(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api19InputVo
-    ): C10Service1TkV1AuthController.Api19OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api19CheckOauth2AccessTokenVerificationForJoinInputVo
+    ): C10Service1TkV1AuthController.Api19CheckOauth2AccessTokenVerificationForJoinOutputVo? {
         val verificationUid: Long
         val verificationCode: String
         val expireWhen: String
@@ -1953,7 +1953,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api19OutputVo(
+        return C10Service1TkV1AuthController.Api19CheckOauth2AccessTokenVerificationForJoinOutputVo(
             verificationUid,
             verificationCode,
             loginId,
@@ -1964,10 +1964,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api19Dot1(
+    fun api19Dot1CheckOauth2IdTokenVerificationForJoin(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api19Dot1InputVo
-    ): C10Service1TkV1AuthController.Api19Dot1OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api19Dot1CheckOauth2IdTokenVerificationForJoinInputVo
+    ): C10Service1TkV1AuthController.Api19Dot1CheckOauth2IdTokenVerificationForJoinOutputVo? {
         val verificationUid: Long
         val verificationCode: String
         val expireWhen: String
@@ -2026,7 +2026,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api19Dot1OutputVo(
+        return C10Service1TkV1AuthController.Api19Dot1CheckOauth2IdTokenVerificationForJoinOutputVo(
             verificationUid,
             verificationCode,
             loginId,
@@ -2037,7 +2037,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api20(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api20InputVo) {
+    fun api20JoinTheMembershipWithOauth2(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api20JoinTheMembershipWithOauth2InputVo) {
         // oauth2 종류 (1 : GOOGLE, 2 : NAVER, 3 : KAKAO)
         val oauth2TypeCode: Int
 
@@ -2217,10 +2217,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api21(
+    fun api21UpdateAccountPassword(
         httpServletResponse: HttpServletResponse,
         authorization: String,
-        inputVo: C10Service1TkV1AuthController.Api21InputVo
+        inputVo: C10Service1TkV1AuthController.Api21UpdateAccountPasswordInputVo
     ) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
@@ -2286,10 +2286,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api22(
+    fun api22SendEmailVerificationForFindPassword(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api22InputVo
-    ): C10Service1TkV1AuthController.Api22OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api22SendEmailVerificationForFindPasswordInputVo
+    ): C10Service1TkV1AuthController.Api22SendEmailVerificationForFindPasswordOutputVo? {
         // 입력 데이터 검증
         val memberExists = db1RaillyLinkerCompanyService1MemberEmailDataRepository.existsByEmailAddress(inputVo.email)
         if (!memberExists) { // 회원 없음
@@ -2315,7 +2315,7 @@ class C10Service1TkV1AuthService(
             arrayOf(inputVo.email),
             null,
             "Springboot Mvc Project Template 비밀번호 찾기 - 본인 계정 확인용 이메일입니다.",
-            "template_c10_n22/find_password_email_verification_email",
+            "for_c10_n22_send_email_verification_for_find_password/find_password_email_verification_email",
             hashMapOf(
                 Pair("verificationCode", verificationCode)
             ),
@@ -2325,7 +2325,7 @@ class C10Service1TkV1AuthService(
             null
         )
 
-        return C10Service1TkV1AuthController.Api22OutputVo(
+        return C10Service1TkV1AuthController.Api22SendEmailVerificationForFindPasswordOutputVo(
             memberFindPasswordEmailVerificationData.uid!!,
             memberFindPasswordEmailVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
@@ -2334,7 +2334,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api23(
+    fun api23CheckEmailVerificationForFindPassword(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         email: String,
@@ -2379,7 +2379,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api24(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api24InputVo) {
+    fun api24FindPasswordWithEmail(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api24FindPasswordWithEmailInputVo) {
         val emailVerificationOpt =
             db1RaillyLinkerCompanyService1FindPasswordWithEmailVerificationDataRepository.findById(inputVo.verificationUid)
 
@@ -2426,7 +2426,7 @@ class C10Service1TkV1AuthService(
                 arrayOf(inputVo.email),
                 null,
                 "Springboot Mvc Project Template 새 비밀번호 발급",
-                "template_c10_n24/find_password_new_password_email",
+                "for_c10_n24_find_password_with_email/find_password_new_password_email",
                 hashMapOf(
                     Pair("newPassword", newPassword)
                 ),
@@ -2469,10 +2469,10 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api25(
+    fun api25SendPhoneVerificationForFindPassword(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api25InputVo
-    ): C10Service1TkV1AuthController.Api25OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api25SendPhoneVerificationForFindPasswordInputVo
+    ): C10Service1TkV1AuthController.Api25SendPhoneVerificationForFindPasswordOutputVo? {
         // 입력 데이터 검증
         val memberExists =
             db1RaillyLinkerCompanyService1MemberPhoneDataRepository.existsByPhoneNumber(inputVo.phoneNumber)
@@ -2515,7 +2515,7 @@ class C10Service1TkV1AuthService(
             throw Exception()
         }
 
-        return C10Service1TkV1AuthController.Api25OutputVo(
+        return C10Service1TkV1AuthController.Api25SendPhoneVerificationForFindPasswordOutputVo(
             memberFindPasswordPhoneNumberVerificationData.uid!!,
             memberFindPasswordPhoneNumberVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
@@ -2524,7 +2524,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api26(
+    fun api26CheckPhoneVerificationForFindPassword(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         phoneNumber: String,
@@ -2569,7 +2569,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api27(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api27InputVo) {
+    fun api27FindPasswordWithPhoneNumber(httpServletResponse: HttpServletResponse, inputVo: C10Service1TkV1AuthController.Api27FindPasswordWithPhoneNumberInputVo) {
         val phoneNumberVerificationOpt =
             db1RaillyLinkerCompanyService1FindPasswordWithPhoneNumberVerificationDataRepository.findById(inputVo.verificationUid)
 
@@ -2663,10 +2663,10 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api29(
+    fun api29GetMyEmailList(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api29OutputVo? {
+    ): C10Service1TkV1AuthController.Api29GetMyEmailListOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -2675,10 +2675,10 @@ class C10Service1TkV1AuthService(
         val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         val emailEntityList = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
-        val emailList = ArrayList<C10Service1TkV1AuthController.Api29OutputVo.EmailInfo>()
+        val emailList = ArrayList<C10Service1TkV1AuthController.Api29GetMyEmailListOutputVo.EmailInfo>()
         for (emailEntity in emailEntityList) {
             emailList.add(
-                C10Service1TkV1AuthController.Api29OutputVo.EmailInfo(
+                C10Service1TkV1AuthController.Api29GetMyEmailListOutputVo.EmailInfo(
                     emailEntity.uid!!,
                     emailEntity.emailAddress,
                     emailEntity.uid == memberData.frontService1MemberEmailData?.uid
@@ -2688,17 +2688,17 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api29OutputVo(
+        return C10Service1TkV1AuthController.Api29GetMyEmailListOutputVo(
             emailList
         )
     }
 
 
     ////
-    fun api30(
+    fun api30GetMyPhoneNumberList(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api30OutputVo? {
+    ): C10Service1TkV1AuthController.Api30GetMyPhoneNumberListOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -2707,10 +2707,10 @@ class C10Service1TkV1AuthService(
         val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         val phoneEntityList = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
-        val phoneNumberList = ArrayList<C10Service1TkV1AuthController.Api30OutputVo.PhoneInfo>()
+        val phoneNumberList = ArrayList<C10Service1TkV1AuthController.Api30GetMyPhoneNumberListOutputVo.PhoneInfo>()
         for (phoneEntity in phoneEntityList) {
             phoneNumberList.add(
-                C10Service1TkV1AuthController.Api30OutputVo.PhoneInfo(
+                C10Service1TkV1AuthController.Api30GetMyPhoneNumberListOutputVo.PhoneInfo(
                     phoneEntity.uid!!,
                     phoneEntity.phoneNumber,
                     phoneEntity.uid == memberData.frontService1MemberPhoneData?.uid
@@ -2720,7 +2720,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api30OutputVo(
+        return C10Service1TkV1AuthController.Api30GetMyPhoneNumberListOutputVo(
             phoneNumberList
         )
     }
@@ -2730,7 +2730,7 @@ class C10Service1TkV1AuthService(
     fun api31(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api31OutputVo? {
+    ): C10Service1TkV1AuthController.Api31GetMyOauth2ListOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -2739,10 +2739,10 @@ class C10Service1TkV1AuthService(
         val memberData = db1RaillyLinkerCompanyService1MemberDataRepository.findById(memberUid).get()
 
         val oAuth2EntityList = db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.findAllByService1MemberData(memberData)
-        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api31OutputVo.OAuth2Info>()
+        val myOAuth2List = ArrayList<C10Service1TkV1AuthController.Api31GetMyOauth2ListOutputVo.OAuth2Info>()
         for (oAuth2Entity in oAuth2EntityList) {
             myOAuth2List.add(
-                C10Service1TkV1AuthController.Api31OutputVo.OAuth2Info(
+                C10Service1TkV1AuthController.Api31GetMyOauth2ListOutputVo.OAuth2Info(
                     oAuth2Entity.uid!!,
                     oAuth2Entity.oauth2TypeCode.toInt(),
                     oAuth2Entity.oauth2Id
@@ -2752,7 +2752,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api31OutputVo(
+        return C10Service1TkV1AuthController.Api31GetMyOauth2ListOutputVo(
             myOAuth2List
         )
     }
@@ -2760,11 +2760,11 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api32(
+    fun api32SendEmailVerificationForAddNewEmail(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api32InputVo,
+        inputVo: C10Service1TkV1AuthController.Api32SendEmailVerificationForAddNewEmailInputVo,
         authorization: String
-    ): C10Service1TkV1AuthController.Api32OutputVo? {
+    ): C10Service1TkV1AuthController.Api32SendEmailVerificationForAddNewEmailOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -2798,7 +2798,7 @@ class C10Service1TkV1AuthService(
             arrayOf(inputVo.email),
             null,
             "Springboot Mvc Project Template 이메일 추가 - 본인 계정 확인용 이메일입니다.",
-            "template_c10_n32/add_email_verification_email",
+            "for_c10_n32_send_email_verification_for_add_new_email/add_email_verification_email",
             hashMapOf(
                 Pair("verificationCode", verificationCode)
             ),
@@ -2810,7 +2810,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api32OutputVo(
+        return C10Service1TkV1AuthController.Api32SendEmailVerificationForAddNewEmailOutputVo(
             memberRegisterEmailVerificationData.uid!!,
             memberRegisterEmailVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
@@ -2819,7 +2819,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api33(
+    fun api33CheckEmailVerificationForAddNewEmail(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         email: String,
@@ -2871,11 +2871,11 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api34(
+    fun api34AddNewEmail(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api34InputVo,
+        inputVo: C10Service1TkV1AuthController.Api34AddNewEmailInputVo,
         authorization: String
-    ): C10Service1TkV1AuthController.Api34OutputVo? {
+    ): C10Service1TkV1AuthController.Api34AddNewEmailOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -2937,7 +2937,7 @@ class C10Service1TkV1AuthService(
 
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
-            return C10Service1TkV1AuthController.Api34OutputVo(
+            return C10Service1TkV1AuthController.Api34AddNewEmailOutputVo(
                 memberEmailData.uid!!
             )
         } else { // 코드 불일치
@@ -2950,7 +2950,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api35(
+    fun api35DeleteMyEmail(
         httpServletResponse: HttpServletResponse,
         emailUid: Long,
         authorization: String
@@ -3017,11 +3017,11 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api36(
+    fun api36SendPhoneVerificationForAddNewPhoneNumber(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api36InputVo,
+        inputVo: C10Service1TkV1AuthController.Api36SendPhoneVerificationForAddNewPhoneNumberInputVo,
         authorization: String
-    ): C10Service1TkV1AuthController.Api36OutputVo? {
+    ): C10Service1TkV1AuthController.Api36SendPhoneVerificationForAddNewPhoneNumberOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3075,7 +3075,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api36OutputVo(
+        return C10Service1TkV1AuthController.Api36SendPhoneVerificationForAddNewPhoneNumberOutputVo(
             memberAddPhoneNumberVerificationData.uid!!,
             memberAddPhoneNumberVerificationData.verificationExpireWhen.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
@@ -3084,7 +3084,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api37(
+    fun api37CheckPhoneVerificationForAddNewPhoneNumber(
         httpServletResponse: HttpServletResponse,
         verificationUid: Long,
         phoneNumber: String,
@@ -3136,11 +3136,11 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api38(
+    fun api38AddNewPhoneNumber(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api38InputVo,
+        inputVo: C10Service1TkV1AuthController.Api38AddNewPhoneNumberInputVo,
         authorization: String
-    ): C10Service1TkV1AuthController.Api38OutputVo? {
+    ): C10Service1TkV1AuthController.Api38AddNewPhoneNumberOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3204,7 +3204,7 @@ class C10Service1TkV1AuthService(
 
             httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
-            return C10Service1TkV1AuthController.Api38OutputVo(
+            return C10Service1TkV1AuthController.Api38AddNewPhoneNumberOutputVo(
                 memberPhoneData.uid!!
             )
         } else { // 코드 불일치
@@ -3217,7 +3217,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api39(
+    fun api39DeleteMyPhoneNumber(
         httpServletResponse: HttpServletResponse,
         phoneUid: Long,
         authorization: String
@@ -3283,9 +3283,9 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api40(
+    fun api40AddNewOauth2WithAccessToken(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api40InputVo,
+        inputVo: C10Service1TkV1AuthController.Api40AddNewOauth2WithAccessTokenInputVo,
         authorization: String
     ) {
         val memberUid = JwtTokenUtil.getMemberUid(
@@ -3392,9 +3392,9 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api40Dot1(
+    fun api40Dot1AddNewOauth2WithIdToken(
         httpServletResponse: HttpServletResponse,
-        inputVo: C10Service1TkV1AuthController.Api40Dot1InputVo,
+        inputVo: C10Service1TkV1AuthController.Api40Dot1AddNewOauth2WithIdTokenInputVo,
         authorization: String
     ) {
         val memberUid = JwtTokenUtil.getMemberUid(
@@ -3459,7 +3459,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api41(
+    fun api41DeleteMyOauth2(
         httpServletResponse: HttpServletResponse,
         oAuth2Uid: Long,
         authorization: String
@@ -3520,7 +3520,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api42(
+    fun api42WithdrawalMembership(
         httpServletResponse: HttpServletResponse,
         authorization: String
     ) {
@@ -3559,10 +3559,10 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api43(
+    fun api43GetMyProfileList(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api43OutputVo? {
+    ): C10Service1TkV1AuthController.Api43GetMyProfileListOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3572,10 +3572,10 @@ class C10Service1TkV1AuthService(
 
         val profileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
 
-        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api43OutputVo.ProfileInfo> = ArrayList()
+        val myProfileList: ArrayList<C10Service1TkV1AuthController.Api43GetMyProfileListOutputVo.ProfileInfo> = ArrayList()
         for (profile in profileData) {
             myProfileList.add(
-                C10Service1TkV1AuthController.Api43OutputVo.ProfileInfo(
+                C10Service1TkV1AuthController.Api43GetMyProfileListOutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl,
                     profile.uid == memberData.frontService1MemberProfileData?.uid
@@ -3585,17 +3585,17 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api43OutputVo(
+        return C10Service1TkV1AuthController.Api43GetMyProfileListOutputVo(
             myProfileList
         )
     }
 
 
     ////
-    fun api44(
+    fun api44GetMyFrontProfile(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api44OutputVo? {
+    ): C10Service1TkV1AuthController.Api44GetMyFrontProfileOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3605,10 +3605,10 @@ class C10Service1TkV1AuthService(
 
         val profileData = db1RaillyLinkerCompanyService1MemberProfileDataRepository.findAllByService1MemberData(memberData)
 
-        var myProfile: C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo? = null
+        var myProfile: C10Service1TkV1AuthController.Api44GetMyFrontProfileOutputVo.ProfileInfo? = null
         for (profile in profileData) {
             if (profile.uid!! == memberData.frontService1MemberProfileData?.uid) {
-                myProfile = C10Service1TkV1AuthController.Api44OutputVo.ProfileInfo(
+                myProfile = C10Service1TkV1AuthController.Api44GetMyFrontProfileOutputVo.ProfileInfo(
                     profile.uid!!,
                     profile.imageFullUrl
                 )
@@ -3618,7 +3618,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api44OutputVo(
+        return C10Service1TkV1AuthController.Api44GetMyFrontProfileOutputVo(
             myProfile
         )
     }
@@ -3626,7 +3626,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api45(httpServletResponse: HttpServletResponse, authorization: String, profileUid: Long?) {
+    fun api45SetMyFrontProfile(httpServletResponse: HttpServletResponse, authorization: String, profileUid: Long?) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3679,7 +3679,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api46(authorization: String, httpServletResponse: HttpServletResponse, profileUid: Long) {
+    fun api46DeleteMyProfile(authorization: String, httpServletResponse: HttpServletResponse, profileUid: Long) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3713,11 +3713,11 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api47(
+    fun api47AddNewProfile(
         httpServletResponse: HttpServletResponse,
         authorization: String,
-        inputVo: C10Service1TkV1AuthController.Api47InputVo
-    ): C10Service1TkV1AuthController.Api47OutputVo? {
+        inputVo: C10Service1TkV1AuthController.Api47AddNewProfileInputVo
+    ): C10Service1TkV1AuthController.Api47AddNewProfileOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3786,7 +3786,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api47OutputVo(
+        return C10Service1TkV1AuthController.Api47AddNewProfileOutputVo(
             profileData.uid!!,
             profileData.imageFullUrl
         )
@@ -3794,7 +3794,7 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api48(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
+    fun api48DownloadProfileFile(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
@@ -3834,10 +3834,10 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api49(
+    fun api49GetMyFrontEmail(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api49OutputVo? {
+    ): C10Service1TkV1AuthController.Api49GetMyFrontEmailOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3847,10 +3847,10 @@ class C10Service1TkV1AuthService(
 
         val emailData = db1RaillyLinkerCompanyService1MemberEmailDataRepository.findAllByService1MemberData(memberData)
 
-        var myEmail: C10Service1TkV1AuthController.Api49OutputVo.EmailInfo? = null
+        var myEmail: C10Service1TkV1AuthController.Api49GetMyFrontEmailOutputVo.EmailInfo? = null
         for (email in emailData) {
             if (email.uid!! == memberData.frontService1MemberEmailData?.uid) {
-                myEmail = C10Service1TkV1AuthController.Api49OutputVo.EmailInfo(
+                myEmail = C10Service1TkV1AuthController.Api49GetMyFrontEmailOutputVo.EmailInfo(
                     email.uid!!,
                     email.emailAddress
                 )
@@ -3860,7 +3860,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api49OutputVo(
+        return C10Service1TkV1AuthController.Api49GetMyFrontEmailOutputVo(
             myEmail
         )
     }
@@ -3868,7 +3868,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api50(httpServletResponse: HttpServletResponse, authorization: String, emailUid: Long?) {
+    fun api50SetMyFrontEmail(httpServletResponse: HttpServletResponse, authorization: String, emailUid: Long?) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3920,10 +3920,10 @@ class C10Service1TkV1AuthService(
 
 
     ////
-    fun api51(
+    fun api51GetMyFrontPhoneNumber(
         httpServletResponse: HttpServletResponse,
         authorization: String
-    ): C10Service1TkV1AuthController.Api51OutputVo? {
+    ): C10Service1TkV1AuthController.Api51GetMyFrontPhoneNumberOutputVo? {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
@@ -3933,10 +3933,10 @@ class C10Service1TkV1AuthService(
 
         val phoneNumberData = db1RaillyLinkerCompanyService1MemberPhoneDataRepository.findAllByService1MemberData(memberData)
 
-        var myPhone: C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo? = null
+        var myPhone: C10Service1TkV1AuthController.Api51GetMyFrontPhoneNumberOutputVo.PhoneNumberInfo? = null
         for (phone in phoneNumberData) {
             if (phone.uid!! == memberData.frontService1MemberPhoneData?.uid) {
-                myPhone = C10Service1TkV1AuthController.Api51OutputVo.PhoneNumberInfo(
+                myPhone = C10Service1TkV1AuthController.Api51GetMyFrontPhoneNumberOutputVo.PhoneNumberInfo(
                     phone.uid!!,
                     phone.phoneNumber
                 )
@@ -3946,7 +3946,7 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C10Service1TkV1AuthController.Api51OutputVo(
+        return C10Service1TkV1AuthController.Api51GetMyFrontPhoneNumberOutputVo(
             myPhone
         )
     }
@@ -3954,7 +3954,7 @@ class C10Service1TkV1AuthService(
 
     ////
     @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
-    fun api52(httpServletResponse: HttpServletResponse, authorization: String, phoneNumberUid: Long?) {
+    fun api52SetMyFrontPhoneNumber(httpServletResponse: HttpServletResponse, authorization: String, phoneNumberUid: Long?) {
         val memberUid = JwtTokenUtil.getMemberUid(
             authorization.split(" ")[1].trim(),
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,

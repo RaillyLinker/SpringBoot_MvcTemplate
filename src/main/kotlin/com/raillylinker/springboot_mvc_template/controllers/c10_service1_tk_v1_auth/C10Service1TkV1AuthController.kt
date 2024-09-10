@@ -60,11 +60,11 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     @ResponseBody
-    fun api1(
+    fun api1NoLoggedInAccessTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ): String? {
-        return service.api1(httpServletResponse)
+        return service.api1NoLoggedInAccessTest(httpServletResponse)
     }
 
 
@@ -101,14 +101,14 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api2(
+    fun api2LoggedInAccessTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
     ): String? {
-        return service.api2(httpServletResponse, authorization!!)
+        return service.api2LoggedInAccessTest(httpServletResponse, authorization!!)
     }
 
 
@@ -150,14 +150,14 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_ADMIN'))")
     @ResponseBody
-    fun api3(
+    fun api3AdminAccessTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
     ): String? {
-        return service.api3(httpServletResponse, authorization!!)
+        return service.api3AdminAccessTest(httpServletResponse, authorization!!)
     }
 
 
@@ -199,14 +199,14 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_DEVELOPER') or hasRole('ROLE_ADMIN'))")
     @ResponseBody
-    fun api4(
+    fun api4DeveloperAccessTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
     ): String? {
-        return service.api4(httpServletResponse, authorization!!)
+        return service.api4DeveloperAccessTest(httpServletResponse, authorization!!)
     }
 
 
@@ -246,18 +246,18 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api4Dot9(
+    fun api4Dot9DoExpireAccessToken(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Path("memberUid") memberUid: Long,
         @ModelAttribute
         @RequestBody
-        inputVo: Api4Dot9InputVo
+        inputVo: Api4Dot9DoExpireAccessTokenInputVo
     ) {
-        service.api4Dot9(httpServletResponse, memberUid, inputVo)
+        service.api4Dot9DoExpireAccessToken(httpServletResponse, memberUid, inputVo)
     }
 
-    data class Api4Dot9InputVo(
+    data class Api4Dot9DoExpireAccessTokenInputVo(
         @Schema(
             description = "API 비밀키",
             required = true,
@@ -303,16 +303,16 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api5(
+    fun api5LoginWithPassword(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api5InputVo
-    ): Api5OutputVo? {
-        return service.api5(httpServletResponse, inputVo)
+        inputVo: Api5LoginWithPasswordInputVo
+    ): Api5Api7Api7Dot1Api9LoginOutputVo? {
+        return service.api5LoginWithPassword(httpServletResponse, inputVo)
     }
 
-    data class Api5InputVo(
+    data class Api5LoginWithPasswordInputVo(
         @Schema(
             description = "로그인 타입 (0 : 아이디, 1 : 이메일, 2 : 전화번호)",
             required = true,
@@ -338,7 +338,7 @@ class C10Service1TkV1AuthController(
         val password: String
     )
 
-    data class Api5OutputVo(
+    data class Api5Api7Api7Dot1Api9LoginOutputVo(
         @Schema(description = "멤버 고유값", required = true, example = "1")
         @JsonProperty("memberUid")
         val memberUid: Long,
@@ -405,7 +405,7 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api6(
+    fun api6GetOAuth2AccessToken(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(
@@ -418,11 +418,11 @@ class C10Service1TkV1AuthController(
         @Parameter(name = "oauth2Code", description = "OAuth2 인증으로 받은 OAuth2 Code", example = "asdfeqwer1234")
         @RequestParam("oauth2Code")
         oauth2Code: String
-    ): Api6OutputVo? {
-        return service.api6(httpServletResponse, oauth2TypeCode, oauth2Code)
+    ): Api6GetOAuth2AccessTokenOutputVo? {
+        return service.api6GetOAuth2AccessToken(httpServletResponse, oauth2TypeCode, oauth2Code)
     }
 
-    data class Api6OutputVo(
+    data class Api6GetOAuth2AccessTokenOutputVo(
         @Schema(
             description = "Code 로 발급받은 SNS AccessToken Type",
             required = true,
@@ -475,16 +475,16 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api7(
+    fun api7LoginWithOAuth2AccessToken(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api7InputVo
-    ): Api5OutputVo? {
-        return service.api7(httpServletResponse, inputVo)
+        inputVo: Api7LoginWithOAuth2AccessTokenInputVo
+    ): Api5Api7Api7Dot1Api9LoginOutputVo? {
+        return service.api7LoginWithOAuth2AccessToken(httpServletResponse, inputVo)
     }
 
-    data class Api7InputVo(
+    data class Api7LoginWithOAuth2AccessTokenInputVo(
         @Schema(
             description = "OAuth2 종류 코드 (1 : GOOGLE, 2 : NAVER, 3 : KAKAO)",
             required = true,
@@ -537,16 +537,16 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api7Dot1(
+    fun api7Dot1LoginWithOAuth2IdToken(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api7Dot1InputVo
-    ): Api5OutputVo? {
-        return service.api7Dot1(httpServletResponse, inputVo)
+        inputVo: Api7Dot1LoginWithOAuth2IdTokenInputVo
+    ): Api5Api7Api7Dot1Api9LoginOutputVo? {
+        return service.api7Dot1LoginWithOAuth2IdToken(httpServletResponse, inputVo)
     }
 
-    data class Api7Dot1InputVo(
+    data class Api7Dot1LoginWithOAuth2IdTokenInputVo(
         @Schema(
             description = "OAuth2 종류 코드 (4 : Apple)",
             required = true,
@@ -597,13 +597,13 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api8(
+    fun api8Logout(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization") authorization: String?
     ) {
-        service.api8(authorization!!, httpServletResponse)
+        service.api8Logout(authorization!!, httpServletResponse)
     }
 
 
@@ -645,19 +645,19 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api9(
+    fun api9ReissueJwt(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?,
         @RequestBody
-        inputVo: Api9InputVo
-    ): Api5OutputVo? {
-        return service.api9(authorization, inputVo, httpServletResponse)
+        inputVo: Api9ReissueJwtInputVo
+    ): Api5Api7Api7Dot1Api9LoginOutputVo? {
+        return service.api9ReissueJwt(authorization, inputVo, httpServletResponse)
     }
 
-    data class Api9InputVo(
+    data class Api9ReissueJwtInputVo(
         @Schema(description = "리프레시 토큰 (토큰 타입을 앞에 붙이기)", required = true, example = "Bearer 1sdfsadfsdafsdafsdafd")
         @JsonProperty("refreshToken")
         val refreshToken: String
@@ -697,14 +697,14 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api10(
+    fun api10DeleteAllJwtOfAMember(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
     ) {
-        service.api10(authorization!!, httpServletResponse)
+        service.api10DeleteAllJwtOfAMember(authorization!!, httpServletResponse)
     }
 
 
@@ -743,20 +743,20 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api10Dot1(
+    fun api10Dot1GetMemberInfo(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Api10Dot1OutputVo? {
-        return service.api10Dot1(
+    ): Api10Dot1GetMemberInfoOutputVo? {
+        return service.api10Dot1GetMemberInfo(
             httpServletResponse,
             authorization!!
         )
     }
 
-    data class Api10Dot1OutputVo(
+    data class Api10Dot1GetMemberInfoOutputVo(
         @Schema(description = "아이디", required = true, example = "hongGilDong")
         @JsonProperty("accountId")
         val accountId: String,
@@ -870,20 +870,20 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api11(
+    fun api11CheckIdDuplicate(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "id", description = "중복 검사 아이디", example = "hongGilDong")
         @RequestParam("id")
         id: String
-    ): Api11OutputVo? {
-        return service.api11(
+    ): Api11CheckIdDuplicateOutputVo? {
+        return service.api11CheckIdDuplicate(
             httpServletResponse,
             id
         )
     }
 
-    data class Api11OutputVo(
+    data class Api11CheckIdDuplicateOutputVo(
         @Schema(description = "중복여부", required = true, example = "false")
         @JsonProperty("duplicated")
         val duplicated: Boolean
@@ -937,7 +937,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api12(
+    fun api12UpdateId(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -947,7 +947,7 @@ class C10Service1TkV1AuthController(
         @RequestParam(value = "id")
         id: String
     ) {
-        service.api12(
+        service.api12UpdateId(
             httpServletResponse,
             authorization!!,
             id
@@ -991,17 +991,17 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api12Dot9(
+    fun api12Dot9JoinTheMembershipForTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api12Dot9InputVo
+        inputVo: Api12Dot9JoinTheMembershipForTestInputVo
     ) {
-        service.api12Dot9(httpServletResponse, inputVo)
+        service.api12Dot9JoinTheMembershipForTest(httpServletResponse, inputVo)
     }
 
-    data class Api12Dot9InputVo(
+    data class Api12Dot9JoinTheMembershipForTestInputVo(
         @Schema(
             description = "API 비밀키",
             required = true,
@@ -1082,22 +1082,22 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api13(
+    fun api13SendEmailVerificationForJoin(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api13InputVo
-    ): Api13OutputVo? {
-        return service.api13(httpServletResponse, inputVo)
+        inputVo: Api13SendEmailVerificationForJoinInputVo
+    ): Api13SendEmailVerificationForJoinOutputVo? {
+        return service.api13SendEmailVerificationForJoin(httpServletResponse, inputVo)
     }
 
-    data class Api13InputVo(
+    data class Api13SendEmailVerificationForJoinInputVo(
         @Schema(description = "수신 이메일", required = true, example = "test@gmail.com")
         @JsonProperty("email")
         val email: String
     )
 
-    data class Api13OutputVo(
+    data class Api13SendEmailVerificationForJoinOutputVo(
         @Schema(
             description = "검증 고유값",
             required = true,
@@ -1150,7 +1150,7 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api14(
+    fun api14CheckEmailVerificationForJoin(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "verificationUid", description = "검증 고유값", example = "1")
@@ -1163,7 +1163,7 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api14(httpServletResponse, verificationUid, email, verificationCode)
+        service.api14CheckEmailVerificationForJoin(httpServletResponse, verificationUid, email, verificationCode)
     }
 
 
@@ -1204,17 +1204,17 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api15(
+    fun api15JoinTheMembershipWithEmail(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api15InputVo
+        inputVo: Api15JoinTheMembershipWithEmailInputVo
     ) {
-        service.api15(httpServletResponse, inputVo)
+        service.api15JoinTheMembershipWithEmail(httpServletResponse, inputVo)
     }
 
-    data class Api15InputVo(
+    data class Api15JoinTheMembershipWithEmailInputVo(
         @Schema(
             description = "아이디 - 이메일",
             required = true,
@@ -1295,22 +1295,22 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api16(
+    fun api16SendPhoneVerificationForJoin(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api16InputVo
-    ): Api16OutputVo? {
-        return service.api16(httpServletResponse, inputVo)
+        inputVo: Api16SendPhoneVerificationForJoinInputVo
+    ): Api16SendPhoneVerificationForJoinOutputVo? {
+        return service.api16SendPhoneVerificationForJoin(httpServletResponse, inputVo)
     }
 
-    data class Api16InputVo(
+    data class Api16SendPhoneVerificationForJoinInputVo(
         @Schema(description = "인증 문자 수신 전화번호(국가번호 + 전화번호)", required = true, example = "82)010-0000-0000")
         @JsonProperty("phoneNumber")
         val phoneNumber: String
     )
 
-    data class Api16OutputVo(
+    data class Api16SendPhoneVerificationForJoinOutputVo(
         @Schema(
             description = "검증 고유값",
             required = true,
@@ -1364,7 +1364,7 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api17(
+    fun api17CheckPhoneVerificationForJoin(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "verificationUid", description = "검증 고유값", example = "1")
@@ -1377,7 +1377,7 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api17(httpServletResponse, verificationUid, phoneNumber, verificationCode)
+        service.api17CheckPhoneVerificationForJoin(httpServletResponse, verificationUid, phoneNumber, verificationCode)
     }
 
 
@@ -1418,17 +1418,17 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api18(
+    fun api18JoinTheMembershipWithPhoneNumber(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api18InputVo
+        inputVo: Api18JoinTheMembershipWithPhoneNumberInputVo
     ) {
-        service.api18(httpServletResponse, inputVo)
+        service.api18JoinTheMembershipWithPhoneNumber(httpServletResponse, inputVo)
     }
 
-    data class Api18InputVo(
+    data class Api18JoinTheMembershipWithPhoneNumberInputVo(
         @Schema(
             description = "아이디 - 전화번호(국가번호 + 전화번호)",
             required = true,
@@ -1509,16 +1509,16 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api19(
+    fun api19CheckOauth2AccessTokenVerificationForJoin(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api19InputVo
-    ): Api19OutputVo? {
-        return service.api19(httpServletResponse, inputVo)
+        inputVo: Api19CheckOauth2AccessTokenVerificationForJoinInputVo
+    ): Api19CheckOauth2AccessTokenVerificationForJoinOutputVo? {
+        return service.api19CheckOauth2AccessTokenVerificationForJoin(httpServletResponse, inputVo)
     }
 
-    data class Api19InputVo(
+    data class Api19CheckOauth2AccessTokenVerificationForJoinInputVo(
         @Schema(
             description = "OAuth2 종류 코드 (1 : GOOGLE, 2 : NAVER, 3 : KAKAO)",
             required = true,
@@ -1536,7 +1536,7 @@ class C10Service1TkV1AuthController(
         val oauth2AccessToken: String
     )
 
-    data class Api19OutputVo(
+    data class Api19CheckOauth2AccessTokenVerificationForJoinOutputVo(
         @Schema(
             description = "검증 고유값",
             required = true,
@@ -1605,16 +1605,16 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api19Dot1(
+    fun api19Dot1CheckOauth2IdTokenVerificationForJoin(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api19Dot1InputVo
-    ): Api19Dot1OutputVo? {
-        return service.api19Dot1(httpServletResponse, inputVo)
+        inputVo: Api19Dot1CheckOauth2IdTokenVerificationForJoinInputVo
+    ): Api19Dot1CheckOauth2IdTokenVerificationForJoinOutputVo? {
+        return service.api19Dot1CheckOauth2IdTokenVerificationForJoin(httpServletResponse, inputVo)
     }
 
-    data class Api19Dot1InputVo(
+    data class Api19Dot1CheckOauth2IdTokenVerificationForJoinInputVo(
         @Schema(
             description = "OAuth2 종류 코드 (4 : Apple)",
             required = true,
@@ -1632,7 +1632,7 @@ class C10Service1TkV1AuthController(
         val oauth2IdToken: String
     )
 
-    data class Api19Dot1OutputVo(
+    data class Api19Dot1CheckOauth2IdTokenVerificationForJoinOutputVo(
         @Schema(
             description = "검증 고유값",
             required = true,
@@ -1704,17 +1704,17 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api20(
+    fun api20JoinTheMembershipWithOauth2(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @ModelAttribute
         @RequestBody
-        inputVo: Api20InputVo
+        inputVo: Api20JoinTheMembershipWithOauth2InputVo
     ) {
-        service.api20(httpServletResponse, inputVo)
+        service.api20JoinTheMembershipWithOauth2(httpServletResponse, inputVo)
     }
 
-    data class Api20InputVo(
+    data class Api20JoinTheMembershipWithOauth2InputVo(
         @Schema(
             description = "검증 고유값",
             required = true,
@@ -1810,19 +1810,19 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api21(
+    fun api21UpdateAccountPassword(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?,
         @RequestBody
-        inputVo: Api21InputVo
+        inputVo: Api21UpdateAccountPasswordInputVo
     ) {
-        service.api21(httpServletResponse, authorization!!, inputVo)
+        service.api21UpdateAccountPassword(httpServletResponse, authorization!!, inputVo)
     }
 
-    data class Api21InputVo(
+    data class Api21UpdateAccountPasswordInputVo(
         @Schema(description = "기존 계정 로그인용 비밀번호(기존 비밀번호가 없다면 null)", required = false, example = "kkdli!!")
         @JsonProperty("oldPassword")
         val oldPassword: String?,
@@ -1867,22 +1867,22 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api22(
+    fun api22SendEmailVerificationForFindPassword(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api22InputVo
-    ): Api22OutputVo? {
-        return service.api22(httpServletResponse, inputVo)
+        inputVo: Api22SendEmailVerificationForFindPasswordInputVo
+    ): Api22SendEmailVerificationForFindPasswordOutputVo? {
+        return service.api22SendEmailVerificationForFindPassword(httpServletResponse, inputVo)
     }
 
-    data class Api22InputVo(
+    data class Api22SendEmailVerificationForFindPasswordInputVo(
         @Schema(description = "수신 이메일", required = true, example = "test@gmail.com")
         @JsonProperty("email")
         val email: String
     )
 
-    data class Api22OutputVo(
+    data class Api22SendEmailVerificationForFindPasswordOutputVo(
         @Schema(
             description = "검증 고유값",
             required = true,
@@ -1935,7 +1935,7 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api23(
+    fun api23CheckEmailVerificationForFindPassword(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "verificationUid", description = "검증 고유값", example = "1")
@@ -1948,7 +1948,7 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api23(httpServletResponse, verificationUid, email, verificationCode)
+        service.api23CheckEmailVerificationForFindPassword(httpServletResponse, verificationUid, email, verificationCode)
     }
 
 
@@ -1989,16 +1989,16 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api24(
+    fun api24FindPasswordWithEmail(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api24InputVo
+        inputVo: Api24FindPasswordWithEmailInputVo
     ) {
-        service.api24(httpServletResponse, inputVo)
+        service.api24FindPasswordWithEmail(httpServletResponse, inputVo)
     }
 
-    data class Api24InputVo(
+    data class Api24FindPasswordWithEmailInputVo(
         @Schema(description = "비밀번호를 찾을 계정 이메일", required = true, example = "test@gmail.com")
         @JsonProperty("email")
         val email: String,
@@ -2055,22 +2055,22 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api25(
+    fun api25SendPhoneVerificationForFindPassword(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api25InputVo
-    ): Api25OutputVo? {
-        return service.api25(httpServletResponse, inputVo)
+        inputVo: Api25SendPhoneVerificationForFindPasswordInputVo
+    ): Api25SendPhoneVerificationForFindPasswordOutputVo? {
+        return service.api25SendPhoneVerificationForFindPassword(httpServletResponse, inputVo)
     }
 
-    data class Api25InputVo(
+    data class Api25SendPhoneVerificationForFindPasswordInputVo(
         @Schema(description = "수신 전화번호", required = true, example = "82)000-0000-0000")
         @JsonProperty("phoneNumber")
         val phoneNumber: String
     )
 
-    data class Api25OutputVo(
+    data class Api25SendPhoneVerificationForFindPasswordOutputVo(
         @Schema(
             description = "검증 고유값",
             required = true,
@@ -2124,7 +2124,7 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api26(
+    fun api26CheckPhoneVerificationForFindPassword(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "verificationUid", description = "검증 고유값", example = "1")
@@ -2137,7 +2137,7 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api26(httpServletResponse, verificationUid, phoneNumber, verificationCode)
+        service.api26CheckPhoneVerificationForFindPassword(httpServletResponse, verificationUid, phoneNumber, verificationCode)
     }
 
 
@@ -2178,16 +2178,16 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api27(
+    fun api27FindPasswordWithPhoneNumber(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api27InputVo
+        inputVo: Api27FindPasswordWithPhoneNumberInputVo
     ) {
-        service.api27(httpServletResponse, inputVo)
+        service.api27FindPasswordWithPhoneNumber(httpServletResponse, inputVo)
     }
 
-    data class Api27InputVo(
+    data class Api27FindPasswordWithPhoneNumberInputVo(
         @Schema(description = "비밀번호를 찾을 계정 전화번호", required = true, example = "82)000-0000-0000")
         @JsonProperty("phoneNumber")
         val phoneNumber: String,
@@ -2243,17 +2243,17 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api29(
+    fun api29GetMyEmailList(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Api29OutputVo? {
-        return service.api29(httpServletResponse, authorization!!)
+    ): Api29GetMyEmailListOutputVo? {
+        return service.api29GetMyEmailList(httpServletResponse, authorization!!)
     }
 
-    data class Api29OutputVo(
+    data class Api29GetMyEmailListOutputVo(
         @Schema(description = "내가 등록한 이메일 리스트", required = true)
         @JsonProperty("emailInfoList")
         val emailInfoList: List<EmailInfo>
@@ -2306,17 +2306,17 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api30(
+    fun api30GetMyPhoneNumberList(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Api30OutputVo? {
-        return service.api30(httpServletResponse, authorization!!)
+    ): Api30GetMyPhoneNumberListOutputVo? {
+        return service.api30GetMyPhoneNumberList(httpServletResponse, authorization!!)
     }
 
-    data class Api30OutputVo(
+    data class Api30GetMyPhoneNumberListOutputVo(
         @Schema(description = "내가 등록한 전화번호 리스트", required = true)
         @JsonProperty("phoneInfoList")
         val phoneInfoList: List<PhoneInfo>
@@ -2369,17 +2369,17 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api31(
+    fun api31GetMyOauth2List(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Api31OutputVo? {
+    ): Api31GetMyOauth2ListOutputVo? {
         return service.api31(httpServletResponse, authorization!!)
     }
 
-    data class Api31OutputVo(
+    data class Api31GetMyOauth2ListOutputVo(
         @Schema(description = "내가 등록한 OAuth2 정보 리스트", required = true)
         @JsonProperty("myOAuth2List")
         val myOAuth2List: List<OAuth2Info>
@@ -2451,25 +2451,25 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api32(
+    fun api32SendEmailVerificationForAddNewEmail(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?,
         @RequestBody
-        inputVo: Api32InputVo
-    ): Api32OutputVo? {
-        return service.api32(httpServletResponse, inputVo, authorization!!)
+        inputVo: Api32SendEmailVerificationForAddNewEmailInputVo
+    ): Api32SendEmailVerificationForAddNewEmailOutputVo? {
+        return service.api32SendEmailVerificationForAddNewEmail(httpServletResponse, inputVo, authorization!!)
     }
 
-    data class Api32InputVo(
+    data class Api32SendEmailVerificationForAddNewEmailInputVo(
         @Schema(description = "수신 이메일", required = true, example = "test@gmail.com")
         @JsonProperty("email")
         val email: String
     )
 
-    data class Api32OutputVo(
+    data class Api32SendEmailVerificationForAddNewEmailOutputVo(
         @Schema(
             description = "검증 고유값",
             required = true,
@@ -2537,7 +2537,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api33(
+    fun api33CheckEmailVerificationForAddNewEmail(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -2553,7 +2553,7 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api33(httpServletResponse, verificationUid, email, verificationCode, authorization!!)
+        service.api33CheckEmailVerificationForAddNewEmail(httpServletResponse, verificationUid, email, verificationCode, authorization!!)
     }
 
 
@@ -2607,19 +2607,19 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api34(
+    fun api34AddNewEmail(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?,
         @RequestBody
-        inputVo: Api34InputVo
-    ): Api34OutputVo? {
-        return service.api34(httpServletResponse, inputVo, authorization!!)
+        inputVo: Api34AddNewEmailInputVo
+    ): Api34AddNewEmailOutputVo? {
+        return service.api34AddNewEmail(httpServletResponse, inputVo, authorization!!)
     }
 
-    data class Api34InputVo(
+    data class Api34AddNewEmailInputVo(
         @Schema(description = "추가할 이메일", required = true, example = "test@gmail.com")
         @JsonProperty("email")
         val email: String,
@@ -2649,7 +2649,7 @@ class C10Service1TkV1AuthController(
         val frontEmail: Boolean
     )
 
-    data class Api34OutputVo(
+    data class Api34AddNewEmailOutputVo(
         @Schema(description = "이메일의 고유값", required = true, example = "1")
         @JsonProperty("emailUid")
         val emailUid: Long
@@ -2704,7 +2704,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api35(
+    fun api35DeleteMyEmail(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -2714,7 +2714,7 @@ class C10Service1TkV1AuthController(
         @PathVariable("emailUid")
         emailUid: Long
     ) {
-        service.api35(httpServletResponse, emailUid, authorization!!)
+        service.api35DeleteMyEmail(httpServletResponse, emailUid, authorization!!)
     }
 
 
@@ -2766,25 +2766,25 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api36(
+    fun api36SendPhoneVerificationForAddNewPhoneNumber(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?,
         @RequestBody
-        inputVo: Api36InputVo
-    ): Api36OutputVo? {
-        return service.api36(httpServletResponse, inputVo, authorization!!)
+        inputVo: Api36SendPhoneVerificationForAddNewPhoneNumberInputVo
+    ): Api36SendPhoneVerificationForAddNewPhoneNumberOutputVo? {
+        return service.api36SendPhoneVerificationForAddNewPhoneNumber(httpServletResponse, inputVo, authorization!!)
     }
 
-    data class Api36InputVo(
+    data class Api36SendPhoneVerificationForAddNewPhoneNumberInputVo(
         @Schema(description = "수신 전화번호", required = true, example = "82)000-0000-0000")
         @JsonProperty("phoneNumber")
         val phoneNumber: String
     )
 
-    data class Api36OutputVo(
+    data class Api36SendPhoneVerificationForAddNewPhoneNumberOutputVo(
         @Schema(
             description = "검증 고유값",
             required = true,
@@ -2852,7 +2852,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api37(
+    fun api37CheckPhoneVerificationForAddNewPhoneNumber(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -2868,7 +2868,7 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api37(httpServletResponse, verificationUid, phoneNumber, verificationCode, authorization!!)
+        service.api37CheckPhoneVerificationForAddNewPhoneNumber(httpServletResponse, verificationUid, phoneNumber, verificationCode, authorization!!)
     }
 
     ////
@@ -2921,19 +2921,19 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api38(
+    fun api38AddNewPhoneNumber(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?,
         @RequestBody
-        inputVo: Api38InputVo
-    ): Api38OutputVo? {
-        return service.api38(httpServletResponse, inputVo, authorization!!)
+        inputVo: Api38AddNewPhoneNumberInputVo
+    ): Api38AddNewPhoneNumberOutputVo? {
+        return service.api38AddNewPhoneNumber(httpServletResponse, inputVo, authorization!!)
     }
 
-    data class Api38InputVo(
+    data class Api38AddNewPhoneNumberInputVo(
         @Schema(description = "추가할 전화번호", required = true, example = "82)000-0000-0000")
         @JsonProperty("phoneNumber")
         val phoneNumber: String,
@@ -2963,7 +2963,7 @@ class C10Service1TkV1AuthController(
         val frontPhoneNumber: Boolean
     )
 
-    data class Api38OutputVo(
+    data class Api38AddNewPhoneNumberOutputVo(
         @Schema(description = "전화번호의 고유값", required = true, example = "1")
         @JsonProperty("phoneUid")
         val phoneUid: Long
@@ -3018,7 +3018,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api39(
+    fun api39DeleteMyPhoneNumber(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -3028,7 +3028,7 @@ class C10Service1TkV1AuthController(
         @PathVariable("phoneUid")
         phoneUid: Long
     ) {
-        service.api39(httpServletResponse, phoneUid, authorization!!)
+        service.api39DeleteMyPhoneNumber(httpServletResponse, phoneUid, authorization!!)
     }
 
 
@@ -3080,19 +3080,19 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api40(
+    fun api40AddNewOauth2WithAccessToken(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?,
         @RequestBody
-        inputVo: Api40InputVo
+        inputVo: Api40AddNewOauth2WithAccessTokenInputVo
     ) {
-        service.api40(httpServletResponse, inputVo, authorization!!)
+        service.api40AddNewOauth2WithAccessToken(httpServletResponse, inputVo, authorization!!)
     }
 
-    data class Api40InputVo(
+    data class Api40AddNewOauth2WithAccessTokenInputVo(
         @Schema(
             description = "OAuth2 종류 코드 (1 : GOOGLE, 2 : NAVER, 3 : KAKAO)",
             required = true,
@@ -3159,19 +3159,19 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api40Dot1(
+    fun api40Dot1AddNewOauth2WithIdToken(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?,
         @RequestBody
-        inputVo: Api40Dot1InputVo
+        inputVo: Api40Dot1AddNewOauth2WithIdTokenInputVo
     ) {
-        service.api40Dot1(httpServletResponse, inputVo, authorization!!)
+        service.api40Dot1AddNewOauth2WithIdToken(httpServletResponse, inputVo, authorization!!)
     }
 
-    data class Api40Dot1InputVo(
+    data class Api40Dot1AddNewOauth2WithIdTokenInputVo(
         @Schema(
             description = "OAuth2 종류 코드 (4 : Apple)",
             required = true,
@@ -3238,7 +3238,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api41(
+    fun api41DeleteMyOauth2(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -3248,7 +3248,7 @@ class C10Service1TkV1AuthController(
         @PathVariable("oAuth2Uid")
         oAuth2Uid: Long
     ) {
-        service.api41(httpServletResponse, oAuth2Uid, authorization!!)
+        service.api41DeleteMyOauth2(httpServletResponse, oAuth2Uid, authorization!!)
     }
 
 
@@ -3286,14 +3286,14 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api42(
+    fun api42WithdrawalMembership(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
     ) {
-        service.api42(httpServletResponse, authorization!!)
+        service.api42WithdrawalMembership(httpServletResponse, authorization!!)
     }
 
 
@@ -3330,17 +3330,17 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api43(
+    fun api43GetMyProfileList(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Api43OutputVo? {
-        return service.api43(httpServletResponse, authorization!!)
+    ): Api43GetMyProfileListOutputVo? {
+        return service.api43GetMyProfileList(httpServletResponse, authorization!!)
     }
 
-    data class Api43OutputVo(
+    data class Api43GetMyProfileListOutputVo(
         @Schema(description = "내가 등록한 Profile 이미지 정보 리스트", required = true)
         @JsonProperty("myProfileList")
         val myProfileList: List<ProfileInfo>
@@ -3393,17 +3393,17 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api44(
+    fun api44GetMyFrontProfile(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Api44OutputVo? {
-        return service.api44(httpServletResponse, authorization!!)
+    ): Api44GetMyFrontProfileOutputVo? {
+        return service.api44GetMyFrontProfile(httpServletResponse, authorization!!)
     }
 
-    data class Api44OutputVo(
+    data class Api44GetMyFrontProfileOutputVo(
         @Schema(description = "내 대표 Profile 이미지 정보", required = true)
         @JsonProperty("myFrontProfileInfo")
         val myFrontProfileInfo: ProfileInfo?
@@ -3467,7 +3467,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api45(
+    fun api45SetMyFrontProfile(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -3477,7 +3477,7 @@ class C10Service1TkV1AuthController(
         @RequestParam(value = "profileUid")
         profileUid: Long?
     ) {
-        service.api45(
+        service.api45SetMyFrontProfile(
             httpServletResponse,
             authorization!!,
             profileUid
@@ -3488,7 +3488,8 @@ class C10Service1TkV1AuthController(
     ////
     @Operation(
         summary = "N46 : 내 프로필 삭제 <>",
-        description = "내가 등록한 프로필들 중 하나를 삭제합니다.\n\n"
+        description = "내가 등록한 프로필들 중 하나를 삭제합니다.\n\n" +
+                "대표 프로필을 삭제했다면, 대표 프로필 설정이 Null 로 변경됩니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -3532,7 +3533,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api46(
+    fun api46DeleteMyProfile(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -3542,7 +3543,7 @@ class C10Service1TkV1AuthController(
         @PathVariable("profileUid")
         profileUid: Long
     ) {
-        service.api46(authorization!!, httpServletResponse, profileUid)
+        service.api46DeleteMyProfile(authorization!!, httpServletResponse, profileUid)
     }
 
 
@@ -3579,7 +3580,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api47(
+    fun api47AddNewProfile(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -3587,12 +3588,12 @@ class C10Service1TkV1AuthController(
         authorization: String?,
         @ModelAttribute
         @RequestBody
-        inputVo: Api47InputVo
-    ): Api47OutputVo? {
-        return service.api47(httpServletResponse, authorization!!, inputVo)
+        inputVo: Api47AddNewProfileInputVo
+    ): Api47AddNewProfileOutputVo? {
+        return service.api47AddNewProfile(httpServletResponse, authorization!!, inputVo)
     }
 
-    data class Api47InputVo(
+    data class Api47AddNewProfileInputVo(
         @Schema(description = "프로필 이미지 파일", required = true)
         @JsonProperty("profileImageFile")
         val profileImageFile: MultipartFile,
@@ -3601,7 +3602,7 @@ class C10Service1TkV1AuthController(
         val frontProfile: Boolean
     )
 
-    data class Api47OutputVo(
+    data class Api47AddNewProfileOutputVo(
         @Schema(description = "프로필의 고유값", required = true, example = "1")
         @JsonProperty("profileUid")
         val profileUid: Long,
@@ -3645,14 +3646,14 @@ class C10Service1TkV1AuthController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     @ResponseBody
-    fun api48(
+    fun api48DownloadProfileFile(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "fileName", description = "by_product_files/member/profile 폴더 안의 파일명", example = "test.jpg")
         @PathVariable("fileName")
         fileName: String
     ): ResponseEntity<Resource>? {
-        return service.api48(httpServletResponse, fileName)
+        return service.api48DownloadProfileFile(httpServletResponse, fileName)
     }
 
 
@@ -3689,17 +3690,17 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api49(
+    fun api49GetMyFrontEmail(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Api49OutputVo? {
-        return service.api49(httpServletResponse, authorization!!)
+    ): Api49GetMyFrontEmailOutputVo? {
+        return service.api49GetMyFrontEmail(httpServletResponse, authorization!!)
     }
 
-    data class Api49OutputVo(
+    data class Api49GetMyFrontEmailOutputVo(
         @Schema(description = "내 대표 이메일 정보", required = true)
         @JsonProperty("myFrontEmailInfo")
         val myFrontEmailInfo: EmailInfo?
@@ -3763,7 +3764,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api50(
+    fun api50SetMyFrontEmail(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -3773,7 +3774,7 @@ class C10Service1TkV1AuthController(
         @RequestParam(value = "emailUid")
         emailUid: Long?
     ) {
-        service.api50(
+        service.api50SetMyFrontEmail(
             httpServletResponse,
             authorization!!,
             emailUid
@@ -3814,17 +3815,17 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api51(
+    fun api51GetMyFrontPhoneNumber(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
         @RequestHeader("Authorization")
         authorization: String?
-    ): Api51OutputVo? {
-        return service.api51(httpServletResponse, authorization!!)
+    ): Api51GetMyFrontPhoneNumberOutputVo? {
+        return service.api51GetMyFrontPhoneNumber(httpServletResponse, authorization!!)
     }
 
-    data class Api51OutputVo(
+    data class Api51GetMyFrontPhoneNumberOutputVo(
         @Schema(description = "내 대표 전화번호 정보", required = true)
         @JsonProperty("myFrontPhoneNumberInfo")
         val myFrontPhoneNumberInfo: PhoneNumberInfo?
@@ -3888,7 +3889,7 @@ class C10Service1TkV1AuthController(
     )
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
-    fun api52(
+    fun api52SetMyFrontPhoneNumber(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(hidden = true)
@@ -3898,7 +3899,7 @@ class C10Service1TkV1AuthController(
         @RequestParam(value = "phoneNumberUid")
         phoneNumberUid: Long?
     ) {
-        service.api52(
+        service.api52SetMyFrontPhoneNumber(
             httpServletResponse,
             authorization!!,
             phoneNumberUid
