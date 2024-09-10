@@ -29,8 +29,8 @@ import org.springframework.web.servlet.ModelAndView
 @Tag(name = "/main/sc/v1 APIs", description = "SC1 : main 웹 페이지에 대한 API 컨트롤러")
 @Controller
 @RequestMapping("/main/sc/v1")
-class SC1Controller(
-    private val service: SC1Service
+class SC1MainScV1Controller(
+    private val service: SC1MainScV1Service
 ) {
     // <멤버 변수 공간>
 

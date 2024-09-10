@@ -4,8 +4,8 @@ import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
 import com.raillylinker.springboot_mvc_template.data_sources.RuntimeConfig
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db0ForDevelopersConfig
-import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api2ViewModel.MemberInfo
-import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1Service.Api3ViewModel.LockInfo
+import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1MainScV1Service.Api2ViewModel.MemberInfo
+import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1MainScV1Service.Api3ViewModel.LockInfo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberData_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberData
@@ -56,7 +56,7 @@ import java.util.stream.Collectors
     위와 같이 세션 객체에 만료시간(초) 를 설정하면 됩니다.
 */
 @Service
-class SC1Service(
+class SC1MainScV1Service(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
@@ -430,10 +430,10 @@ class SC1Service(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
-        type: SC1Controller.Api8ErrorTypeEnum
+        type: SC1MainScV1Controller.Api8ErrorTypeEnum
     ): ModelAndView? {
         val errorMsg = when (type) {
-            SC1Controller.Api8ErrorTypeEnum.ACCESS_DENIED -> {
+            SC1MainScV1Controller.Api8ErrorTypeEnum.ACCESS_DENIED -> {
                 "권한이 없습니다."
             }
         }
