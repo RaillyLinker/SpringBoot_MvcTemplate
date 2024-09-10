@@ -8,17 +8,15 @@
     <link th:href="@{/for_global/font.css}"
           href="../../static/for_global/font.css"
           rel="stylesheet"/>
-    <link th:href="@{/resource_sc1_n11/change_id.css}"
-          href="../../static/resource_sc1_n11/change_id.css"
+    <link th:href="@{/for_sc1_n17_membership_good_bye_page/good_bye.css}"
+          href="../../static/for_sc1_n17_membership_good_bye_page/good_bye.css"
           rel="stylesheet"/>
 
     <script th:inline="javascript">
         // Thymeleaf 변수 할당하기
-        const complete = /*[[${viewModel.complete}]]*/ false;
-        const idExists = /*[[${viewModel.idExists}]]*/ false;
     </script>
-    <script th:src="@{/resource_sc1_n11/change_id.js}"
-            src="../../static/resource_sc1_n11/change_id.js">
+    <script th:src="@{/for_sc1_n17_membership_good_bye_page/good_bye.js}"
+            src="../../static/for_sc1_n17_membership_good_bye_page/good_bye.js">
     </script>
 
     <title>
@@ -35,21 +33,16 @@
          onclick="location.href='/'"
          alt="타이틀 아이콘 이미지"/>
     <h1 id="title_txt">
-        아이디 변경
+        회원 탈퇴 완료
     </h1>
 </div>
 
 <hr/>
 
-<form th:action="@{/main/sc/v1/change-id-process}" method="post" onsubmit="return validateForm()">
-    <div>
-        <label for="accountId">아이디:</label>
-        <input type="text" id="accountId" name="accountId" th:value="${viewModel.accountId}"/>
-    </div>
-    <div>
-        <button id="idChangeButton" type="submit">아이디 변경</button>
-    </div>
-</form>
+<div class="container">
+    <div>[[${viewModel.accountId}]] 님의 회원탈퇴가 완료되었습니다.</div>
+    <button class="home-button" onclick="location.href='/'">홈으로</button>
+</div>
 
 </body>
 </html>

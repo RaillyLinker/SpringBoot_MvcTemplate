@@ -1,8 +1,5 @@
 [TODO]
 - 소켓 다시보기
-- 소켓으로 그림 그리기
-- 영상 통신
-- 영상 통신(필터)
-- sc 더 잘 할 수 없는지
-- Controller, Service 함수명 변경, resources static, templates 폴더명 변경
+- 소켓으로 그림 그리기 (클라이언트와 같이 개발)
+- 영상 통신 (영상 필터 기능까지, 클라이언트와 같이 개발)
 - coding_conventions.txt 개선

@@ -8,8 +8,8 @@
     <link th:href="@{/for_global/font.css}"
           href="../../static/for_global/font.css"
           rel="stylesheet"/>
-    <link th:href="@{/resource_sc1_n18/member_password_change.css}"
-          href="../../static/resource_sc1_n18/member_password_change.css"
+    <link th:href="@{/for_sc1_n22_force_withdrawal_membership_page/member_withdrawal.css}"
+          href="../../static/for_sc1_n22_force_withdrawal_membership_page/member_withdrawal.css"
           rel="stylesheet"/>
 
     <script th:inline="javascript">
@@ -17,8 +17,8 @@
         const complete = /*[[${viewModel.complete}]]*/ false;
         const memberNotFound = /*[[${viewModel.memberNotFound}]]*/ false;
     </script>
-    <script th:src="@{/resource_sc1_n18/member_password_change.js}"
-            src="../../static/resource_sc1_n18/member_password_change.js">
+    <script th:src="@{/for_sc1_n22_force_withdrawal_membership_page/member_withdrawal.js}"
+            src="../../static/for_sc1_n22_force_withdrawal_membership_page/member_withdrawal.js">
     </script>
 
     <title>
@@ -35,31 +35,19 @@
          onclick="location.href='/'"
          alt="타이틀 아이콘 이미지"/>
     <h1 id="title_txt">
-        회원 비밀번호 변경
+        회원 탈퇴 처리
     </h1>
 </div>
 
 <hr/>
 
-<form th:action="@{/main/sc/v1/member-password-change-process}" method="post" onsubmit="return validateForm()">
+<form th:action="@{/main/sc/v1/member-withdrawal-process}" method="post" onsubmit="return validateForm()">
     <div>
         <label for="memberUid">회원 고유번호:</label>
         <input type="number" min="1" id="memberUid" name="memberUid"/>
     </div>
     <div>
-        <label for="newPassword">새로운 비밀번호:</label>
-        <input type="password" id="newPassword" name="newPassword"/>
-        <button type="button" id="toggleNewPassword" onclick="togglePasswordVisibility('newPassword')">Show</button>
-    </div>
-    <div>
-        <label for="confirmNewPassword">새로운 비밀번호 확인:</label>
-        <input type="password" id="confirmNewPassword" name="confirmNewPassword"/>
-        <button type="button" id="toggleConfirmNewPassword" onclick="togglePasswordVisibility('confirmNewPassword')">
-            Show
-        </button>
-    </div>
-    <div>
-        <button id="changePasswordButton" type="submit">비밀번호 변경</button>
+        <button id="changePasswordButton" type="submit">회원 세션 만료 처리</button>
     </div>
 </form>
 

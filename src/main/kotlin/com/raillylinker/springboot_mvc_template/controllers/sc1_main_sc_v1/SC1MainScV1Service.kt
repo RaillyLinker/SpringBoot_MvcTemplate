@@ -74,7 +74,7 @@ class SC1MainScV1Service(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1(
+    fun api1HomePage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession
@@ -86,7 +86,7 @@ class SC1MainScV1Service(
         val roles: List<String> = authentication.authorities.map(GrantedAuthority::getAuthority)
 
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n1/home_page"
+        mv.viewName = "for_sc1_n1_home_page/home_page"
 
         mv.addObject(
             "viewModel",
@@ -107,7 +107,7 @@ class SC1MainScV1Service(
     )
 
     ////
-    fun api2(
+    fun api2MemberInfoPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession
@@ -119,7 +119,7 @@ class SC1MainScV1Service(
         val roles: List<String> = authentication.authorities.map(GrantedAuthority::getAuthority)
 
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n2/member_info"
+        mv.viewName = "for_sc1_n2_member_info_page/member_info"
 
         val memberUid = username.toLong()
         val memberEntity = db0RaillyLinkerCompanyCompanyMemberDataRepository.findById(memberUid).get()
@@ -157,7 +157,7 @@ class SC1MainScV1Service(
     }
 
     ////
-    fun api3(
+    fun api3LoginPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -172,7 +172,7 @@ class SC1MainScV1Service(
         val username: String = authentication.name
 
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n3/login"
+        mv.viewName = "for_sc1_n3_login_page/login"
 
         val lockInfo: LockInfo?
         if (lock == null) {
@@ -249,7 +249,7 @@ class SC1MainScV1Service(
     }
 
     ////
-    fun api4(
+    fun api4JoinPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -261,7 +261,7 @@ class SC1MainScV1Service(
         val username: String = authentication.name
 
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n4/join"
+        mv.viewName = "for_sc1_n4_join_page/join"
 
         mv.addObject(
             "viewModel",
@@ -283,7 +283,7 @@ class SC1MainScV1Service(
 
     ////
     @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api5(
+    fun api5JoinProcess(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -312,7 +312,7 @@ class SC1MainScV1Service(
     }
 
     ////
-    fun api6(
+    fun api6ProjectLogListPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -359,7 +359,7 @@ class SC1MainScV1Service(
         }
 
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n6/project_logs"
+        mv.viewName = "for_sc1_n6_project_log_list_page/project_logs"
 
         mv.addObject(
             "viewModel",
@@ -387,7 +387,7 @@ class SC1MainScV1Service(
 
 
     ////
-    fun api7(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
+    fun api7DownloadProjectLogFile(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
@@ -426,20 +426,20 @@ class SC1MainScV1Service(
     }
 
     ////
-    fun api8(
+    fun api8ErrorPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
-        type: SC1MainScV1Controller.Api8ErrorTypeEnum
+        type: SC1MainScV1Controller.Api8ErrorPageErrorTypeEnum
     ): ModelAndView? {
         val errorMsg = when (type) {
-            SC1MainScV1Controller.Api8ErrorTypeEnum.ACCESS_DENIED -> {
+            SC1MainScV1Controller.Api8ErrorPageErrorTypeEnum.ACCESS_DENIED -> {
                 "권한이 없습니다."
             }
         }
 
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n8/error_page"
+        mv.viewName = "for_sc1_n8_error_page/error_page"
 
         mv.addObject(
             "viewModel",
@@ -456,7 +456,7 @@ class SC1MainScV1Service(
     )
 
     ////
-    fun api9(
+    fun api9RuntimeConfigEditorPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -473,7 +473,7 @@ class SC1MainScV1Service(
         }
 
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n9/runtime_config_editor"
+        mv.viewName = "for_sc1_n9_runtime_config_editor_page/runtime_config_editor"
 
         mv.addObject(
             "viewModel",
@@ -495,7 +495,7 @@ class SC1MainScV1Service(
 
     ////
     @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api10(
+    fun api10UpdateRuntimeConfig(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -517,7 +517,7 @@ class SC1MainScV1Service(
     }
 
     ////
-    fun api11(
+    fun api11ChangeIdPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -530,7 +530,7 @@ class SC1MainScV1Service(
         val memberEntity = db0RaillyLinkerCompanyCompanyMemberDataRepository.findById(userUid).get()
 
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n11/change_id"
+        mv.viewName = "for_sc1_n11_change_id_page/change_id"
 
         mv.addObject(
             "viewModel",
@@ -552,7 +552,7 @@ class SC1MainScV1Service(
 
     ////
     @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api12(
+    fun api12ChangeIdProcess(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -576,14 +576,14 @@ class SC1MainScV1Service(
     }
 
     ////
-    fun api13(
+    fun api13ChangePasswordPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         passwordNotMatch: String?
     ): ModelAndView? {
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n13/change_password"
+        mv.viewName = "for_sc1_n13_change_password_page/change_password"
 
         mv.addObject(
             "viewModel",
@@ -601,7 +601,7 @@ class SC1MainScV1Service(
 
     ////
     @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api14(
+    fun api14ChangePasswordProcess(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -633,7 +633,7 @@ class SC1MainScV1Service(
     }
 
     ////
-    fun api15(
+    fun api15WithdrawalMembershipPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession
@@ -644,7 +644,7 @@ class SC1MainScV1Service(
         val memberEntity = db0RaillyLinkerCompanyCompanyMemberDataRepository.findById(userUid).get()
 
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n15/withdrawal"
+        mv.viewName = "for_sc1_n15_withdrawal_membership_page/withdrawal"
 
         mv.addObject(
             "viewModel",
@@ -662,7 +662,7 @@ class SC1MainScV1Service(
 
     ////
     @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api16(
+    fun api16WithdrawalMembershipProcess(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession
@@ -683,14 +683,14 @@ class SC1MainScV1Service(
     }
 
     ////
-    fun api17(
+    fun api17MembershipGoodbyePage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
         accountId: String
     ): ModelAndView? {
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n17/good_bye"
+        mv.viewName = "for_sc1_n17_membership_good_bye_page/good_bye"
 
         mv.addObject(
             "viewModel",
@@ -707,7 +707,7 @@ class SC1MainScV1Service(
     )
 
     ////
-    fun api18(
+    fun api18ChangePasswordPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -715,7 +715,7 @@ class SC1MainScV1Service(
         memberNotFound: String?
     ): ModelAndView? {
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n18/member_password_change"
+        mv.viewName = "for_sc1_n18_change_password_page/member_password_change"
 
         mv.addObject(
             "viewModel",
@@ -735,7 +735,7 @@ class SC1MainScV1Service(
 
     ////
     @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api19(
+    fun api19ChangePasswordProcess(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -772,7 +772,7 @@ class SC1MainScV1Service(
     }
 
     ////
-    fun api20(
+    fun api20ExpireMemberSessionPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -780,7 +780,7 @@ class SC1MainScV1Service(
         memberNotFound: String?
     ): ModelAndView? {
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n20/member_session_expire"
+        mv.viewName = "for_sc1_n20_expire_member_session_page/member_session_expire"
 
         mv.addObject(
             "viewModel",
@@ -799,7 +799,7 @@ class SC1MainScV1Service(
     )
 
     ////
-    fun api21(
+    fun api21ExpireMemberSessionProcess(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -831,8 +831,7 @@ class SC1MainScV1Service(
     }
 
     ////
-    // todo
-    fun api22(
+    fun api22ForceWithdrawalMembershipPage(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,
@@ -840,7 +839,7 @@ class SC1MainScV1Service(
         memberNotFound: String?
     ): ModelAndView? {
         val mv = ModelAndView()
-        mv.viewName = "template_sc1_n22/member_withdrawal"
+        mv.viewName = "for_sc1_n22_force_withdrawal_membership_page/member_withdrawal"
 
         mv.addObject(
             "viewModel",
@@ -859,7 +858,7 @@ class SC1MainScV1Service(
     )
 
     ////
-    fun api23(
+    fun api23ForceWithdrawalMembershipProcess(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
         session: HttpSession,

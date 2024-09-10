@@ -54,7 +54,7 @@ class SC1MainScV1Controller(
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
-    fun api1(
+    fun api1HomePage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -62,7 +62,7 @@ class SC1MainScV1Controller(
         @Parameter(hidden = true)
         session: HttpSession
     ): ModelAndView? {
-        return service.api1(httpServletRequest, httpServletResponse, session)
+        return service.api1HomePage(httpServletRequest, httpServletResponse, session)
     }
 
 
@@ -85,7 +85,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api2(
+    fun api2MemberInfoPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -93,7 +93,7 @@ class SC1MainScV1Controller(
         @Parameter(hidden = true)
         session: HttpSession
     ): ModelAndView? {
-        return service.api2(httpServletRequest, httpServletResponse, session)
+        return service.api2MemberInfoPage(httpServletRequest, httpServletResponse, session)
     }
 
 
@@ -115,7 +115,7 @@ class SC1MainScV1Controller(
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
-    fun api3(
+    fun api3LoginPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -158,7 +158,7 @@ class SC1MainScV1Controller(
         @RequestParam("lock")
         lock: Long?
     ): ModelAndView? {
-        return service.api3(
+        return service.api3LoginPage(
             httpServletRequest,
             httpServletResponse,
             session,
@@ -189,7 +189,7 @@ class SC1MainScV1Controller(
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
-    fun api4(
+    fun api4JoinPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -211,7 +211,7 @@ class SC1MainScV1Controller(
         @RequestParam("idExists")
         idExists: String?
     ): ModelAndView? {
-        return service.api4(httpServletRequest, httpServletResponse, session, complete, idExists)
+        return service.api4JoinPage(httpServletRequest, httpServletResponse, session, complete, idExists)
     }
 
 
@@ -233,7 +233,7 @@ class SC1MainScV1Controller(
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
-    fun api5(
+    fun api5JoinProcess(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -255,7 +255,7 @@ class SC1MainScV1Controller(
         @RequestParam("password")
         password: String
     ): ModelAndView? {
-        return service.api5(httpServletRequest, httpServletResponse, session, accountId, password)
+        return service.api5JoinProcess(httpServletRequest, httpServletResponse, session, accountId, password)
     }
 
 
@@ -278,7 +278,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-    fun api6(
+    fun api6ProjectLogListPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -293,7 +293,7 @@ class SC1MainScV1Controller(
         @RequestParam("currentPath")
         currentPath: String?
     ): ModelAndView? {
-        return service.api6(httpServletRequest, httpServletResponse, session, currentPath)
+        return service.api6ProjectLogListPage(httpServletRequest, httpServletResponse, session, currentPath)
     }
 
 
@@ -331,14 +331,14 @@ class SC1MainScV1Controller(
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
     @ResponseBody
-    fun api7(
+    fun api7DownloadProjectLogFile(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "filePath", description = "파일 경로", example = "currentLog.log")
         @RequestParam("filePath")
         filePath: String
     ): ResponseEntity<Resource>? {
-        return service.api7(httpServletResponse, filePath)
+        return service.api7DownloadProjectLogFile(httpServletResponse, filePath)
     }
 
 
@@ -360,7 +360,7 @@ class SC1MainScV1Controller(
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
-    fun api8(
+    fun api8ErrorPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -369,12 +369,12 @@ class SC1MainScV1Controller(
         session: HttpSession,
         @Parameter(name = "type", description = "에러 타입", example = "ACCESS_DENIED")
         @RequestParam("type")
-        type: Api8ErrorTypeEnum
+        type: Api8ErrorPageErrorTypeEnum
     ): ModelAndView? {
-        return service.api8(httpServletRequest, httpServletResponse, session, type)
+        return service.api8ErrorPage(httpServletRequest, httpServletResponse, session, type)
     }
 
-    enum class Api8ErrorTypeEnum {
+    enum class Api8ErrorPageErrorTypeEnum {
         ACCESS_DENIED
     }
 
@@ -398,7 +398,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-    fun api9(
+    fun api9RuntimeConfigEditorPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -420,7 +420,7 @@ class SC1MainScV1Controller(
         @RequestParam("complete")
         complete: String?
     ): ModelAndView? {
-        return service.api9(httpServletRequest, httpServletResponse, session, fail, complete)
+        return service.api9RuntimeConfigEditorPage(httpServletRequest, httpServletResponse, session, fail, complete)
     }
 
 
@@ -447,7 +447,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-    fun api10(
+    fun api10UpdateRuntimeConfig(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -462,7 +462,7 @@ class SC1MainScV1Controller(
         @RequestParam("configJsonString")
         configJsonString: String
     ): ModelAndView? {
-        return service.api10(httpServletRequest, httpServletResponse, session, configJsonString)
+        return service.api10UpdateRuntimeConfig(httpServletRequest, httpServletResponse, session, configJsonString)
     }
 
     ////
@@ -484,7 +484,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api11(
+    fun api11ChangeIdPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -506,7 +506,7 @@ class SC1MainScV1Controller(
         @RequestParam("idExists")
         idExists: String?
     ): ModelAndView? {
-        return service.api11(httpServletRequest, httpServletResponse, session, complete, idExists)
+        return service.api11ChangeIdPage(httpServletRequest, httpServletResponse, session, complete, idExists)
     }
 
 
@@ -529,7 +529,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api12(
+    fun api12ChangeIdProcess(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -544,7 +544,7 @@ class SC1MainScV1Controller(
         @RequestParam("accountId")
         accountId: String
     ): ModelAndView? {
-        return service.api12(httpServletRequest, httpServletResponse, session, accountId)
+        return service.api12ChangeIdProcess(httpServletRequest, httpServletResponse, session, accountId)
     }
 
     ////
@@ -566,7 +566,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api13(
+    fun api13ChangePasswordPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -581,7 +581,7 @@ class SC1MainScV1Controller(
         @RequestParam("passwordNotMatch")
         passwordNotMatch: String?
     ): ModelAndView? {
-        return service.api13(httpServletRequest, httpServletResponse, session, passwordNotMatch)
+        return service.api13ChangePasswordPage(httpServletRequest, httpServletResponse, session, passwordNotMatch)
     }
 
 
@@ -604,7 +604,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api14(
+    fun api14ChangePasswordProcess(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -626,7 +626,7 @@ class SC1MainScV1Controller(
         @RequestParam("newPassword")
         newPassword: String
     ): ModelAndView? {
-        return service.api14(httpServletRequest, httpServletResponse, session, oldPassword, newPassword)
+        return service.api14ChangePasswordProcess(httpServletRequest, httpServletResponse, session, oldPassword, newPassword)
     }
 
     ////
@@ -648,7 +648,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api15(
+    fun api15WithdrawalMembershipPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -656,7 +656,7 @@ class SC1MainScV1Controller(
         @Parameter(hidden = true)
         session: HttpSession
     ): ModelAndView? {
-        return service.api15(httpServletRequest, httpServletResponse, session)
+        return service.api15WithdrawalMembershipPage(httpServletRequest, httpServletResponse, session)
     }
 
 
@@ -679,7 +679,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api16(
+    fun api16WithdrawalMembershipProcess(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -687,7 +687,7 @@ class SC1MainScV1Controller(
         @Parameter(hidden = true)
         session: HttpSession
     ): ModelAndView? {
-        return service.api16(httpServletRequest, httpServletResponse, session)
+        return service.api16WithdrawalMembershipProcess(httpServletRequest, httpServletResponse, session)
     }
 
     ////
@@ -708,7 +708,7 @@ class SC1MainScV1Controller(
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.TEXT_HTML_VALUE]
     )
-    fun api17(
+    fun api17MembershipGoodbyePage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -723,7 +723,7 @@ class SC1MainScV1Controller(
         @RequestParam("accountId")
         accountId: String
     ): ModelAndView? {
-        return service.api17(httpServletRequest, httpServletResponse, session, accountId)
+        return service.api17MembershipGoodbyePage(httpServletRequest, httpServletResponse, session, accountId)
     }
 
     ////
@@ -745,7 +745,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-    fun api18(
+    fun api18ChangePasswordPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -767,7 +767,7 @@ class SC1MainScV1Controller(
         @RequestParam("memberNotFound")
         memberNotFound: String?
     ): ModelAndView? {
-        return service.api18(httpServletRequest, httpServletResponse, session, complete, memberNotFound)
+        return service.api18ChangePasswordPage(httpServletRequest, httpServletResponse, session, complete, memberNotFound)
     }
 
 
@@ -790,7 +790,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api19(
+    fun api19ChangePasswordProcess(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -812,7 +812,7 @@ class SC1MainScV1Controller(
         @RequestParam("newPassword")
         newPassword: String
     ): ModelAndView? {
-        return service.api19(httpServletRequest, httpServletResponse, session, memberUid, newPassword)
+        return service.api19ChangePasswordProcess(httpServletRequest, httpServletResponse, session, memberUid, newPassword)
     }
 
     ////
@@ -834,7 +834,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-    fun api20(
+    fun api20ExpireMemberSessionPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -856,7 +856,7 @@ class SC1MainScV1Controller(
         @RequestParam("memberNotFound")
         memberNotFound: String?
     ): ModelAndView? {
-        return service.api20(httpServletRequest, httpServletResponse, session, complete, memberNotFound)
+        return service.api20ExpireMemberSessionPage(httpServletRequest, httpServletResponse, session, complete, memberNotFound)
     }
 
 
@@ -879,7 +879,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api21(
+    fun api21ExpireMemberSessionProcess(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -894,7 +894,7 @@ class SC1MainScV1Controller(
         @RequestParam("memberUid")
         memberUid: Long
     ): ModelAndView? {
-        return service.api21(httpServletRequest, httpServletResponse, session, memberUid)
+        return service.api21ExpireMemberSessionProcess(httpServletRequest, httpServletResponse, session, memberUid)
     }
 
     ////
@@ -916,7 +916,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated() and (hasRole('ROLE_SERVER_DEVELOPER') or hasRole('ROLE_ADMIN'))")
-    fun api22(
+    fun api22ForceWithdrawalMembershipPage(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -938,7 +938,7 @@ class SC1MainScV1Controller(
         @RequestParam("memberNotFound")
         memberNotFound: String?
     ): ModelAndView? {
-        return service.api22(httpServletRequest, httpServletResponse, session, complete, memberNotFound)
+        return service.api22ForceWithdrawalMembershipPage(httpServletRequest, httpServletResponse, session, complete, memberNotFound)
     }
 
 
@@ -961,7 +961,7 @@ class SC1MainScV1Controller(
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     @PreAuthorize("isAuthenticated()")
-    fun api23(
+    fun api23ForceWithdrawalMembershipProcess(
         @Parameter(hidden = true)
         httpServletRequest: HttpServletRequest,
         @Parameter(hidden = true)
@@ -976,6 +976,6 @@ class SC1MainScV1Controller(
         @RequestParam("memberUid")
         memberUid: Long
     ): ModelAndView? {
-        return service.api23(httpServletRequest, httpServletResponse, session, memberUid)
+        return service.api23ForceWithdrawalMembershipProcess(httpServletRequest, httpServletResponse, session, memberUid)
     }
 }
