@@ -167,6 +167,32 @@
 - Kotlin 의 Object 파일을 모아둔 폴더입니다.
 
 
+### src/main/kotlin/{packageNames}/data_sources
+- data_sources 폴더는, 프로젝트 내에서 사용할 다양한 데이터 소스들에 대한 코드를 모아둔 폴더입니다. 네트워크, 데이터베이스, 로컬 파일, 메모리 등의 다양한 위치에 저장된 데이터에 대한 직접적인 접근은 이곳에 모인 파일들과 코드가 처리한다고 생각하면 됩니다.
+- GlobalVariables 파일은, 프로젝트 전역에서 사용하는 전역 변수를 모아두는 파일입니다.
+- RuntimeConfig 파일 역시 전역 변수를 모아두는 파일입니다. 자세한 내용은 아래의 추가 상세 설명에서
+  설명하겠습니다.
+- database_sources, mongo_db_sources, network_retrofit2, redis_sources 는,
+  각각 JPA 데이터베이스, MongoDB NoSQL 데이터베이스, Retrofit2 네트워크 요청 라이브러리, Redis In-Memory 데이터베이스에 대한 코드 모음용 서브폴더입니다.
+  이 역시 자세한 내용은 아래의 추가 상세 설명에서 설명하겠습니다.
+
+
+### src/main/kotlin/{packageNames}/filters
+- Springboot Filter 들을 모아둔 폴더입니다.
+  본 프로젝트에는 /actuator 로 시작되는 주소에 대한 화이트리스트 접근 처리,
+  모든 Request 에 대해, Request 와 Response 를 자동으로 로깅하도록 처리한 로깅 필터가 존재합니다.
+
+
+### src/main/kotlin/{packageNames}/kafka_consumers
+- Kafka Consumer 코드를 저장하는 폴더입니다.
+  자세한 내용은 아래의 추가 상세 설명에서 설명하겠습니다.
+
+
+### src/main/kotlin/{packageNames}/web_socket_handlers
+- STOMP 를 제외한 WebSocket 처리 핸들러를 모아둔 폴더입니다.
+  configurations 의 WebSocketConfig 에서 addHandler 를 할 때에 연결할 핸들러들을 만들어 이곳에 저장합니다.
+
+
 ## 코딩 규칙
 
 ### 표기법 정리
@@ -254,3 +280,25 @@ A --> C(Round Rect)
 B --> D{Rhombus}
 C --> D
 ```
+
+
+
+
+(runtime config 이유)
+이것을 만든 이유를 예시를 들어 설명하겠습니다. Springboot 에는 Actuator 라는 기능이 있습니다.
+이는 Springboot 가 동작중인 디바이스의 현재 메모리 상황, CPU 사용 현황 등의 매우 중요한 데이터들을 반환하여, 외부에서 모니터링 하여 서버 상태를 감시하는 데에 사용하는 기능인데, 당연히 외부에 공개되어서는 안되는 정보겠죠?
+허용된 IP 외에는 모두 차단을 해야할 것입니다.
+스프링부트 내에서, actuator 에 접근하는 것은 허용된 일부 ip 를 제외하고는 전부 차단해야 하는 것입니다.
+구현을 한다고 했을 때, 허용 ip 리스트를 변수에 올려놓고, 그 이외의 ip 를 차단하도록 필터를 만들면 되겠죠?
+그런데 문제가 있습니다.
+이렇게 메모리상에만 데이터를 올려두면 새로 배포를 할 때마다 메모리가 초기화되어 기존 설정 ip가 날아가 버리겠죠?
+이러한 이유로 인해서 이러한 설정 데이터는 비휘발성 저장장치에 저장을 해두어야 합니다.
+대표적인 비휘발성 저장장치를 생각해봅시다.
+데이터베이스에 저장하도록 할 수 있습니다.
+하지만 데이터베이스는 기본적으로 테이블 형태로 데이터를 저장합니다.
+위와 같이 딱 한 줄(row)만 존재하는 데이터를 저장하는 용도로는 적합하지 않다고 생각했습니다.
+가장 잘 어울리는 형태는 데이터의 Object 형태를 의미하는 JSON 형태...
+즉, JSON 파일로 저장을 하는 것입니다.
+이로인하여 RuntimeConfig 파일은, 설정인 JSON 데이터 형태를 나타내는 data class 와, 그로써 객체화 된 설정 변수가 존재하며, 이러한 설정 변수를 JSON 파일로 저장하는 함수인 saveRuntimeConfigData JSON 파일에서 설정 변수로 데이터를 가져오는 loadRuntimeConfigData 함수로 이루어져 있는 것입니다.
+스프링부트가 시작되면 ApplicationMain 에서 loadRuntimeConfigData 가 실행되어, 혹여 설정 파일이 존재하지 않는다면, 초기 설정된 설정 변수를 기반으로 파일로 저장하고, 설정파일이 이미 존재한다면, 해당 파일에서 데이터를 읽어와 설정 변수에 할당하는 방식으로 프로젝트 리빌드 시에도 기존 설정이 유지되도록 하였으며,
+런타임으로 설정을 바꾸기 위해서는 saveRuntimeConfigData 를 사용하여 데이터 변수를 수정하고, JSON 파일을 수정하여 바로 변경된 설정 변수를 사용하도록 처리한 것입니다.
