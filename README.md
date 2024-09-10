@@ -60,7 +60,7 @@
 - 본 프로젝트에서는 본 프로젝트를 실행하기 위한 외부 서비스를 실행시키기 위한 설정이 모여있는 dockers 폴더, API 테스트시에 사용할 용도로 준비된 파일들을 모아둔 files_for_api_test 폴더, 그리고 개인적인 개발 노하우 등을 정리해둔 문서들을 보관한 knowledges 폴더가 존재합니다.
 
 
-### test
+### src/test
 - Springboot 테스트용 @SpringBootTest 클래스를 모아두는 폴더입니다. 저의 경우는 TDD 를 따로 하지 않고, 별도 클라이언트 프로젝트를 만들거나, Swagger 문서로 수동으로 테스트 하는 방식을 사용하는데, 혹 TDD 를 하실 분이라면 적극적으로 사용하세요.
 - 현재는, @ActiveProfiles("dev", "prod") 이 설정으로 인하여 gradle build 중에 자동으로 dev, prod 설정으로 프로젝트 연결 테스트(JPA 검증, 라이브러리 설정 검증, 실행 검증)만을 수행합니다.
 
