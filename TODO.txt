@@ -6,3 +6,4 @@
 
 - Response Body 로깅 필터 개선(HTML, 파일 등의 응답에 대한 로깅 제외)
 - NativeQuery 함수명 수정
+- 로그인시 Lock 이유 반환하기
