@@ -111,7 +111,14 @@ class LoggingFilter : OncePerRequestFilter() {
 
             val responseContentByteArray = httpServletResponse.contentAsByteArray
             val responseBody = if (responseContentByteArray.isNotEmpty()) {
-                getContentByte(httpServletResponse.contentAsByteArray, httpServletResponse.contentType)
+                if (
+                    httpServletResponse.contentType.startsWith("text/html")
+                ) {
+                    // HTML 로깅 스킵
+                    "HTML Content"
+                } else {
+                    getContentByte(httpServletResponse.contentAsByteArray, httpServletResponse.contentType)
+                }
             } else ""
 
             if (isError) {
