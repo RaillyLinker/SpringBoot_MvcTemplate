@@ -2,29 +2,9 @@
 - 소켓 처리부분 리펙토링
 - 소켓으로 그림 그리기 (클라이언트와 같이 개발)
 - 영상 통신 (영상 필터 기능까지, 클라이언트와 같이 개발)
-- README 추가
+- README 설명 추가
 
+- 코드 전수 재검사 및 재테스트
 - Response Body 로깅 필터 개선(HTML, 파일 등의 응답에 대한 로깅 제외)
 - NativeQuery 함수명 수정
 - 로그인시 Lock 이유 반환하기
-- 코드 전수 재검사 및 재테스트
-- api-result-code 를 사용하는 곳에
-data class Api12Dot1ReturnResultCodeThroughBodyOutputVo(
-        @Schema(
-            description = "결과 코드\n\n" +
-                    "0 : errorType 을 보내지 않았습니다.\n\n" +
-                    "1 : errorType 을 A 로 보냈습니다.\n\n" +
-                    "2 : errorType 을 B 로 보냈습니다.\n\n" +
-                    "3 : errorType 을 C 로 보냈습니다.\n\n",
-            required = true,
-            example = "0"
-        )
-        @JsonProperty("resultCode")
-        val resultCode: Int,
-        @Schema(description = "입력한 errorType 파라미터", required = false, example = "A")
-        @JsonProperty("errorTypeParam")
-        val errorTypeParam: String?
-    )
-
-    이 방식 사용
-- 위 방식 사용하는 리퀘스트 테스트 추가
