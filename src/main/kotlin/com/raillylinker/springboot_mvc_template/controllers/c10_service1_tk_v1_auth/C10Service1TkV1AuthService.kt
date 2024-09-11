@@ -232,9 +232,31 @@ class C10Service1TkV1AuthService(
         val lockList = db1NativeRepository.findAllNowActivateMemberLockInfo(memberData.uid!!, LocalDateTime.now())
         if (lockList.isNotEmpty()) {
             // 계정 정지 당한 상황
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "3")
-            return null
+            val lockedOutputList: MutableList<C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LockedOutput> =
+                mutableListOf()
+            for (lockInfo in lockList) {
+                lockedOutputList.add(
+                    C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LockedOutput(
+                        memberData.uid!!,
+                        lockInfo.lockStart.atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
+                        if (lockInfo.lockBefore == null) {
+                            null
+                        } else {
+                            lockInfo.lockBefore!!.atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                        },
+                        lockInfo.lockReasonCode.toInt(),
+                        lockInfo.lockReason
+                    )
+                )
+            }
+
+            httpServletResponse.status = HttpStatus.OK.value()
+            return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
+                null,
+                lockedOutputList
+            )
         }
 
         // 멤버의 권한 리스트를 조회 후 반환
@@ -287,14 +309,17 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
-            memberData.uid!!,
-            "Bearer",
-            jwtAccessToken,
-            jwtRefreshToken,
-            accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-            refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LoggedInOutput(
+                memberData.uid!!,
+                "Bearer",
+                jwtAccessToken,
+                jwtRefreshToken,
+                accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
+                refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            ),
+            null
         )
     }
 
@@ -507,9 +532,31 @@ class C10Service1TkV1AuthService(
             )
         if (lockList.isNotEmpty()) {
             // 계정 정지 당한 상황
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "3")
-            return null
+            val lockedOutputList: MutableList<C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LockedOutput> =
+                mutableListOf()
+            for (lockInfo in lockList) {
+                lockedOutputList.add(
+                    C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LockedOutput(
+                        snsOauth2.service1MemberData.uid!!,
+                        lockInfo.lockStart.atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
+                        if (lockInfo.lockBefore == null) {
+                            null
+                        } else {
+                            lockInfo.lockBefore!!.atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                        },
+                        lockInfo.lockReasonCode.toInt(),
+                        lockInfo.lockReason
+                    )
+                )
+            }
+
+            httpServletResponse.status = HttpStatus.OK.value()
+            return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
+                null,
+                lockedOutputList
+            )
         }
 
         // 멤버의 권한 리스트를 조회 후 반환
@@ -562,14 +609,17 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
-            snsOauth2.service1MemberData.uid!!,
-            "Bearer",
-            jwtAccessToken,
-            jwtRefreshToken,
-            accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-            refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LoggedInOutput(
+                snsOauth2.service1MemberData.uid!!,
+                "Bearer",
+                jwtAccessToken,
+                jwtRefreshToken,
+                accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
+                refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            ),
+            null
         )
     }
 
@@ -624,9 +674,31 @@ class C10Service1TkV1AuthService(
             )
         if (lockList.isNotEmpty()) {
             // 계정 정지 당한 상황
-            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-            httpServletResponse.setHeader("api-result-code", "3")
-            return null
+            val lockedOutputList: MutableList<C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LockedOutput> =
+                mutableListOf()
+            for (lockInfo in lockList) {
+                lockedOutputList.add(
+                    C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LockedOutput(
+                        snsOauth2.service1MemberData.uid!!,
+                        lockInfo.lockStart.atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
+                        if (lockInfo.lockBefore == null) {
+                            null
+                        } else {
+                            lockInfo.lockBefore!!.atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                        },
+                        lockInfo.lockReasonCode.toInt(),
+                        lockInfo.lockReason
+                    )
+                )
+            }
+
+            httpServletResponse.status = HttpStatus.OK.value()
+            return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
+                null,
+                lockedOutputList
+            )
         }
 
         // 멤버의 권한 리스트를 조회 후 반환
@@ -679,14 +751,17 @@ class C10Service1TkV1AuthService(
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
-            snsOauth2.service1MemberData.uid!!,
-            "Bearer",
-            jwtAccessToken,
-            jwtRefreshToken,
-            accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-            refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LoggedInOutput(
+                snsOauth2.service1MemberData.uid!!,
+                "Bearer",
+                jwtAccessToken,
+                jwtRefreshToken,
+                accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
+                refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+            ),
+            null
         )
     }
 
@@ -809,10 +884,31 @@ class C10Service1TkV1AuthService(
                     )
                 if (lockList.isNotEmpty()) {
                     // 계정 정지 당한 상황
-                    httpServletResponse.setHeader("api-result-code", "6")
+                    val lockedOutputList: MutableList<C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LockedOutput> =
+                        mutableListOf()
+                    for (lockInfo in lockList) {
+                        lockedOutputList.add(
+                            C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LockedOutput(
+                                memberData.uid!!,
+                                lockInfo.lockStart.atZone(ZoneId.systemDefault())
+                                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
+                                if (lockInfo.lockBefore == null) {
+                                    null
+                                } else {
+                                    lockInfo.lockBefore!!.atZone(ZoneId.systemDefault())
+                                        .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                                },
+                                lockInfo.lockReasonCode.toInt(),
+                                lockInfo.lockReason
+                            )
+                        )
+                    }
 
-                    httpServletResponse.status = HttpStatus.NO_CONTENT.value()
-                    return null
+                    httpServletResponse.status = HttpStatus.OK.value()
+                    return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
+                        null,
+                        lockedOutputList
+                    )
                 }
 
                 // 로그아웃 여부 파악
@@ -957,14 +1053,17 @@ class C10Service1TkV1AuthService(
 
                         httpServletResponse.status = HttpStatus.OK.value()
                         return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
-                            tokenInfo.service1MemberData.uid!!,
-                            "Bearer",
-                            newJwtAccessToken,
-                            newRefreshToken,
-                            accessTokenExpireWhen.atZone(ZoneId.systemDefault())
-                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-                            refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
-                                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                            C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo.LoggedInOutput(
+                                memberData.uid!!,
+                                "Bearer",
+                                newJwtAccessToken,
+                                newRefreshToken,
+                                accessTokenExpireWhen.atZone(ZoneId.systemDefault())
+                                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
+                                refreshTokenExpireWhen.atZone(ZoneId.systemDefault())
+                                    .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+                            ),
+                            null
                         )
                     }
 

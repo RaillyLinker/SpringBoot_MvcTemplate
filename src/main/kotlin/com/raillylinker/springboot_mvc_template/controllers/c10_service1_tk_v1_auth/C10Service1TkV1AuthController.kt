@@ -265,8 +265,7 @@ class C10Service1TkV1AuthController(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 입력한 id 로 가입된 회원 정보가 없습니다.\n\n" +
-                                "2 : 입력한 password 가 일치하지 않습니다.\n\n" +
-                                "3 : 계정이 정지된 상태입니다.\n\n",
+                                "2 : 입력한 password 가 일치하지 않습니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -315,38 +314,84 @@ class C10Service1TkV1AuthController(
     )
 
     data class Api5Api7Api7Dot1Api9LoginOutputVo(
-        @Schema(description = "멤버 고유값", required = true, example = "1")
-        @JsonProperty("memberUid")
-        val memberUid: Long,
+        @Schema(description = "로그인 성공 정보 (이 변수가 Null 이 아니라면 lockedOutput 가 Null 입니다.)", required = false)
+        @JsonProperty("loggedInOutput")
+        val loggedInOutput: LoggedInOutput?,
 
-        @Schema(description = "인증 토큰 타입", required = true, example = "Bearer")
-        @JsonProperty("tokenType")
-        val tokenType: String,
+        @Schema(description = "계정 잠김 정보 리스트 (이 변수가 Null 이 아니라면 loggedInOutput 가 Null 입니다.)", required = false)
+        @JsonProperty("lockedOutputList")
+        val lockedOutputList: List<LockedOutput>?
+    ) {
+        @Schema(description = "계정 잠김 정보")
+        data class LockedOutput(
+            @Schema(description = "멤버 고유값", required = true, example = "1")
+            @JsonProperty("memberUid")
+            val memberUid: Long,
 
-        @Schema(description = "엑세스 토큰", required = true, example = "kljlkjkfsdlwejoe")
-        @JsonProperty("accessToken")
-        val accessToken: String,
+            @Schema(
+                description = "계정 정지 시작 시간",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552_KST"
+            )
+            @JsonProperty("lockStart")
+            val lockStart: String,
 
-        @Schema(description = "리프레시 토큰", required = true, example = "cxfdsfpweiijewkrlerw")
-        @JsonProperty("refreshToken")
-        val refreshToken: String,
+            @Schema(
+                description = "계정 정지 만료 시간 (이 시간이 지나기 전까지 계정 정지 상태, null 이라면 무기한 정지)",
+                required = false,
+                example = "2024_05_02_T_15_14_49_552_KST"
+            )
+            @JsonProperty("lockBefore")
+            val lockBefore: String?,
 
-        @Schema(
-            description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
-            required = true,
-            example = "2024_05_02_T_15_14_49_552_KST"
+            @Schema(description = "계정 정지 이유 코드(0 : 기타, 1 : 휴면계정, 2 : 패널티)", required = true, example = "1")
+            @JsonProperty("lockReasonCode")
+            val lockReasonCode: Int,
+
+            @Schema(
+                description = "계정 정지 이유 상세(시스템 악용 패널티, 1년 이상 미접속 휴면계정 등...)",
+                required = true,
+                example = "시스템 악용 패널티"
+            )
+            @JsonProperty("lockReason")
+            val lockReason: String,
         )
-        @JsonProperty("accessTokenExpireWhen")
-        val accessTokenExpireWhen: String,
 
-        @Schema(
-            description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
-            required = true,
-            example = "2024_05_02_T_15_14_49_552_KST"
+        @Schema(description = "로그인 성공 정보")
+        data class LoggedInOutput(
+            @Schema(description = "멤버 고유값", required = true, example = "1")
+            @JsonProperty("memberUid")
+            val memberUid: Long,
+
+            @Schema(description = "인증 토큰 타입", required = true, example = "Bearer")
+            @JsonProperty("tokenType")
+            val tokenType: String,
+
+            @Schema(description = "엑세스 토큰", required = true, example = "kljlkjkfsdlwejoe")
+            @JsonProperty("accessToken")
+            val accessToken: String,
+
+            @Schema(description = "리프레시 토큰", required = true, example = "cxfdsfpweiijewkrlerw")
+            @JsonProperty("refreshToken")
+            val refreshToken: String,
+
+            @Schema(
+                description = "엑세스 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552_KST"
+            )
+            @JsonProperty("accessTokenExpireWhen")
+            val accessTokenExpireWhen: String,
+
+            @Schema(
+                description = "리프레시 토큰 만료 시간(yyyy_MM_dd_'T'_HH_mm_ss_SSS_z)",
+                required = true,
+                example = "2024_05_02_T_15_14_49_552_KST"
+            )
+            @JsonProperty("refreshTokenExpireWhen")
+            val refreshTokenExpireWhen: String
         )
-        @JsonProperty("refreshTokenExpireWhen")
-        val refreshTokenExpireWhen: String
-    )
+    }
 
     ////
     @Operation(
@@ -437,8 +482,7 @@ class C10Service1TkV1AuthController(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 유효하지 않은 OAuth2 Access Token 입니다.\n\n" +
-                                "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n" +
-                                "3 : 계정이 정지된 상태입니다.\n\n",
+                                "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -499,8 +543,7 @@ class C10Service1TkV1AuthController(
                         name = "api-result-code",
                         description = "(Response Code 반환 원인) - Required\n\n" +
                                 "1 : 유효하지 않은 OAuth2 ID Token 입니다.\n\n" +
-                                "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n" +
-                                "3 : 계정이 정지된 상태입니다.\n\n",
+                                "2 : 가입 된 회원 정보가 존재하지 않습니다.\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -599,8 +642,7 @@ class C10Service1TkV1AuthController(
                                 "2 : Refresh Token 이 만료되었습니다.\n\n" +
                                 "3 : 올바르지 않은 Access Token 입니다.\n\n" +
                                 "4 : 탈퇴된 회원입니다.\n\n" +
-                                "5 : 로그아웃 처리된 Access Token 입니다.(갱신 불가)\n\n" +
-                                "6 : Access Token 의 멤버가 계정 정지 처리된 상태입니다.(갱신 불가)\n\n",
+                                "5 : 로그아웃 처리된 Access Token 입니다.(갱신 불가)\n\n",
                         schema = Schema(type = "string")
                     )
                 ]
@@ -1884,7 +1926,12 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api23CheckEmailVerificationForFindPassword(httpServletResponse, verificationUid, email, verificationCode)
+        service.api23CheckEmailVerificationForFindPassword(
+            httpServletResponse,
+            verificationUid,
+            email,
+            verificationCode
+        )
     }
 
 
@@ -2073,7 +2120,12 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api26CheckPhoneVerificationForFindPassword(httpServletResponse, verificationUid, phoneNumber, verificationCode)
+        service.api26CheckPhoneVerificationForFindPassword(
+            httpServletResponse,
+            verificationUid,
+            phoneNumber,
+            verificationCode
+        )
     }
 
 
@@ -2449,7 +2501,13 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api33CheckEmailVerificationForAddNewEmail(httpServletResponse, verificationUid, email, verificationCode, authorization!!)
+        service.api33CheckEmailVerificationForAddNewEmail(
+            httpServletResponse,
+            verificationUid,
+            email,
+            verificationCode,
+            authorization!!
+        )
     }
 
 
@@ -2732,7 +2790,13 @@ class C10Service1TkV1AuthController(
         @RequestParam("verificationCode")
         verificationCode: String
     ) {
-        service.api37CheckPhoneVerificationForAddNewPhoneNumber(httpServletResponse, verificationUid, phoneNumber, verificationCode, authorization!!)
+        service.api37CheckPhoneVerificationForAddNewPhoneNumber(
+            httpServletResponse,
+            verificationUid,
+            phoneNumber,
+            verificationCode,
+            authorization!!
+        )
     }
 
     ////
