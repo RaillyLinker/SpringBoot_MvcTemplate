@@ -272,90 +272,46 @@
 
 
 ## 추가 상세 설명
-todo : 알아야 할 추가 설명
+### Runtime Config 설명
+src/main/kotlin/{packageNames}/data_sources/RuntimeConfig
 
+위 파일을 만든 이유를 예시를 들어 설명하겠습니다.
 
+Springboot 에는 Actuator 라는 기능이 있습니다.  
+이는 Springboot 가 동작중인 디바이스의 현재 메모리 상황, CPU 사용 현황 등의 매우 중요한 데이터들을 반환하여, 외부에서 모니터링 하여 서버 상태를 감시하는 데에 사용하는 기능인데, 당연히 외부에 공개되어서는 안되는 정보겠죠?
 
-
-
-
-
-
-
-## Synchronize a file
-
-Once your file is linked to a synchronized location, StackEdit will periodically synchronize it by downloading/uploading any modification. A merge will be performed if necessary and conflicts will be resolved.
-
-If you just have modified your file and you want to force syncing, click the **Synchronize now** button in the navigation bar.
-
-> **Note:** The **Synchronize now** button is disabled if you have no file to synchronize.
-
-## SmartyPants
-
-SmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:
-
-|                |ASCII                          |HTML                         |
-|----------------|-------------------------------|-----------------------------|
-|Single backticks|`'Isn't this fun?'`            |'Isn't this fun?'            |
-|Quotes          |`"Isn't this fun?"`            |"Isn't this fun?"            |
-|Dashes          |`-- is en-dash, --- is em-dash`|-- is en-dash, --- is em-dash|
-
-
-## KaTeX
-
-You can render LaTeX mathematical expressions using [KaTeX](https://khan.github.io/KaTeX/):
-
-The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$ is via the Euler integral
-
-$$
-\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
-$$
-
-> You can find more information about **LaTeX** mathematical expressions [here](http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference).
-
-
-## UML diagrams
-
-You can render UML diagrams using [Mermaid](https://mermaidjs.github.io/). For example, this will produce a sequence diagram:
-
-```mermaid
-sequenceDiagram
-Alice ->> Bob: Hello Bob, how are you?
-Bob-->>John: How about you John?
-Bob--x Alice: I am good thanks!
-Bob-x John: I am good thanks!
-Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
-
-Bob-->Alice: Checking with John...
-Alice->John: Yes... John, how are you?
-```
-
-And this will produce a flow chart:
-
-```mermaid
-graph LR
-A[Square Rect] -- Link text --> B((Circle))
-A --> C(Round Rect)
-B --> D{Rhombus}
-C --> D
-```
-
-
-(runtime config 이유)  
-이것을 만든 이유를 예시를 들어 설명하겠습니다. Springboot 에는 Actuator 라는 기능이 있습니다.  
-이는 Springboot 가 동작중인 디바이스의 현재 메모리 상황, CPU 사용 현황 등의 매우 중요한 데이터들을 반환하여, 외부에서 모니터링 하여 서버 상태를 감시하는 데에 사용하는 기능인데, 당연히 외부에 공개되어서는 안되는 정보겠죠?  
 허용된 IP 외에는 모두 차단을 해야할 것입니다.  
-스프링부트 내에서, actuator 에 접근하는 것은 허용된 일부 ip 를 제외하고는 전부 차단해야 하는 것입니다.  
-구현을 한다고 했을 때, 허용 ip 리스트를 변수에 올려놓고, 그 이외의 ip 를 차단하도록 필터를 만들면 되겠죠?  
-그런데 문제가 있습니다.  
-이렇게 메모리상에만 데이터를 올려두면 새로 배포를 할 때마다 메모리가 초기화되어 기존 설정 ip가 날아가 버리겠죠?  
-이러한 이유로 인해서 이러한 설정 데이터는 비휘발성 저장장치에 저장을 해두어야 합니다.  
-대표적인 비휘발성 저장장치를 생각해봅시다.  
+화이트 리스트 방식으로, 스프링부트 내에서, actuator 에 접근하는 것은 허용된 일부 ip 를 제외하고는 전부 차단해야 합니다.
+
+이러한 기능을 구현을 한다고 했을 때, 허용 ip 리스트를 변수에 올려놓고, 그 이외의 ip 를 차단하도록 필터를 만들면 되겠죠?
+
+그런데 문제가 있습니다.
+
+이렇게 메모리상에만 데이터를 올려두면 새로 배포를 할 때마다 메모리가 초기화되어 기존 설정 ip가 날아가 버릴 것입니다.
+만약 설정이 단순히 ip 화이트리스트 뿐 아니라 보다 복잡한 구조를 지니고 있거나, 혹은 ip 화이트 리스트 역시 몇십건을 넘어가게 된다면 일일이 재배포시마다 다시 입력해주는 것도 힘든 일이죠.
+
+이러한 이유로 인하여, 이러한 설정 데이터는 비휘발성 저장장치에 저장을 해두어야 합니다.
+
+대표적인 비휘발성 저장장치를 생각해봅시다.
+
 데이터베이스에 저장하도록 할 수 있습니다.  
 하지만 데이터베이스는 기본적으로 테이블 형태로 데이터를 저장합니다.  
-위와 같이 딱 한 줄(row)만 존재하는 데이터를 저장하는 용도로는 적합하지 않다고 생각했습니다.  
+위와 같이 딱 한 줄(row)만 존재하는 데이터를 저장하는 용도로는 적합하지 않다고 생각했습니다.
+
 가장 잘 어울리는 형태는 데이터의 Object 형태를 의미하는 JSON 형태...  
-즉, JSON 파일로 저장을 하는 것입니다.  
-이로인하여 RuntimeConfig 파일은, 설정인 JSON 데이터 형태를 나타내는 data class 와, 그로써 객체화 된 설정 변수가 존재하며, 이러한 설정 변수를 JSON 파일로 저장하는 함수인 saveRuntimeConfigData JSON 파일에서 설정 변수로 데이터를 가져오는 loadRuntimeConfigData 함수로 이루어져 있는 것입니다.  
-스프링부트가 시작되면 ApplicationMain 에서 loadRuntimeConfigData 가 실행되어, 혹여 설정 파일이 존재하지 않는다면, 초기 설정된 설정 변수를 기반으로 파일로 저장하고, 설정파일이 이미 존재한다면, 해당 파일에서 데이터를 읽어와 설정 변수에 할당하는 방식으로 프로젝트 리빌드 시에도 기존 설정이 유지되도록 하였으며,  
+즉, JSON 파일로 저장을 하는 것입니다.
+
+이로 인하여 RuntimeConfig 파일은, 설정인 JSON 데이터 형태를 나타내는 data class 와, 그로써 객체화 된 설정 변수가 존재하며, 이러한 설정 변수를 JSON 파일로 저장하는 함수인 saveRuntimeConfigData JSON 파일에서 설정 변수로 데이터를 가져오는 loadRuntimeConfigData 함수로 이루어져 있는 것입니다.
+
+스프링부트가 시작되면 ApplicationMain 에서 loadRuntimeConfigData 가 실행되어, 혹여 설정 파일이 존재하지 않는다면, 초기 설정된 설정 변수를 기반으로 파일로 저장하고, 설정파일이 이미 존재한다면, 해당 파일에서 데이터를 읽어와 설정 변수에 할당하는 방식으로 프로젝트 리빌드 시에도 기존 설정이 유지되도록 하였으며,
+
 런타임으로 설정을 바꾸기 위해서는 saveRuntimeConfigData 를 사용하여 데이터 변수를 수정하고, JSON 파일을 수정하여 바로 변경된 설정 변수를 사용하도록 처리한 것입니다.
+
+요약하자면,
+RuntimeConfig 의 기능은,
+1. 메모리 상의 변수를 로컬 저장소로 저장하기
+2. 로컬 저장소에서 데이터를 메모리 상의 변수로 가져오기
+3. 런타임으로 변수값을 변경하기
+4. 프로젝트 시작시 로컬 저장소에서 데이터를 로딩하기
+
+위와 같습니다.
