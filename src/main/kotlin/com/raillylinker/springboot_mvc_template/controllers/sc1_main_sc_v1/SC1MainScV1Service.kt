@@ -411,7 +411,6 @@ class SC1MainScV1Service(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             InputStreamResource(Files.newInputStream(serverFilePathObject)),

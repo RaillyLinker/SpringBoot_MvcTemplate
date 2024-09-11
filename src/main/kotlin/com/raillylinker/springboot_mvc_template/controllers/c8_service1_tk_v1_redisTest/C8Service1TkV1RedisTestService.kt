@@ -40,7 +40,6 @@ class C8Service1TkV1RedisTestService(
             inputVo.expirationMs
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -56,7 +55,6 @@ class C8Service1TkV1RedisTestService(
             return null
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api2SelectRedisValueSampleOutputVo(
             Redis1_Test.TYPE_NAME,
@@ -83,7 +81,6 @@ class C8Service1TkV1RedisTestService(
             )
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api3SelectAllRedisKeyValueSampleOutputVo(
             Redis1_Test.TYPE_NAME,
@@ -105,7 +102,6 @@ class C8Service1TkV1RedisTestService(
 
         redis1Test.deleteKeyValue(key)
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -115,7 +111,6 @@ class C8Service1TkV1RedisTestService(
     fun api5DeleteAllRedisKeySample(httpServletResponse: HttpServletResponse) {
         redis1Test.deleteAllKeyValues()
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 

@@ -91,7 +91,6 @@ class C10Service1TkV1AuthService(
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
     fun api1NoLoggedInAccessTest(httpServletResponse: HttpServletResponse): String? {
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return externalAccessAddress
     }
@@ -105,7 +104,6 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return "Member No.$memberUid : Test Success"
     }
@@ -118,7 +116,6 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return "Member No.$memberUid : Test Success"
     }
@@ -131,7 +128,6 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return "Member No.$memberUid : Test Success"
     }
@@ -168,7 +164,6 @@ class C10Service1TkV1AuthService(
 
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return
     }
@@ -290,7 +285,6 @@ class C10Service1TkV1AuthService(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
             memberData.uid!!,
@@ -408,7 +402,6 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api6GetOAuth2AccessTokenOutputVo(
             snsAccessTokenType,
@@ -567,7 +560,6 @@ class C10Service1TkV1AuthService(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
             snsOauth2.service1MemberData.uid!!,
@@ -685,7 +677,6 @@ class C10Service1TkV1AuthService(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
             snsOauth2.service1MemberData.uid!!,
@@ -724,7 +715,6 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -965,7 +955,6 @@ class C10Service1TkV1AuthService(
                             )
                         )
 
-                        httpServletResponse.setHeader("api-result-code", "")
                         httpServletResponse.status = HttpStatus.OK.value()
                         return C10Service1TkV1AuthController.Api5Api7Api7Dot1Api9LoginOutputVo(
                             tokenInfo.service1MemberData.uid!!,
@@ -1024,7 +1013,6 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -1105,8 +1093,6 @@ class C10Service1TkV1AuthService(
             )
         }
 
-
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api10Dot1GetMemberInfoOutputVo(
             memberData.accountId,
@@ -1125,7 +1111,6 @@ class C10Service1TkV1AuthService(
         httpServletResponse: HttpServletResponse,
         id: String
     ): C10Service1TkV1AuthController.Api11CheckIdDuplicateOutputVo? {
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api11CheckIdDuplicateOutputVo(
             db1RaillyLinkerCompanyService1MemberDataRepository.existsByAccountId(id.trim())
@@ -1154,7 +1139,6 @@ class C10Service1TkV1AuthService(
             memberData
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -1309,7 +1293,6 @@ class C10Service1TkV1AuthService(
 
         db1RaillyLinkerCompanyService1MemberDataRepository.save(memberEntity)
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return
     }
@@ -1357,7 +1340,6 @@ class C10Service1TkV1AuthService(
             null
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api13SendEmailVerificationForJoinOutputVo(
             memberRegisterEmailVerificationData.uid!!,
@@ -1399,10 +1381,11 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        if (emailVerification.verificationSecret == verificationCode) { // 코드 일치
-            httpServletResponse.setHeader("api-result-code", "")
+        if (emailVerification.verificationSecret == verificationCode) {
+            // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-        } else { // 코드 불일치
+        } else {
+            // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
         }
@@ -1556,7 +1539,6 @@ class C10Service1TkV1AuthService(
                 emailVerification.uid!!
             )
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else { // 코드 불일치
@@ -1616,7 +1598,6 @@ class C10Service1TkV1AuthService(
             throw Exception()
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api16SendPhoneVerificationForJoinOutputVo(
             memberRegisterPhoneNumberVerificationData.uid!!,
@@ -1660,10 +1641,11 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        if (phoneNumberVerification.verificationSecret == verificationCode) { // 코드 일치
-            httpServletResponse.setHeader("api-result-code", "")
+        if (phoneNumberVerification.verificationSecret == verificationCode) {
+            // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-        } else { // 코드 불일치
+        } else {
+            // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
         }
@@ -1817,7 +1799,6 @@ class C10Service1TkV1AuthService(
                 phoneNumberVerification.uid!!
             )
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else { // 코드 불일치
@@ -1990,7 +1971,6 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api19CheckOauth2AccessTokenVerificationForJoinOutputVo(
             verificationUid,
@@ -2063,7 +2043,6 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api19Dot1CheckOauth2IdTokenVerificationForJoinOutputVo(
             verificationUid,
@@ -2248,7 +2227,6 @@ class C10Service1TkV1AuthService(
                 oauth2Verification.uid!!
             )
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else { // 코드 불일치
@@ -2325,7 +2303,6 @@ class C10Service1TkV1AuthService(
             SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -2413,10 +2390,11 @@ class C10Service1TkV1AuthService(
         // 입력 코드와 발급된 코드와의 매칭
         val codeMatched = emailVerification.verificationSecret == verificationCode
 
-        if (codeMatched) { // 코드 일치
-            httpServletResponse.setHeader("api-result-code", "")
+        if (codeMatched) {
+            // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-        } else { // 코드 불일치
+        } else {
+            // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
         }
@@ -2505,7 +2483,6 @@ class C10Service1TkV1AuthService(
                 SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
             }
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else { // 코드 불일치
@@ -2606,10 +2583,11 @@ class C10Service1TkV1AuthService(
         // 입력 코드와 발급된 코드와의 매칭
         val codeMatched = phoneNumberVerification.verificationSecret == verificationCode
 
-        if (codeMatched) { // 코드 일치
-            httpServletResponse.setHeader("api-result-code", "")
+        if (codeMatched) {
+            // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-        } else { // 코드 불일치
+        } else {
+            // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
         }
@@ -2706,7 +2684,6 @@ class C10Service1TkV1AuthService(
                 SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
             }
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else { // 코드 불일치
@@ -2742,7 +2719,6 @@ class C10Service1TkV1AuthService(
             )
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api29GetMyEmailListOutputVo(
             emailList
@@ -2775,7 +2751,6 @@ class C10Service1TkV1AuthService(
             )
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api30GetMyPhoneNumberListOutputVo(
             phoneNumberList
@@ -2808,7 +2783,6 @@ class C10Service1TkV1AuthService(
             )
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api31GetMyOauth2ListOutputVo(
             myOAuth2List
@@ -2866,7 +2840,6 @@ class C10Service1TkV1AuthService(
             null
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api32SendEmailVerificationForAddNewEmailOutputVo(
             memberRegisterEmailVerificationData.uid!!,
@@ -2918,10 +2891,11 @@ class C10Service1TkV1AuthService(
         // 입력 코드와 발급된 코드와의 매칭
         val codeMatched = emailVerification.verificationSecret == verificationCode
 
-        if (codeMatched) { // 코드 일치
-            httpServletResponse.setHeader("api-result-code", "")
+        if (codeMatched) {
+            // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-        } else { // 코드 불일치
+        } else {
+            // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
         }
@@ -2995,7 +2969,6 @@ class C10Service1TkV1AuthService(
                 db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
             }
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return C10Service1TkV1AuthController.Api34AddNewEmailOutputVo(
                 memberEmailData.uid!!
@@ -3066,7 +3039,6 @@ class C10Service1TkV1AuthService(
                 db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
             }
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else {
@@ -3136,7 +3108,6 @@ class C10Service1TkV1AuthService(
             throw Exception()
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api36SendPhoneVerificationForAddNewPhoneNumberOutputVo(
             memberAddPhoneNumberVerificationData.uid!!,
@@ -3187,10 +3158,11 @@ class C10Service1TkV1AuthService(
         }
 
         // 입력 코드와 발급된 코드와의 매칭
-        if (phoneNumberVerification.verificationSecret == verificationCode) { // 코드 일치
-            httpServletResponse.setHeader("api-result-code", "")
+        if (phoneNumberVerification.verificationSecret == verificationCode) {
+            // 코드 일치
             httpServletResponse.status = HttpStatus.OK.value()
-        } else { // 코드 불일치
+        } else {
+            // 코드 불일치
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "3")
         }
@@ -3266,7 +3238,6 @@ class C10Service1TkV1AuthService(
                 db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
             }
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return C10Service1TkV1AuthController.Api38AddNewPhoneNumberOutputVo(
                 memberPhoneData.uid!!
@@ -3336,7 +3307,6 @@ class C10Service1TkV1AuthService(
                 db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
             }
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else {
@@ -3452,7 +3422,6 @@ class C10Service1TkV1AuthService(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -3519,7 +3488,6 @@ class C10Service1TkV1AuthService(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -3576,7 +3544,6 @@ class C10Service1TkV1AuthService(
             // 로그인 정보 지우기
             db1RaillyLinkerCompanyService1MemberOauth2LoginDataRepository.deleteById(myOAuth2Vo.uid!!)
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         } else {
@@ -3623,7 +3590,6 @@ class C10Service1TkV1AuthService(
         // 회원탈퇴 처리
         db1RaillyLinkerCompanyService1MemberDataRepository.deleteById(memberData.uid!!)
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -3655,7 +3621,6 @@ class C10Service1TkV1AuthService(
             )
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api43GetMyProfileListOutputVo(
             myProfileList
@@ -3689,7 +3654,6 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api44GetMyFrontProfileOutputVo(
             myProfile
@@ -3722,7 +3686,6 @@ class C10Service1TkV1AuthService(
             memberData.frontService1MemberProfileData = null
             db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         }
@@ -3746,7 +3709,6 @@ class C10Service1TkV1AuthService(
         memberData.frontService1MemberProfileData = selectedProfile
         db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -3783,7 +3745,6 @@ class C10Service1TkV1AuthService(
             db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -3861,7 +3822,6 @@ class C10Service1TkV1AuthService(
             db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api47AddNewProfileOutputVo(
             profileData.uid!!,
@@ -3898,7 +3858,6 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             InputStreamResource(Files.newInputStream(serverFilePathObject)),
@@ -3938,7 +3897,6 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api49GetMyFrontEmailOutputVo(
             myEmail
@@ -3971,7 +3929,6 @@ class C10Service1TkV1AuthService(
             memberData.frontService1MemberEmailData = null
             db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         }
@@ -3995,7 +3952,6 @@ class C10Service1TkV1AuthService(
         memberData.frontService1MemberEmailData = selectedEmail
         db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -4026,7 +3982,6 @@ class C10Service1TkV1AuthService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C10Service1TkV1AuthController.Api51GetMyFrontPhoneNumberOutputVo(
             myPhone
@@ -4063,7 +4018,6 @@ class C10Service1TkV1AuthService(
             memberData.frontService1MemberPhoneData = null
             db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
-            httpServletResponse.setHeader("api-result-code", "")
             httpServletResponse.status = HttpStatus.OK.value()
             return
         }
@@ -4087,7 +4041,6 @@ class C10Service1TkV1AuthService(
         memberData.frontService1MemberPhoneData = selectedPhone
         db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 }

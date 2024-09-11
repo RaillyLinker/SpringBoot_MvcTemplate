@@ -85,7 +85,6 @@ class C5Service1TkV1MediaResourceProcessService(
             inputVo.imageType
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         httpServletResponse.setHeader("Content-Disposition", "attachment; filename=\"$resultFileName\"")
 
@@ -134,7 +133,6 @@ class C5Service1TkV1MediaResourceProcessService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -183,7 +181,6 @@ class C5Service1TkV1MediaResourceProcessService(
             )
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -221,7 +218,6 @@ class C5Service1TkV1MediaResourceProcessService(
         )
         fileInputStream.close()
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             InputStreamResource(ByteArrayInputStream(resizedImageByteArray)),
@@ -270,7 +266,6 @@ class C5Service1TkV1MediaResourceProcessService(
         // 사인 이미지를 파일로 저장
         ImageIO.write(signBufferedImage, "png", fileTargetPath.toFile())
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 }

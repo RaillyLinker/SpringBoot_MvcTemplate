@@ -39,7 +39,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 responseObj.body()!!
             } else {
@@ -65,7 +64,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 responseObj.body()!!
             } else {
@@ -91,7 +89,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 responseObj.body()!!
             } else {
@@ -128,7 +125,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
                 C3Service1TkV1RequestFromServerTestController.Api4GetRequestTestOutputVo(
@@ -168,7 +164,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
                 C3Service1TkV1RequestFromServerTestController.Api5GetRequestTestWithPathParamOutputVo(
@@ -211,7 +206,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
                 C3Service1TkV1RequestFromServerTestController.Api6PostRequestTestWithApplicationJsonTypeRequestBodyOutputVo(
@@ -261,7 +255,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
                 C3Service1TkV1RequestFromServerTestController.Api7PostRequestTestWithFormTypeRequestBodyOutputVo(
@@ -337,7 +330,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
                 C3Service1TkV1RequestFromServerTestController.Api8PostRequestTestWithMultipartFormTypeRequestBodyOutputVo(
@@ -428,7 +420,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
                 C3Service1TkV1RequestFromServerTestController.Api9PostRequestTestWithMultipartFormTypeRequestBody2OutputVo(
@@ -498,7 +489,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
                 C3Service1TkV1RequestFromServerTestController.Api10PostRequestTestWithMultipartFormTypeRequestBody3OutputVo(
@@ -536,7 +526,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
             } else {
                 // 반환될 일 없는 상태 = 서버측 에러
@@ -561,7 +550,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
             } else if (responseObj.code() == 204) {
                 // api-result-code 확인 필요
@@ -615,7 +603,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
             } else {
                 // 반환될 일 없는 상태 = 서버측 에러
@@ -639,7 +626,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 responseObj.body()!!
             } else {
@@ -665,7 +651,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 responseObj.body()!!
             } else {
@@ -691,7 +676,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
             return if (responseObj.code() == 200) {
                 // 정상 동작
-                httpServletResponse.setHeader("api-result-code", "")
                 httpServletResponse.status = HttpStatus.OK.value()
                 val responseBody = responseObj.body()!!
                 C3Service1TkV1RequestFromServerTestController.Api16AsynchronousResponseTestOutputVo(
@@ -767,7 +751,6 @@ class C3Service1TkV1RequestFromServerTestService(
             }
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -836,7 +819,6 @@ class C3Service1TkV1RequestFromServerTestService(
 
         classLogger.info(webSocket.toString())
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 

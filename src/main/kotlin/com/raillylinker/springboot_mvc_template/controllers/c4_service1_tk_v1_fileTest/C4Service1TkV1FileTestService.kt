@@ -81,7 +81,6 @@ class C4Service1TkV1FileTestService(
             saveDirectoryPath.resolve(savedFileName).normalize()
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
 
         return C4Service1TkV1FileTestController.Api1UploadToServerTestOutputVo("http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/$savedFileName")
@@ -111,7 +110,6 @@ class C4Service1TkV1FileTestService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             InputStreamResource(Files.newInputStream(serverFilePathObject)),
@@ -165,7 +163,6 @@ class C4Service1TkV1FileTestService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -199,7 +196,6 @@ class C4Service1TkV1FileTestService(
             }
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -228,7 +224,6 @@ class C4Service1TkV1FileTestService(
 
         CustomUtil.unzipFile(filePathString, fileTargetPath)
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -244,7 +239,6 @@ class C4Service1TkV1FileTestService(
 
         val file: Resource = ClassPathResource("static/for_c4_n5_for_client_side_image_test/client_image_test.jpg")
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
             file,
@@ -299,7 +293,6 @@ class C4Service1TkV1FileTestService(
             }
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
 
         return C4Service1TkV1FileTestController.Api6AwsS3UploadTestOutputVo(uploadedFileFullUrl)
@@ -311,7 +304,6 @@ class C4Service1TkV1FileTestService(
         httpServletResponse: HttpServletResponse,
         uploadFileName: String
     ): C4Service1TkV1FileTestController.Api7GetFileContentToStringTestOutputVo? {
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
 
         return C4Service1TkV1FileTestController.Api7GetFileContentToStringTestOutputVo(
@@ -339,7 +331,6 @@ class C4Service1TkV1FileTestService(
             deleteFileName
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 }

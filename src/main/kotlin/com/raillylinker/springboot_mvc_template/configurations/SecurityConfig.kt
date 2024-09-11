@@ -47,16 +47,6 @@ class SecurityConfig(
     private val db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
 ) {
     // <멤버 변수 공간>
-    companion object {
-        // (Swagger 에 표시될 Token API 401 api-result-code 설명)
-        // !!!아래에 작성할 Token API 에 대한 인증 필터는 아래 api-result-code 를 반환하도록 설계해야 합니다.!!!
-        // api-result-code 헤더키에 대한 설명
-        const val DESCRIPTION_FOR_UNAUTHORIZED_TOKEN_API_RESULT_CODE =
-            "(Response Code 반환 원인) - Nullable\n\n" +
-                    "반환 안됨 : 인증 토큰을 입력하지 않았습니다.\n\n" +
-                    "1 : Request Header 에 Authorization 키로 넣어준 토큰이 올바르지 않습니다. (재 로그인 필요)\n\n" +
-                    "2 : Request Header 에 Authorization 키로 넣어준 토큰의 유효시간이 만료되었습니다. (Refresh Token 으로 재발급 필요)\n\n"
-    }
 
 
     // ---------------------------------------------------------------------------------------------
@@ -572,8 +562,6 @@ class SecurityConfig(
                     }
                 }
 
-                // 올바르지 않은 Authorization Token
-                response.setHeader("api-result-code", "1")
                 // 다음 필터 실행
                 filterChain.doFilter(request, response)
                 return
@@ -626,9 +614,6 @@ class SecurityConfig(
             }
 
             if (forceExpired) {
-                // 강제 토큰 만료
-                response.setHeader("api-result-code", "2")
-
                 // 다음 필터 실행
                 filterChain.doFilter(request, response)
                 return
@@ -636,9 +621,6 @@ class SecurityConfig(
 
             // 토큰 검증
             if (accessToken == "") {
-                // 액세스 토큰이 비어있음 (올바르지 않은 Authorization Token)
-                response.setHeader("api-result-code", "1")
-
                 // 다음 필터 실행
                 filterChain.doFilter(request, response)
                 return
@@ -668,9 +650,6 @@ class SecurityConfig(
                             AUTH_JWT_SECRET_KEY_STRING
                         ) // 시크릿 검증이 무효 = 위변조 된 토큰
                     ) {
-                        // 올바르지 않은 Authorization Token
-                        response.setHeader("api-result-code", "1")
-
                         // 다음 필터 실행
                         filterChain.doFilter(request, response)
                         return
@@ -679,9 +658,6 @@ class SecurityConfig(
                     // 토큰 만료 검증
                     val jwtRemainSeconds = JwtTokenUtil.getRemainSeconds(accessToken)
                     if (jwtRemainSeconds <= 0L) {
-                        // 토큰이 만료됨
-                        response.setHeader("api-result-code", "2")
-
                         // 다음 필터 실행
                         filterChain.doFilter(request, response)
                         return
@@ -716,9 +692,6 @@ class SecurityConfig(
                 }
 
                 else -> {
-                    // 올바르지 않은 Authorization Token
-                    response.setHeader("api-result-code", "1")
-
                     // 다음 필터 실행
                     filterChain.doFilter(request, response)
                     return

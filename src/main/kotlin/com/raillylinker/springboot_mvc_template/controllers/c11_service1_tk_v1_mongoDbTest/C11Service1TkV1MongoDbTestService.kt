@@ -41,7 +41,6 @@ class C11Service1TkV1MongoDbTestService(
             )
         )
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C11Service1TkV1MongoDbTestController.Api1InsertDocumentTestOutputVo(
             resultCollection.uid!!.toString(),
@@ -58,7 +57,6 @@ class C11Service1TkV1MongoDbTestService(
     fun api2DeleteAllDocumentTest(httpServletResponse: HttpServletResponse) {
         mdb1TestRepository.deleteAll()
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -74,7 +72,6 @@ class C11Service1TkV1MongoDbTestService(
 
         mdb1TestRepository.deleteById(id)
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -98,7 +95,6 @@ class C11Service1TkV1MongoDbTestService(
             )
         }
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
         return C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo(
             resultVoList
@@ -122,7 +118,6 @@ class C11Service1TkV1MongoDbTestService(
 
         throw Exception("Transaction Rollback Test!")
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 
@@ -142,7 +137,6 @@ class C11Service1TkV1MongoDbTestService(
 
         throw Exception("No Transaction Exception Test!")
 
-        httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
     }
 }
