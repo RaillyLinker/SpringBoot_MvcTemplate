@@ -646,4 +646,45 @@ interface Db1_Native_Repository : JpaRepository<Db1_Template_TestData, Long> {
         var latitude: Double
         var longitude: Double
     }
+
+
+    ////
+    @Query(
+        nativeQuery = true,
+        value = """
+            SELECT 
+            service1_member_lock_history.uid AS uid, 
+            service1_member_lock_history.lock_reason_code AS lockReasonCode, 
+            service1_member_lock_history.lock_reason AS lockReason, 
+            service1_member_lock_history.lock_before AS lockBefore, 
+            service1_member_lock_history.early_release AS earlyRelease, 
+            service1_member_lock_history.row_create_date AS rowCreateDate, 
+            service1_member_lock_history.row_update_date AS rowUpdateDate 
+            FROM 
+            railly_linker_company.service1_member_lock_history AS service1_member_lock_history 
+            WHERE 
+            service1_member_lock_history.uid = :service1MemberUid AND 
+            service1_member_lock_history.early_release IS NULL AND 
+            (
+                service1_member_lock_history.lock_before IS NULL OR 
+                service1_member_lock_history.lock_before > :currentTime 
+            )
+            ORDER BY 
+            service1_member_lock_history.row_create_date DESC
+            """
+    )
+    fun findAllNowActivateMemberLockInfo(
+        @Param(value = "service1MemberUid") service1MemberUid: Long,
+        @Param("currentTime") currentTime: LocalDateTime
+    ): List<FindAllNowActivateMemberLockInfoOutputVo>
+
+    interface FindAllNowActivateMemberLockInfoOutputVo {
+        var uid: Long
+        var lockReasonCode: Byte
+        var lockReason: String
+        var lockBefore: LocalDateTime?
+        var earlyRelease: LocalDateTime
+        var rowCreateDate: LocalDateTime
+        var rowUpdateDate: LocalDateTime
+    }
 }

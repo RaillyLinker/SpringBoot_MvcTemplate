@@ -2,7 +2,10 @@ package com.raillylinker.springboot_mvc_template.data_sources.database_sources.d
 
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberData
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 // 주의 : NativeRepository 의 반환값으로 기본 Entity 객체는 매핑되지 않으므로 OutputVo Interface 를 작성하여 사용할것.
 // sql 문은 한줄로 표기 할 것을 권장. (간편하게 복사해서 사용하며 디버그하기 위하여)
@@ -19,4 +22,42 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface Db0_Native_Repository : JpaRepository<Db0_RaillyLinkerCompany_CompanyMemberData, Long> {
+    @Query(
+        nativeQuery = true,
+        value = """
+            SELECT 
+            company_member_lock_history.uid AS uid, 
+            company_member_lock_history.lock_reason_code AS lockReasonCode, 
+            company_member_lock_history.lock_reason AS lockReason, 
+            company_member_lock_history.lock_before AS lockBefore, 
+            company_member_lock_history.early_release AS earlyRelease, 
+            company_member_lock_history.row_create_date AS rowCreateDate, 
+            company_member_lock_history.row_update_date AS rowUpdateDate 
+            FROM 
+            railly_linker_company.company_member_lock_history AS company_member_lock_history 
+            WHERE 
+            company_member_lock_history.uid = :companyMemberUid AND 
+            company_member_lock_history.early_release IS NULL AND 
+            (
+                company_member_lock_history.lock_before IS NULL OR 
+                company_member_lock_history.lock_before > :currentTime 
+            )
+            ORDER BY 
+            company_member_lock_history.row_create_date DESC
+            """
+    )
+    fun findAllNowActivateMemberLockInfo(
+        @Param(value = "companyMemberUid") companyMemberUid: Long,
+        @Param("currentTime") currentTime: LocalDateTime
+    ): List<FindAllNowActivateMemberLockInfoOutputVo>
+
+    interface FindAllNowActivateMemberLockInfoOutputVo {
+        var uid: Long
+        var lockReasonCode: Byte
+        var lockReason: String
+        var lockBefore: LocalDateTime?
+        var earlyRelease: LocalDateTime
+        var rowCreateDate: LocalDateTime
+        var rowUpdateDate: LocalDateTime
+    }
 }

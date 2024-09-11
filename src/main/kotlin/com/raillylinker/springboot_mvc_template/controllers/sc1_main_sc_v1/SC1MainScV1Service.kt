@@ -7,9 +7,8 @@ import com.raillylinker.springboot_mvc_template.configurations.database_configs.
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1MainScV1Service.Api2ViewModel.MemberInfo
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1MainScV1Service.Api3ViewModel.LockInfo
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberData_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberData
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberLockHistory
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_Native_Repository
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
@@ -65,8 +64,8 @@ class SC1MainScV1Service(
     private val sessionRegistry: SessionRegistry,
 
     // (Database Repository)
-    private val db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository,
-    private val db0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
+    private val db0NativeRepository: Db0_Native_Repository,
+    private val db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -178,26 +177,24 @@ class SC1MainScV1Service(
         if (lock == null) {
             lockInfo = null
         } else {
-            val lockEntity: Db0_RaillyLinkerCompany_CompanyMemberLockHistory?
             val memberEntity = db0RaillyLinkerCompanyCompanyMemberDataRepository.findById(lock).get()
-            val lockList = db0RaillyLinkerCompanyCompanyMemberLockHistoryRepository.findAllNowLocks(
-                memberEntity, LocalDateTime.now()
+            val lockList = db0NativeRepository.findAllNowActivateMemberLockInfo(
+                memberEntity.uid!!, LocalDateTime.now()
             )
-            lockEntity = if (lockList.isEmpty()) {
-                null
-            } else {
-                lockList[0]
-            }
 
             lockInfo = LockInfo(
-                if (lockEntity == null) {
+                if (lockList.isEmpty()) {
                     null
                 } else {
                     LockInfo.LockDesc(
                         memberEntity.accountId,
-                        lockEntity.rowCreateDate!!.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")),
-                        lockEntity.lockBefore.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")),
-                        lockEntity.lockReason
+                        lockList[0].rowCreateDate.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")),
+                        if (lockList[0].lockBefore == null) {
+                            "무기한"
+                        } else {
+                            lockList[0].lockBefore!!.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"))
+                        },
+                        lockList[0].lockReason
                     )
                 }
             )
@@ -387,7 +384,10 @@ class SC1MainScV1Service(
 
 
     ////
-    fun api7DownloadProjectLogFile(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
+    fun api7DownloadProjectLogFile(
+        httpServletResponse: HttpServletResponse,
+        fileName: String
+    ): ResponseEntity<Resource>? {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 

@@ -2,10 +2,10 @@ package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig.UserDetailsServiceMainSc.Companion.getMemberEntity
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtil
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberData_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberRoleData_Repository
 import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_Native_Repository
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -228,7 +228,7 @@ class SecurityConfig(
     class UserDetailsServiceMainSc(
         private val db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository,
         private val db0RaillyLinkerCompanyCompanyMemberRoleDataRepository: Db0_RaillyLinkerCompany_CompanyMemberRoleData_Repository,
-        private val db0RaillyLinkerCompanyCompanyMemberLockHistoryRepository: Db0_RaillyLinkerCompany_CompanyMemberLockHistory_Repository
+        private val db0NativeRepository: Db0_Native_Repository
     ) : UserDetailsService {
         companion object {
             fun getMemberEntity(
@@ -278,8 +278,8 @@ class SecurityConfig(
 
             // 정지 여부 파악
             val lockList =
-                db0RaillyLinkerCompanyCompanyMemberLockHistoryRepository.findAllNowLocks(
-                    memberDataEntity,
+                db0NativeRepository.findAllNowActivateMemberLockInfo(
+                    memberDataEntity.uid!!,
                     LocalDateTime.now()
                 )
 
