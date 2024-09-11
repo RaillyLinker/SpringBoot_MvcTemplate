@@ -29,6 +29,7 @@ interface Db0_Native_Repository : JpaRepository<Db0_RaillyLinkerCompany_CompanyM
             company_member_lock_history.uid AS uid, 
             company_member_lock_history.lock_reason_code AS lockReasonCode, 
             company_member_lock_history.lock_reason AS lockReason, 
+            company_member_lock_history.lock_start AS lockStart, 
             company_member_lock_history.lock_before AS lockBefore, 
             company_member_lock_history.early_release AS earlyRelease, 
             company_member_lock_history.row_create_date AS rowCreateDate, 
@@ -37,11 +38,15 @@ interface Db0_Native_Repository : JpaRepository<Db0_RaillyLinkerCompany_CompanyM
             railly_linker_company.company_member_lock_history AS company_member_lock_history 
             WHERE 
             company_member_lock_history.uid = :companyMemberUid AND 
-            company_member_lock_history.early_release IS NULL AND 
+            (
+                company_member_lock_history.early_release IS NULL OR 
+                company_member_lock_history.early_release > :currentTime 
+            ) AND 
             (
                 company_member_lock_history.lock_before IS NULL OR 
                 company_member_lock_history.lock_before > :currentTime 
-            )
+            ) AND 
+            company_member_lock_history.lock_start <= :currentTime 
             ORDER BY 
             company_member_lock_history.row_create_date DESC
             """
@@ -55,6 +60,7 @@ interface Db0_Native_Repository : JpaRepository<Db0_RaillyLinkerCompany_CompanyM
         var uid: Long
         var lockReasonCode: Byte
         var lockReason: String
+        var lockStart: LocalDateTime
         var lockBefore: LocalDateTime?
         var earlyRelease: LocalDateTime
         var rowCreateDate: LocalDateTime

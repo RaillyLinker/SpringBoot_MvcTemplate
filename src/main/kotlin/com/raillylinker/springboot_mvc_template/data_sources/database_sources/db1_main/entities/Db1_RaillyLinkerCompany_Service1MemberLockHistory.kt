@@ -18,8 +18,12 @@ class Db1_RaillyLinkerCompany_Service1MemberLockHistory(
     @Comment("멤버 고유번호(railly_linker_company.service1_member_data.uid)")
     var service1MemberData: Db1_RaillyLinkerCompany_Service1MemberData,
 
+    @Column(name = "lock_start", nullable = false, columnDefinition = "DATETIME(3)")
+    @Comment("계정 정지 시작 시간")
+    var lockStart: LocalDateTime,
+
     @Column(name = "lock_before", nullable = true, columnDefinition = "DATETIME(3)")
-    @Comment("계정 정지 만료 시간 (이 시간이 지나기 전까지 계정 정지 상태, null 이라면 무기한 정지)")
+    @Comment("계정 정지 만료 시간 (이 시간이 지나기 전까지 계정 정지 상태, null 이라면 무기한 정지, 한번 정해진다면 수정하지 마세요.)")
     var lockBefore: LocalDateTime?,
 
     @Column(name = "lock_reason_code", nullable = false, columnDefinition = "TINYINT UNSIGNED")
