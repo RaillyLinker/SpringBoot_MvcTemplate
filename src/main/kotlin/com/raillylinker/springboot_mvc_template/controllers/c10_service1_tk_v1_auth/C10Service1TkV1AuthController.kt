@@ -314,11 +314,11 @@ class C10Service1TkV1AuthController(
     )
 
     data class Api5Api7Api7Dot1Api9LoginOutputVo(
-        @Schema(description = "로그인 성공 정보 (이 변수가 Null 이 아니라면 lockedOutput 가 Null 입니다.)", required = false)
+        @Schema(description = "로그인 성공 정보 (이 변수가 Null 이 아니라면 lockedOutputList 가 Null 입니다.)", required = false)
         @JsonProperty("loggedInOutput")
         val loggedInOutput: LoggedInOutput?,
 
-        @Schema(description = "계정 잠김 정보 리스트 (이 변수가 Null 이 아니라면 loggedInOutput 가 Null 입니다.)", required = false)
+        @Schema(description = "계정 잠김 정보 리스트 (이 변수가 Null 이 아니라면 loggedInOutput 이 Null 입니다.)", required = false)
         @JsonProperty("lockedOutputList")
         val lockedOutputList: List<LockedOutput>?
     ) {

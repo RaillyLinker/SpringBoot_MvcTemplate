@@ -5,3 +5,4 @@
 - README 설명 추가
 
 - 코드 전수 재검사 및 재테스트(계정 처리 관련 변경 부분을 클라이언트에 반영하기, c10 확인)
+- SecurityConfig 의 FORCE_EXPIRE_AUTHORIZATION_SET 삭제 코드를 함수로 떼어내서 코드 응집(3개 구역 전부 통합)

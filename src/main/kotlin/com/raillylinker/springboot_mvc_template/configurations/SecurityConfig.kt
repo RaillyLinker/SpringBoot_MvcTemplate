@@ -81,7 +81,7 @@ class SecurityConfig(
 
     // !!!경로별 적용할 Security 설정 Bean 작성하기!!!
 
-    // [모든 리퀘스트의 기본 시큐리티 설정 = Session-Cookie 인증 사용]
+    // [개발 멤버 시큐리티 설정 = Session-Cookie 인증 사용]
     @Bean
     @Order(0)
     fun securityFilterChainMainSc(
