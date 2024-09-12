@@ -706,7 +706,7 @@ class C3Service1TkV1RequestFromServerTestService(
         var count = 0
 
         // SSE 구독 연결
-        sseClient.connectAsync(
+        sseClient.connect(
             5000,
             object : SseClient.ListenerCallback {
                 override fun onConnectRequestFirstTime(sse: SseClient, originalRequest: Request) {

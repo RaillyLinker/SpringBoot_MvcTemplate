@@ -3,8 +3,6 @@ package com.raillylinker.springboot_mvc_template.custom_classes
 import okhttp3.*
 import okio.BufferedSource
 import java.io.IOException
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 // [SseClient 클래스]
@@ -12,9 +10,6 @@ class SseClient(
     private val requestUrl: String
 ) {
     // <멤버 변수 공간>
-    // (스레드 풀)
-    private val executorService: ExecutorService = Executors.newCachedThreadPool()
-
     private var originalRequest: Request? = null
     private var callObject: Call? = null
     private var lastEventId: String? = null
@@ -25,81 +20,79 @@ class SseClient(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    // (SSE 구독 연결 - 비동기)
-    fun connectAsync(
+    // (SSE 구독 연결)
+    fun connect(
         readTimeOutMs: Long, // 수신 타임아웃 밀리초
         listenerCallback: ListenerCallback // 리스너 콜백
     ) {
         // 비동기 실행
-        executorService.execute {
-            // request 객체 생성
-            originalRequest = Request.Builder().url(requestUrl).build()
+        // request 객체 생성
+        originalRequest = Request.Builder().url(requestUrl).build()
 
-            // request 객체 첫 설정 시점을 멤버에게 패스
-            listenerCallback.onConnectRequestFirstTime(this, originalRequest!!)
+        // request 객체 첫 설정 시점을 멤버에게 패스
+        listenerCallback.onConnectRequestFirstTime(this, originalRequest!!)
 
-            val okHttpClient = OkHttpClient
-                .Builder()
-                .readTimeout(readTimeOutMs, TimeUnit.MILLISECONDS)
-                .retryOnConnectionFailure(true)
-                .build()
+        val okHttpClient = OkHttpClient
+            .Builder()
+            .readTimeout(readTimeOutMs, TimeUnit.MILLISECONDS)
+            .retryOnConnectionFailure(true)
+            .build()
 
-            callObject = okHttpClient.newCall(
-                // SSE 연결에 필요한 request 객체 설정
-                originalRequest!!.newBuilder()
-                    .header("Accept-Encoding", "")
-                    .header("Accept", "text/event-stream")
-                    .header("Cache-Control", "no-cache").build()
-            ).apply {
-                // SSE 구독 요청하기
-                this.enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
+        callObject = okHttpClient.newCall(
+            // SSE 연결에 필요한 request 객체 설정
+            originalRequest!!.newBuilder()
+                .header("Accept-Encoding", "")
+                .header("Accept", "text/event-stream")
+                .header("Cache-Control", "no-cache").build()
+        ).apply {
+            // SSE 구독 요청하기
+            this.enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    // 구독 요청 실패시
+                    // 재요청 반복
+                    if (!retry(readTimeOutMs, okHttpClient, listenerCallback, e, null)) {
+                        listenerCallback.onDisconnected(this@SseClient)
+                        disconnect()
+                    }
+                }
+
+                @Throws(IOException::class)
+                override fun onResponse(call: Call, response: Response) {
+                    if (response.isSuccessful) {
+                        // 구독 요청 성공시
+                        response.body.use { body ->
+                            bufferedSource = body!!.source()
+                            bufferedSource?.timeout()?.timeout(readTimeOutMs, TimeUnit.MILLISECONDS)
+                            listenerCallback.onConnect(this@SseClient, response)
+                            while (true) {
+                                if (callObject == null ||
+                                    callObject!!.isCanceled() ||
+                                    !read(
+                                        readTimeOutMs,
+                                        okHttpClient,
+                                        listenerCallback
+                                    )
+                                ) {
+                                    break
+                                }
+                            }
+                        }
+                    } else {
                         // 구독 요청 실패시
-                        // 재요청 반복
-                        if (!retry(readTimeOutMs, okHttpClient, listenerCallback, e, null)) {
+                        if (!retry(
+                                readTimeOutMs,
+                                okHttpClient,
+                                listenerCallback,
+                                IOException(response.message),
+                                response
+                            )
+                        ) {
                             listenerCallback.onDisconnected(this@SseClient)
                             disconnect()
                         }
                     }
-
-                    @Throws(IOException::class)
-                    override fun onResponse(call: Call, response: Response) {
-                        if (response.isSuccessful) {
-                            // 구독 요청 성공시
-                            response.body.use { body ->
-                                bufferedSource = body!!.source()
-                                bufferedSource?.timeout()?.timeout(readTimeOutMs, TimeUnit.MILLISECONDS)
-                                listenerCallback.onConnect(this@SseClient, response)
-                                while (true) {
-                                    if (callObject == null ||
-                                        callObject!!.isCanceled() ||
-                                        !read(
-                                            readTimeOutMs,
-                                            okHttpClient,
-                                            listenerCallback
-                                        )
-                                    ) {
-                                        break
-                                    }
-                                }
-                            }
-                        } else {
-                            // 구독 요청 실패시
-                            if (!retry(
-                                    readTimeOutMs,
-                                    okHttpClient,
-                                    listenerCallback,
-                                    IOException(response.message),
-                                    response
-                                )
-                            ) {
-                                listenerCallback.onDisconnected(this@SseClient)
-                                disconnect()
-                            }
-                        }
-                    }
-                })
-            }
+                }
+            })
         }
     }
 

@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate
 import java.util.concurrent.TimeUnit
 
 // [RedisType 의 Abstract 클래스]
+// 본 추상 클래스를 상속받은 클래스를 key, value, expireTime 및 Redis 저장, 삭제, 조회 기능 메소드를 가진 클래스로 만들어줍니다.
 abstract class BasicRedisType<ValueVo>(
     private val redisTemplate: RedisTemplate<String, Any>,
     private val tableName: String,
@@ -135,4 +136,10 @@ abstract class BasicRedisType<ValueVo>(
 
     // ---------------------------------------------------------------------------------------------
     // <중첩 클래스 공간>
+    // [RedisType 의 출력값 데이터 클래스]
+    data class RedisTypeKeyValueData<ValueVo>(
+        val key: String, // 멤버가 입력한 키 : 실제 키는 ${groupName:key}
+        val value: ValueVo,
+        val expireTimeMs: Long // 남은 만료 시간 밀리초
+    )
 }
