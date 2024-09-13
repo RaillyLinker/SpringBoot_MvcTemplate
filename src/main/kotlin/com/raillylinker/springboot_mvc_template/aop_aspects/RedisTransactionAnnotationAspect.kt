@@ -74,7 +74,7 @@ class RedisTransactionAnnotationAspect {
 
             //// 함수 실행 전
             proceed = joinPoint.proceed() // 함수 실행
-            //// 함수 실행 후
+            //// 함수 실행 후 = 에러가 없으니 backUpTableVoList 가 무의미해지며 Garbage Collecting
         } catch (e: Exception) {
             // Redis Table 데이터 복원하기
             for (backUpTableVo in backUpTableVoList) {

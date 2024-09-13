@@ -51,7 +51,7 @@ abstract class BasicRedisType<ValueVo>(
             val innerValue = redisTemplate.opsForValue()[innerKey] ?: continue // 값
 
             // 외부적으로 사용되는 Value (Json String 을 테이블 객체로 변환)
-            val valueObject = Gson().fromJson<ValueVo>(
+            val valueObject = Gson().fromJson(
                 innerValue as String, // 해석하려는 json 형식의 String
                 clazz // 파싱할 데이터 객체 타입
             )
@@ -89,7 +89,7 @@ abstract class BasicRedisType<ValueVo>(
             null
         } else {
             // 외부적으로 사용되는 Value (Json String 을 테이블 객체로 변환)
-            val valueObject = Gson().fromJson<ValueVo>(
+            val valueObject = Gson().fromJson(
                 innerValue as String, // 해석하려는 json 형식의 String
                 clazz // 파싱할 데이터 객체 타입
             )

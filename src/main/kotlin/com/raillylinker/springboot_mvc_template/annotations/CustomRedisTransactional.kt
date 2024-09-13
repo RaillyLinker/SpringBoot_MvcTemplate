@@ -1,6 +1,7 @@
 package com.raillylinker.springboot_mvc_template.annotations
 
 // [Redis 트랜젝션 어노테이션]
+// 사용 예시 : @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class CustomRedisTransactional(

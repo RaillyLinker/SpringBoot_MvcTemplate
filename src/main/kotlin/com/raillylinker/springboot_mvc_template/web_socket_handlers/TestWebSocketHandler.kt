@@ -48,7 +48,7 @@ class TestWebSocketHandler : TextWebSocketHandler() {
         webSocketSessionHashMap.remove(webSocketSession.id)
     }
 
-    // (메세지 수신 콜백)
+    // (텍스트 메세지 수신 콜백)
     @Throws(Exception::class)
     override fun handleTextMessage(
         // 메세지를 보낸 클라이언트 세션
