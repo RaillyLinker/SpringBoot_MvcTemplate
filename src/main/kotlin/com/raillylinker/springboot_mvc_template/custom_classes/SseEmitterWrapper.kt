@@ -1,6 +1,8 @@
 package com.raillylinker.springboot_mvc_template.custom_classes
 
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.ConcurrentHashMap
@@ -12,17 +14,7 @@ data class SseEmitterWrapper(
     val sseEmitterTimeMs: Long
 ) {
     // (SSE Emitter 를 고유값과 함께 모아둔 맵)
-    /*
-        map key = EmitterId =
-        "${emitterPublishSequence}_${LocalDateTime.now().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z"))}_${memberUid}"
-        쉽게 말해 (발행시퀀스_현재시간_수신자멤버고유번호(비회원은 -1)) 으로,
-        발행시퀀스, 현재시간 둘이 합쳐 emitter 고유성을 보장하고, 뒤에 붙는 정보들은 필터링을 위한 정보들
-     */
     val emitterMap: ConcurrentHashMap<String, SseEmitter> = ConcurrentHashMap()
-
-    // (발행 시퀀스)
-    // emitter 고유값으로 사용되며, 유한한 값이지만, 현재 날짜와 같이 사용되므로 고유성을 보장함
-    var emitterPublishSequence: Long = 0L
 
     // (발행 이벤트 맵)
     /*
@@ -34,13 +26,26 @@ data class SseEmitterWrapper(
     val emitterEventMap: ConcurrentHashMap<String, ArrayList<Pair<String, SseEmitter.SseEventBuilder>>> =
         ConcurrentHashMap()
 
+    // (발행 시퀀스)
+    // emitter 고유성 보장을 위한 값으로 사용되며, 유한한 값이지만, 현재 날짜와 같이 사용됩니다.
+    private var emitterPublishSequence: Long = 0L
+
 
     // (SSE Emitter 객체 발행)
     // !! 주의 : 함수 사용시 꼭 이 클래스 멤버변수인 emitterMapSemaphore, emitterEventMapSemaphore 로 감쌀것. !!
     fun getSseEmitter(
-        sseEmitterId: String,
-        lastSseEventId: String? // 마지막으로 클라이언트가 수신했던 이벤트 아이디 (없으면 null)){}
+        // 멤버고유번호(비회원은 -1)
+        memberUid: Long,
+        // 마지막으로 클라이언트가 수신했던 이벤트 아이디 (없으면 null)){}
+        lastSseEventId: String?
     ): SseEmitter {
+        // 수신 객체 아이디 (발행총개수_발행일_멤버고유번호(비회원은 -1))
+        val sseEmitterId =
+            "${emitterPublishSequence++}_${
+                LocalDateTime.now().atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z"))
+            }_$memberUid"
+
         // 수신 객체
         val sseEmitter = SseEmitter(sseEmitterTimeMs)
         sseEmitter.onTimeout { // 타임아웃 시 실행

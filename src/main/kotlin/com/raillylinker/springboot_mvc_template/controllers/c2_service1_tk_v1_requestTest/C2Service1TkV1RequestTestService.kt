@@ -690,17 +690,8 @@ class C2Service1TkV1RequestTestService(
     // api20 에서 발급한 Emitter 객체
     private val api20SseEmitterWrapperMbr = SseEmitterWrapper(1000L * 10L)
     fun api20SseTestSubscribe(httpServletResponse: HttpServletResponse, lastSseEventId: String?): SseEmitter? {
-        val emitterPublishCount = api20SseEmitterWrapperMbr.emitterPublishSequence++
-
-        // 수신 객체 아이디 (발행총개수_발행일_멤버고유번호(비회원은 -1))
-        val sseEmitterId =
-            "${emitterPublishCount}_${
-                LocalDateTime.now().atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z"))
-            }_-1"
-
         // 수신 객체
-        val sseEmitter = api20SseEmitterWrapperMbr.getSseEmitter(sseEmitterId, lastSseEventId)
+        val sseEmitter = api20SseEmitterWrapperMbr.getSseEmitter(-1, lastSseEventId)
 
         httpServletResponse.status = HttpStatus.OK.value()
         return sseEmitter
