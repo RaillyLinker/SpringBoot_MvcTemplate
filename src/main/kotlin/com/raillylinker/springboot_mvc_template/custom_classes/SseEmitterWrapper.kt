@@ -1,11 +1,9 @@
 package com.raillylinker.springboot_mvc_template.custom_classes
 
-import com.raillylinker.springboot_mvc_template.custom_objects.SseEmitterUtil
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
-import java.util.concurrent.Semaphore
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.ArrayList
 
 // [SseEmitter 래핑 클래스]
@@ -20,15 +18,11 @@ data class SseEmitterWrapper(
         쉽게 말해 (발행시퀀스_현재시간_수신자멤버고유번호(비회원은 -1)) 으로,
         발행시퀀스, 현재시간 둘이 합쳐 emitter 고유성을 보장하고, 뒤에 붙는 정보들은 필터링을 위한 정보들
      */
-    val emitterMap: HashMap<String, SseEmitter> = hashMapOf()
+    val emitterMap: ConcurrentHashMap<String, SseEmitter> = ConcurrentHashMap()
 
     // (발행 시퀀스)
     // emitter 고유값으로 사용되며, 유한한 값이지만, 현재 날짜와 같이 사용되므로 고유성을 보장함
     var emitterPublishSequence: Long = 0L
-
-    // (Emitter 관련 세마포어)
-    // emitterMap, emitterPublishSequence 를 조회, 수정시에는 꼭 세마포어로 뮤텍스 할 것.
-    val emitterMapSemaphore: Semaphore = Semaphore(1)
 
     // (발행 이벤트 맵)
     /*
@@ -37,11 +31,8 @@ data class SseEmitterWrapper(
          발행한 모든 이벤트를 기록하는 맵이며, 키는 emitterMap 과 동일한 고유값을 사용.
          값의 map 은 이벤트 발행시간이과 SSE Event Builder 객체의 쌍으로 이루어짐
      */
-    val emitterEventMap: HashMap<String, ArrayList<Pair<String, SseEmitter.SseEventBuilder>>> = hashMapOf()
-
-    // (이벤트 관련 세마포어)
-    // emitterEventMap 를 조회, 수정시에는 꼭 세마포어로 뮤텍스 할 것.
-    val emitterEventMapSemaphore: Semaphore = Semaphore(1)
+    val emitterEventMap: ConcurrentHashMap<String, ArrayList<Pair<String, SseEmitter.SseEventBuilder>>> =
+        ConcurrentHashMap()
 
 
     // (SSE Emitter 객체 발행)
@@ -69,10 +60,15 @@ data class SseEmitterWrapper(
         emitterMap[sseEmitterId] = sseEmitter
 
         // 503 에러를 방지하기 위해, 처음 이미터 생성시엔 빈 메세지라도 발송해야함
-        SseEmitterUtil.sendSseEvent(
-            sseEmitter,
-            SseEmitterUtil.makeSseEventBuilder("system", null, "SSE Connected!")
-        )
+        try {
+            sseEmitter.send(
+                SseEmitter
+                    .event()
+                    .name("system")
+                    .data("SSE Connected!")
+            )
+        } catch (_: Exception) {
+        }
 
         if (lastSseEventId != null) { // 첫번째 요청이 아님 (에러로 인해 lastSseEventId 다음의 이벤트를 못 받은 상황)
             val lastSseEventIdSplit = lastSseEventId.split("/")
@@ -109,7 +105,10 @@ data class SseEmitterWrapper(
                         // eventDate 은 lastEventDate 이후 날짜
                         newEventList.add(lastEvent)
 
-                        SseEmitterUtil.sendSseEvent(sseEmitter, event)
+                        try {
+                            sseEmitter.send(event)
+                        } catch (_: Exception) {
+                        }
                     }
                 }
 

@@ -3,7 +3,6 @@ package com.raillylinker.springboot_mvc_template.controllers.c2_service1_tk_v1_r
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.raillylinker.springboot_mvc_template.custom_classes.SseEmitterWrapper
-import com.raillylinker.springboot_mvc_template.custom_objects.SseEmitterUtil
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -691,9 +690,6 @@ class C2Service1TkV1RequestTestService(
     // api20 에서 발급한 Emitter 객체
     private val api20SseEmitterWrapperMbr = SseEmitterWrapper(1000L * 10L)
     fun api20SseTestSubscribe(httpServletResponse: HttpServletResponse, lastSseEventId: String?): SseEmitter? {
-        api20SseEmitterWrapperMbr.emitterMapSemaphore.acquire()
-        api20SseEmitterWrapperMbr.emitterEventMapSemaphore.acquire()
-
         val emitterPublishCount = api20SseEmitterWrapperMbr.emitterPublishSequence++
 
         // 수신 객체 아이디 (발행총개수_발행일_멤버고유번호(비회원은 -1))
@@ -706,9 +702,6 @@ class C2Service1TkV1RequestTestService(
         // 수신 객체
         val sseEmitter = api20SseEmitterWrapperMbr.getSseEmitter(sseEmitterId, lastSseEventId)
 
-        api20SseEmitterWrapperMbr.emitterEventMapSemaphore.release()
-        api20SseEmitterWrapperMbr.emitterMapSemaphore.release()
-
         httpServletResponse.status = HttpStatus.OK.value()
         return sseEmitter
     }
@@ -718,8 +711,6 @@ class C2Service1TkV1RequestTestService(
     private var api21TriggerTestCountMbr = 0
     fun api21SseTestEventTrigger(httpServletResponse: HttpServletResponse) {
         // emitter 이벤트 전송
-        api20SseEmitterWrapperMbr.emitterMapSemaphore.acquire()
-        api20SseEmitterWrapperMbr.emitterEventMapSemaphore.acquire()
         val nowTriggerTestCount = ++api21TriggerTestCountMbr
 
         for (emitter in api20SseEmitterWrapperMbr.emitterMap) { // 저장된 모든 emitter 에 발송 (필터링 하려면 emitter.key 에 저장된 정보로 필터링 가능)
@@ -731,11 +722,11 @@ class C2Service1TkV1RequestTestService(
             val eventId = "${emitter.key}/${dateString}"
 
             // 이벤트 빌더 생성
-            val sseEventBuilder = SseEmitterUtil.makeSseEventBuilder(
-                "triggerTest", // 이벤트 그룹명
-                eventId, // 이벤트 고유값
-                "trigger $nowTriggerTestCount" // 전달 데이터
-            )
+            val sseEventBuilder = SseEmitter
+                .event()
+                .id(eventId)
+                .name("triggerTest")
+                .data("trigger $nowTriggerTestCount")
 
             // 이벤트 누락 방지 처리를 위하여 이벤트 빌더 기록
             if (api20SseEmitterWrapperMbr.emitterEventMap.containsKey(emitter.key)) {
@@ -745,14 +736,13 @@ class C2Service1TkV1RequestTestService(
             }
 
             // 이벤트 발송
-            SseEmitterUtil.sendSseEvent(
-                emitter.value,
-                sseEventBuilder
-            )
+            try {
+                emitter.value.send(
+                    sseEventBuilder
+                )
+            } catch (_: Exception) {
+            }
         }
-
-        api20SseEmitterWrapperMbr.emitterEventMapSemaphore.release()
-        api20SseEmitterWrapperMbr.emitterMapSemaphore.release()
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
