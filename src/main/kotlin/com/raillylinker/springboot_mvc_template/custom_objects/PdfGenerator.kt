@@ -160,10 +160,11 @@ object PdfGenerator {
         renderer.setDocumentFromString(newHtmlString) // HTML String 세팅
         renderer.layout() // PDF 데이터 생성
 
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        renderer.createPDF(byteArrayOutputStream) // PDF 파일 생성
-        val bytearray = byteArrayOutputStream.toByteArray()
-        byteArrayOutputStream.close()
+        val bytearray: ByteArray
+        ByteArrayOutputStream().use { byteArrayOutputStream ->
+            renderer.createPDF(byteArrayOutputStream) // PDF 파일 생성
+            bytearray = byteArrayOutputStream.toByteArray()
+        }
 
         return bytearray
     }

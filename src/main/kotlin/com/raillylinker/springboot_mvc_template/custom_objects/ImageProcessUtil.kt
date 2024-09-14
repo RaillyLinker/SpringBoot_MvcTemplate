@@ -20,19 +20,20 @@ object ImageProcessUtil {
     ): ByteArray {
         val imageType = imageTypeEnum.typeStr
         val bufferedResizedImage = BufferedImage(resizeWidth, resizeHeight, BufferedImage.TYPE_INT_RGB)
-        val imageInputStream = imageBytes.inputStream()
-        bufferedResizedImage.createGraphics().drawImage(
-            ImageIO.read(imageInputStream)
-                .getScaledInstance(resizeWidth, resizeHeight, BufferedImage.SCALE_SMOOTH),
-            0,
-            0,
-            null
-        )
-        imageInputStream.close()
-        val outputStream = ByteArrayOutputStream()
-        ImageIO.write(bufferedResizedImage, imageType, outputStream)
-        val resultByteArray = outputStream.toByteArray()
-        outputStream.close()
+        val resultByteArray: ByteArray
+        imageBytes.inputStream().use { imageInputStream ->
+            bufferedResizedImage.createGraphics().drawImage(
+                ImageIO.read(imageInputStream)
+                    .getScaledInstance(resizeWidth, resizeHeight, BufferedImage.SCALE_SMOOTH),
+                0,
+                0,
+                null
+            )
+            ByteArrayOutputStream().use { outputStream ->
+                ImageIO.write(bufferedResizedImage, imageType, outputStream)
+                resultByteArray = outputStream.toByteArray()
+            }
+        }
         return resultByteArray
     }
 
@@ -80,9 +81,9 @@ object ImageProcessUtil {
         val tempFile = File.createTempFile("resized_", ".gif")
 
         try {
-            val fileOutputStream = FileOutputStream(tempFile)
-            GifUtil.encodeGif(resizedFrameList, fileOutputStream, 2, false)
-            fileOutputStream.close()
+            FileOutputStream(tempFile).use { fileOutputStream ->
+                GifUtil.encodeGif(resizedFrameList, fileOutputStream, 2, false)
+            }
             return Files.readAllBytes(tempFile.toPath())
         } finally {
             // 임시 파일 삭제

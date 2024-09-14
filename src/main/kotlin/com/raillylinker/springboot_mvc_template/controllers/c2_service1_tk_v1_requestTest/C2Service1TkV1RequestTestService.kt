@@ -608,7 +608,8 @@ class C2Service1TkV1RequestTestService(
         val projectRootAbsolutePathString: String = File("").absolutePath
 
         // 파일 절대 경로 및 파일명
-        val serverFileAbsolutePathString = "$projectRootAbsolutePathString/src/main/resources/static/for_c2_n17_video_streaming_test"
+        val serverFileAbsolutePathString =
+            "$projectRootAbsolutePathString/src/main/resources/static/for_c2_n17_video_streaming_test"
 
         // 멤버십 등의 정보로 해상도 제한을 걸 수도 있음
         val serverFileNameString =
@@ -631,9 +632,10 @@ class C2Service1TkV1RequestTestService(
             }
 
         // 반환값에 전해줄 FIS
-        val fileInputStream = FileInputStream("$serverFileAbsolutePathString/$serverFileNameString")
-        val fileByteArray = FileCopyUtils.copyToByteArray(fileInputStream)
-        fileInputStream.close()
+        val fileByteArray: ByteArray
+        FileInputStream("$serverFileAbsolutePathString/$serverFileNameString").use { fileInputStream ->
+            fileByteArray = FileCopyUtils.copyToByteArray(fileInputStream)
+        }
 
         httpServletResponse.status = HttpStatus.OK.value()
         return ByteArrayResource(fileByteArray)
@@ -646,13 +648,15 @@ class C2Service1TkV1RequestTestService(
         val projectRootAbsolutePathString: String = File("").absolutePath
 
         // 파일 절대 경로 및 파일명
-        val serverFileAbsolutePathString = "$projectRootAbsolutePathString/src/main/resources/static/for_c2_n18_audio_streaming_test"
+        val serverFileAbsolutePathString =
+            "$projectRootAbsolutePathString/src/main/resources/static/for_c2_n18_audio_streaming_test"
         val serverFileNameString = "test.mp3"
 
         // 반환값에 전해줄 FIS
-        val fileInputStream = FileInputStream("$serverFileAbsolutePathString/$serverFileNameString")
-        val fileByteArray = FileCopyUtils.copyToByteArray(fileInputStream)
-        fileInputStream.close()
+        val fileByteArray: ByteArray
+        FileInputStream("$serverFileAbsolutePathString/$serverFileNameString").use { fileInputStream ->
+            fileByteArray = FileCopyUtils.copyToByteArray(fileInputStream)
+        }
 
         httpServletResponse.status = HttpStatus.OK.value()
         return ByteArrayResource(fileByteArray)

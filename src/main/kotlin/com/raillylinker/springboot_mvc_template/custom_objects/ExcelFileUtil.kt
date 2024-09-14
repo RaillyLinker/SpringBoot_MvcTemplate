@@ -29,29 +29,29 @@ object ExcelFileUtil {
     ): Map<String, List<List<String>>> {
         val resultObject: HashMap<String, List<List<String>>> = hashMapOf()
 
-        val opc = OPCPackage.open(excelFile)
-        val xssfReader = XSSFReader(opc)
-        val sheets = xssfReader.sheetsData as XSSFReader.SheetIterator
-        val styles = xssfReader.stylesTable
-        val strings = ReadOnlySharedStringsTable(opc)
+        OPCPackage.open(excelFile).use { opc ->
+            val xssfReader = XSSFReader(opc)
+            val sheets = xssfReader.sheetsData as XSSFReader.SheetIterator
+            val styles = xssfReader.stylesTable
+            val strings = ReadOnlySharedStringsTable(opc)
 
-        while (sheets.hasNext()) {
-            val sheetHandler = ExcelSheetHandler(0, null, null, null)
+            while (sheets.hasNext()) {
+                val sheetHandler = ExcelSheetHandler(0, null, null, null)
 
-            val sheet = sheets.next()
-            val inputSource = InputSource(sheet)
-            val handle: ContentHandler = XSSFSheetXMLHandler(styles, strings, sheetHandler, false)
-            val saxParserFactory = SAXParserFactory.newInstance()
-            saxParserFactory.isNamespaceAware = true
-            val parser = saxParserFactory.newSAXParser()
-            val xmlReader = parser.xmlReader
-            xmlReader.contentHandler = handle
-            xmlReader.parse(inputSource)
-            sheet.close()
+                sheets.next().use { sheet ->
+                    val inputSource = InputSource(sheet)
+                    val handle: ContentHandler = XSSFSheetXMLHandler(styles, strings, sheetHandler, false)
+                    val saxParserFactory = SAXParserFactory.newInstance()
+                    saxParserFactory.isNamespaceAware = true
+                    val parser = saxParserFactory.newSAXParser()
+                    val xmlReader = parser.xmlReader
+                    xmlReader.contentHandler = handle
+                    xmlReader.parse(inputSource)
+                }
 
-            resultObject[sheets.sheetName] = sheetHandler.sheet
+                resultObject[sheets.sheetName] = sheetHandler.sheet
+            }
         }
-        opc.close()
 
         return resultObject
     }
@@ -68,33 +68,31 @@ object ExcelFileUtil {
     ): List<List<String>>? {
         var resultObject: List<List<String>>? = null
 
-        val opc = OPCPackage.open(excelFile)
-        val xssfReader = XSSFReader(opc)
-        val sheets = xssfReader.sheetsData as XSSFReader.SheetIterator
-        val styles = xssfReader.stylesTable
-        val strings = ReadOnlySharedStringsTable(opc)
+        OPCPackage.open(excelFile).use { opc ->
+            val xssfReader = XSSFReader(opc)
+            val sheets = xssfReader.sheetsData as XSSFReader.SheetIterator
+            val styles = xssfReader.stylesTable
+            val strings = ReadOnlySharedStringsTable(opc)
 
-        var currentSheetIdx = 0
-        while (sheets.hasNext()) {
-            val sheet = sheets.next()
-
-            if (sheetIdx == currentSheetIdx++) {
-                val sheetHandler =
-                    ExcelSheetHandler(rowRangeStartIdx, rowRangeEndIdx, columnRangeIdxList, minColumnLength)
-                val inputSource = InputSource(sheet)
-                val handle: ContentHandler = XSSFSheetXMLHandler(styles, strings, sheetHandler, false)
-                val saxParserFactory = SAXParserFactory.newInstance()
-                saxParserFactory.isNamespaceAware = true
-                val parser = saxParserFactory.newSAXParser()
-                val xmlReader = parser.xmlReader
-                xmlReader.contentHandler = handle
-                xmlReader.parse(inputSource)
-                sheet.close()
-
-                resultObject = (sheetHandler.sheet)
+            var currentSheetIdx = 0
+            while (sheets.hasNext()) {
+                sheets.next().use { sheet ->
+                    if (sheetIdx == currentSheetIdx++) {
+                        val sheetHandler =
+                            ExcelSheetHandler(rowRangeStartIdx, rowRangeEndIdx, columnRangeIdxList, minColumnLength)
+                        val inputSource = InputSource(sheet)
+                        val handle: ContentHandler = XSSFSheetXMLHandler(styles, strings, sheetHandler, false)
+                        val saxParserFactory = SAXParserFactory.newInstance()
+                        saxParserFactory.isNamespaceAware = true
+                        val parser = saxParserFactory.newSAXParser()
+                        val xmlReader = parser.xmlReader
+                        xmlReader.contentHandler = handle
+                        xmlReader.parse(inputSource)
+                        resultObject = (sheetHandler.sheet)
+                    }
+                }
             }
         }
-        opc.close()
 
         return resultObject
     }
@@ -129,7 +127,6 @@ object ExcelFileUtil {
 
         // 완성된 액셀 객체로 fos 쓰기
         workbook.write(fileOutputStream)
-        fileOutputStream.close() // fos 닫기
     }
 
 

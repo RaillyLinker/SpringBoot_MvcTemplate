@@ -122,12 +122,13 @@ class RepositoryNetworkRetrofit2 private constructor() {
 
         fun getInstance(): RepositoryNetworkRetrofit2 {
             singletonSemaphore.acquire()
-
-            if (null == instance) {
-                instance = RepositoryNetworkRetrofit2()
+            try {
+                if (null == instance) {
+                    instance = RepositoryNetworkRetrofit2()
+                }
+            } finally {
+                singletonSemaphore.release()
             }
-
-            singletonSemaphore.release()
 
             return instance!!
         }

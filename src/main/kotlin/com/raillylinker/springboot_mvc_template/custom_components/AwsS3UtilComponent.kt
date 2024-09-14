@@ -40,10 +40,10 @@ class AwsS3UtilComponent(
             objMeta.contentType = "application/pdf"
         }
 
-        val multipartFileInputStream = multipartFile.inputStream
-        objMeta.contentLength = multipartFileInputStream.available().toLong()
-        amazonS3Client.putObject(bucketName, fileSaveName, multipartFileInputStream, objMeta)
-        multipartFileInputStream.close()
+        multipartFile.inputStream.use { multipartFileInputStream ->
+            objMeta.contentLength = multipartFileInputStream.available().toLong()
+            amazonS3Client.putObject(bucketName, fileSaveName, multipartFileInputStream, objMeta)
+        }
 
         // 업로드 된 파일의 다운로드 URL 이 반환됩니다.
         return amazonS3Client.getUrl(bucketName, fileSaveName).toString()

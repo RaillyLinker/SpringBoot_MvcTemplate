@@ -51,7 +51,10 @@ class C6Service1TkV1TestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    fun api1SendEmailTest(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api1SendEmailTestInputVo) {
+    fun api1SendEmailTest(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api1SendEmailTestInputVo
+    ) {
         emailSenderComponent.sendMessageMail(
             inputVo.senderName,
             inputVo.receiverEmailAddressList.toTypedArray(),
@@ -67,7 +70,10 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api2SendHtmlEmailTest(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api2SendHtmlEmailTestInputVo) {
+    fun api2SendHtmlEmailTest(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api2SendHtmlEmailTestInputVo
+    ) {
         // CID 는 첨부파일을 보내는 것과 동일한 의미입니다.
         // 고로 전송시 서버 성능에 악영향을 끼칠 가능성이 크고, CID 처리도 번거로우므로, CDN 을 사용하고, CID 는 되도록 사용하지 마세요.
         emailSenderComponent.sendThymeLeafHtmlMail(
@@ -93,7 +99,10 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api3NaverSmsSample(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api3NaverSmsSampleInputVo) {
+    fun api3NaverSmsSample(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api3NaverSmsSampleInputVo
+    ) {
         val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
 
         // 국가 코드 (ex : 82)
@@ -121,7 +130,10 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api3Dot1NaverAlimTalkSample(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api3Dot1NaverAlimTalkSampleInputVo) {
+    fun api3Dot1NaverAlimTalkSample(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api3Dot1NaverAlimTalkSampleInputVo
+    ) {
         val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
 
         // 국가 코드 (ex : 82)
@@ -166,16 +178,17 @@ class C6Service1TkV1TestService(
         httpServletResponse: HttpServletResponse,
         inputVo: C6Service1TkV1TestController.Api4ReadExcelFileSampleInputVo
     ): C6Service1TkV1TestController.Api4ReadExcelFileSampleOutputVo? {
-        val fileInputStream = inputVo.excelFile.inputStream
-        val excelData = ExcelFileUtil.readExcel(
-            fileInputStream,
-            inputVo.sheetIdx,
-            inputVo.rowRangeStartIdx,
-            inputVo.rowRangeEndIdx,
-            inputVo.columnRangeIdxList,
-            inputVo.minColumnLength
-        )
-        fileInputStream.close()
+        val excelData: List<List<String>>?
+        inputVo.excelFile.inputStream.use { fileInputStream ->
+            excelData = ExcelFileUtil.readExcel(
+                fileInputStream,
+                inputVo.sheetIdx,
+                inputVo.rowRangeStartIdx,
+                inputVo.rowRangeEndIdx,
+                inputVo.columnRangeIdxList,
+                inputVo.minColumnLength
+            )
+        }
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api4ReadExcelFileSampleOutputVo(
@@ -323,11 +336,11 @@ class C6Service1TkV1TestService(
                             return null
                         }
 
-                        val fontInputStream = fontFile.inputStream
-                        val ttf = TTFParser().parseEmbedded(fontInputStream)
-                        ttfName = ttf.name
-                        ttf.close()
-                        fontInputStream.close()
+                        fontFile.inputStream.use { fontInputStream ->
+                            TTFParser().parseEmbedded(fontInputStream).use { ttf ->
+                                ttfName = ttf.name
+                            }
+                        }
 
                         val fontFileUrl =
                             "http://127.0.0.1:${serverProperties.port}${controllerBasicMapping ?: ""}/by_product_files/uploads/fonts/$ttfName.$fileExtension"
@@ -395,7 +408,10 @@ class C6Service1TkV1TestService(
     }
 
     ////
-    fun api6Dot2DownloadFontFile(httpServletResponse: HttpServletResponse, fileName: String): ResponseEntity<Resource>? {
+    fun api6Dot2DownloadFontFile(
+        httpServletResponse: HttpServletResponse,
+        fileName: String
+    ): ResponseEntity<Resource>? {
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
 
@@ -434,7 +450,10 @@ class C6Service1TkV1TestService(
 
 
     ////
-    fun api7SendKafkaTopicMessageTest(httpServletResponse: HttpServletResponse, inputVo: C6Service1TkV1TestController.Api7SendKafkaTopicMessageTestInputVo) {
+    fun api7SendKafkaTopicMessageTest(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api7SendKafkaTopicMessageTestInputVo
+    ) {
         // kafkaProducer1 에 토픽 메세지 발행
         kafkaProducerForTest.send(inputVo.topic, inputVo.message)
 
@@ -456,19 +475,17 @@ class C6Service1TkV1TestService(
         val javaJarProcess = javaJarPb.start()
 
         // 프로세스의 출력 스트림 가져오기
-        val inputStream: InputStream = javaJarProcess.inputStream
-        val reader = BufferedReader(InputStreamReader(inputStream))
+        val result: Long
+        javaJarProcess.inputStream.use { inputStream ->
+            BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                // Read the result from the JAR execution
+                result = reader.readLine()?.toLong() ?: 0
 
-        // Read the result from the JAR execution
-        val result = reader.readLine()?.toLong() ?: 0
-
-        // 프로세스 종료 대기
-        val exitCode = javaJarProcess.waitFor()
-        println("Exit Code: $exitCode")
-
-        // 자원 해제
-        reader.close()
-        inputStream.close()
+                // 프로세스 종료 대기
+                val exitCode = javaJarProcess.waitFor()
+                println("Exit Code: $exitCode")
+            }
+        }
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api8ProcessBuilderTestOutputVo(
@@ -483,13 +500,13 @@ class C6Service1TkV1TestService(
         inputVo: C6Service1TkV1TestController.Api9CheckFontFileInnerNameInputVo
     ): C6Service1TkV1TestController.Api9CheckFontFileInnerNameOutputVo? {
         // MultipartFile에서 InputStream을 얻어옴
-        val fontInputStream = inputVo.fontFile.inputStream
-
-        val parser = TTFParser()
-        val ttf = parser.parseEmbedded(fontInputStream)
-        val fontName: String = ttf.name
-        ttf.close()
-        fontInputStream.close()
+        val fontName: String
+        inputVo.fontFile.inputStream.use { fontInputStream ->
+            val parser = TTFParser()
+            parser.parseEmbedded(fontInputStream).use { ttf ->
+                fontName = ttf.name
+            }
+        }
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api9CheckFontFileInnerNameOutputVo(

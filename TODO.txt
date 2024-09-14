@@ -3,5 +3,4 @@
 - 소켓 처리 리펙토링
 - WebRTC 영상 통신 중계 (영상 필터 기능까지, 클라이언트와 같이 개발)
 - README 설명 추가 (설명을 추가하며 코드 상세 재검사 및 성능 향상 가능 부분이 있는지...)
-- Kafka, SSE, custom_objects 상세 검토 및 개선
-- custom_objects 에서 메모리 누수 가능 부분을 확인, close 함수를 사용하는 부분은 항상 try finally 로 처리하여 안정성 올리기
+- Kafka, SSE 상세 검토 및 개선

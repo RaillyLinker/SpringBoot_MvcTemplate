@@ -210,13 +210,14 @@ class C5Service1TkV1MediaResourceProcessService(
         val resultFileName = "resized_${timeString}.gif"
 
         // 리사이징
-        val fileInputStream = inputVo.multipartImageFile.inputStream
-        val resizedImageByteArray = ImageProcessUtil.resizeGifImage(
-            fileInputStream,
-            inputVo.resizingWidth,
-            inputVo.resizingHeight
-        )
-        fileInputStream.close()
+        val resizedImageByteArray: ByteArray
+        inputVo.multipartImageFile.inputStream.use { fileInputStream ->
+            resizedImageByteArray = ImageProcessUtil.resizeGifImage(
+                fileInputStream,
+                inputVo.resizingWidth,
+                inputVo.resizingHeight
+            )
+        }
 
         httpServletResponse.status = HttpStatus.OK.value()
         return ResponseEntity<Resource>(
