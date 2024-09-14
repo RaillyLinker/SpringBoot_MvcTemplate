@@ -57,7 +57,7 @@ class C8Service1TkV1RedisTestService(
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api2SelectRedisValueSampleOutputVo(
-            Redis1_Test.TYPE_NAME,
+            Redis1_Test.MAP_NAME,
             keyValue.key,
             keyValue.value.content,
             keyValue.expireTimeMs
@@ -83,7 +83,7 @@ class C8Service1TkV1RedisTestService(
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api3SelectAllRedisKeyValueSampleOutputVo(
-            Redis1_Test.TYPE_NAME,
+            Redis1_Test.MAP_NAME,
             testEntityListVoList
         )
     }
