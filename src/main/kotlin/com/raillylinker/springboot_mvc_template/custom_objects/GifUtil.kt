@@ -167,7 +167,6 @@ object GifUtil {
 
         if (status == statusOk) {
             kotlin.run {
-
                 // read GIF file content blocks
                 var done = false
                 while (!(done || (status != statusOk))) {
@@ -784,10 +783,6 @@ object GifUtil {
             if (frameCount < 0) {
                 throw RuntimeException("올바른 입력값이 아닙니다.")
             }
-        }
-        try {
-            newInputStream.close()
-        } catch (_: IOException) {
         }
         return frames
     }
@@ -2783,7 +2778,6 @@ object GifUtil {
             outputStream.write(0x00)
         }
         outputStream.write(0x3b) // ";"
-        outputStream.close()
     }
 
 
