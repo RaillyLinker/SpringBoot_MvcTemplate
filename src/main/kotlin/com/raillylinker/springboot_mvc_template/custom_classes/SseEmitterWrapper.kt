@@ -9,10 +9,7 @@ import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.ArrayList
 
 // [SseEmitter 래핑 클래스]
-class SseEmitterWrapper(
-    // (SSE Emitter 의 만료시간 Milli Sec)
-    val sseEmitterTimeMs: Long
-) {
+class SseEmitterWrapper {
     // (SSE Emitter 를 고유값과 함께 모아둔 맵)
     private val emitterMap: ConcurrentHashMap<String, SseEmitter> = ConcurrentHashMap()
 
@@ -37,7 +34,9 @@ class SseEmitterWrapper(
         // 멤버고유번호(비회원은 -1)
         memberUid: Long,
         // 마지막으로 클라이언트가 수신했던 이벤트 아이디 (없으면 null)){}
-        lastSseEventId: String?
+        lastSseEventId: String?,
+        // (SSE Emitter 의 만료시간 Milli Sec)
+        sseEmitterTimeMs: Long
     ): SseEmitter {
         // 수신 객체 아이디 (발행총개수_발행일_멤버고유번호(비회원은 -1))
         val sseEmitterId =

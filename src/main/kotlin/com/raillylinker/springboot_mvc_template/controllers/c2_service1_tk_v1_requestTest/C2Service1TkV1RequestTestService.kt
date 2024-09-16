@@ -688,10 +688,10 @@ class C2Service1TkV1RequestTestService(
 
     ////
     // api20 에서 발급한 Emitter 객체
-    private val api20SseEmitterWrapperMbr = SseEmitterWrapper(1000L * 10L)
+    private val api20SseEmitterWrapperMbr = SseEmitterWrapper()
     fun api20SseTestSubscribe(httpServletResponse: HttpServletResponse, lastSseEventId: String?): SseEmitter? {
         // 수신 객체
-        val sseEmitter = api20SseEmitterWrapperMbr.getSseEmitter(-1, lastSseEventId)
+        val sseEmitter = api20SseEmitterWrapperMbr.getSseEmitter(-1, lastSseEventId, 1000L * 10L)
 
         httpServletResponse.status = HttpStatus.OK.value()
         return sseEmitter
