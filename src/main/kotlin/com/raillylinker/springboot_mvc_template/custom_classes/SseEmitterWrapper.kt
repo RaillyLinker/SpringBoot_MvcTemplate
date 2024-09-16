@@ -7,14 +7,17 @@ import kotlin.collections.ArrayList
 // [SseEmitter 래핑 클래스]
 class SseEmitterWrapper {
     // (SSE Emitter 의 만료시간 Milli Sec)
-    private val sseEmitterTimeMs: Long = 1000L * 10L
+    private val sseEmitterExpireTimeMs: Long = 1000L * 10L
+
+    // (SSE Emitter 의 만료시간 이후 생존시간 Milli Sec)
+    private val sseEmitterSurviveTimeMs: Long = 2000L
 
     /*
         (SSE Emitter 를 고유값과 함께 모아둔 맵)
          map key = EmitterId
          map value = Pair(createTimeMillis, SseEmitter)
      */
-    private val emitterMap: ConcurrentHashMap<String, Pair<Long, SseEmitter>?> = ConcurrentHashMap()
+    private val emitterMap: ConcurrentHashMap<String, Pair<Long, SseEmitter>> = ConcurrentHashMap()
 
     /*
         (발행 이벤트 맵)
@@ -55,7 +58,7 @@ class SseEmitterWrapper {
         }
 
         // 수신 객체 생성
-        val sseEmitter = SseEmitter(sseEmitterTimeMs)
+        val sseEmitter = SseEmitter(sseEmitterExpireTimeMs)
 
         // 생성된 수신 객체를 저장
         emitterMap[sseEmitterId] = Pair(System.currentTimeMillis(), sseEmitter)
@@ -64,17 +67,14 @@ class SseEmitterWrapper {
         sseEmitter.onTimeout { // 타임아웃 시 실행
             // 이후 바로 onCompletion 이 실행되고,다시 lastSseEventId 를 넣은 클라이언트 요청으로 현 API가 재실행됨
             sseEmitter.complete()
-            emitterMap[sseEmitterId] = null
         }
 
         sseEmitter.onError { _ -> // 에러 발생시 실행.
             // 대표적으로 클라이언트가 연결을 끊었을 때 실행됨.
             // 이후 바로 onCompletion 이 실행되고, 함수는 재실행되지 않음.
-            emitterMap[sseEmitterId] = null
         }
 
         sseEmitter.onCompletion { // sseEmitter 가 종료되었을 때 공통적, 최종적으로 실행
-            emitterMap[sseEmitterId] = null
         }
 
         // 503 에러를 방지하기 위해, 처음 이미터 생성시엔 빈 메세지라도 발송해야함
@@ -117,7 +117,30 @@ class SseEmitterWrapper {
             }
         }
 
-        // todo emitterMap.remove(sseEmitterId)
+        // 시간 지난 이미터, 이벤트 판별 및 제거
+        val removeEmitterIdList = ArrayList<String>()
+        for (emitter in emitterMap) {
+            // 이미터 생성시간
+            val emitterCreateTimeMillis = emitter.value.first
+
+            // 현재시간
+            val nowTimeMillis = System.currentTimeMillis()
+
+            // 이미터 생성시간으로부터 몇 ms 지났는지
+            val diffMs = nowTimeMillis - emitterCreateTimeMillis
+
+            // 이미터 생성 시간이 타임아웃 시간(+n 밀리초) 을 초과했을 때
+            if (diffMs > sseEmitterExpireTimeMs + sseEmitterSurviveTimeMs) {
+                // 삭제 목록에 포함
+                removeEmitterIdList.add(emitter.key)
+            }
+        }
+
+        // 삭제 목록에 있는 이미터와 이벤트 삭제
+        for (removeEmitterId in removeEmitterIdList) {
+            emitterMap.remove(removeEmitterId)
+            eventHistoryMap.remove(removeEmitterId)
+        }
 
         return sseEmitter
     }
@@ -151,7 +174,7 @@ class SseEmitterWrapper {
 
             // 이벤트 발송
             try {
-                emitter.value?.second?.send(
+                emitter.value.second.send(
                     sseEventBuilder
                 )
             } catch (_: Exception) {
