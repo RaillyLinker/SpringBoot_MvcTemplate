@@ -6,17 +6,20 @@ import kotlin.collections.ArrayList
 
 // [SseEmitter 래핑 클래스]
 class SseEmitterWrapper {
+    // (SSE Emitter 의 만료시간 Milli Sec)
+    private val sseEmitterTimeMs: Long = 1000L * 10L
+
     /*
         (SSE Emitter 를 고유값과 함께 모아둔 맵)
          map key = EmitterId
-         map value = SseEmitter
+         map value = Pair(createTimeMillis, SseEmitter)
      */
-    private val emitterMap: ConcurrentHashMap<String, SseEmitter?> = ConcurrentHashMap()
+    private val emitterMap: ConcurrentHashMap<String, Pair<Long, SseEmitter>?> = ConcurrentHashMap()
 
     /*
         (발행 이벤트 맵)
          map key = EmitterId
-         map value = ArrayList(Pair(dateString, EventBuilder))
+         map value = ArrayList(Pair(createTimeMillis, EventBuilder))
 
          key 는 emitterMap 과 동일한 값을 사용.
          value 의 ArrayList 는 이벤트 발행시간과 SseEventBuilder 객체의 Pair 로 이루어짐
@@ -35,9 +38,7 @@ class SseEmitterWrapper {
         // 멤버고유번호(비회원은 null)
         memberUid: Long?,
         // 마지막으로 클라이언트가 수신했던 이벤트 아이디 ({EmitterId}/{발송시간})
-        lastSseEventId: String?,
-        // (SSE Emitter 의 만료시간 Milli Sec)
-        sseEmitterTimeMs: Long
+        lastSseEventId: String?
     ): SseEmitter {
         val lastSseEventIdSplit: List<String>?
 
@@ -57,7 +58,7 @@ class SseEmitterWrapper {
         val sseEmitter = SseEmitter(sseEmitterTimeMs)
 
         // 생성된 수신 객체를 저장
-        emitterMap[sseEmitterId] = sseEmitter
+        emitterMap[sseEmitterId] = Pair(System.currentTimeMillis(), sseEmitter)
 
         // SSE Emitter 콜백 설정
         sseEmitter.onTimeout { // 타임아웃 시 실행
@@ -150,7 +151,7 @@ class SseEmitterWrapper {
 
             // 이벤트 발송
             try {
-                emitter.value?.send(
+                emitter.value?.second?.send(
                     sseEventBuilder
                 )
             } catch (_: Exception) {
