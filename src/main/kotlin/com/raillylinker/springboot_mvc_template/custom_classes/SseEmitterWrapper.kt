@@ -16,10 +16,10 @@ class SseEmitterWrapper {
     /*
         (발행 이벤트 맵)
          map key = EmitterId
-         키는 emitterMap 과 동일한 값을 사용.
-
          map value = ArrayList(Pair(dateString, EventBuilder))
-         값의 ArrayList 는 이벤트 발행시간과 SseEventBuilder 객체의 Pair 로 이루어짐
+
+         key 는 emitterMap 과 동일한 값을 사용.
+         value 의 ArrayList 는 이벤트 발행시간과 SseEventBuilder 객체의 Pair 로 이루어짐
      */
     private val eventHistoryMap: ConcurrentHashMap<String, ArrayList<Pair<Long, SseEmitter.SseEventBuilder>>> =
         ConcurrentHashMap()
@@ -28,12 +28,13 @@ class SseEmitterWrapper {
     // emitter 고유성 보장을 위한 값으로 사용되며, 유한한 값이지만, 현재 날짜와 같이 사용됩니다.
     private var emitterIdSequence: Long = 0L
 
+
     // (SSE Emitter 객체 발행)
     // !! 주의 : 함수 사용시 꼭 이 클래스 멤버변수인 emitterMapSemaphore, emitterEventMapSemaphore 로 감쌀것. !!
     fun getSseEmitter(
         // 멤버고유번호(비회원은 null)
         memberUid: Long?,
-        // 마지막으로 클라이언트가 수신했던 이벤트 아이디 (없으면 null)){}
+        // 마지막으로 클라이언트가 수신했던 이벤트 아이디 ({EmitterId}/{발송시간})
         lastSseEventId: String?,
         // (SSE Emitter 의 만료시간 Milli Sec)
         sseEmitterTimeMs: Long
@@ -65,10 +66,9 @@ class SseEmitterWrapper {
             emitterMap[sseEmitterId] = null
         }
 
-        sseEmitter.onError { e -> // 에러 발생시 실행.
+        sseEmitter.onError { _ -> // 에러 발생시 실행.
             // 대표적으로 클라이언트가 연결을 끊었을 때 실행됨.
             // 이후 바로 onCompletion 이 실행되고, 함수는 재실행되지 않음.
-            e.printStackTrace()
             emitterMap[sseEmitterId] = null
         }
 
@@ -84,8 +84,7 @@ class SseEmitterWrapper {
                     .name("system")
                     .data("SSE Connected!")
             )
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (_: Exception) {
         }
 
         if (lastSseEventIdSplit != null) {
@@ -99,15 +98,14 @@ class SseEmitterWrapper {
                 val eventHistoryList = eventHistoryMap[sseEmitterId]!!
                 // 지난 이미터 정보를 이벤트 맵에서 제거
                 eventHistoryMap.remove(sseEmitterId)
-                println("lastEventTimeMillis : ${lastEventTimeMillis}")
 
                 for (eventHistory in eventHistoryList) {
-                    println("eventHistory : ${eventHistory}")
                     val pastEventTimeMillis = eventHistory.first
                     val pastEvent = eventHistory.second
 
                     if (pastEventTimeMillis > lastEventTimeMillis) {
                         // pastEventTimeMillis 이 lastEventTimeMillis 이후
+                        // 밀린 이벤트 재전송
                         try {
                             sseEmitter.send(pastEvent)
                         } catch (e: Exception) {
@@ -123,6 +121,8 @@ class SseEmitterWrapper {
         return sseEmitter
     }
 
+
+    // (저장된 모든 emitter 에 이벤트 발송)
     fun broadcastEvent(
         eventName: String,
         eventMessage: String
@@ -153,8 +153,7 @@ class SseEmitterWrapper {
                 emitter.value?.send(
                     sseEventBuilder
                 )
-            } catch (e: Exception) {
-                e.printStackTrace()
+            } catch (_: Exception) {
             }
         }
     }
