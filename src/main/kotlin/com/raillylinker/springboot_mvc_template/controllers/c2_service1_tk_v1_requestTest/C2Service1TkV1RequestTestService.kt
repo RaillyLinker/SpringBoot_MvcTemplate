@@ -704,36 +704,10 @@ class C2Service1TkV1RequestTestService(
         // emitter 이벤트 전송
         val nowTriggerTestCount = ++api21TriggerTestCountMbr
 
-        for (emitter in api20SseEmitterWrapperMbr.emitterMap) { // 저장된 모든 emitter 에 발송 (필터링 하려면 emitter.key 에 저장된 정보로 필터링 가능)
-            // 발송 시간
-            val dateString = LocalDateTime.now().atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd-'T'-HH-mm-ss-SSSSSS-z"))
-
-            // 이벤트 고유값 생성 (이미터고유값/발송시간)
-            val eventId = "${emitter.key}/${dateString}"
-
-            // 이벤트 빌더 생성
-            val sseEventBuilder = SseEmitter
-                .event()
-                .id(eventId)
-                .name("triggerTest")
-                .data("trigger $nowTriggerTestCount")
-
-            // 이벤트 누락 방지 처리를 위하여 이벤트 빌더 기록
-            if (api20SseEmitterWrapperMbr.emitterEventMap.containsKey(emitter.key)) {
-                api20SseEmitterWrapperMbr.emitterEventMap[emitter.key]!!.add(Pair(dateString, sseEventBuilder))
-            } else {
-                api20SseEmitterWrapperMbr.emitterEventMap[emitter.key] = arrayListOf(Pair(dateString, sseEventBuilder))
-            }
-
-            // 이벤트 발송
-            try {
-                emitter.value.send(
-                    sseEventBuilder
-                )
-            } catch (_: Exception) {
-            }
-        }
+        api20SseEmitterWrapperMbr.broadcastEvent(
+            "triggerTest",
+            "trigger $nowTriggerTestCount"
+        )
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
