@@ -49,7 +49,7 @@ class SseEmitterWrapper {
         val sseEmitterId = if (lastSseEventId == null) {
             lastSseEventIdSplit = null
             // 첫 발행시 Emitter ID 생성
-            // 수신 객체 아이디 (멤버고유번호(비회원은 null)_객체 아이디 발행일_발행총개수)
+            // 수신 객체 아이디 (멤버고유번호(비회원은 "null")_객체 아이디 발행일_발행총개수)
             "${memberUid}_${System.currentTimeMillis()}_${emitterIdSequence++}"
         } else {
             // 기존 Emitter ID 재활용
@@ -178,6 +178,98 @@ class SseEmitterWrapper {
                     sseEventBuilder
                 )
             } catch (_: Exception) {
+            }
+        }
+    }
+
+
+    // (memberUidSet 에 속하는 모든 emitter 에 이벤트 발송)
+    fun sendEventToMemberSet(
+        eventName: String,
+        eventMessage: String,
+        memberUidSet: Set<Long?>
+    ) {
+        for (emitter in emitterMap) { // 저장된 모든 emitter 에 발송 (필터링 하려면 emitter.key 에 저장된 정보로 필터링 가능)
+            // emitterId (멤버고유번호(비회원은 "null")_객체 아이디 발행일_발행총개수) 에서 memberUid 추출
+            val emitterIdSplit = emitter.key.split("_")
+            val emitterMemberUid = emitterIdSplit[0] // 멤버고유번호(비회원은 "null")
+
+            for (memberUid in memberUidSet) {
+                if (emitterMemberUid == memberUid.toString()) {
+                    // 발송 시간
+                    val eventTimeMillis = System.currentTimeMillis()
+
+                    // 이벤트 고유값 생성 (이미터고유값/발송시간)
+                    val eventId = "${emitter.key}/${eventTimeMillis}"
+
+                    // 이벤트 빌더 생성
+                    val sseEventBuilder = SseEmitter
+                        .event()
+                        .id(eventId)
+                        .name(eventName)
+                        .data(eventMessage)
+
+                    // 이벤트 누락 방지 처리를 위하여 이벤트 빌더 기록
+                    if (eventHistoryMap.containsKey(emitter.key)) {
+                        eventHistoryMap[emitter.key]!!.add(Pair(eventTimeMillis, sseEventBuilder))
+                    } else {
+                        eventHistoryMap[emitter.key] = arrayListOf(Pair(eventTimeMillis, sseEventBuilder))
+                    }
+
+                    // 이벤트 발송
+                    try {
+                        emitter.value.second.send(
+                            sseEventBuilder
+                        )
+                    } catch (_: Exception) {
+                    }
+
+                    break
+                }
+            }
+        }
+    }
+
+
+    // (memberUid(비회원은 null) 에 속하는 emitter 에 이벤트 발송)
+    fun sendEventToMember(
+        eventName: String,
+        eventMessage: String,
+        memberUid: Long?
+    ) {
+        for (emitter in emitterMap) { // 저장된 모든 emitter 에 발송 (필터링 하려면 emitter.key 에 저장된 정보로 필터링 가능)
+            // emitterId (멤버고유번호(비회원은 "null")_객체 아이디 발행일_발행총개수) 에서 memberUid 추출
+            val emitterIdSplit = emitter.key.split("_")
+            val emitterMemberUid = emitterIdSplit[0] // 멤버고유번호(비회원은 "null")
+
+            if (emitterMemberUid == memberUid.toString()) {
+                // 발송 시간
+                val eventTimeMillis = System.currentTimeMillis()
+
+                // 이벤트 고유값 생성 (이미터고유값/발송시간)
+                val eventId = "${emitter.key}/${eventTimeMillis}"
+
+                // 이벤트 빌더 생성
+                val sseEventBuilder = SseEmitter
+                    .event()
+                    .id(eventId)
+                    .name(eventName)
+                    .data(eventMessage)
+
+                // 이벤트 누락 방지 처리를 위하여 이벤트 빌더 기록
+                if (eventHistoryMap.containsKey(emitter.key)) {
+                    eventHistoryMap[emitter.key]!!.add(Pair(eventTimeMillis, sseEventBuilder))
+                } else {
+                    eventHistoryMap[emitter.key] = arrayListOf(Pair(eventTimeMillis, sseEventBuilder))
+                }
+
+                // 이벤트 발송
+                try {
+                    emitter.value.second.send(
+                        sseEventBuilder
+                    )
+                } catch (_: Exception) {
+                }
             }
         }
     }
