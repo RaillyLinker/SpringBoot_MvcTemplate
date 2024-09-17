@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template.controllers.c8_service1_tk_v1_redisTest
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomRedisTransactional
-import com.raillylinker.springboot_mvc_template.data_sources.redis_sources.redis1_main.Redis1_Test
+import com.raillylinker.springboot_mvc_template.data_sources.memory_redis.redis1_main.Redis1_Test
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

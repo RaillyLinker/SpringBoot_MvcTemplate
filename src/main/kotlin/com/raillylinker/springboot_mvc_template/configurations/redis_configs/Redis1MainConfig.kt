@@ -1,6 +1,7 @@
 package com.raillylinker.springboot_mvc_template.configurations.redis_configs
 
-import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectStates
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
@@ -39,7 +40,7 @@ class Redis1MainConfig {
         redisTemplate.keySerializer = StringRedisSerializer()
 
         // GlobalVariables.redisTemplatesMap에 바로 추가
-        GlobalVariables.redisTemplatesMap[REDIS_CONFIG_NAME] = redisTemplate
+        ProjectStates.redisTemplatesMap[REDIS_CONFIG_NAME] = redisTemplate
         return redisTemplate
     }
 }

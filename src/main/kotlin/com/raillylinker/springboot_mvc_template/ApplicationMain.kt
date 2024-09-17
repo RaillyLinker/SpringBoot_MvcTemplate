@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template
 
-import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
 import com.raillylinker.springboot_mvc_template.data_sources.RuntimeConfig
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -19,7 +19,7 @@ class ApplicationMain {
     @Bean
     fun init() = CommandLineRunner {
         // 서버 타임존 설정
-        TimeZone.setDefault(TimeZone.getTimeZone(GlobalVariables.SYSTEM_TIME_ZONE))
+        TimeZone.setDefault(TimeZone.getTimeZone(ProjectConfigs.SYSTEM_TIME_ZONE))
 
         // 런타임 설정 가져오기
         RuntimeConfig.loadRuntimeConfigData()

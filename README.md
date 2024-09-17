@@ -218,9 +218,9 @@
 - GlobalVariables 파일은, 프로젝트 전역에서 사용하는 전역 변수를 모아두는 파일입니다.
 - RuntimeConfig 파일 역시 전역 변수를 모아두는 파일입니다. 자세한 내용은 아래의 추가 상세 설명에서
   설명하겠습니다.
-- database_sources, mongo_db_sources, network_retrofit2, redis_sources 는,
+- database_jpa, mongo_db_sources, network_retrofit2, memory_redis 는,
   각각 JPA 데이터베이스, MongoDB NoSQL 데이터베이스, Retrofit2 네트워크 요청 라이브러리, Redis In-Memory 데이터베이스에 대한 코드 모음용 서브폴더입니다.
-- 이곳에 저장되는 database_sources, mongo_db_sources, redis_sources 의 클래스 작명법은 조금 독특합니다.
+- 이곳에 저장되는 database_jpa, mongo_db_sources, memory_redis 의 클래스 작명법은 조금 독특합니다.
   기본적으로 파스칼 표기법을 따름에도 '_' 로 구분이 되어있는 부분이 있는데,
   이는 본 프로젝트가 복수 개의 소스를 가정한 구조이기 때문입니다.
   예를들어 127.0.0.1:3306 주소의 데이터베이스와 127.0.0.1:3306 주소의 데이터베이스를 프로젝트 내에 동시에 설정했다고 합시다.
@@ -260,7 +260,7 @@
 - Kotlin 파일명은 파스칼 표기법을 사용합니다. (ex : TestClass)
 - Kotlin 파일명 작명 규칙에 예외가 존재합니다.
   src/main/kotlin/{project}/data_sources 폴더 안의
-  database_sources, mongo_db_sources, redis_sources 안의 파일명은 파스칼 표기법을 따르면서도, 언더바(_) 가 포함됩니다.(ex : Db0_TestSchema_TestTable)
+  database_jpa, mongo_db_sources, memory_redis 안의 파일명은 파스칼 표기법을 따르면서도, 언더바(_) 가 포함됩니다.(ex : Db0_TestSchema_TestTable)
 - Kotlin 코드 내의 변수명, 함수명, 클래스명 등의 명명 규칙은 Kotlin 코딩 규칙을 따르며, 예외가 있을 시 이곳에 표시할 것입니다.
 - application.yml 의 key 는 케밥 표기법을 사용합니다. (ex : test-key)
 

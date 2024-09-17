@@ -2,6 +2,8 @@ package com.raillylinker.springboot_mvc_template.data_sources
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectStates
 import java.io.File
 
 /*
@@ -50,7 +52,7 @@ object RuntimeConfig {
     // 만약 configJsonString 의 JSON 형식이 다르거나 하여 에러가 일어났다면,
     // 설정 파일과 설정 변수는 아무 변화가 없이 넘어갈 것입니다.
     fun saveRuntimeConfigData(configJsonString: String): RuntimeConfigData? {
-        val runtimeConfigJsonFile = File(GlobalVariables.rootDirFile, "by_product_files/runtime_config.json")
+        val runtimeConfigJsonFile = File(ProjectStates.rootDirFile, "by_product_files/runtime_config.json")
         try {
             val newConfigObject: RuntimeConfigData = Gson().fromJson(
                 configJsonString,
@@ -72,7 +74,7 @@ object RuntimeConfig {
     // 만약 불러오려는 설정 파일 내의 JSON 형식이 잘못되는 등의 일로인하여 에러가 나버린다면,
     // 설정 파일과 설정 변수는 아무 변화가 없이 넘어갈 것입니다.
     fun loadRuntimeConfigData(): RuntimeConfigData? {
-        val runtimeConfigJsonFile = File(GlobalVariables.rootDirFile, "by_product_files/runtime_config.json")
+        val runtimeConfigJsonFile = File(ProjectStates.rootDirFile, "by_product_files/runtime_config.json")
         try {
             if (runtimeConfigJsonFile.exists()) {
                 runtimeConfigData = Gson().fromJson(

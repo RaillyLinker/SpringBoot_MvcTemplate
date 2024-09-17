@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.configurations.database_configs
 
-import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
@@ -17,7 +17,7 @@ import javax.sql.DataSource
 @Configuration
 @EnableJpaRepositories(
     // database repository path
-    basePackages = ["${GlobalVariables.PACKAGE_NAME}.data_sources.database_sources.${Db0ForDevelopersConfig.DATABASE_DIRECTORY_NAME}.repositories"],
+    basePackages = ["${ProjectConfigs.PACKAGE_NAME}.data_sources.database_jpa.${Db0ForDevelopersConfig.DATABASE_DIRECTORY_NAME}.repositories"],
     entityManagerFactoryRef = "${Db0ForDevelopersConfig.DATABASE_DIRECTORY_NAME}_LocalContainerEntityManagerFactoryBean", // 아래 bean 이름과 동일
     transactionManagerRef = Db0ForDevelopersConfig.TRANSACTION_NAME // 아래 bean 이름과 동일
 )
@@ -28,7 +28,7 @@ class Db0ForDevelopersConfig(
         // !!!application.yml 의 datasource 안에 작성된 이름 할당하기!!!
         const val DATABASE_CONFIG_NAME: String = "db0-for-developers"
 
-        // !!!data_sources/database_sources 안의 서브 폴더(entities, repositories 를 가진 폴더)의 이름 할당하기!!!
+        // !!!data_sources/database_jpa 안의 서브 폴더(entities, repositories 를 가진 폴더)의 이름 할당하기!!!
         const val DATABASE_DIRECTORY_NAME: String = "db0_for_developers"
 
         // Database 트랜젝션을 사용할 때 사용하는 이름 변수
@@ -43,7 +43,7 @@ class Db0ForDevelopersConfig(
     fun customEntityManagerFactory(): LocalContainerEntityManagerFactoryBean {
         val em = LocalContainerEntityManagerFactoryBean()
         em.dataSource = customDataSource()
-        em.setPackagesToScan("${GlobalVariables.PACKAGE_NAME}.data_sources.database_sources.${DATABASE_DIRECTORY_NAME}.entities")
+        em.setPackagesToScan("${ProjectConfigs.PACKAGE_NAME}.data_sources.database_jpa.${DATABASE_DIRECTORY_NAME}.entities")
         val vendorAdapter = HibernateJpaVendorAdapter()
         em.jpaVendorAdapter = vendorAdapter
         val properties = HashMap<String, Any?>()

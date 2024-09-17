@@ -3,8 +3,8 @@ package com.raillylinker.springboot_mvc_template.controllers.c10_service1_tk_v1_
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db1MainConfig
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.repositories.*
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db1_main.entities.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db1_main.repositories.*
+import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db1_main.entities.*
 import com.raillylinker.springboot_mvc_template.data_sources.network_retrofit2.RepositoryNetworkRetrofit2
 import com.raillylinker.springboot_mvc_template.custom_components.EmailSenderComponent
 import com.raillylinker.springboot_mvc_template.custom_components.NaverSmsSenderComponent

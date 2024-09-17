@@ -1,14 +1,15 @@
 package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 
-import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
 import com.raillylinker.springboot_mvc_template.data_sources.RuntimeConfig
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db0ForDevelopersConfig
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1MainScV1Service.Api2ViewModel.MemberInfo
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1MainScV1Service.Api3ViewModel.LockInfo
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberData_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberData
-import com.raillylinker.springboot_mvc_template.data_sources.database_sources.db0_for_developers.repositories.Db0_Native_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberData_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberData
+import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.repositories.Db0_Native_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectStates
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
@@ -315,7 +316,7 @@ class SC1MainScV1Service(
         session: HttpSession,
         currentPath: String?
     ): ModelAndView? {
-        val rootLogDirFile = File(GlobalVariables.rootDirFile, "by_product_files/logs")
+        val rootLogDirFile = File(ProjectStates.rootDirFile, "by_product_files/logs")
 
         // 현재 화면의 부모 폴더
         // 현재 화면의 폴더
@@ -462,7 +463,7 @@ class SC1MainScV1Service(
         fail: String?,
         complete: String?
     ): ModelAndView? {
-        val runtimeConfigFile = File(GlobalVariables.rootDirFile, "by_product_files/runtime_config.json")
+        val runtimeConfigFile = File(ProjectStates.rootDirFile, "by_product_files/runtime_config.json")
 
         val configJsonString: String = if (runtimeConfigFile.exists()) {
             // 파일을 읽어 String 으로 저장

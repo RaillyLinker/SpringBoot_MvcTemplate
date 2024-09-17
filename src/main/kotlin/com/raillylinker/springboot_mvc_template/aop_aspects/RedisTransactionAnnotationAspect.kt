@@ -1,7 +1,8 @@
 package com.raillylinker.springboot_mvc_template.aop_aspects
 
-import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
 import com.raillylinker.springboot_mvc_template.annotations.CustomRedisTransactional
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectStates
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -17,7 +18,7 @@ class RedisTransactionAnnotationAspect {
     companion object {
         // Redis 트랜젝션용 어노테이션인 CustomRedisTransactional 파일의 프로젝트 경로
         const val REDIS_TRANSACTION_ANNOTATION_PATH =
-            "@annotation(${GlobalVariables.PACKAGE_NAME}.annotations.CustomRedisTransactional)"
+            "@annotation(${ProjectConfigs.PACKAGE_NAME}.annotations.CustomRedisTransactional)"
     }
 
 
@@ -44,7 +45,7 @@ class RedisTransactionAnnotationAspect {
                 val redisTemplateBeanNameAndTableNameSplit = redisTemplateBeanNameAndTableName.split(":")
                 // redisTemplate 객체
                 val redisTemplate =
-                    GlobalVariables.redisTemplatesMap[redisTemplateBeanNameAndTableNameSplit[0].trim()]!!
+                    ProjectStates.redisTemplatesMap[redisTemplateBeanNameAndTableNameSplit[0].trim()]!!
                 // redis table 이름
                 val redisTableName = redisTemplateBeanNameAndTableNameSplit[1].trim()
 

@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.aop_aspects
 
-import com.raillylinker.springboot_mvc_template.data_sources.GlobalVariables
+import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
@@ -21,7 +21,7 @@ class DatabaseTransactionAnnotationAspect(
     companion object {
         // DB 트랜젝션용 어노테이션인 CustomTransactional 파일의 프로젝트 경로
         const val TRANSACTION_ANNOTATION_PATH =
-            "@annotation(${GlobalVariables.PACKAGE_NAME}.annotations.CustomTransactional)"
+            "@annotation(${ProjectConfigs.PACKAGE_NAME}.annotations.CustomTransactional)"
     }
 
 
