@@ -1,7 +1,7 @@
 package com.raillylinker.springboot_mvc_template
 
 import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
-import com.raillylinker.springboot_mvc_template.data_sources.RuntimeConfig
+import com.raillylinker.springboot_mvc_template.data_sources.file_and_memory_object.RuntimeConfig
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -22,7 +22,11 @@ class ApplicationMain {
         TimeZone.setDefault(TimeZone.getTimeZone(ProjectConfigs.SYSTEM_TIME_ZONE))
 
         // 런타임 설정 가져오기
-        RuntimeConfig.loadRuntimeConfigData()
+        try {
+            RuntimeConfig.loadFromFile()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
 

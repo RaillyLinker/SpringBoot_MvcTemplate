@@ -1,7 +1,8 @@
 package com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1
 
-import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
-import com.raillylinker.springboot_mvc_template.data_sources.RuntimeConfig
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.raillylinker.springboot_mvc_template.data_sources.file_and_memory_object.RuntimeConfig
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db0ForDevelopersConfig
 import com.raillylinker.springboot_mvc_template.controllers.sc1_main_sc_v1.SC1MainScV1Service.Api2ViewModel.MemberInfo
@@ -503,14 +504,19 @@ class SC1MainScV1Service(
     ): ModelAndView? {
         val mv = ModelAndView()
 
-        val resultObject = RuntimeConfig.saveRuntimeConfigData(configJsonString)
+        try {
+            RuntimeConfig.saveToFile(
+                Gson().fromJson(
+                    configJsonString,
+                    object : TypeToken<RuntimeConfig.LinkedDataVo>() {}.type
+                )
+            )
 
-        println("resultObject : $resultObject")
-
-        if (resultObject == null) {
-            mv.viewName = "redirect:/main/sc/v1/runtime-config-editor?fail"
-        } else {
             mv.viewName = "redirect:/main/sc/v1/runtime-config-editor?complete"
+        } catch (e: Exception) {
+            mv.viewName = "redirect:/main/sc/v1/runtime-config-editor?fail"
+
+            e.printStackTrace()
         }
 
         return mv
