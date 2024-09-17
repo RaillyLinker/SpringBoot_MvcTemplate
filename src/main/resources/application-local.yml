@@ -79,10 +79,6 @@ datasource-redis:
     host: 127.0.0.1
     port: 6379
 
-logging:
-  level:
-    org.springframework.data.mongodb: DEBUG # mongoDB 로깅 설정
-
 springdoc:
   swagger-ui:
     enabled: true # Swagger 문서 공개 여부
