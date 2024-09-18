@@ -653,7 +653,8 @@ interface Db1_Native_Repository : JpaRepository<Db1_Template_TestData, Long> {
     }
 
 
-    ////
+    //------------------------------------------------------------------------------------------------------------------
+    // <C10>
     @Query(
         nativeQuery = true,
         value = """
@@ -669,7 +670,7 @@ interface Db1_Native_Repository : JpaRepository<Db1_Template_TestData, Long> {
             FROM 
             railly_linker_company.service1_member_lock_history AS service1_member_lock_history 
             WHERE 
-            service1_member_lock_history.uid = :service1MemberUid AND 
+            service1_member_lock_history.service1_member_uid = :service1MemberUid AND 
             (
                 service1_member_lock_history.early_release IS NULL OR 
                 service1_member_lock_history.early_release > :currentTime 

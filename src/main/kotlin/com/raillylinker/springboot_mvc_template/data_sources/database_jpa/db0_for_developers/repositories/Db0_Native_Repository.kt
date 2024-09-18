@@ -22,6 +22,7 @@ import java.time.LocalDateTime
  */
 @Repository
 interface Db0_Native_Repository : JpaRepository<Db0_RaillyLinkerCompany_CompanyMemberData, Long> {
+    // <SC1>
     @Query(
         nativeQuery = true,
         value = """
@@ -37,7 +38,7 @@ interface Db0_Native_Repository : JpaRepository<Db0_RaillyLinkerCompany_CompanyM
             FROM 
             railly_linker_company.company_member_lock_history AS company_member_lock_history 
             WHERE 
-            company_member_lock_history.uid = :companyMemberUid AND 
+            company_member_lock_history.company_member_uid = :companyMemberUid AND 
             (
                 company_member_lock_history.early_release IS NULL OR 
                 company_member_lock_history.early_release > :currentTime 
