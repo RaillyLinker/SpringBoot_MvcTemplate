@@ -1,6 +1,5 @@
 package com.raillylinker.springboot_mvc_template.configurations.redis_configs
 
-import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
 import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectStates
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.EnableCaching
