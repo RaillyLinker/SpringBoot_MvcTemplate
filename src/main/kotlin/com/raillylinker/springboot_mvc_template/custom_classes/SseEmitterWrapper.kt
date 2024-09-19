@@ -134,7 +134,7 @@ class SseEmitterWrapper {
             // 이미터 생성시간으로부터 몇 ms 지났는지
             val diffMs = nowTimeMillis - emitterCreateTimeMillis
 
-            // 이미터 생성 시간이 타임아웃 시간(+n 밀리초) 을 초과했을 때
+            // 이미터 생성 시간이 타임아웃 시간(+n 밀리초) 을 초과했을 때 = 타임아웃이 되었는데도 갱신할 의지가 없다고 판단될 때
             if (diffMs > sseEmitterExpireTimeMs + sseEmitterSurviveTimeMs) {
                 // 삭제 목록에 포함
                 removeEmitterIdList.add(emitter.key)

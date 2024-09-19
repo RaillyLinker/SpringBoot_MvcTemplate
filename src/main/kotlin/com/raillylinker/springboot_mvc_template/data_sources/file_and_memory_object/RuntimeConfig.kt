@@ -7,7 +7,8 @@ import java.io.File
 
 object RuntimeConfig {
     // (JSON 파일 이름)
-    // {프로젝트 경로}/by_product_files 폴더 안에 저장됩니다.
+    // {프로젝트 경로}/by_product_files/{JSON_FILE_NAME} 폴더 안에 저장됩니다.
+    // !!!저장 파일명을 입력하세요. (object 명을 snake 패턴으로)!!!
     private const val JSON_FILE_NAME = "runtime_config.json"
 
     // (런타임 설정 데이터)

@@ -121,9 +121,12 @@ class LoggingFilter : OncePerRequestFilter() {
                 }
             } else ""
 
+            // 로깅 처리
+            // !!!로그 시작 문자 설정!!!
+            val loggingStart = ">>ApiFilterLog>>"
             if (isError) {
                 classLogger.error(
-                    ">>ApiFilterLog>>\n" + // API 필터로 인한 로그
+                    "${loggingStart}\n" + // API 필터로 인한 로그
                             "requestTime : $requestTime\n" +
                             "endPoint : $endpoint\n" +
                             "client Ip : $clientAddressIp\n" +
@@ -139,7 +142,7 @@ class LoggingFilter : OncePerRequestFilter() {
                 )
             } else {
                 classLogger.info(
-                    ">>ApiFilterLog>>\n" + // API 필터로 인한 로그
+                    "${loggingStart}\n" + // API 필터로 인한 로그
                             "requestTime : $requestTime\n" +
                             "endPoint : $endpoint\n" +
                             "client Ip : $clientAddressIp\n" +
