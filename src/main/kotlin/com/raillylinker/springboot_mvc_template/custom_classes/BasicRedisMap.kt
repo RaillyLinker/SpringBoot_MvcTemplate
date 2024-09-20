@@ -12,6 +12,8 @@ abstract class BasicRedisMap<ValueVo>(
     private val mapName: String,
     private val clazz: Class<ValueVo>
 ) {
+    private val gson = Gson()
+
     // <공개 메소드 공간>
     // (RedisMap 에 Key-Value 저장)
     fun saveKeyValue(
@@ -19,18 +21,14 @@ abstract class BasicRedisMap<ValueVo>(
         value: ValueVo,
         expireTimeMs: Long
     ) {
-        if (key.trim() == "") {
-            throw RuntimeException("key 는 비어있을 수 없습니다.")
-        }
-        if (key.contains(":")) {
-            throw RuntimeException("key 는 : 를 포함 할 수 없습니다.")
-        }
+        // 입력 키 검증
+        validateKey(key)
 
         // Redis Storage 에 실제로 저장 되는 키 (map 이름과 키를 합친 String)
         val innerKey = "$mapName:${key}" // 실제 저장되는 키 = 그룹명:키
 
         // Redis Storage 에 실제로 저장 되는 Value (Json String 형식)
-        redisTemplate.opsForValue()[innerKey] = Gson().toJson(value)
+        redisTemplate.opsForValue()[innerKey] = gson.toJson(value)
 
         // Redis Key 에 대한 만료시간 설정
         redisTemplate.expire(innerKey, expireTimeMs, TimeUnit.MILLISECONDS)
@@ -52,7 +50,7 @@ abstract class BasicRedisMap<ValueVo>(
             val innerValue = redisTemplate.opsForValue()[innerKey] ?: continue // 값
 
             // 외부적으로 사용되는 Value (Json String 을 테이블 객체로 변환)
-            val valueObject = Gson().fromJson(
+            val valueObject = gson.fromJson(
                 innerValue as String, // 해석하려는 json 형식의 String
                 clazz // 파싱할 데이터 객체 타입
             )
@@ -73,12 +71,8 @@ abstract class BasicRedisMap<ValueVo>(
     fun findKeyValue(
         key: String
     ): RedisMapDataVo<ValueVo>? {
-        if (key.trim() == "") {
-            throw RuntimeException("key 는 비어있을 수 없습니다.")
-        }
-        if (key.contains(":")) {
-            throw RuntimeException("key 는 : 를 포함 할 수 없습니다.")
-        }
+        // 입력 키 검증
+        validateKey(key)
 
         // Redis Storage 에 실제로 저장 되는 키 (map 이름과 키를 합친 String)
         val innerKey = "$mapName:$key"
@@ -90,7 +84,7 @@ abstract class BasicRedisMap<ValueVo>(
             null
         } else {
             // 외부적으로 사용되는 Value (Json String 을 테이블 객체로 변환)
-            val valueObject = Gson().fromJson(
+            val valueObject = gson.fromJson(
                 innerValue as String, // 해석하려는 json 형식의 String
                 clazz // 파싱할 데이터 객체 타입
             )
@@ -106,23 +100,15 @@ abstract class BasicRedisMap<ValueVo>(
     fun deleteAllKeyValues() {
         val keySet: Set<String> = redisTemplate.keys("$mapName:*")
 
-        for (innerKey in keySet) {
-            // innerKey : Redis Storage 에 실제로 저장 되는 키 (테이블 이름과 키를 합친 String)
-
-            redisTemplate.delete(innerKey)
-        }
+        redisTemplate.delete(keySet)
     }
 
     // (RedisMap 의 Key-Value 를 삭제)
     fun deleteKeyValue(
         key: String
     ) {
-        if (key.trim() == "") {
-            throw RuntimeException("key 는 비어있을 수 없습니다.")
-        }
-        if (key.contains(":")) {
-            throw RuntimeException("key 는 : 를 포함 할 수 없습니다.")
-        }
+        // 입력 키 검증
+        validateKey(key)
 
         // Redis Storage 에 실제로 저장 되는 키 (map 이름과 키를 합친 String)
         val innerKey = "$mapName:$key"
@@ -133,6 +119,15 @@ abstract class BasicRedisMap<ValueVo>(
 
     // ---------------------------------------------------------------------------------------------
     // <비공개 메소드 공간>
+    // (입력 키 검증 함수)
+    private fun validateKey(key: String) {
+        if (key.trim().isEmpty()) {
+            throw RuntimeException("key 는 비어있을 수 없습니다.")
+        }
+        if (key.contains(":")) {
+            throw RuntimeException("key 는 :를 포함할 수 없습니다.")
+        }
+    }
 
 
     // ---------------------------------------------------------------------------------------------
