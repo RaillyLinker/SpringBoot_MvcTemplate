@@ -28,7 +28,7 @@ abstract class BasicRedisMap<ValueVo>(
         val innerKey = "$mapName:${key}" // 실제 저장되는 키 = 그룹명:키
 
         // Redis Storage 에 실제로 저장 되는 Value (Json String 형식)
-        redisTemplateObj.opsForValue()[innerKey] = gson.toJson(value)
+        redisTemplateObj.opsForValue().set(innerKey, gson.toJson(value))
 
         // Redis Key 에 대한 만료시간 설정
         redisTemplateObj.expire(innerKey, expireTimeMs, TimeUnit.MILLISECONDS)
