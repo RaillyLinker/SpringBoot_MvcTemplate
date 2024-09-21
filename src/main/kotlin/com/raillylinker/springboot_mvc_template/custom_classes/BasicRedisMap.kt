@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 // 본 추상 클래스를 상속받은 클래스를 key, value, expireTime 및 Redis 저장, 삭제, 조회 기능 메소드를 가진 클래스로 만들어줍니다.
 // Redis Storage 를 Map 타입처럼 사용 가능하도록 래핑해주는 역할을 합니다.
 abstract class BasicRedisMap<ValueVo>(
-    private val redisTemplate: RedisTemplate<String, Any>,
+    private val redisTemplateObj: RedisTemplate<String, String>,
     private val mapName: String,
     private val clazz: Class<ValueVo>
 ) {
@@ -28,17 +28,17 @@ abstract class BasicRedisMap<ValueVo>(
         val innerKey = "$mapName:${key}" // 실제 저장되는 키 = 그룹명:키
 
         // Redis Storage 에 실제로 저장 되는 Value (Json String 형식)
-        redisTemplate.opsForValue()[innerKey] = gson.toJson(value)
+        redisTemplateObj.opsForValue()[innerKey] = gson.toJson(value)
 
         // Redis Key 에 대한 만료시간 설정
-        redisTemplate.expire(innerKey, expireTimeMs, TimeUnit.MILLISECONDS)
+        redisTemplateObj.expire(innerKey, expireTimeMs, TimeUnit.MILLISECONDS)
     }
 
     // (RedisMap 의 모든 Key-Value 리스트 반환)
     fun findAllKeyValues(): List<RedisMapDataVo<ValueVo>> {
         val resultList = ArrayList<RedisMapDataVo<ValueVo>>()
 
-        val keySet: Set<String> = redisTemplate.keys("$mapName:*")
+        val keySet: Set<String> = redisTemplateObj.keys("$mapName:*")
 
         for (innerKey in keySet) {
             // innerKey : Redis Storage 에 실제로 저장 되는 키 (map 이름과 키를 합친 String)
@@ -47,11 +47,11 @@ abstract class BasicRedisMap<ValueVo>(
             val key = innerKey.substring("$mapName:".length) // 키
 
             // Redis Storage 에 실제로 저장 되는 Value (Json String 형식)
-            val innerValue = redisTemplate.opsForValue()[innerKey] ?: continue // 값
+            val innerValue = redisTemplateObj.opsForValue()[innerKey] ?: continue // 값
 
             // 외부적으로 사용되는 Value (Json String 을 테이블 객체로 변환)
             val valueObject = gson.fromJson(
-                innerValue as String, // 해석하려는 json 형식의 String
+                innerValue, // 해석하려는 json 형식의 String
                 clazz // 파싱할 데이터 객체 타입
             )
 
@@ -59,7 +59,7 @@ abstract class BasicRedisMap<ValueVo>(
                 RedisMapDataVo(
                     key,
                     valueObject,
-                    redisTemplate.getExpire(innerKey, TimeUnit.MILLISECONDS) // 남은 만료시간
+                    redisTemplateObj.getExpire(innerKey, TimeUnit.MILLISECONDS) // 남은 만료시간
                 )
             )
         }
@@ -78,29 +78,29 @@ abstract class BasicRedisMap<ValueVo>(
         val innerKey = "$mapName:$key"
 
         // Redis Storage 에 실제로 저장 되는 Value (Json String 형식)
-        val innerValue = redisTemplate.opsForValue()[innerKey] // 값
+        val innerValue = redisTemplateObj.opsForValue()[innerKey] // 값
 
         return if (innerValue == null) {
             null
         } else {
             // 외부적으로 사용되는 Value (Json String 을 테이블 객체로 변환)
             val valueObject = gson.fromJson(
-                innerValue as String, // 해석하려는 json 형식의 String
+                innerValue, // 해석하려는 json 형식의 String
                 clazz // 파싱할 데이터 객체 타입
             )
             RedisMapDataVo(
                 key,
                 valueObject,
-                redisTemplate.getExpire(innerKey, TimeUnit.MILLISECONDS) // 남은 만료시간
+                redisTemplateObj.getExpire(innerKey, TimeUnit.MILLISECONDS) // 남은 만료시간
             )
         }
     }
 
     // (RedisMap 의 모든 Key-Value 리스트 삭제)
     fun deleteAllKeyValues() {
-        val keySet: Set<String> = redisTemplate.keys("$mapName:*")
+        val keySet: Set<String> = redisTemplateObj.keys("$mapName:*")
 
-        redisTemplate.delete(keySet)
+        redisTemplateObj.delete(keySet)
     }
 
     // (RedisMap 의 Key-Value 를 삭제)
@@ -113,7 +113,7 @@ abstract class BasicRedisMap<ValueVo>(
         // Redis Storage 에 실제로 저장 되는 키 (map 이름과 키를 합친 String)
         val innerKey = "$mapName:$key"
 
-        redisTemplate.delete(innerKey)
+        redisTemplateObj.delete(innerKey)
     }
 
 

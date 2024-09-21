@@ -10,16 +10,12 @@ import org.springframework.stereotype.Component
 @Component
 class Redis1_Test(
     // !!!RedisConfig 종류 변경!!!
-    @Qualifier(Redis1MainConfig.REDIS_CONFIG_NAME) private val redisTemplate: RedisTemplate<String, Any>
+    @Qualifier(Redis1MainConfig.REDIS_TEMPLATE_NAME) val redisTemplate: RedisTemplate<String, String>
 ) : BasicRedisMap<Redis1_Test.ValueVo>(redisTemplate, MAP_NAME, ValueVo::class.java) {
     // <멤버 변수 공간>
     companion object {
         // !!!중복되지 않도록, 본 클래스명을 MAP_NAME 으로 설정하기!!!
         const val MAP_NAME = "Redis1_Test"
-
-        // Redis Transaction 이름
-        // !!!RedisConfig 종류 변경!!!
-        const val TRANSACTION_NAME = "${Redis1MainConfig.REDIS_CONFIG_NAME}:$MAP_NAME"
     }
 
     // !!!본 RedisMAP 의 Value 클래스 설정!!!

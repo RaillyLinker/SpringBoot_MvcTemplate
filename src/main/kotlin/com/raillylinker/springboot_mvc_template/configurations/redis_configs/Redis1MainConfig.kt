@@ -1,14 +1,16 @@
 package com.raillylinker.springboot_mvc_template.configurations.redis_configs
 
-import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectStates
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.redis.connection.RedisConnectionFactory
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.StringRedisSerializer
+import java.time.Duration
+
 
 // [Redis 설정]
 @Configuration
@@ -18,6 +20,9 @@ class Redis1MainConfig {
     companion object {
         // !!!application.yml 의 datasource-redis 안에 작성된 이름 할당하기!!!
         const val REDIS_CONFIG_NAME = "redis1-main"
+
+        // Redis Template Bean 이름
+        const val REDIS_TEMPLATE_NAME = "${REDIS_CONFIG_NAME}_template"
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -28,18 +33,21 @@ class Redis1MainConfig {
     private var redisPort: Int? = null
 
     @Bean(REDIS_CONFIG_NAME + "_ConnectionFactory")
-    fun redisConnectionFactory(): RedisConnectionFactory {
-        return LettuceConnectionFactory(redisHost, redisPort!!)
+    fun redisConnectionFactory(): LettuceConnectionFactory {
+        val clientConfig = LettuceClientConfiguration.builder()
+//            .useSsl().and()
+            .commandTimeout(Duration.ofSeconds(2))
+            .shutdownTimeout(Duration.ZERO)
+            .build()
+
+        return LettuceConnectionFactory(RedisStandaloneConfiguration(redisHost, redisPort!!), clientConfig)
     }
 
-    @Bean(REDIS_CONFIG_NAME)
-    fun redisRedisTemplate(): RedisTemplate<String, Any> {
-        val redisTemplate = RedisTemplate<String, Any>()
+    @Bean(REDIS_TEMPLATE_NAME)
+    fun redisRedisTemplate(): RedisTemplate<String, String> {
+        val redisTemplate = RedisTemplate<String, String>()
         redisTemplate.connectionFactory = redisConnectionFactory()
         redisTemplate.keySerializer = StringRedisSerializer()
-
-        // GlobalVariables.redisTemplatesMap에 바로 추가
-        ProjectStates.redisTemplatesMap[REDIS_CONFIG_NAME] = redisTemplate
         return redisTemplate
     }
 }

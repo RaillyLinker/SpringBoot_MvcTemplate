@@ -1,6 +1,5 @@
 package com.raillylinker.springboot_mvc_template.controllers.c8_service1_tk_v1_redisTest
 
-import com.raillylinker.springboot_mvc_template.annotations.CustomRedisTransactional
 import com.raillylinker.springboot_mvc_template.data_sources.memory_redis.redis1_main.Redis1_Test
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
@@ -22,7 +21,7 @@ class C8Service1TkV1RedisTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
+//    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api1InsertRedisKeyValueTest(
         httpServletResponse: HttpServletResponse,
         inputVo: C8Service1TkV1RedisTestController.Api1InsertRedisKeyValueTestInputVo
@@ -90,7 +89,7 @@ class C8Service1TkV1RedisTestService(
 
 
     ////
-    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
+//    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api4DeleteRedisKeySample(httpServletResponse: HttpServletResponse, key: String) {
         val keyValue = redis1Test.findKeyValue(key)
 
@@ -107,7 +106,7 @@ class C8Service1TkV1RedisTestService(
 
 
     ////
-    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
+//    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api5DeleteAllRedisKeySample(httpServletResponse: HttpServletResponse) {
         redis1Test.deleteAllKeyValues()
 
@@ -116,7 +115,7 @@ class C8Service1TkV1RedisTestService(
 
 
     ////
-    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
+//    @CustomRedisTransactional([Redis1_Test.TRANSACTION_NAME])
     fun api6RedisTransactionTest(httpServletResponse: HttpServletResponse, inputVo: C8Service1TkV1RedisTestController.Api6RedisTransactionTestInputVo) {
         redis1Test.saveKeyValue(
             inputVo.key,
