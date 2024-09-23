@@ -113,6 +113,9 @@ dependencies {
 
     // (AWS)
     implementation("io.awspring.cloud:spring-cloud-starter-aws:2.4.4")
+
+    // (MongoDB)
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.3.0")
 }
 
 tasks.withType<KotlinCompile> {

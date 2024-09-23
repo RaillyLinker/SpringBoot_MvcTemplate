@@ -1,3 +1,2 @@
 [TODO]
 - README.md 설명 추가
-- MongoDB 공부 후 적용 및 테스트

@@ -1,7 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c10_service1_tk_v1_auth
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header

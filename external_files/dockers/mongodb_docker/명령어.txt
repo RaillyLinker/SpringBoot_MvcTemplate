@@ -1,0 +1,37 @@
+- 도커 컨테이너 실행 명령어 (커맨드창에서 본 디렉토리 경로로 이동하여 입력하세요.)
+>> docker-compose -f mongodb-compose.yml up -d
+
+- mongodb1 컨테이너에 터미널 접속
+
+- 레플리카 설정 (모두 docker 내에서 일어나는 일이니, host.docker.internal 로 host 의 localhost 로 접근합니다.)
+>> mongosh
+>> rs.initiate({_id: "rs0", members: [{ _id: 0, host: "host.docker.internal:27017" },{ _id: 1, host: "host.docker.internal:27018" },{ _id: 2, host: "host.docker.internal:27019" }]})
+
+// 출력데이터
+{ ok: 1 }
+
+- 레플리카 상태 확인
+>> rs.status()
+
+// 출력 데이터
+{
+  set: 'rs0',
+  ...
+}
+출력 데이터를 확인하여 stateStr 이 PRIMARY 로 된 주소를 Springboot application.yml 안의 mongodb 접속 주소 설정으로 넣어주어야 합니다.
+
+- 몽고DB 입력창 나가기
+>> exit
+
+- 호스트 설정
+>> apt-get update
+>> apt-get install vim
+>> vi /etc/hosts
+
+아래쪽에
+
+127.0.0.1       mongodb1
+127.0.0.1       mongodb2
+127.0.0.1       mongodb3
+
+이것을 추가하고 저장해줍니다.
