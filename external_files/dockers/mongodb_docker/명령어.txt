@@ -18,20 +18,8 @@
   set: 'rs0',
   ...
 }
-출력 데이터를 확인하여 stateStr 이 PRIMARY 로 된 주소를 Springboot application.yml 안의 mongodb 접속 주소 설정으로 넣어주어야 합니다.
 
-- 몽고DB 입력창 나가기
->> exit
+- 다음으로, mongodb 접속 주소를 springboot 에 설정해주어야 합니다.
+접속 주소는, mongodb:// 로 시작되며, replicaset 으로 설정된 모든 접속 경로를 적어야 합니다.
 
-- 호스트 설정
->> apt-get update
->> apt-get install vim
->> vi /etc/hosts
-
-아래쪽에
-
-127.0.0.1       mongodb1
-127.0.0.1       mongodb2
-127.0.0.1       mongodb3
-
-이것을 추가하고 저장해줍니다.
+ex : mongodb://127.0.0.1:27017,127.0.0.1:27018,127.0.0.1:27019/db?replicaSet=rs0
