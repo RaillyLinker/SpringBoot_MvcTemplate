@@ -36,7 +36,8 @@ class KafkaConsumerForTestListeners {
         classLogger.info(">> testTopic2 group_0 : $data")
     }
 
-    // (testTopic2 에 대한 리스너)
+    // (testTopic2 에 대한 동일 그룹 테스트 리스너)
+    // 동일 topic 에 동일 group 을 설정할 경우, 리스너는 한개만을 선택하고 다른 하나는 침묵합니다.
     // containerFactory 에 kafka consumer container factory 이름 - KafkaConsumerConfig 의 Bean 함수명을 입력하세요
     @KafkaListener(topics = ["testTopic2"], groupId = "group_0", containerFactory = "kafkaConsumerForTest")
     fun testTopic2Group0Listener2(data: Any?) {
