@@ -20,8 +20,6 @@ class KafkaConsumerConfig {
         val config: MutableMap<String, Any> = HashMap()
         // Kafka 브로커에 연결하기 위한 주소를 설정합니다. 여러 개의 브로커가 있을 경우, 콤마로 구분하여 나열합니다.
         config[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092,localhost:9093,localhost:9094"
-        // 소비자 그룹 ID를 설정합니다. 같은 그룹에 속한 소비자들은 서로 메시지를 공유하고, 메시지를 중복 소비하지 않도록 조정됩니다.
-        config[ConsumerConfig.GROUP_ID_CONFIG] = "group_0"
         config[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
         config[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
 
