@@ -63,7 +63,10 @@ class C11Service1TkV1MongoDbTestController(
     data class Api1InsertDocumentTestInputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
-        val content: String
+        val content: String,
+        @Schema(description = "Nullable 값", required = false, example = "Not Null")
+        @JsonProperty("nullableValue")
+        val nullableValue: String?
     )
 
     data class Api1InsertDocumentTestOutputVo(
@@ -73,6 +76,9 @@ class C11Service1TkV1MongoDbTestController(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
         val content: String,
+        @Schema(description = "Nullable 값", required = false, example = "Not Null")
+        @JsonProperty("nullableValue")
+        val nullableValue: String?,
         @Schema(description = "자동 생성 숫자", required = true, example = "21345")
         @JsonProperty("randomNum")
         val randomNum: Int,
@@ -203,6 +209,9 @@ class C11Service1TkV1MongoDbTestController(
             @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
             @JsonProperty("content")
             val content: String,
+            @Schema(description = "Nullable 값", required = false, example = "Not Null")
+            @JsonProperty("nullableValue")
+            val nullableValue: String?,
             @Schema(description = "자동 생성 숫자", required = true, example = "21345")
             @JsonProperty("randomNum")
             val randomNum: Int,

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -35,9 +34,8 @@ class C11Service1TkV1MongoDbTestService(
             Mdb1_Test(
                 inputVo.content,
                 (0..99999999).random(),
-                true,
-                LocalDateTime.now(),
-                LocalDateTime.now()
+                inputVo.nullableValue,
+                true
             )
         )
 
@@ -46,10 +44,11 @@ class C11Service1TkV1MongoDbTestService(
         return C11Service1TkV1MongoDbTestController.Api1InsertDocumentTestOutputVo(
             resultCollection.uid!!.toString(),
             resultCollection.content,
+            resultCollection.nullableValue,
             resultCollection.randomNum,
-            resultCollection.rowCreateDate.atZone(ZoneId.systemDefault())
+            resultCollection.rowCreateDate!!.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-            resultCollection.rowUpdateDate.atZone(ZoneId.systemDefault())
+            resultCollection.rowUpdateDate!!.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
         )
     }
@@ -66,7 +65,7 @@ class C11Service1TkV1MongoDbTestService(
     fun api3DeleteDocumentTest(httpServletResponse: HttpServletResponse, id: String) {
         val testDocument = mdb1TestRepository.findById(id)
 
-        if(testDocument.isEmpty){
+        if (testDocument.isEmpty) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
             return
@@ -82,17 +81,19 @@ class C11Service1TkV1MongoDbTestService(
     fun api4SelectAllDocumentsTest(httpServletResponse: HttpServletResponse): C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo? {
         val testCollectionList = mdb1TestRepository.findAll()
 
-        val resultVoList: ArrayList<C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo.TestEntityVo> = arrayListOf()
+        val resultVoList: ArrayList<C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo.TestEntityVo> =
+            arrayListOf()
 
         for (testCollection in testCollectionList) {
             resultVoList.add(
                 C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo.TestEntityVo(
                     testCollection.uid!!.toString(),
                     testCollection.content,
+                    testCollection.nullableValue,
                     testCollection.randomNum,
-                    testCollection.rowCreateDate.atZone(ZoneId.systemDefault())
+                    testCollection.rowCreateDate!!.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
-                    testCollection.rowUpdateDate.atZone(ZoneId.systemDefault())
+                    testCollection.rowUpdateDate!!.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
                 )
             )
@@ -114,9 +115,8 @@ class C11Service1TkV1MongoDbTestService(
             Mdb1_Test(
                 "test",
                 (0..99999999).random(),
-                true,
-                LocalDateTime.now(),
-                LocalDateTime.now()
+                null,
+                true
             )
         )
 
@@ -134,9 +134,8 @@ class C11Service1TkV1MongoDbTestService(
             Mdb1_Test(
                 "test",
                 (0..99999999).random(),
-                true,
-                LocalDateTime.now(),
-                LocalDateTime.now()
+                null,
+                true
             )
         )
 
