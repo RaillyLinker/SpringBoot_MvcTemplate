@@ -484,7 +484,7 @@ class C6Service1TkV1TestController(
     }
 
     data class Api7SendKafkaTopicMessageTestInputVo(
-        @Schema(description = "토픽", required = true, example = "testTopic")
+        @Schema(description = "토픽", required = true, example = "testTopic1")
         @JsonProperty("topic")
         val topic: String,
         @Schema(description = "메세지", required = true, example = "testMessage")

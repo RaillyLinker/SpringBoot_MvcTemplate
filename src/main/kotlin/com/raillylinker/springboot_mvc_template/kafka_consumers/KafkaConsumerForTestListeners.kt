@@ -27,8 +27,15 @@ class KafkaConsumerForTestListeners {
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    @KafkaListener(topics = ["testTopic"], groupId = "group_0", containerFactory = KAFKA_CONSUMER_CONTAINER_FACTORY)
-    fun listener(data: Any?) {
-        classLogger.info(">>>>>>>>>>$data<<<<<<<<<<")
+    // (testTopic1 에 대한 리스너)
+    @KafkaListener(topics = ["testTopic1"], groupId = "group_0", containerFactory = KAFKA_CONSUMER_CONTAINER_FACTORY)
+    fun testTopic1Listener(data: Any?) {
+        classLogger.info(">> testTopic1 : $data")
+    }
+
+    // (testTopic2 에 대한 리스너)
+    @KafkaListener(topics = ["testTopic2"], groupId = "group_0", containerFactory = KAFKA_CONSUMER_CONTAINER_FACTORY)
+    fun testTopic2Listener(data: Any?) {
+        classLogger.info(">> testTopic2 : $data")
     }
 }

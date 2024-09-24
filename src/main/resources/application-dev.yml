@@ -90,7 +90,7 @@ datasource-mongodb:
 
 logging:
   level:
-    org.springframework.data.mongodb: DEBUG # mongoDB 로깅 설정
+    org.springframework.data.mongodb: INFO # mongoDB 로깅 설정
 
 springdoc:
   swagger-ui:

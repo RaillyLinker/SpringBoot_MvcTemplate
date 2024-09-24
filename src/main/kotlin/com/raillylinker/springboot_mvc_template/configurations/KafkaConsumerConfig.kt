@@ -15,10 +15,12 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory
 class KafkaConsumerConfig {
     // !!!등록할 Kafka 앤드포인트가 있다면 아래에 Bean 으로 등록하세요!!!
     // 예시 :
-    @Bean
+    @Bean("kafkaConsumerForTest")
     fun kafkaConsumerForTest(): ConcurrentKafkaListenerContainerFactory<String, Any> {
         val config: MutableMap<String, Any> = HashMap()
-        config[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092" // Kafka 접속 주소
+        // Kafka 브로커에 연결하기 위한 주소를 설정합니다. 여러 개의 브로커가 있을 경우, 콤마로 구분하여 나열합니다.
+        config[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092,localhost:9093,localhost:9094"
+        // 소비자 그룹 ID를 설정합니다. 같은 그룹에 속한 소비자들은 서로 메시지를 공유하고, 메시지를 중복 소비하지 않도록 조정됩니다.
         config[ConsumerConfig.GROUP_ID_CONFIG] = "group_0"
         config[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
         config[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
