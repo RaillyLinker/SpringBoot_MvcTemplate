@@ -1,2 +1,8 @@
 [TODO]
 - README.md 설명 추가
+- kafka 보안
+  SASL/SCRAM
+  SASL/GSSAPI (Kerberos)
+- Mongodb 비밀번호
+- Prometheus and grafana or ELK
+- Redis 클러스터
