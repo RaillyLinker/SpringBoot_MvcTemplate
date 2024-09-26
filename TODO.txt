@@ -3,5 +3,5 @@
 - kafka 보안
   SASL/SCRAM
   SASL/GSSAPI (Kerberos)
-- Prometheus and grafana or ELK
+- ELK
 - Redis 클러스터
