@@ -6,8 +6,11 @@ services:
     ports:
       - "3306:3306"
     environment:
+      # root 계정 초기 비밀번호
       MYSQL_ROOT_PASSWORD: todo1234!
+      # 초기 생성 데이터베이스
       MYSQL_DATABASE: mysqldb
+      # 타임존 설정
       TZ: Asia/Seoul
     volumes:
       - C:/Users/raill/Downloads/tmp/mysql/data:/var/lib/mysql
