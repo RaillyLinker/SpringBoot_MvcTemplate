@@ -74,6 +74,35 @@ class SecurityConfig {
     fun securityFilterChainMainSc(
         http: HttpSecurity
     ): SecurityFilterChain {
+        // cors 적용(서로 다른 origin 의 웹화면에서 리퀘스트 금지)
+        http.cors {}
+
+        // (사이즈간 위조 요청(Cross site Request forgery) 방지 설정)
+        // csrf 설정시 POST, PUT, DELETE 요청으로부터 보호하며 csrf 토큰이 포함되어야 요청을 받아들이게 됨
+        // Rest API 에선 Token 이 요청의 위조 방지 역할을 하기에 비활성화
+        http.csrf { csrfCustomizer ->
+            csrfCustomizer.disable()
+        }
+
+        http.httpBasic { httpBasicCustomizer ->
+            httpBasicCustomizer.disable()
+        }
+
+        // Token 인증을 위한 세션 비활성화
+        http.sessionManagement { sessionManagementCustomizer ->
+            sessionManagementCustomizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        }
+
+        // 스프링 시큐리티 기본 로그인 화면 비활성화
+        http.formLogin { formLoginCustomizer ->
+            formLoginCustomizer.disable()
+        }
+
+        // 스프링 시큐리티 기본 로그아웃 비활성화
+        http.logout { logoutCustomizer ->
+            logoutCustomizer.disable()
+        }
+
         // (API 요청 제한)
         // 기본적으로 모두 Open
         http.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
