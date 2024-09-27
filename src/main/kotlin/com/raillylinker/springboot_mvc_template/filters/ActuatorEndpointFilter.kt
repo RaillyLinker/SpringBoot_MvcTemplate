@@ -1,6 +1,7 @@
 package com.raillylinker.springboot_mvc_template.filters
 
 import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
+import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_RuntimeConfigIpList
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
@@ -18,7 +19,10 @@ import org.springframework.stereotype.Component
 // 위 변수에 담겨있는 IP 만을 허용하고, 나머지 접근은 404 를 반환하도록 처리하였습니다.
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class ActuatorEndpointFilter : Filter {
+class ActuatorEndpointFilter(
+    // (Redis Repository)
+    private val redis1RuntimeConfigIpList: Redis1_RuntimeConfigIpList
+) : Filter {
     override fun doFilter(
         request: ServletRequest, response: ServletResponse, chain: FilterChain
     ) {
@@ -28,11 +32,15 @@ class ActuatorEndpointFilter : Filter {
         // 요청자 Ip (ex : 127.0.0.1)
         val clientAddressIp = httpServletRequest.remoteAddr
 
+        val actuatorAllowIpInfo = redis1RuntimeConfigIpList.findKeyValue("actuatorAllowIpList")
+
         var actuatorAllow = false
-        for (actuatorAllowIp in ProjectConst.actuatorAllowIpList) {
-            if (clientAddressIp == actuatorAllowIp) {
-                actuatorAllow = true
-                break
+        if (actuatorAllowIpInfo != null) {
+            for (actuatorAllowIp in actuatorAllowIpInfo.value.ipInfoList) {
+                if (clientAddressIp == actuatorAllowIp.ip) {
+                    actuatorAllow = true
+                    break
+                }
             }
         }
 

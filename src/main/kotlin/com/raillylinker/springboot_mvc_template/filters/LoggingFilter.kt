@@ -1,6 +1,8 @@
 package com.raillylinker.springboot_mvc_template.filters
 
 import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
+import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_RuntimeConfigIpList
+import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
 import jakarta.servlet.AsyncEvent
 import jakarta.servlet.AsyncListener
 import jakarta.servlet.FilterChain
@@ -24,7 +26,10 @@ import java.time.LocalDateTime
 // API 호출시마다 Request 와 Response 를 로깅하도록 처리했습니다.
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class LoggingFilter : OncePerRequestFilter() {
+class LoggingFilter(
+    // (Redis Repository)
+    private val redis1RuntimeConfigIpList: Redis1_RuntimeConfigIpList
+) : OncePerRequestFilter() {
     // <멤버 변수 공간>
     private val classLogger = LoggerFactory.getLogger(this::class.java)
 
@@ -51,11 +56,15 @@ class LoggingFilter : OncePerRequestFilter() {
         // 요청자 Ip (ex : 127.0.0.1)
         val clientAddressIp = request.remoteAddr
 
+        val loggingDenyIpInfo = redis1RuntimeConfigIpList.findKeyValue("loggingDenyIpList")
+
         var loggingDeny = false
-        for (loggingDenyIp in ProjectConst.loggingDenyIpList) {
-            if (loggingDenyIp == clientAddressIp) {
-                loggingDeny = true
-                break
+        if (loggingDenyIpInfo != null) {
+            for (loggingDenyIp in loggingDenyIpInfo.value.ipInfoList) {
+                if (loggingDenyIp.ip == clientAddressIp) {
+                    loggingDeny = true
+                    break
+                }
             }
         }
 
