@@ -279,8 +279,7 @@
   TestWebSocketHandler 의 webSocketSessionHashMap<br>
   SseEmitterWrapper 의 emitterMap, eventHistoryMap<br>
   SseClient 의 client 접속 처리<br>
-  WebSocketStomp 접속자 정보<br>
-  scheduler 실행 처리<br><br>
+  WebSocketStomp 접속자 정보<br><br>
 
   ScaleOut 을 위한 프로젝트 복제시 문제가 생기지 않도록 처리하세요.
 

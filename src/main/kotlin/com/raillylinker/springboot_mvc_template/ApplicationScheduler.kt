@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component
 // 일정 시간마다 실행되는 함수들의 클래스 (프로젝트 Application 클래스 선언 위에 @EnableScheduling 추가 필요)
 // scheduler 를 사용할 Class 에 @Component, Method 에 @Scheduled 추가
 // @Scheduled 규칙 : Method 반환값 void, 매개변수 0개의 인터페이스 형태 사용
+
+// 주의할 점으로는, Scaleout 으로 프로세스 복제시 스케쥴러 작업 역시 중복 실행될 수 있다는 것을 고려해야합니다.
+// 차라리 Linux 스케쥴러 등의 외부 스케쥴러를 사용하는 것도 추천드립니다.
 @Component
 @EnableAsync
 class ApplicationScheduler {
