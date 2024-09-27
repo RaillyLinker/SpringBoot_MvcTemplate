@@ -1,4 +1,4 @@
-package com.raillylinker.springboot_mvc_template.data_sources.memory_redis.redis1_main
+package com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main
 
 import com.raillylinker.springboot_mvc_template.configurations.redis_configs.Redis1MainConfig
 import com.raillylinker.springboot_mvc_template.custom_classes.BasicRedisMap

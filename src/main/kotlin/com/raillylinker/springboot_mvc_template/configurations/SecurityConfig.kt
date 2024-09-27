@@ -413,7 +413,6 @@ class SecurityConfig {
     class AuthTokenFilterService1Tk(private val filterPatternList: List<String>) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
-            // todo 메모리에 상태를 넣지 말기
             // 만료 처리를 할 액세스 토큰 세트
             // 아래 JWT 인증은 한번 발행된 토큰에 적혀있는 내용만을 신뢰하고 동작합니다.
             // 회원 탈퇴, 로그아웃 처리, 권한 변경, 계정 정지 등의 계정 관련 정보 변경으로
