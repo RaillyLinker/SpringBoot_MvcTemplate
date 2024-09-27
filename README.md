@@ -281,8 +281,7 @@
   SseClient 의 client 접속 처리<br>
   WebSocketStomp 접속자 정보<br>
   scheduler 실행 처리<br>
-  RuntimeConfig<br>
-  security : FORCE_EXPIRE_AUTHORIZATION_SET<br><br>
+  RuntimeConfig<br><br>
 
   위와 같습니다.<br>
   ScaleOut 을 위한 프로젝트 복제시 문제가 생기지 않도록 처리하세요.

@@ -3712,4 +3712,49 @@ class C10Service1TkV1AuthController(
             phoneNumberUid
         )
     }
+
+
+    ////
+    @Operation(
+        summary = "N53 : Redis Key-Value 모두 조회 테스트",
+        description = "Redis1_Service1ForceExpireAuthorizationSet 에 저장된 모든 Key-Value 를 조회합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/service1-force-expire-authorization-set"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api53SelectAllRedisKeyValueSample(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ): Api53SelectAllRedisKeyValueSampleOutputVo? {
+        return service.api53SelectAllRedisKeyValueSample(
+            httpServletResponse
+        )
+    }
+
+    data class Api53SelectAllRedisKeyValueSampleOutputVo(
+        @Schema(description = "Key-Value 리스트", required = true)
+        @JsonProperty("keyValueList")
+        val keyValueList: List<KeyValueVo>,
+    ) {
+        @Schema(description = "Key-Value 객체")
+        data class KeyValueVo(
+            @Schema(description = "Key", required = true, example = "testing")
+            @JsonProperty("key")
+            val key: String,
+            @Schema(description = "데이터 만료시간(밀리 초, -1 이라면 무한정)", required = true, example = "12000")
+            @JsonProperty("expirationMs")
+            val expirationMs: Long
+        )
+    }
 }

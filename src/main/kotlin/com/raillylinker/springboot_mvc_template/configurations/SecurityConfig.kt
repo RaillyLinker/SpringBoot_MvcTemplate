@@ -1,6 +1,7 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtil
+import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -66,6 +67,22 @@ class SecurityConfig {
     }
 
     // !!!경로별 적용할 Security 설정 Bean 작성하기!!!
+
+    // [기본적으로 모든 요청 Open]
+    @Bean
+    @Order(Int.MAX_VALUE)
+    fun securityFilterChainMainSc(
+        http: HttpSecurity
+    ): SecurityFilterChain {
+        // (API 요청 제한)
+        // 기본적으로 모두 Open
+        http.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
+            // 모든 요청 허용
+            authorizeHttpRequestsCustomizer.anyRequest().permitAll()
+        }
+
+        return http.build()
+    }
 
     // [Session-Cookie 인증 구현 샘플]
 //    @Bean
@@ -327,7 +344,10 @@ class SecurityConfig {
     // [/service1/tk 로 시작되는 리퀘스트의 시큐리티 설정 = Token 인증 사용]
     @Bean
     @Order(1)
-    fun securityFilterChainService1Tk(http: HttpSecurity): SecurityFilterChain {
+    fun securityFilterChainService1Tk(
+        http: HttpSecurity,
+        expireTokenRedis: Redis1_Service1ForceExpireAuthorizationSet
+    ): SecurityFilterChain {
         // !!!시큐리티 필터 추가시 수정!!!
         // 본 시큐리티 필터가 관리할 주소 체계
         val securityUrlList = listOf(
@@ -368,7 +388,7 @@ class SecurityConfig {
         // API 요청마다 헤더로 들어오는 인증 토큰 유효성을 검증
         securityMatcher.addFilterBefore(
             // !!!시큐리티 필터 추가시 수정!!!
-            AuthTokenFilterService1Tk(securityUrlList),
+            AuthTokenFilterService1Tk(securityUrlList, expireTokenRedis),
             UsernamePasswordAuthenticationFilter::class.java
         )
 
@@ -410,17 +430,12 @@ class SecurityConfig {
     }
 
     // 인증 토큰 검증 필터 - API 요청마다 검증 실행
-    class AuthTokenFilterService1Tk(private val filterPatternList: List<String>) : OncePerRequestFilter() {
+    class AuthTokenFilterService1Tk(
+        private val filterPatternList: List<String>,
+        private val expireTokenRedis: Redis1_Service1ForceExpireAuthorizationSet
+    ) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
-            // 만료 처리를 할 액세스 토큰 세트
-            // 아래 JWT 인증은 한번 발행된 토큰에 적혀있는 내용만을 신뢰하고 동작합니다.
-            // 회원 탈퇴, 로그아웃 처리, 권한 변경, 계정 정지 등의 계정 관련 정보 변경으로
-            // 기존 발행 토큰을 만료시키고 재 심사 하려면 이곳에 입력하세요.
-            // 값으로는 액세스 토큰만을 넣는 것이 아니라 토큰 타입을 합쳐서 "Bearer tes123t_access16token3" 이런 값을 넣습니다.
-            // 이곳에 입력된 값들은 매 API 호출시마다 토큰 만료일을 판별되어 만료일이 지났을 때에 제거됩니다.
-            val FORCE_EXPIRE_AUTHORIZATION_SET: MutableSet<String> = mutableSetOf()
-
             // !!!아래 인증 관련 설정 정보 변수들의 값을 수정하기!!!
             // 계정 설정 - JWT 비밀키
             const val AUTH_JWT_SECRET_KEY_STRING: String = "123456789abcdefghijklmnopqrstuvw"
@@ -471,9 +486,6 @@ class SecurityConfig {
             // 정상적인 토큰값은 "Bearer {Token String}" 형식으로 온다고 가정.
             val authorization = request.getHeader("Authorization") // ex : "Bearer aqwer1234"
             if (authorization == null) {
-                // 강제 만료 리스트 갱신
-                checkForceExpireAuthorizationSet(null, null)
-
                 // Authorization 에 토큰을 넣지 않은 경우 = 인증 / 인가를 받을 의도가 없음
                 // 다음 필터 실행
                 filterChain.doFilter(request, response)
@@ -483,9 +495,6 @@ class SecurityConfig {
             // 타입과 토큰을 분리
             val authorizationSplit = authorization.split(" ") // ex : ["Bearer", "qwer1234"]
             if (authorizationSplit.size < 2) {
-                // 강제 만료 리스트 갱신
-                checkForceExpireAuthorizationSet(null, null)
-
                 // 다음 필터 실행
                 filterChain.doFilter(request, response)
                 return
@@ -497,7 +506,7 @@ class SecurityConfig {
             val accessToken = authorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
 
             // 강제 토큰 만료 검증
-            val forceExpired = checkForceExpireAuthorizationSet(tokenType, accessToken)
+            val forceExpired = expireTokenRedis.findKeyValue(tokenType + "_" + accessToken) != null
 
             if (forceExpired) {
                 // 다음 필터 실행
@@ -583,55 +592,6 @@ class SecurityConfig {
                     return
                 }
             }
-        }
-
-        // (강제 토큰 만료 여부 검증 및 세트 내 만료된 토큰 정리)
-        private fun checkForceExpireAuthorizationSet(tokenType: String?, accessToken: String?): Boolean {
-            var forceExpired = false
-            val iterator = FORCE_EXPIRE_AUTHORIZATION_SET.iterator()
-            // FORCE_EXPIRE_AUTHORIZATION_SET 의 아이템 순회
-            while (iterator.hasNext()) {
-                // Authorization 값 (ex : "Bearer testestestest")
-                val feAuthorization = iterator.next()
-
-                val feAuthorizationSplit = feAuthorization.split(" ") // ex : ["Bearer", "qwer1234"]
-                if (feAuthorizationSplit.size < 2) {
-                    // 올바르지 않은 토큰 형태 = 삭제
-                    iterator.remove()
-                } else {
-                    val feTokenType = feAuthorizationSplit[0].trim() // 첫번째 단어는 토큰 타입
-                    val feAccessToken = feAuthorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
-
-                    if (tokenType != null && accessToken != null &&
-                        tokenType.lowercase() == feTokenType.lowercase() &&
-                        accessToken.lowercase() == feAccessToken.lowercase()
-                    ) {
-                        // FORCE_EXPIRE_AUTHORIZATION_SET 에 속한 토큰은 강제 만료 처리된 토큰
-                        forceExpired = true
-                    }
-
-                    val feRemainSecond: Long? = try {
-                        when (feTokenType.lowercase()) {
-                            "bearer" -> {
-                                JwtTokenUtil.getRemainSeconds(feAccessToken)
-                            }
-
-                            else -> {
-                                null
-                            }
-                        }
-                    } catch (_: Exception) {
-                        null
-                    }
-
-                    if (feRemainSecond == null || feRemainSecond <= 0L) {
-                        // 토큰이 만료됨 = 삭제
-                        iterator.remove()
-                    }
-                }
-            }
-
-            return forceExpired
         }
     }
 }

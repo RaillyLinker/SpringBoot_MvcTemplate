@@ -10,6 +10,7 @@ import com.raillylinker.springboot_mvc_template.custom_components.EmailSenderCom
 import com.raillylinker.springboot_mvc_template.custom_components.NaverSmsSenderComponent
 import com.raillylinker.springboot_mvc_template.custom_objects.AppleOAuthHelperUtil
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtil
+import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -42,6 +43,9 @@ class C10Service1TkV1AuthService(
     private val passwordEncoder: PasswordEncoder,
     private val emailSenderComponent: EmailSenderComponent,
     private val naverSmsSenderComponent: NaverSmsSenderComponent,
+
+    // (Redis Repository)
+    private val redis1Service1ForceExpireAuthorizationSet: Redis1_Service1ForceExpireAuthorizationSet,
 
     // (Database Repository)
     private val db1NativeRepository: Db1_Native_Repository,
@@ -159,7 +163,24 @@ class C10Service1TkV1AuthService(
                     LocalDateTime.now()
                 )
             for (tokenEntity in tokenEntityList) {
-                SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenEntity.tokenType} ${tokenEntity.accessToken}")
+                val tokenType = tokenEntity.tokenType
+                val accessToken = tokenEntity.accessToken
+
+                val accessTokenExpireRemainSeconds = when (tokenType) {
+                    "Bearer" -> {
+                        JwtTokenUtil.getRemainSeconds(accessToken)
+                    }
+
+                    else -> {
+                        null
+                    }
+                }
+
+                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                    "${tokenType}_${accessToken}",
+                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    accessTokenExpireRemainSeconds!! * 1000
+                )
             }
 
         }
@@ -787,7 +808,24 @@ class C10Service1TkV1AuthService(
             db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
             // 토큰 만료처리
-            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
+            val tokenType1 = tokenInfo.tokenType
+            val accessToken = tokenInfo.accessToken
+
+            val accessTokenExpireRemainSeconds = when (tokenType1) {
+                "Bearer" -> {
+                    JwtTokenUtil.getRemainSeconds(accessToken)
+                }
+
+                else -> {
+                    null
+                }
+            }
+
+            redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                "${tokenType1}_${accessToken}",
+                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                accessTokenExpireRemainSeconds!! * 1000
+            )
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -1003,7 +1041,24 @@ class C10Service1TkV1AuthService(
                         db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
                         // 토큰 만료처리
-                        SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
+                        val tokenType1 = tokenInfo.tokenType
+                        val accessToken1 = tokenInfo.accessToken
+
+                        val accessTokenExpireRemainSeconds = when (tokenType1) {
+                            "Bearer" -> {
+                                JwtTokenUtil.getRemainSeconds(accessToken1)
+                            }
+
+                            else -> {
+                                null
+                            }
+                        }
+
+                        redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                            "${tokenType1}_${accessToken1}",
+                            Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                            accessTokenExpireRemainSeconds!! * 1000
+                        )
 
                         // 멤버의 권한 리스트를 조회 후 반환
                         val memberRoleList =
@@ -1109,7 +1164,24 @@ class C10Service1TkV1AuthService(
             db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
             // 토큰 만료처리
-            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
+            val tokenType = tokenInfo.tokenType
+            val accessToken = tokenInfo.accessToken
+
+            val accessTokenExpireRemainSeconds = when (tokenType) {
+                "Bearer" -> {
+                    JwtTokenUtil.getRemainSeconds(accessToken)
+                }
+
+                else -> {
+                    null
+                }
+            }
+
+            redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                "${tokenType}_${accessToken}",
+                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                accessTokenExpireRemainSeconds!! * 1000
+            )
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -2399,7 +2471,24 @@ class C10Service1TkV1AuthService(
             db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
             // 토큰 만료처리
-            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
+            val tokenType = tokenInfo.tokenType
+            val accessToken = tokenInfo.accessToken
+
+            val accessTokenExpireRemainSeconds = when (tokenType) {
+                "Bearer" -> {
+                    JwtTokenUtil.getRemainSeconds(accessToken)
+                }
+
+                else -> {
+                    null
+                }
+            }
+
+            redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                "${tokenType}_${accessToken}",
+                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                accessTokenExpireRemainSeconds!! * 1000
+            )
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -2579,7 +2668,24 @@ class C10Service1TkV1AuthService(
                 db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
                 // 토큰 만료처리
-                SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
+                val tokenType = tokenInfo.tokenType
+                val accessToken = tokenInfo.accessToken
+
+                val accessTokenExpireRemainSeconds = when (tokenType) {
+                    "Bearer" -> {
+                        JwtTokenUtil.getRemainSeconds(accessToken)
+                    }
+
+                    else -> {
+                        null
+                    }
+                }
+
+                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                    "${tokenType}_${accessToken}",
+                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    accessTokenExpireRemainSeconds!! * 1000
+                )
             }
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -2780,7 +2886,24 @@ class C10Service1TkV1AuthService(
                 db1RaillyLinkerCompanyService1LogInTokenHistoryRepository.save(tokenInfo)
 
                 // 토큰 만료처리
-                SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenInfo.tokenType} ${tokenInfo.accessToken}")
+                val tokenType = tokenInfo.tokenType
+                val accessToken = tokenInfo.accessToken
+
+                val accessTokenExpireRemainSeconds = when (tokenType) {
+                    "Bearer" -> {
+                        JwtTokenUtil.getRemainSeconds(accessToken)
+                    }
+
+                    else -> {
+                        null
+                    }
+                }
+
+                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                    "${tokenType}_${accessToken}",
+                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    accessTokenExpireRemainSeconds!! * 1000
+                )
             }
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -3683,7 +3806,24 @@ class C10Service1TkV1AuthService(
                 LocalDateTime.now()
             )
         for (tokenEntity in tokenEntityList) {
-            SecurityConfig.AuthTokenFilterService1Tk.FORCE_EXPIRE_AUTHORIZATION_SET.add("${tokenEntity.tokenType} ${tokenEntity.accessToken}")
+            val tokenType = tokenEntity.tokenType
+            val accessToken = tokenEntity.accessToken
+
+            val accessTokenExpireRemainSeconds = when (tokenType) {
+                "Bearer" -> {
+                    JwtTokenUtil.getRemainSeconds(accessToken)
+                }
+
+                else -> {
+                    null
+                }
+            }
+
+            redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                "${tokenType}_${accessToken}",
+                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                accessTokenExpireRemainSeconds!! * 1000
+            )
         }
 
         // 회원탈퇴 처리
@@ -4141,5 +4281,28 @@ class C10Service1TkV1AuthService(
         db1RaillyLinkerCompanyService1MemberDataRepository.save(memberData)
 
         httpServletResponse.status = HttpStatus.OK.value()
+    }
+
+
+    ////
+    fun api53SelectAllRedisKeyValueSample(httpServletResponse: HttpServletResponse): C10Service1TkV1AuthController.Api53SelectAllRedisKeyValueSampleOutputVo? {
+        // 전체 조회 테스트
+        val keyValueList = redis1Service1ForceExpireAuthorizationSet.findAllKeyValues()
+
+        val testEntityListVoList =
+            ArrayList<C10Service1TkV1AuthController.Api53SelectAllRedisKeyValueSampleOutputVo.KeyValueVo>()
+        for (keyValue in keyValueList) {
+            testEntityListVoList.add(
+                C10Service1TkV1AuthController.Api53SelectAllRedisKeyValueSampleOutputVo.KeyValueVo(
+                    keyValue.key,
+                    keyValue.expireTimeMs
+                )
+            )
+        }
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C10Service1TkV1AuthController.Api53SelectAllRedisKeyValueSampleOutputVo(
+            testEntityListVoList
+        )
     }
 }
