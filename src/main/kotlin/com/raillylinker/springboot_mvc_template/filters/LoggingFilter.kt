@@ -120,11 +120,15 @@ class LoggingFilter(
 
             val responseContentByteArray = httpServletResponse.contentAsByteArray
             val responseBody = if (responseContentByteArray.isNotEmpty()) {
-                if (
-                    httpServletResponse.contentType.startsWith("text/html")
-                ) {
+                if (httpServletResponse.contentType.startsWith("text/html")) {
                     // HTML 로깅 스킵
                     "HTML Content"
+                } else if (
+                    httpServletRequest.requestURI.startsWith("/v3/api-docs") ||
+                    httpServletRequest.requestURI == "/swagger-ui/swagger-initializer.js"
+                ) {
+                    // 요청 스킵
+                    "Skip"
                 } else {
                     getContentByte(httpServletResponse.contentAsByteArray, httpServletResponse.contentType)
                 }
