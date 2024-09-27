@@ -270,6 +270,22 @@
 - 본 프로젝트에서 자동 로깅 필터는 multipart/form-data 형식의 Request Body 는 로깅하지 않습니다.
   이 경우에는 수동으로 로깅 처리를 해주셔야 합니다.
 
+## 주의사항
+- 본 프로젝트는 Stateless 를 지향합니다.<br>
+  전역 변수이며, 런타임에 수정이 필요한 변수를 사용시에는 주의해야하며,
+  변수 수정시 Kafka 를 사용하여 Produce 하고, 이를 Consume 해서 변수에 할당하도록 처리하세요.
+- 본 프로젝트에서 주의해야 하는 전역변수는,<br><br>
+- 
+  TestWebSocketHandler 의 webSocketSessionHashMap<br>
+  SseEmitterWrapper 의 emitterMap, eventHistoryMap<br>
+  SseClient 의 client 접속 처리<br>
+  WebSocketStomp 접속자 정보<br>
+  scheduler 실행 처리<br>
+  RuntimeConfig<br>
+  security : FORCE_EXPIRE_AUTHORIZATION_SET<br><br>
+
+  위와 같습니다.<br>
+  ScaleOut 을 위한 프로젝트 복제시 문제가 생기지 않도록 처리하세요.
 
 ## 추가 상세 설명
 ### Runtime Config 설명
