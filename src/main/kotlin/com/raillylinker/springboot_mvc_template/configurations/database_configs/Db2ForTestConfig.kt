@@ -17,19 +17,19 @@ import javax.sql.DataSource
 @Configuration
 @EnableJpaRepositories(
     // database repository path
-    basePackages = ["${ProjectConfigs.PACKAGE_NAME}.data_sources.database_jpa.${Db0ForDevelopersConfig.DATABASE_DIRECTORY_NAME}.repositories"],
-    entityManagerFactoryRef = "${Db0ForDevelopersConfig.DATABASE_DIRECTORY_NAME}_LocalContainerEntityManagerFactoryBean", // 아래 bean 이름과 동일
-    transactionManagerRef = Db0ForDevelopersConfig.TRANSACTION_NAME // 아래 bean 이름과 동일
+    basePackages = ["${ProjectConfigs.PACKAGE_NAME}.data_sources.database_jpa.${Db2ForTestConfig.DATABASE_DIRECTORY_NAME}.repositories"],
+    entityManagerFactoryRef = "${Db2ForTestConfig.DATABASE_DIRECTORY_NAME}_LocalContainerEntityManagerFactoryBean", // 아래 bean 이름과 동일
+    transactionManagerRef = Db2ForTestConfig.TRANSACTION_NAME // 아래 bean 이름과 동일
 )
-class Db0ForDevelopersConfig(
+class Db2ForTestConfig(
     private val environment: Environment
 ) {
     companion object {
         // !!!application.yml 의 datasource 안에 작성된 이름 할당하기!!!
-        const val DATABASE_CONFIG_NAME: String = "db0-for-developers"
+        const val DATABASE_CONFIG_NAME: String = "db2-for-test"
 
         // !!!data_sources/database_jpa 안의 서브 폴더(entities, repositories 를 가진 폴더)의 이름 할당하기!!!
-        const val DATABASE_DIRECTORY_NAME: String = "db0_for_developers"
+        const val DATABASE_DIRECTORY_NAME: String = "db2_for_test"
 
         // Database 트랜젝션을 사용할 때 사용하는 이름 변수
         // 트랜젝션을 적용할 함수 위에, @CustomTransactional 어노테이션과 결합하여,

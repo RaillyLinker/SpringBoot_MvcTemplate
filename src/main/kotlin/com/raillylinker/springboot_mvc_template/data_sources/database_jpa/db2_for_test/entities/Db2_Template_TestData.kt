@@ -1,4 +1,4 @@
-package com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.entities
+package com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db2_for_test.entities
 
 import jakarta.persistence.*
 import org.hibernate.annotations.ColumnDefault
@@ -14,7 +14,7 @@ import java.time.LocalDateTime
     catalog = "template"
 )
 @Comment("테스트 정보 테이블(논리적 삭제 적용)")
-class Db0_Template_TestData(
+class Db2_Template_TestData(
     @Column(name = "content", nullable = false, columnDefinition = "VARCHAR(255)")
     @Comment("테스트 본문")
     var content: String,

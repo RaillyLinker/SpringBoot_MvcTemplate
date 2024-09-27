@@ -1908,8 +1908,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N30 : Database0 Row 입력 테스트 API",
-        description = "별도 DB인 Database0 의 테스트 테이블에 Row 를 입력합니다.\n\n"
+        summary = "N30 : Database2 Row 입력 테스트 API",
+        description = "별도 DB인 Database2 의 테스트 테이블에 Row 를 입력합니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -1920,21 +1920,21 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @PostMapping(
-        path = ["/database0-row"],
+        path = ["/database2-row"],
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api30InsertRowToDb0Sample(
+    fun api30InsertRowToDb2Sample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @RequestBody
-        inputVo: Api30InsertRowToDb0SampleInputVo
-    ): Api30InsertRowToDb0SampleOutputVo? {
-        return service.api30InsertRowToDb0Sample(httpServletResponse, inputVo)
+        inputVo: Api30InsertRowToDb2SampleInputVo
+    ): Api30InsertRowToDb2SampleOutputVo? {
+        return service.api30InsertRowToDb2Sample(httpServletResponse, inputVo)
     }
 
-    data class Api30InsertRowToDb0SampleInputVo(
+    data class Api30InsertRowToDb2SampleInputVo(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
         val content: String,
@@ -1947,7 +1947,7 @@ class C7Service1TkV1DatabaseTestController(
         val dateString: String
     )
 
-    data class Api30InsertRowToDb0SampleOutputVo(
+    data class Api30InsertRowToDb2SampleOutputVo(
         @Schema(description = "글 고유번호", required = true, example = "1234")
         @JsonProperty("uid")
         val uid: Long,
@@ -1986,8 +1986,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N31 : Database0 Row 삭제 테스트",
-        description = "별도 DB인 Database0 의 테스트 테이블의 Row 하나를 삭제합니다.\n\n"
+        summary = "N31 : Database2 Row 삭제 테스트",
+        description = "별도 DB인 Database2 의 테스트 테이블의 Row 하나를 삭제합니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -2012,12 +2012,12 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @DeleteMapping(
-        path = ["/database0-row/{index}"],
+        path = ["/database2-row/{index}"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api31DeleteRowFromDb0Sample(
+    fun api31DeleteRowFromDb2Sample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse,
         @Parameter(name = "index", description = "글 인덱스", example = "1")
@@ -2027,14 +2027,14 @@ class C7Service1TkV1DatabaseTestController(
         @RequestParam("deleteLogically")
         deleteLogically: Boolean
     ) {
-        service.api31DeleteRowFromDb0Sample(httpServletResponse, index, deleteLogically)
+        service.api31DeleteRowFromDb2Sample(httpServletResponse, index, deleteLogically)
     }
 
 
     ////
     @Operation(
-        summary = "N32 : Database0 Rows 조회 테스트",
-        description = "별도 DB인 Database0 의 테스트 테이블의 모든 Rows 를 반환합니다.\n\n"
+        summary = "N32 : Database2 Rows 조회 테스트",
+        description = "별도 DB인 Database2 의 테스트 테이블의 모든 Rows 를 반환합니다.\n\n"
     )
     @ApiResponses(
         value = [
@@ -2045,19 +2045,19 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @GetMapping(
-        path = ["/database0-rows"],
+        path = ["/database2-rows"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api32SelectRowsFromDb0Sample(
+    fun api32SelectRowsFromDb2Sample(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api32SelectRowsFromDb0SampleOutputVo? {
-        return service.api32SelectRowsFromDb0Sample(httpServletResponse)
+    ): Api32SelectRowsFromDb2SampleOutputVo? {
+        return service.api32SelectRowsFromDb2Sample(httpServletResponse)
     }
 
-    data class Api32SelectRowsFromDb0SampleOutputVo(
+    data class Api32SelectRowsFromDb2SampleOutputVo(
         @Schema(description = "아이템 리스트", required = true)
         @JsonProperty("testEntityVoList")
         val testEntityVoList: List<TestEntityVo>,
@@ -2107,8 +2107,8 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
-        summary = "N33 : Database0 트랜젝션 동작 테스트",
-        description = "별도 DB인 Database0 의 정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n"
+        summary = "N33 : Database2 트랜젝션 동작 테스트",
+        description = "별도 DB인 Database2 의 정보 입력 후 Exception 이 발생했을 때 롤백되어 데이터가 저장되지 않는지를 테스트하는 API\n\n"
     )
     @ApiResponses(
         value = [
@@ -2119,23 +2119,23 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @PostMapping(
-        path = ["/database0-transaction-rollback-sample"],
+        path = ["/database2-transaction-rollback-sample"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api33Db0TransactionTest(
+    fun api33Db2TransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api33Db0TransactionTest(httpServletResponse)
+        service.api33Db2TransactionTest(httpServletResponse)
     }
 
 
     ////
     @Operation(
-        summary = "N34 : Database0 트랜젝션 비동작 테스트",
-        description = "별도 DB인 Database0 의 트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n"
+        summary = "N34 : Database2 트랜젝션 비동작 테스트",
+        description = "별도 DB인 Database2 의 트랜젝션 처리를 하지 않았을 때, DB 정보 입력 후 Exception 이 발생 했을 때 의 테스트 API\n\n"
     )
     @ApiResponses(
         value = [
@@ -2146,16 +2146,16 @@ class C7Service1TkV1DatabaseTestController(
         ]
     )
     @PostMapping(
-        path = ["/database0-no-transaction-exception-sample"],
+        path = ["/database2-no-transaction-exception-sample"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.ALL_VALUE]
     )
     @ResponseBody
-    fun api34Db0NonTransactionTest(
+    fun api34Db2NonTransactionTest(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
     ) {
-        service.api34Db0NonTransactionTest(httpServletResponse)
+        service.api34Db2NonTransactionTest(httpServletResponse)
     }
 
 

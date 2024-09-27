@@ -35,27 +35,6 @@
     <h1 id="title_txt">
         홈
     </h1>
-    <form th:if="${viewModel.loggedIn == true}"
-          id="logoutForm"
-          th:action="@{/main/sc/v1/logout}"
-          method="POST"
-          class="top-button">
-        <button type="submit">로그아웃</button>
-    </form>
-
-    <button type="button"
-            class="top-button member-info-button"
-            onclick="location.href='/main/sc/v1/member-info'"
-            th:if="${viewModel.loggedIn == true}">
-        회원 정보
-    </button>
-
-    <button type="button"
-            class="top-button"
-            onclick="location.href='/main/sc/v1/login'"
-            th:if="${viewModel.loggedIn != true}">
-        로그인
-    </button>
 </div>
 
 <hr/>
@@ -72,70 +51,16 @@
     구동 환경 프로필 : <span th:text="${viewModel.env}">dev</span>
 </span>
 
-<h2>
+<h2 th:if="${viewModel.showApiDocumentBtn}">
     API 문서
 </h2>
 
-<button id="go_to_swagger_btn"
+<button th:if="${viewModel.showApiDocumentBtn}"
+        id="go_to_swagger_btn"
         type="button"
         class="sample_btn"
         onclick="location.href='/swagger-ui/index.html'">
     API 문서로 이동
-</button>
-
-<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    프로젝트 로그 확인
-</h2>
-
-<button type="button"
-        class="sample_btn"
-        onclick="location.href='/main/sc/v1/project-logs'"
-        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    로그 확인 페이지로 이동
-</button>
-
-<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    프로젝트 런타임 설정 변경
-</h2>
-
-<button type="button"
-        class="sample_btn"
-        onclick="location.href='/main/sc/v1/runtime-config-editor'"
-        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    런타임 설정 변경하러 가기
-</button>
-
-<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    회원 비밀번호 변경
-</h2>
-
-<button type="button"
-        class="sample_btn"
-        onclick="location.href='/main/sc/v1/member-password-change'"
-        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    회원 비밀번호 변경하러 가기
-</button>
-
-<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    회원 세션 만료 처리
-</h2>
-
-<button type="button"
-        class="sample_btn"
-        onclick="location.href='/main/sc/v1/member-session-expire'"
-        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    회원 세션 만료 처리 하러 가기
-</button>
-
-<h2 th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    회원 탈퇴 처리
-</h2>
-
-<button type="button"
-        class="sample_btn"
-        onclick="location.href='/main/sc/v1/member-withdrawal'"
-        th:if="${viewModel.roles.contains('ROLE_ADMIN') || viewModel.roles.contains('ROLE_SERVER_DEVELOPER')}">
-    회원 탈퇴 처리 하러 가기
 </button>
 
 </body>

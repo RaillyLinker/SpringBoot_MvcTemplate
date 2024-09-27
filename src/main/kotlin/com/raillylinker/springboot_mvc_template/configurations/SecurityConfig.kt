@@ -1,18 +1,12 @@
 package com.raillylinker.springboot_mvc_template.configurations
 
-import com.raillylinker.springboot_mvc_template.configurations.SecurityConfig.UserDetailsServiceMainSc.Companion.getMemberEntity
 import com.raillylinker.springboot_mvc_template.custom_objects.JwtTokenUtil
-import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberData_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.repositories.Db0_RaillyLinkerCompany_CompanyMemberRoleData_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.entities.Db0_RaillyLinkerCompany_CompanyMemberData
-import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.repositories.Db0_Native_Repository
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
-import org.springframework.security.authentication.LockedException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -22,30 +16,22 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.session.SessionRegistryImpl
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
-import org.springframework.security.web.authentication.session.SessionAuthenticationException
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
-import org.springframework.stereotype.Service
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
-import java.time.LocalDateTime
 
 // [서비스 보안 시큐리티 설정]
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
-class SecurityConfig(
-    private val db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
-) {
+class SecurityConfig {
     // <멤버 변수 공간>
 
 
@@ -81,261 +67,261 @@ class SecurityConfig(
 
     // !!!경로별 적용할 Security 설정 Bean 작성하기!!!
 
-    // [개발 멤버 시큐리티 설정 = Session-Cookie 인증 사용]
-    @Bean
-    @Order(0)
-    fun securityFilterChainMainSc(
-        http: HttpSecurity,
-        userDetailService: UserDetailsServiceMainSc
-    ): SecurityFilterChain {
-        // !!!시큐리티 필터 추가시 수정!!!
-        // 본 시큐리티 필터가 관리할 주소 체계
-        val securityUrlList = listOf(
-            "/main/sc/**",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/v3/api-docs.yaml"
-        ) // 위 모든 경로에 적용
-
-        val securityMatcher = http.securityMatcher(*securityUrlList.toTypedArray())
-
-        securityMatcher.headers { headersCustomizer ->
-            // iframe 허용 설정
-            // 기본은 허용하지 않음, sameOrigin 은 같은 origin 일 때에만 허용하고, disable 은 모두 허용
-            headersCustomizer.frameOptions { frameOptionsConfig ->
-                frameOptionsConfig.sameOrigin()
-            }
-        }
-
-        // cors 적용(서로 다른 origin 의 웹화면에서 리퀘스트 금지)
-        securityMatcher.cors {}
-        // csrf 보안 설정
-        // HTML 에서 form 요청을 보낼 때,
-        // <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        // 이렇게 csrf 값을 같이 줘야하는데, Thymeleaf 에선 굳이 명시하지 않아도 자동으로 포함됩니다.
-        securityMatcher.csrf {}
-
-        // 스프링 시큐리티 로그인 설정
-        securityMatcher.formLogin { formLoginCustomizer ->
-            // 로그인이 필요한 요청을 했을 때 자동으로 이동할 로그인 화면 경로
-            // 이 경로를 만들어서 로그인 화면의 HTML 과 그 안의 form 태그 요소들을 만들어야 합니다.
-            formLoginCustomizer.loginPage("/main/sc/v1/login")
-            // 로그인 인증처리 경로
-            // 로그인 form 태그는 이 경로로 POST 요청을 보내야 하며,
-            // 이 경로에 대한 처리는 개발자가 따로 작성할 필요가 없이 자동으로 처리됩니다.
-            formLoginCustomizer.loginProcessingUrl("/main/sc/v1/login-process")
-            // 인증 성공 시 자동으로 이동하는 경로
-//            formLoginCustomizer.defaultSuccessUrl("/")
-            // 정상 인증 성공 후 별도의 처리가 필요한 경우 커스텀 핸들러 생성하여 등록
-            formLoginCustomizer.successHandler { _, response, _ ->
-                response.sendRedirect("/")
-            }
-            // 인증 실패 시 자동으로 이동하는 경로
-//            formLoginCustomizer.failureUrl("/main/sc/v1/login?fail")
-            // 인증 실패 후 별도의 처리가 필요한 경우 커스텀 핸들러를 생성하여 등록
-            formLoginCustomizer.failureHandler { request, response, exception ->
-                when (exception) {
-                    is SessionAuthenticationException -> {
-                        // 동시 접속 금지로 실패한 경우
-                        response.sendRedirect("/main/sc/v1/login?duplicated")
-                    }
-
-                    is LockedException -> {
-                        // 계정 정지로 인한 실패
-                        val userName = request.getParameter("username")
-                        val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData =
-                            getMemberEntity(userName, db0RaillyLinkerCompanyCompanyMemberDataRepository)
-                        response.sendRedirect("/main/sc/v1/login?lock=${memberDataEntity.uid}")
-                    }
-
-                    else -> {
-                        // 그외 인증 실패
-                        response.sendRedirect("/main/sc/v1/login?fail")
-                    }
-                }
-            }
-        }
-
-        // 커스텀 UserDetailsService 설정
-        securityMatcher.userDetailsService(userDetailService)
-
-        // 스프링 시큐리티 로그아웃 설정
-        securityMatcher.logout { logoutCustomizer ->
-            // 로그아웃(현 세션에서 로그인된 멤버 정보를 제거) 경로
-            logoutCustomizer.logoutUrl("/main/sc/v1/logout")
-            // 로그아웃 시 이동할 경로
-//            logoutCustomizer.logoutSuccessUrl("/main/sc/v1/login?logout")
-            logoutCustomizer.logoutSuccessHandler { request, response, _ ->
-                // 로그아웃 시 현 위치 다시 호출
-                response.sendRedirect(request.getHeader("Referer") ?: "/")
-            }
-        }
-
-        // 시큐리티 예외 처리
-        securityMatcher.exceptionHandling { exceptionHandlingCustomizer ->
-            exceptionHandlingCustomizer.accessDeniedPage("/main/sc/v1/error?type=ACCESS_DENIED") // 권한 부족 시 이동할 페이지 설정
-            // 또는 커스텀 핸들러 설정
-            // exceptionHandlingCustomizer.accessDeniedHandler { request, response, accessDeniedException ->
-            //     response.sendRedirect("/access-denied")
-            // }
-        }
-
-        // (API 요청 제한)
-        // 기본적으로 모두 Open
-        securityMatcher.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
-            // 스웨거 관련 주소 요청시 필요한 권한 설정
-            authorizeHttpRequestsCustomizer.requestMatchers(
-                "/swagger-ui/**",
-                "/v3/api-docs/**",
-                "/v3/api-docs.yaml"
-            ).hasAnyRole(
-                "ADMIN",
-                "DEVELOPER",
-                "SERVER_DEVELOPER"
-            )
-
-            // 그외 모든 요청 허용
-            authorizeHttpRequestsCustomizer.anyRequest().permitAll()
-        }
-
-        securityMatcher.sessionManagement { sessionManagementCustomizer ->
-            sessionManagementCustomizer
-                // 세션 고정 공격 방지 : 로그인 할 때마다 새로운 세션 ID 를 발급받습니다.
-                .sessionFixation().migrateSession()
-                // 세션 동시 접속 개수 (-1 : 무한)
-                .maximumSessions(1)
-                // 세션 만료시 이동 경로
-                .expiredUrl("/main/sc/v1/login?expired")
-                // 세션 동시 접속 초과 동작 (true : 추가 로그인을 막음, false : 이전 세션을 만료시킴)
-                .maxSessionsPreventsLogin(false)
-                .sessionRegistry(sessionRegistry())
-        }
-
-        return securityMatcher.build()
-    }
-
-    @Service
-    class UserDetailsServiceMainSc(
-        private val db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository,
-        private val db0RaillyLinkerCompanyCompanyMemberRoleDataRepository: Db0_RaillyLinkerCompany_CompanyMemberRoleData_Repository,
-        private val db0NativeRepository: Db0_Native_Repository
-    ) : UserDetailsService {
-        companion object {
-            fun getMemberEntity(
-                userName: String,
-                db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
-            ): Db0_RaillyLinkerCompany_CompanyMemberData {
-                // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
-                // 예를들어 email 로그인의 test@test.com 계정의 로그인시에는,
-                // email_test@test.com 이라는 값이 userName 에 담겨져 올 것입니다.
-                val userNameSplitIdx = userName.indexOf('_')
-                if (userNameSplitIdx == -1) {
-                    throw UsernameNotFoundException("유효하지 않은 로그인 타입입니다. : ")
-                }
-
-                // 로그인 타입과 아이디 분리
-                val userNameType = userName.substring(0, userNameSplitIdx)
-                val userNameValue = userName.substring(userNameSplitIdx + 1)
-
-                val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData
-                when (userNameType) {
-                    // 아이디 로그인
-                    "accountId" -> {
-                        memberDataEntity =
-                            db0RaillyLinkerCompanyCompanyMemberDataRepository.findByAccountId(userNameValue)
-                                ?: throw UsernameNotFoundException("아이디 유저 정보가 존재하지 않습니다 : $userNameValue")
-                    }
-
-                    else -> {
-                        throw UsernameNotFoundException("유효하지 않은 로그인 타입입니다. : $userNameType")
-                    }
-                }
-                return memberDataEntity
-            }
-        }
-
-        override fun loadUserByUsername(userName: String): UserDetails {
-            // 로그인 타입별 멤버 정보 가져오기(없다면 UsernameNotFoundException)
-            val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData =
-                getMemberEntity(userName, db0RaillyLinkerCompanyCompanyMemberDataRepository)
-
-            // 회원 권한을 가져와 변환
-            val memberRoleDataEntityList =
-                db0RaillyLinkerCompanyCompanyMemberRoleDataRepository.findAllByCompanyMemberData(memberDataEntity)
-            val authorities: MutableCollection<GrantedAuthority> = memberRoleDataEntityList
-                .map { roleData -> SimpleGrantedAuthority(roleData.role) }
-                .toMutableList()
-
-            // 정지 여부 파악
-            val lockList =
-                db0NativeRepository.findAllNowActivateMemberLockInfo(
-                    memberDataEntity.uid!!,
-                    LocalDateTime.now()
-                )
-
-            // 이것이 반환된 후 비밀번호 검증까지 끝나면 이 데이터가 메모리에 저장되어 있습니다.
-            // api 에서는 @Parameter(hidden = true) principal: Principal? 이것으로 받은 후,
-            // principal 이 null 이라면 로그아웃 상태, principal 이 있다면 principal?.name 으로 현재 로그인한 회원 정보를 알 수 있습니다.
-            // 주의사항으로, 세션 메모리에 저장된 UserDetails 객체는 세션 지속 시간때까지 불변입니다.
-            // 예를들어 현재 Admin 권한인 상태로 로그인을 한 상태라면, 동적으로 Admin 권한이 데이터베이스에서 사라졌어도 admin 전용 api 에 호출할 수 있습니다.
-            return UserDetailsVo(
-                // UserDetail 의 userName 은 user 고유번호로 대체합니다.
-                memberDataEntity.uid!!,
-                // 암호화되어 데이터베이스에 저장된 비밀번호
-                memberDataEntity.accountPassword!!,
-                authorities,
-                lockList.isNotEmpty()
-            )
-        }
-
-        class UserDetailsVo(
-            private val memberUid: Long,
-            private val password: String,
-            private val authorities: MutableCollection<out GrantedAuthority>,
-            private val memberLock: Boolean
-        ) : UserDetails {
-            override fun equals(other: Any?): Boolean {
-                // maximumSessions 설정을 위한 오버라이드
-                if (other is UserDetailsVo) {
-                    return this.username == other.username
-                }
-                return false
-            }
-
-            override fun hashCode(): Int {
-                // maximumSessions 설정을 위한 오버라이드
-                return this.username.hashCode()
-            }
-
-            override fun getUsername(): String {
-                return memberUid.toString()
-            }
-
-            override fun getPassword(): String {
-                return password
-            }
-
-            override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-                return authorities
-            }
-
-            override fun isAccountNonExpired(): Boolean {
-                return true
-            }
-
-            override fun isAccountNonLocked(): Boolean {
-                return !memberLock
-            }
-
-            override fun isCredentialsNonExpired(): Boolean {
-                return true
-            }
-
-            override fun isEnabled(): Boolean {
-                return true
-            }
-        }
-    }
+    // [Session-Cookie 인증 구현 샘플]
+//    @Bean
+//    @Order(0)
+//    fun securityFilterChainMainSc(
+//        http: HttpSecurity,
+//        userDetailService: UserDetailsServiceMainSc
+//    ): SecurityFilterChain {
+//        // !!!시큐리티 필터 추가시 수정!!!
+//        // 본 시큐리티 필터가 관리할 주소 체계
+//        val securityUrlList = listOf(
+//            "/main/sc/**",
+//            "/swagger-ui/**",
+//            "/v3/api-docs/**",
+//            "/v3/api-docs.yaml"
+//        ) // 위 모든 경로에 적용
+//
+//        val securityMatcher = http.securityMatcher(*securityUrlList.toTypedArray())
+//
+//        securityMatcher.headers { headersCustomizer ->
+//            // iframe 허용 설정
+//            // 기본은 허용하지 않음, sameOrigin 은 같은 origin 일 때에만 허용하고, disable 은 모두 허용
+//            headersCustomizer.frameOptions { frameOptionsConfig ->
+//                frameOptionsConfig.sameOrigin()
+//            }
+//        }
+//
+//        // cors 적용(서로 다른 origin 의 웹화면에서 리퀘스트 금지)
+//        securityMatcher.cors {}
+//        // csrf 보안 설정
+//        // HTML 에서 form 요청을 보낼 때,
+//        // <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+//        // 이렇게 csrf 값을 같이 줘야하는데, Thymeleaf 에선 굳이 명시하지 않아도 자동으로 포함됩니다.
+//        securityMatcher.csrf {}
+//
+//        // 스프링 시큐리티 로그인 설정
+//        securityMatcher.formLogin { formLoginCustomizer ->
+//            // 로그인이 필요한 요청을 했을 때 자동으로 이동할 로그인 화면 경로
+//            // 이 경로를 만들어서 로그인 화면의 HTML 과 그 안의 form 태그 요소들을 만들어야 합니다.
+//            formLoginCustomizer.loginPage("/main/sc/v1/login")
+//            // 로그인 인증처리 경로
+//            // 로그인 form 태그는 이 경로로 POST 요청을 보내야 하며,
+//            // 이 경로에 대한 처리는 개발자가 따로 작성할 필요가 없이 자동으로 처리됩니다.
+//            formLoginCustomizer.loginProcessingUrl("/main/sc/v1/login-process")
+//            // 인증 성공 시 자동으로 이동하는 경로
+////            formLoginCustomizer.defaultSuccessUrl("/")
+//            // 정상 인증 성공 후 별도의 처리가 필요한 경우 커스텀 핸들러 생성하여 등록
+//            formLoginCustomizer.successHandler { _, response, _ ->
+//                response.sendRedirect("/")
+//            }
+//            // 인증 실패 시 자동으로 이동하는 경로
+////            formLoginCustomizer.failureUrl("/main/sc/v1/login?fail")
+//            // 인증 실패 후 별도의 처리가 필요한 경우 커스텀 핸들러를 생성하여 등록
+//            formLoginCustomizer.failureHandler { request, response, exception ->
+//                when (exception) {
+//                    is SessionAuthenticationException -> {
+//                        // 동시 접속 금지로 실패한 경우
+//                        response.sendRedirect("/main/sc/v1/login?duplicated")
+//                    }
+//
+//                    is LockedException -> {
+//                        // 계정 정지로 인한 실패
+//                        val userName = request.getParameter("username")
+//                        val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData =
+//                            getMemberEntity(userName, db0RaillyLinkerCompanyCompanyMemberDataRepository)
+//                        response.sendRedirect("/main/sc/v1/login?lock=${memberDataEntity.uid}")
+//                    }
+//
+//                    else -> {
+//                        // 그외 인증 실패
+//                        response.sendRedirect("/main/sc/v1/login?fail")
+//                    }
+//                }
+//            }
+//        }
+//
+//        // 커스텀 UserDetailsService 설정
+//        securityMatcher.userDetailsService(userDetailService)
+//
+//        // 스프링 시큐리티 로그아웃 설정
+//        securityMatcher.logout { logoutCustomizer ->
+//            // 로그아웃(현 세션에서 로그인된 멤버 정보를 제거) 경로
+//            logoutCustomizer.logoutUrl("/main/sc/v1/logout")
+//            // 로그아웃 시 이동할 경로
+////            logoutCustomizer.logoutSuccessUrl("/main/sc/v1/login?logout")
+//            logoutCustomizer.logoutSuccessHandler { request, response, _ ->
+//                // 로그아웃 시 현 위치 다시 호출
+//                response.sendRedirect(request.getHeader("Referer") ?: "/")
+//            }
+//        }
+//
+//        // 시큐리티 예외 처리
+//        securityMatcher.exceptionHandling { exceptionHandlingCustomizer ->
+//            exceptionHandlingCustomizer.accessDeniedPage("/main/sc/v1/error?type=ACCESS_DENIED") // 권한 부족 시 이동할 페이지 설정
+//            // 또는 커스텀 핸들러 설정
+//            // exceptionHandlingCustomizer.accessDeniedHandler { request, response, accessDeniedException ->
+//            //     response.sendRedirect("/access-denied")
+//            // }
+//        }
+//
+//        // (API 요청 제한)
+//        // 기본적으로 모두 Open
+//        securityMatcher.authorizeHttpRequests { authorizeHttpRequestsCustomizer ->
+//            // 스웨거 관련 주소 요청시 필요한 권한 설정
+//            authorizeHttpRequestsCustomizer.requestMatchers(
+//                "/swagger-ui/**",
+//                "/v3/api-docs/**",
+//                "/v3/api-docs.yaml"
+//            ).hasAnyRole(
+//                "ADMIN",
+//                "DEVELOPER",
+//                "SERVER_DEVELOPER"
+//            )
+//
+//            // 그외 모든 요청 허용
+//            authorizeHttpRequestsCustomizer.anyRequest().permitAll()
+//        }
+//
+//        securityMatcher.sessionManagement { sessionManagementCustomizer ->
+//            sessionManagementCustomizer
+//                // 세션 고정 공격 방지 : 로그인 할 때마다 새로운 세션 ID 를 발급받습니다.
+//                .sessionFixation().migrateSession()
+//                // 세션 동시 접속 개수 (-1 : 무한)
+//                .maximumSessions(1)
+//                // 세션 만료시 이동 경로
+//                .expiredUrl("/main/sc/v1/login?expired")
+//                // 세션 동시 접속 초과 동작 (true : 추가 로그인을 막음, false : 이전 세션을 만료시킴)
+//                .maxSessionsPreventsLogin(false)
+//                .sessionRegistry(sessionRegistry())
+//        }
+//
+//        return securityMatcher.build()
+//    }
+//
+//    @Service
+//    class UserDetailsServiceMainSc(
+//        private val db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository,
+//        private val db0RaillyLinkerCompanyCompanyMemberRoleDataRepository: Db0_RaillyLinkerCompany_CompanyMemberRoleData_Repository,
+//        private val db0NativeRepository: Db0_Native_Repository
+//    ) : UserDetailsService {
+//        companion object {
+//            fun getMemberEntity(
+//                userName: String,
+//                db0RaillyLinkerCompanyCompanyMemberDataRepository: Db0_RaillyLinkerCompany_CompanyMemberData_Repository
+//            ): Db0_RaillyLinkerCompany_CompanyMemberData {
+//                // userName 은 {타입}_{아이디} 의 형태로 입력된다고 가정합니다.
+//                // 예를들어 email 로그인의 test@test.com 계정의 로그인시에는,
+//                // email_test@test.com 이라는 값이 userName 에 담겨져 올 것입니다.
+//                val userNameSplitIdx = userName.indexOf('_')
+//                if (userNameSplitIdx == -1) {
+//                    throw UsernameNotFoundException("유효하지 않은 로그인 타입입니다. : ")
+//                }
+//
+//                // 로그인 타입과 아이디 분리
+//                val userNameType = userName.substring(0, userNameSplitIdx)
+//                val userNameValue = userName.substring(userNameSplitIdx + 1)
+//
+//                val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData
+//                when (userNameType) {
+//                    // 아이디 로그인
+//                    "accountId" -> {
+//                        memberDataEntity =
+//                            db0RaillyLinkerCompanyCompanyMemberDataRepository.findByAccountId(userNameValue)
+//                                ?: throw UsernameNotFoundException("아이디 유저 정보가 존재하지 않습니다 : $userNameValue")
+//                    }
+//
+//                    else -> {
+//                        throw UsernameNotFoundException("유효하지 않은 로그인 타입입니다. : $userNameType")
+//                    }
+//                }
+//                return memberDataEntity
+//            }
+//        }
+//
+//        override fun loadUserByUsername(userName: String): UserDetails {
+//            // 로그인 타입별 멤버 정보 가져오기(없다면 UsernameNotFoundException)
+//            val memberDataEntity: Db0_RaillyLinkerCompany_CompanyMemberData =
+//                getMemberEntity(userName, db0RaillyLinkerCompanyCompanyMemberDataRepository)
+//
+//            // 회원 권한을 가져와 변환
+//            val memberRoleDataEntityList =
+//                db0RaillyLinkerCompanyCompanyMemberRoleDataRepository.findAllByCompanyMemberData(memberDataEntity)
+//            val authorities: MutableCollection<GrantedAuthority> = memberRoleDataEntityList
+//                .map { roleData -> SimpleGrantedAuthority(roleData.role) }
+//                .toMutableList()
+//
+//            // 정지 여부 파악
+//            val lockList =
+//                db0NativeRepository.findAllNowActivateMemberLockInfo(
+//                    memberDataEntity.uid!!,
+//                    LocalDateTime.now()
+//                )
+//
+//            // 이것이 반환된 후 비밀번호 검증까지 끝나면 이 데이터가 메모리에 저장되어 있습니다.
+//            // api 에서는 @Parameter(hidden = true) principal: Principal? 이것으로 받은 후,
+//            // principal 이 null 이라면 로그아웃 상태, principal 이 있다면 principal?.name 으로 현재 로그인한 회원 정보를 알 수 있습니다.
+//            // 주의사항으로, 세션 메모리에 저장된 UserDetails 객체는 세션 지속 시간때까지 불변입니다.
+//            // 예를들어 현재 Admin 권한인 상태로 로그인을 한 상태라면, 동적으로 Admin 권한이 데이터베이스에서 사라졌어도 admin 전용 api 에 호출할 수 있습니다.
+//            return UserDetailsVo(
+//                // UserDetail 의 userName 은 user 고유번호로 대체합니다.
+//                memberDataEntity.uid!!,
+//                // 암호화되어 데이터베이스에 저장된 비밀번호
+//                memberDataEntity.accountPassword!!,
+//                authorities,
+//                lockList.isNotEmpty()
+//            )
+//        }
+//
+//        class UserDetailsVo(
+//            private val memberUid: Long,
+//            private val password: String,
+//            private val authorities: MutableCollection<out GrantedAuthority>,
+//            private val memberLock: Boolean
+//        ) : UserDetails {
+//            override fun equals(other: Any?): Boolean {
+//                // maximumSessions 설정을 위한 오버라이드
+//                if (other is UserDetailsVo) {
+//                    return this.username == other.username
+//                }
+//                return false
+//            }
+//
+//            override fun hashCode(): Int {
+//                // maximumSessions 설정을 위한 오버라이드
+//                return this.username.hashCode()
+//            }
+//
+//            override fun getUsername(): String {
+//                return memberUid.toString()
+//            }
+//
+//            override fun getPassword(): String {
+//                return password
+//            }
+//
+//            override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
+//                return authorities
+//            }
+//
+//            override fun isAccountNonExpired(): Boolean {
+//                return true
+//            }
+//
+//            override fun isAccountNonLocked(): Boolean {
+//                return !memberLock
+//            }
+//
+//            override fun isCredentialsNonExpired(): Boolean {
+//                return true
+//            }
+//
+//            override fun isEnabled(): Boolean {
+//                return true
+//            }
+//        }
+//    }
 
     ////
     // [/service1/tk 로 시작되는 리퀘스트의 시큐리티 설정 = Token 인증 사용]

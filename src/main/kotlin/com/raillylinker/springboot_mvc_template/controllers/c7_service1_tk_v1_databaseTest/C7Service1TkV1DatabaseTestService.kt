@@ -1,10 +1,10 @@
 package com.raillylinker.springboot_mvc_template.controllers.c7_service1_tk_v1_databaseTest
 
 import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
-import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db0ForDevelopersConfig
+import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db2ForTestConfig
 import com.raillylinker.springboot_mvc_template.configurations.database_configs.Db1MainConfig
-import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.repositories.Db0_Template_Tests_Repository
-import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db0_for_developers.entities.Db0_Template_TestData
+import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db2_for_test.repositories.Db2_Template_Tests_Repository
+import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db2_for_test.entities.Db2_Template_TestData
 import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db1_main.repositories.*
 import com.raillylinker.springboot_mvc_template.data_sources.database_jpa.db1_main.entities.*
 import jakarta.servlet.http.HttpServletResponse
@@ -32,7 +32,7 @@ class C7Service1TkV1DatabaseTestService(
     private val db1TemplateLogicalDeleteUniqueDataRepository: Db1_Template_LogicalDeleteUniqueData_Repository,
     private val db1TemplateJustBooleanTestRepository: Db1_Template_JustBooleanTest_Repository,
 
-    private val db0TemplateTestsRepository: Db0_Template_Tests_Repository
+    private val db2TemplateTestsRepository: Db2_Template_Tests_Repository
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -991,13 +991,13 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api30InsertRowToDb0Sample(
+    @CustomTransactional([Db2ForTestConfig.TRANSACTION_NAME])
+    fun api30InsertRowToDb2Sample(
         httpServletResponse: HttpServletResponse,
-        inputVo: C7Service1TkV1DatabaseTestController.Api30InsertRowToDb0SampleInputVo
-    ): C7Service1TkV1DatabaseTestController.Api30InsertRowToDb0SampleOutputVo? {
-        val result = db0TemplateTestsRepository.save(
-            Db0_Template_TestData(
+        inputVo: C7Service1TkV1DatabaseTestController.Api30InsertRowToDb2SampleInputVo
+    ): C7Service1TkV1DatabaseTestController.Api30InsertRowToDb2SampleOutputVo? {
+        val result = db2TemplateTestsRepository.save(
+            Db2_Template_TestData(
                 inputVo.content,
                 (0..99999999).random(),
                 LocalDateTime.parse(inputVo.dateString, DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS"))
@@ -1005,7 +1005,7 @@ class C7Service1TkV1DatabaseTestService(
         )
 
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api30InsertRowToDb0SampleOutputVo(
+        return C7Service1TkV1DatabaseTestController.Api30InsertRowToDb2SampleOutputVo(
             result.uid!!,
             result.content,
             result.randomNum,
@@ -1021,9 +1021,9 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api31DeleteRowFromDb0Sample(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
-        val entity = db0TemplateTestsRepository.findByUidAndRowDeleteDateStr(index, "/")
+    @CustomTransactional([Db2ForTestConfig.TRANSACTION_NAME])
+    fun api31DeleteRowFromDb2Sample(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean) {
+        val entity = db2TemplateTestsRepository.findByUidAndRowDeleteDateStr(index, "/")
 
         if (entity == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
@@ -1035,9 +1035,9 @@ class C7Service1TkV1DatabaseTestService(
             entity.rowDeleteDateStr =
                 LocalDateTime.now().atZone(ZoneId.systemDefault())
                     .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-            db0TemplateTestsRepository.save(entity)
+            db2TemplateTestsRepository.save(entity)
         } else {
-            db0TemplateTestsRepository.deleteById(index)
+            db2TemplateTestsRepository.deleteById(index)
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -1045,13 +1045,13 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api32SelectRowsFromDb0Sample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo? {
+    fun api32SelectRowsFromDb2Sample(httpServletResponse: HttpServletResponse): C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb2SampleOutputVo? {
         val resultEntityList =
-            db0TemplateTestsRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
-        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo.TestEntityVo>()
+            db2TemplateTestsRepository.findAllByRowDeleteDateStrOrderByRowCreateDate("/")
+        val entityVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb2SampleOutputVo.TestEntityVo>()
         for (resultEntity in resultEntityList) {
             entityVoList.add(
-                C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb2SampleOutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
@@ -1067,11 +1067,11 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         val logicalDeleteEntityVoList =
-            db0TemplateTestsRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("/")
-        val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo.TestEntityVo>()
+            db2TemplateTestsRepository.findAllByRowDeleteDateStrNotOrderByRowCreateDate("/")
+        val logicalDeleteVoList = ArrayList<C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb2SampleOutputVo.TestEntityVo>()
         for (resultEntity in logicalDeleteEntityVoList) {
             logicalDeleteVoList.add(
-                C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo.TestEntityVo(
+                C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb2SampleOutputVo.TestEntityVo(
                     resultEntity.uid!!,
                     resultEntity.content,
                     resultEntity.randomNum,
@@ -1087,7 +1087,7 @@ class C7Service1TkV1DatabaseTestService(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        return C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb0SampleOutputVo(
+        return C7Service1TkV1DatabaseTestController.Api32SelectRowsFromDb2SampleOutputVo(
             entityVoList,
             logicalDeleteVoList
         )
@@ -1095,12 +1095,12 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    @CustomTransactional([Db0ForDevelopersConfig.TRANSACTION_NAME])
-    fun api33Db0TransactionTest(
+    @CustomTransactional([Db2ForTestConfig.TRANSACTION_NAME])
+    fun api33Db2TransactionTest(
         httpServletResponse: HttpServletResponse
     ) {
-        db0TemplateTestsRepository.save(
-            Db0_Template_TestData(
+        db2TemplateTestsRepository.save(
+            Db2_Template_TestData(
                 "error test",
                 (0..99999999).random(),
                 LocalDateTime.now()
@@ -1112,9 +1112,9 @@ class C7Service1TkV1DatabaseTestService(
 
 
     ////
-    fun api34Db0NonTransactionTest(httpServletResponse: HttpServletResponse) {
-        db0TemplateTestsRepository.save(
-            Db0_Template_TestData(
+    fun api34Db2NonTransactionTest(httpServletResponse: HttpServletResponse) {
+        db2TemplateTestsRepository.save(
+            Db2_Template_TestData(
                 "error test",
                 (0..99999999).random(),
                 LocalDateTime.now()
