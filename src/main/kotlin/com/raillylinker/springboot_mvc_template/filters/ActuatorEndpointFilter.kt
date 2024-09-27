@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.filters
 
-import com.raillylinker.springboot_mvc_template.data_sources.file_and_memory_object.RuntimeConfig
+import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
@@ -29,8 +29,8 @@ class ActuatorEndpointFilter : Filter {
         val clientAddressIp = httpServletRequest.remoteAddr
 
         var actuatorAllow = false
-        for (actuatorAllowIp in RuntimeConfig.linkedData.actuatorAllowIpList) {
-            if (clientAddressIp == actuatorAllowIp.ipString) {
+        for (actuatorAllowIp in ProjectConst.actuatorAllowIpList) {
+            if (clientAddressIp == actuatorAllowIp) {
                 actuatorAllow = true
                 break
             }

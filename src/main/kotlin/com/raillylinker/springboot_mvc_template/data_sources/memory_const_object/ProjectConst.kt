@@ -25,4 +25,18 @@ object ProjectConst {
         // 로컬 IDE 에서 실행시킬 때 src 폴더와 동일한 위치
         File(ClassPathResource("").uri).parentFile.parentFile.parentFile.parentFile
     }
+
+    // (Actuator 정보 접근 허용 IP 리스트)
+    val actuatorAllowIpList: List<String> =
+        listOf(
+            //"로컬 호스트"
+            "127.0.0.1"
+        )
+
+    // (Logging Filter 의 로깅 대상에서 제외할 IP 리스트)
+    val loggingDenyIpList: List<String> =
+        listOf(
+            //"로컬 호스트"
+            "127.0.0.1"
+        )
 }

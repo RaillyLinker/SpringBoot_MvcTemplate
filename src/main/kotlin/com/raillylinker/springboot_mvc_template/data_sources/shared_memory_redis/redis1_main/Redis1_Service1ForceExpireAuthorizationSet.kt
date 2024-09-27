@@ -22,5 +22,5 @@ class Redis1_Service1ForceExpireAuthorizationSet(
     }
 
     // !!!본 RedisMAP 의 Value 클래스 설정!!!
-    class ValueVo()
+    class ValueVo
 }

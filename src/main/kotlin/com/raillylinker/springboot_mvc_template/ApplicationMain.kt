@@ -1,7 +1,6 @@
 package com.raillylinker.springboot_mvc_template
 
 import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
-import com.raillylinker.springboot_mvc_template.data_sources.file_and_memory_object.RuntimeConfig
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -22,13 +21,6 @@ class ApplicationMain {
     fun init() = CommandLineRunner {
         // 서버 타임존 설정
         TimeZone.setDefault(TimeZone.getTimeZone(ProjectConst.SYSTEM_TIME_ZONE))
-
-        // 런타임 설정 가져오기
-        try {
-            RuntimeConfig.loadFromFile()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 }
 
