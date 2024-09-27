@@ -467,3 +467,23 @@
     JPA 와 같은 데이터베이스 ORM 프레임워크를 사용시에는 데이터베이스 접근이 블로킹되도록 처리가 되어있을텐데,
     전역 변수와 같은 것을 사용시에는 주의하세요.
     참고로, Springboot WebFlux 에서 JPA 를 사용하지 않는 이유가, JPA 의 블로킹 처리가 WebFlux 의 논 블로킹의 장점을 상쇄하기 때문이라고 알아둡시다.
+
+- 윈도우에서 Docker 실행시 port 중복 에러가 발생하면,
+    >> netstat -ano | findstr :2181
+    위와 같이 특정 포트(2181) 이 실행중인지 확인하고,
+    프로세스가 존재한다면
+    >> sudo kill -9 <PID>
+    위와 같이 프로세스 아이디를 입력하여 종료하면 됩니다.
+
+    만약 프로세스가 검색되지 않는다면,
+    cmd 를 관리자 권한으로 실행하고,
+
+    >> netsh interface ipv4 show excludedportrange protocol=tcp
+    위 명령어로 필요한 포트가 제한되어 있는지 확인합니다.
+    윈도우 내에서 자체적으로 보호중인 포트 번호를 확인하는 것입니다.
+
+    >> net stop winnat
+    >> netsh int ipv4 add excludedportrange protocol=tcp startport=2181 numberofports=1
+    >> net start winnat
+
+    위와 같이 포트를 재설정하면 됩니다.
