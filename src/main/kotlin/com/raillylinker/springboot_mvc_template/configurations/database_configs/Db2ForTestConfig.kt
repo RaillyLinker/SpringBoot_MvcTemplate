@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.configurations.database_configs
 
-import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
+import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
@@ -17,7 +17,7 @@ import javax.sql.DataSource
 @Configuration
 @EnableJpaRepositories(
     // database repository path
-    basePackages = ["${ProjectConfigs.PACKAGE_NAME}.data_sources.database_jpa.${Db2ForTestConfig.DATABASE_DIRECTORY_NAME}.repositories"],
+    basePackages = ["${ProjectConst.PACKAGE_NAME}.data_sources.database_jpa.${Db2ForTestConfig.DATABASE_DIRECTORY_NAME}.repositories"],
     entityManagerFactoryRef = "${Db2ForTestConfig.DATABASE_DIRECTORY_NAME}_LocalContainerEntityManagerFactoryBean", // 아래 bean 이름과 동일
     transactionManagerRef = Db2ForTestConfig.TRANSACTION_NAME // 아래 bean 이름과 동일
 )
@@ -43,7 +43,7 @@ class Db2ForTestConfig(
     fun customEntityManagerFactory(): LocalContainerEntityManagerFactoryBean {
         val em = LocalContainerEntityManagerFactoryBean()
         em.dataSource = customDataSource()
-        em.setPackagesToScan("${ProjectConfigs.PACKAGE_NAME}.data_sources.database_jpa.${DATABASE_DIRECTORY_NAME}.entities")
+        em.setPackagesToScan("${ProjectConst.PACKAGE_NAME}.data_sources.database_jpa.${DATABASE_DIRECTORY_NAME}.entities")
         val vendorAdapter = HibernateJpaVendorAdapter()
         em.jpaVendorAdapter = vendorAdapter
         val properties = HashMap<String, Any?>()

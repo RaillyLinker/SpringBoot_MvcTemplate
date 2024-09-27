@@ -2,7 +2,7 @@ package com.raillylinker.springboot_mvc_template.data_sources.file_and_memory_ob
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectStates
+import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
 import java.io.File
 
 object RuntimeConfig {
@@ -40,7 +40,7 @@ object RuntimeConfig {
     // 입력받은 linkedDataVo 파라미터를 파일에 저장 및 linkedData 변수에 할당합니다.
     // 에러 발생 가능성이 있으므로 외부에서 try catch 필수
     fun saveToFile(linkedDataVo: LinkedDataVo) {
-        File(ProjectStates.rootDirFile, "by_product_files/${JSON_FILE_NAME}").writeText(Gson().toJson(linkedDataVo))
+        File(ProjectConst.rootDirFile, "by_product_files/${JSON_FILE_NAME}").writeText(Gson().toJson(linkedDataVo))
         linkedData = linkedDataVo
     }
 
@@ -50,7 +50,7 @@ object RuntimeConfig {
     // 파일이 존재한다면 해당 파일의 내용을 해석하여 linkedData 에 할당할 것입니다.
     // 에러 발생 가능성이 있으므로 외부에서 try catch 필수
     fun loadFromFile(): LinkedDataVo {
-        val linkedDataJsonFile = File(ProjectStates.rootDirFile, "by_product_files/${JSON_FILE_NAME}")
+        val linkedDataJsonFile = File(ProjectConst.rootDirFile, "by_product_files/${JSON_FILE_NAME}")
         if (linkedDataJsonFile.exists()) {
             linkedData = Gson().fromJson(
                 linkedDataJsonFile.readText(),

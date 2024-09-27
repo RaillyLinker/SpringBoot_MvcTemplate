@@ -54,7 +54,7 @@ datasource:
     data: classpath:sql/data-h2.sql
     initialization-mode: always
 
-  # (멀티 데이터베이스 테스트용 데이터베이스)
+  # (멀티 데이터베이스 테스트용 설정)
   db2-for-test: # DB 추가
     # 데이터베이스 접속 경로
     # !!!serverTimezone 설정을 데이터베이스의 타임존 설정과 일치시켜주세요.!!!

@@ -42,13 +42,6 @@ class SC1MainScV1Service(
         httpServletResponse: HttpServletResponse,
         session: HttpSession
     ): ModelAndView? {
-        // (로그인 회원 정보 가져오기 코드 샘플)
-//        val authentication = SecurityContextHolder.getContext().authentication
-//        // 현 세션 멤버 이름 (비로그인 : "anonymousUser")
-//        val username: String = authentication.name
-//        // 현 세션 권한 리스트 (비로그인 : [ROLE_ANONYMOUS], 권한없음 : [])
-//        val roles: List<String> = authentication.authorities.map(GrantedAuthority::getAuthority)
-
         val mv = ModelAndView()
         mv.viewName = "for_sc1_n1_home_page/home_page"
 

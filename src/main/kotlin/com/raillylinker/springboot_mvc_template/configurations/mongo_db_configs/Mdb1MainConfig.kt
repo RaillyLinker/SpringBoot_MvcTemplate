@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs
 
-import com.raillylinker.springboot_mvc_template.data_sources.memory_object.ProjectConfigs
+import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
 import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 // [MongoDB 설정]
 @Configuration
 @EnableMongoRepositories(
-    basePackages = ["${ProjectConfigs.PACKAGE_NAME}.data_sources.database_mongo_db.${Mdb1MainConfig.MONGO_DB_DIRECTORY_NAME}.repositories"],
+    basePackages = ["${ProjectConst.PACKAGE_NAME}.data_sources.database_mongo_db.${Mdb1MainConfig.MONGO_DB_DIRECTORY_NAME}.repositories"],
     mongoTemplateRef = Mdb1MainConfig.MONGO_DB_DIRECTORY_NAME
 )
 class Mdb1MainConfig {
