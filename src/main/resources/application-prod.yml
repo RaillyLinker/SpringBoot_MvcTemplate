@@ -96,4 +96,4 @@ logging:
 
 springdoc:
   swagger-ui:
-    enabled: true # Swagger 문서 공개 여부
+    enabled: false # Swagger 문서 공개 여부
