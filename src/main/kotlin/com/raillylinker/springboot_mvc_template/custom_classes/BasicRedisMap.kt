@@ -19,7 +19,7 @@ abstract class BasicRedisMap<ValueVo>(
     fun saveKeyValue(
         key: String,
         value: ValueVo,
-        expireTimeMs: Long
+        expireTimeMs: Long?
     ) {
         // 입력 키 검증
         validateKey(key)
@@ -30,8 +30,10 @@ abstract class BasicRedisMap<ValueVo>(
         // Redis Storage 에 실제로 저장 되는 Value (Json String 형식)
         redisTemplateObj.opsForValue().set(innerKey, gson.toJson(value))
 
-        // Redis Key 에 대한 만료시간 설정
-        redisTemplateObj.expire(innerKey, expireTimeMs, TimeUnit.MILLISECONDS)
+        if (expireTimeMs != null) {
+            // Redis Key 에 대한 만료시간 설정
+            redisTemplateObj.expire(innerKey, expireTimeMs, TimeUnit.MILLISECONDS)
+        }
     }
 
     // (RedisMap 의 모든 Key-Value 리스트 반환)

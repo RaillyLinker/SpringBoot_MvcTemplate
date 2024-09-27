@@ -68,9 +68,9 @@ class C8Service1TkV1RedisTestController(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
         val content: String,
-        @Schema(description = "데이터 만료시간(밀리 초)", required = true, example = "12000")
+        @Schema(description = "데이터 만료시간(밀리 초, null 이라면 무한정)", required = false, example = "12000")
         @JsonProperty("expirationMs")
-        val expirationMs: Long
+        val expirationMs: Long?
     )
 
 
@@ -127,7 +127,7 @@ class C8Service1TkV1RedisTestController(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
         val content: String,
-        @Schema(description = "데이터 만료시간(밀리 초)", required = true, example = "12000")
+        @Schema(description = "데이터 만료시간(밀리 초, -1 이라면 무한정)", required = true, example = "12000")
         @JsonProperty("expirationMs")
         val expirationMs: Long
     )
@@ -178,7 +178,7 @@ class C8Service1TkV1RedisTestController(
             @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
             @JsonProperty("content")
             val content: String,
-            @Schema(description = "데이터 만료시간(밀리 초)", required = true, example = "12000")
+            @Schema(description = "데이터 만료시간(밀리 초, -1 이라면 무한정)", required = true, example = "12000")
             @JsonProperty("expirationMs")
             val expirationMs: Long
         )
@@ -292,9 +292,9 @@ class C8Service1TkV1RedisTestController(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
         val content: String,
-        @Schema(description = "데이터 만료시간(밀리 초)", required = true, example = "12000")
+        @Schema(description = "데이터 만료시간(밀리 초, null 이라면 무한정)", required = false, example = "12000")
         @JsonProperty("expirationMs")
-        val expirationMs: Long
+        val expirationMs: Long?
     )
 
 
@@ -334,8 +334,8 @@ class C8Service1TkV1RedisTestController(
         @Schema(description = "글 본문", required = true, example = "테스트 텍스트입니다.")
         @JsonProperty("content")
         val content: String,
-        @Schema(description = "데이터 만료시간(밀리 초)", required = true, example = "12000")
+        @Schema(description = "데이터 만료시간(밀리 초, null 이라면 무한정)", required = false, example = "12000")
         @JsonProperty("expirationMs")
-        val expirationMs: Long
+        val expirationMs: Long?
     )
 }
