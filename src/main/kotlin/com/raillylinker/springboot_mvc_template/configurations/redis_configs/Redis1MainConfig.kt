@@ -34,7 +34,7 @@ class Redis1MainConfig {
 
     @Bean(REDIS_CONFIG_NAME + "_ConnectionFactory")
     fun redisConnectionFactory(): LettuceConnectionFactory {
-        // todo 주석 추가
+        // todo 주석 추가 https://meetup.nhncloud.com/posts/379
 
         //----------------- (1) Socket Option
         val socketOptions: SocketOptions = SocketOptions.builder()
@@ -71,7 +71,7 @@ class Redis1MainConfig {
 
         val clusterConfig: RedisClusterConfiguration = RedisClusterConfiguration(nodeList)
         clusterConfig.maxRedirects = 3
-//        clusterConfig.setPassword("password")
+        clusterConfig.setPassword("todoPw")
 
         val factory = LettuceConnectionFactory(clusterConfig, clientConfig)
 

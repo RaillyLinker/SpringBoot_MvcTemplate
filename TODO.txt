@@ -3,4 +3,3 @@
 - kafka 보안
   SASL/SCRAM
   SASL/GSSAPI (Kerberos)
-- Redis 보안

@@ -3,12 +3,12 @@
 
 - 완료 후 클러스터 설정
 redis-master-1 의 커맨드창에서 master 설정
->> redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003
+>> redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 -a todoPw
 
 slave 추가
->> redis-cli --cluster add-node 127.0.0.1:7101 127.0.0.1:7001 --cluster-slave
->> redis-cli --cluster add-node 127.0.0.1:7102 127.0.0.1:7002 --cluster-slave
->> redis-cli --cluster add-node 127.0.0.1:7103 127.0.0.1:7003 --cluster-slave
+>> redis-cli --cluster add-node 127.0.0.1:7101 127.0.0.1:7001 --cluster-slave -a todoPw
+>> redis-cli --cluster add-node 127.0.0.1:7102 127.0.0.1:7002 --cluster-slave -a todoPw
+>> redis-cli --cluster add-node 127.0.0.1:7103 127.0.0.1:7003 --cluster-slave -a todoPw
 
 - 테스트
 >> redis-cli -c -p 7001
