@@ -3,5 +3,5 @@
 - kafka 보안
   SASL/SCRAM
   SASL/GSSAPI (Kerberos)
-- ELK, Prometheus Logging
 - Redis 클러스터
+- Log 확인 페이지 추가(관련된 페이지, 기능은 허용된 ip 가 아니면 접근 못하게 막기, 허용된 ip 설정은 runtime 수정 가능하게 처리)
