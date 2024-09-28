@@ -76,8 +76,7 @@ datasource-redis:
 
   # (주 사용 Redis)
   redis1-main:
-    host: 127.0.0.1
-    port: 6379
+    node-list: 127.0.0.1:7001, 127.0.0.1:7002, 127.0.0.1:7003, 127.0.0.1:7101, 127.0.0.1:7102, 127.0.0.1:7103
 
 # MongoDB DataSource 설정
 datasource-mongodb:
