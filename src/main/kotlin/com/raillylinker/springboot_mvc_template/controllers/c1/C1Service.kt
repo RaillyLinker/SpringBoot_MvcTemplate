@@ -1,8 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
-import com.raillylinker.springboot_mvc_template.controllers.c8_service1_tk_v1_redisTest.C8Service1TkV1RedisTestController
 import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_RuntimeConfigIpList
-import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_Test
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

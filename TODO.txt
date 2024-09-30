@@ -3,5 +3,3 @@
 - kafka 보안
   SASL/SCRAM
   SASL/GSSAPI (Kerberos)
-- kafka 설정도 application.yml 로, 그룹 설정 방식 바꿀지 고찰
-- redis 의존 줄이기 설정

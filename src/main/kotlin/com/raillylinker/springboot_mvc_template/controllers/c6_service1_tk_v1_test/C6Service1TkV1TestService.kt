@@ -1,5 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c6_service1_tk_v1_test
 
+import com.raillylinker.springboot_mvc_template.configurations.kafka_producer_configs.Kafka1MainProducerConfig
 import com.raillylinker.springboot_mvc_template.custom_components.EmailSenderComponent
 import com.raillylinker.springboot_mvc_template.custom_components.NaverSmsSenderComponent
 import com.raillylinker.springboot_mvc_template.custom_objects.*
@@ -40,7 +41,7 @@ class C6Service1TkV1TestService(
     private val emailSenderComponent: EmailSenderComponent,
     // 네이버 메시지 발송 유틸
     private val naverSmsSenderComponent: NaverSmsSenderComponent,
-    @Qualifier("kafkaProducerForTest") private val kafkaProducerForTest: KafkaTemplate<String, Any>,
+    @Qualifier(Kafka1MainProducerConfig.PRODUCER_BEAN_NAME) private val kafka1MainProducerTemplate: KafkaTemplate<String, Any>,
 
     private var serverProperties: ServerProperties,
     private val resourceLoader: ResourceLoader
@@ -455,7 +456,7 @@ class C6Service1TkV1TestService(
         inputVo: C6Service1TkV1TestController.Api7SendKafkaTopicMessageTestInputVo
     ) {
         // kafkaProducer1 에 토픽 메세지 발행
-        kafkaProducerForTest.send(inputVo.topic, inputVo.message)
+        kafka1MainProducerTemplate.send(inputVo.topic, inputVo.message)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
