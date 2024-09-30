@@ -12,11 +12,11 @@
 
 (1. 이미지 빌드)
 - Dockerfile-Server-Dev 파일을 기반으로 raillylinker/server_dev:latest 이름의 이미지를 만듭니다.
-> docker image build --pull=true -f "./external_files/docker/server_docker/Dockerfile-Server-Dev" -t raillylinker/server_dev:latest .
+> docker image build --pull=true -f "./external_files/dockers/server_docker/Dockerfile-Server-Dev" -t raillylinker/server_dev:latest .
 
 (2. 이미지 파일 저장)
 - 명령어 위치에 server_dev.tar 라는 이름의 이미지 파일을 생성합니다.
-> docker save -o "./external_files/docker/server_docker/server_dev.tar" raillylinker/server_dev:latest
+> docker save -o "./by_product_files/server_dev.tar" raillylinker/server_dev:latest
 
 (3. 사용하지 않는 모든 이미지 삭제)
 - 테스트를 위해 기존 이미지는 일단 제거해둡니다.
@@ -24,7 +24,7 @@
 
 (4. 이미지 파일에서 이미지 불러오기)
 - 앞서 저장한 이미지 파일에서 이미지를 불러올 수 있는지 테스트 합니다.
-> docker load -i "./external_files/docker/server_docker/server_dev.tar"
+> docker load -i "./by_product_files/server_dev.tar"
 
 (5. 컨테이너 생성 및 실행)
 - 불러온 raillylinker/server_dev:latest 이미지를 실행하여 서버로서 정상 동작하는지 확인
