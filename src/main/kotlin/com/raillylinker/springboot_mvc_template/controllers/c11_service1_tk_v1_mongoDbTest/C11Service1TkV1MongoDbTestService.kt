@@ -1,6 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c11_service1_tk_v1_mongoDbTest
 
-import com.raillylinker.springboot_mvc_template.annotations.CustomTransactional
+import com.raillylinker.springboot_mvc_template.annotations.CustomMongoDbTransactional
 import com.raillylinker.springboot_mvc_template.configurations.mongo_db_configs.Mdb1MainConfig
 import com.raillylinker.springboot_mvc_template.data_sources.database_mongo_db.mdb1_main.documents.Mdb1_Test
 import com.raillylinker.springboot_mvc_template.data_sources.database_mongo_db.mdb1_main.repositories.Mdb1_Test_Repository
@@ -25,7 +25,7 @@ class C11Service1TkV1MongoDbTestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-    @CustomTransactional([Mdb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
+    @CustomMongoDbTransactional([Mdb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
     fun api1InsertDocumentTest(
         httpServletResponse: HttpServletResponse,
         inputVo: C11Service1TkV1MongoDbTestController.Api1InsertDocumentTestInputVo
@@ -107,7 +107,7 @@ class C11Service1TkV1MongoDbTestService(
     }
 
 
-    @CustomTransactional([Mdb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
+    @CustomMongoDbTransactional([Mdb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
     fun api12TransactionRollbackTest(
         httpServletResponse: HttpServletResponse
     ) {
