@@ -33,18 +33,18 @@ class C1Service(
 
 
     ////
-    fun api2SelectAllProjectRuntimeConfigRedisKeyValue(httpServletResponse: HttpServletResponse): C1Controller.Api2SelectAllProjectRuntimeConfigRedisKeyValueOutputVo? {
+    fun api2SelectAllProjectRuntimeConfigsRedisKeyValue(httpServletResponse: HttpServletResponse): C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo? {
         // 전체 조회 테스트
         val keyValueList = redis1RuntimeConfigIpList.findAllKeyValues()
 
         val testEntityListVoList =
-            ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigRedisKeyValueOutputVo.KeyValueVo>()
+            ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo>()
         for (keyValue in keyValueList) {
             val ipDescVoList =
-                ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigRedisKeyValueOutputVo.KeyValueVo.IpDescVo>()
+                ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo>()
             for (ipInfo in keyValue.value.ipInfoList) {
                 ipDescVoList.add(
-                    C1Controller.Api2SelectAllProjectRuntimeConfigRedisKeyValueOutputVo.KeyValueVo.IpDescVo(
+                    C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo(
                         ipInfo.ip,
                         ipInfo.desc
                     )
@@ -52,7 +52,7 @@ class C1Service(
             }
 
             testEntityListVoList.add(
-                C1Controller.Api2SelectAllProjectRuntimeConfigRedisKeyValueOutputVo.KeyValueVo(
+                C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo(
                     keyValue.key,
                     ipDescVoList,
                     keyValue.expireTimeMs
@@ -61,7 +61,7 @@ class C1Service(
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
-        return C1Controller.Api2SelectAllProjectRuntimeConfigRedisKeyValueOutputVo(
+        return C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo(
             testEntityListVoList
         )
     }
@@ -84,7 +84,7 @@ class C1Service(
         }
 
         redis1RuntimeConfigIpList.saveKeyValue(
-            "actuatorAllowIpList",
+            Redis1_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name,
             Redis1_RuntimeConfigIpList.ValueVo(
                 ipDescVoList
             ),
@@ -112,7 +112,7 @@ class C1Service(
         }
 
         redis1RuntimeConfigIpList.saveKeyValue(
-            "loggingDenyIpList",
+            Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name,
             Redis1_RuntimeConfigIpList.ValueVo(
                 ipDescVoList
             ),

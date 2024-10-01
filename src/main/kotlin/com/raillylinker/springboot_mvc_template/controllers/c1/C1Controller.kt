@@ -1,7 +1,6 @@
 package com.raillylinker.springboot_mvc_template.controllers.c1
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.raillylinker.springboot_mvc_template.controllers.c1.C1Controller.Api2SelectAllProjectRuntimeConfigRedisKeyValueOutputVo.KeyValueVo.IpDescVo
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema
@@ -63,21 +62,21 @@ class C1Controller(
         ]
     )
     @GetMapping(
-        path = ["/project-runtime-config"],
+        path = ["/project-runtime-configs"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @ResponseBody
-    fun api2SelectAllProjectRuntimeConfigRedisKeyValue(
+    fun api2SelectAllProjectRuntimeConfigsRedisKeyValue(
         @Parameter(hidden = true)
         httpServletResponse: HttpServletResponse
-    ): Api2SelectAllProjectRuntimeConfigRedisKeyValueOutputVo? {
-        return service.api2SelectAllProjectRuntimeConfigRedisKeyValue(
+    ): Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo? {
+        return service.api2SelectAllProjectRuntimeConfigsRedisKeyValue(
             httpServletResponse
         )
     }
 
-    data class Api2SelectAllProjectRuntimeConfigRedisKeyValueOutputVo(
+    data class Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo(
         @Schema(description = "Key-Value 리스트", required = true)
         @JsonProperty("keyValueList")
         val keyValueList: List<KeyValueVo>,

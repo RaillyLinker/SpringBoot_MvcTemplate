@@ -1,8 +1,6 @@
 package com.raillylinker.springboot_mvc_template.filters
 
-import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
 import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_RuntimeConfigIpList
-import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
 import jakarta.servlet.AsyncEvent
 import jakarta.servlet.AsyncListener
 import jakarta.servlet.FilterChain
@@ -56,7 +54,8 @@ class LoggingFilter(
         // 요청자 Ip (ex : 127.0.0.1)
         val clientAddressIp = request.remoteAddr
 
-        val loggingDenyIpInfo = redis1RuntimeConfigIpList.findKeyValue("loggingDenyIpList")
+        val loggingDenyIpInfo =
+            redis1RuntimeConfigIpList.findKeyValue(Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name)
 
         var loggingDeny = false
         if (loggingDenyIpInfo != null) {

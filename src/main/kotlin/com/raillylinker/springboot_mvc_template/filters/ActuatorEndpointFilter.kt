@@ -1,6 +1,5 @@
 package com.raillylinker.springboot_mvc_template.filters
 
-import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
 import com.raillylinker.springboot_mvc_template.data_sources.shared_memory_redis.redis1_main.Redis1_RuntimeConfigIpList
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
@@ -32,7 +31,8 @@ class ActuatorEndpointFilter(
         // 요청자 Ip (ex : 127.0.0.1)
         val clientAddressIp = httpServletRequest.remoteAddr
 
-        val actuatorAllowIpInfo = redis1RuntimeConfigIpList.findKeyValue("actuatorAllowIpList")
+        val actuatorAllowIpInfo =
+            redis1RuntimeConfigIpList.findKeyValue(Redis1_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name)
 
         var actuatorAllow = false
         if (actuatorAllowIpInfo != null) {

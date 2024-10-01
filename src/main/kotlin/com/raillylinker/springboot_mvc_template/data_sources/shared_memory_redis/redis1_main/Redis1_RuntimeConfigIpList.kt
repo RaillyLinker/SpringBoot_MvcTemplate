@@ -8,9 +8,6 @@ import org.springframework.stereotype.Component
 
 // [RedisMap 컴포넌트]
 // 프로젝트 내부에서 사용할 IP 관련 설정 저장 타입입니다.
-// key :
-// actuatorAllowIpList : Actuator 정보 접근 허용 IP 리스트
-// loggingDenyIpList : Logging Filter 의 로깅 대상에서 제외할 IP 리스트
 @Component
 class Redis1_RuntimeConfigIpList(
     // !!!RedisConfig 종류 변경!!!
@@ -32,5 +29,13 @@ class Redis1_RuntimeConfigIpList(
             // ip 설명
             val desc: String
         )
+    }
+
+    enum class KeyEnum {
+        // Actuator 정보 접근 허용 IP 리스트
+        ACTUATOR_ALLOW_IP_LIST,
+
+        // Logging Filter 의 로깅 대상에서 제외할 IP 리스트
+        LOGGING_DENY_IP_LIST
     }
 }
