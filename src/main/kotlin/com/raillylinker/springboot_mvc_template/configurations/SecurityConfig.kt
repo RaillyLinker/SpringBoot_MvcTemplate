@@ -535,7 +535,12 @@ class SecurityConfig {
             val accessToken = authorizationSplit[1].trim() // 앞의 타입을 자르고 남은 토큰
 
             // 강제 토큰 만료 검증
-            val forceExpired = expireTokenRedis.findKeyValue(tokenType + "_" + accessToken) != null
+            val forceExpired = try {
+                expireTokenRedis.findKeyValue(tokenType + "_" + accessToken)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            } != null
 
             if (forceExpired) {
                 // 다음 필터 실행

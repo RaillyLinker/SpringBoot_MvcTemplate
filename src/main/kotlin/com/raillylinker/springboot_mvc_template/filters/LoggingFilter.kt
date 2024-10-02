@@ -54,8 +54,12 @@ class LoggingFilter(
         // 요청자 Ip (ex : 127.0.0.1)
         val clientAddressIp = request.remoteAddr
 
-        val loggingDenyIpInfo =
+        val loggingDenyIpInfo = try {
             redis1RuntimeConfigIpList.findKeyValue(Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
 
         var loggingDeny = false
         if (loggingDenyIpInfo != null) {
