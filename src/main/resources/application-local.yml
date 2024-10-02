@@ -13,6 +13,8 @@ spring:
       maxRequestSize: 50MB
 
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+
     hibernate:
       # 스키마, 테이블명 UpperCase 허용
       naming:
