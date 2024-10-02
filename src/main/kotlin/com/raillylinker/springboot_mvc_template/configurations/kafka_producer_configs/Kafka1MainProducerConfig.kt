@@ -1,5 +1,7 @@
 package com.raillylinker.springboot_mvc_template.configurations.kafka_producer_configs
 
+import com.raillylinker.springboot_mvc_template.configurations.kafka_consumer_configs.Kafka1MainConsumerConfig
+import com.raillylinker.springboot_mvc_template.configurations.kafka_consumer_configs.Kafka1MainConsumerConfig.Companion
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
@@ -21,6 +23,12 @@ class Kafka1MainProducerConfig {
     @Value("\${kafka-cluster.${KAFKA_CONFIG_NAME}.uri}")
     private lateinit var uri: String
 
+    @Value("\${kafka-cluster.${Kafka1MainConsumerConfig.KAFKA_CONFIG_NAME}.producer.username}")
+    private lateinit var userName: String
+
+    @Value("\${kafka-cluster.${Kafka1MainConsumerConfig.KAFKA_CONFIG_NAME}.producer.password}")
+    private lateinit var password: String
+
     @Bean(PRODUCER_BEAN_NAME)
     fun kafkaProducer(): KafkaTemplate<String, Any> {
         val config: MutableMap<String, Any> = HashMap()
@@ -28,6 +36,12 @@ class Kafka1MainProducerConfig {
         config[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = uri
         config[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
         config[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
+
+        // SASL/SCRAM 인증 설정 추가
+        config["security.protocol"] = "SASL_PLAINTEXT"
+        config["sasl.mechanism"] = "PLAIN"
+        config["sasl.jaas.config"] =
+            "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$userName\" password=\"$password\";"
 
         return KafkaTemplate(DefaultKafkaProducerFactory(config))
     }

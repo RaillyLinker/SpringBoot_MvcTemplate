@@ -26,6 +26,12 @@ class Kafka1MainConsumerConfig {
     @Value("\${kafka-cluster.${KAFKA_CONFIG_NAME}.uri}")
     private lateinit var uri: String
 
+    @Value("\${kafka-cluster.${KAFKA_CONFIG_NAME}.consumer.username}")
+    private lateinit var userName: String
+
+    @Value("\${kafka-cluster.${KAFKA_CONFIG_NAME}.consumer.password}")
+    private lateinit var password: String
+
     @Bean(CONSUMER_BEAN_NAME)
     fun kafkaConsumer(): ConcurrentKafkaListenerContainerFactory<String, Any> {
         val config: MutableMap<String, Any> = HashMap()
@@ -38,6 +44,12 @@ class Kafka1MainConsumerConfig {
         // 같은 그룹 내의 다른 리스너는 이벤트에 침묵하며, 같은 그룹 내의 한 노드가 침묵할 경우 다른 리스너가 동작하는 방식으로 안정성을 높입니다.
         config[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
         config[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+
+        // SASL/SCRAM 인증 설정 추가
+        config["security.protocol"] = "SASL_PLAINTEXT"
+        config["sasl.mechanism"] = "PLAIN"
+        config["sasl.jaas.config"] =
+            "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$userName\" password=\"$password\";"
 
         val factory = ConcurrentKafkaListenerContainerFactory<String, Any>()
         factory.consumerFactory = DefaultKafkaConsumerFactory(config)
