@@ -1,9 +1,9 @@
 services:
   mongodb1:
-    # docker 이미지
-    image: mongo
     # 컨테이너 이름 설정
     container_name: mongodb1
+    # docker 이미지
+    image: mongo
     # 컨테이너 중지시 자동 재시작
     restart: always
     environment:
@@ -21,8 +21,8 @@ services:
     command: /bin/bash -c "chmod 400 /etc/mongo-keyfile && chown 0:0 /etc/mongo-keyfile && mongod --replSet rs0 --auth --bind_ip_all --keyFile /etc/mongo-keyfile --port 27017"
 
   mongodb2:
-    image: mongo
     container_name: mongodb2
+    image: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: "root"
@@ -35,8 +35,8 @@ services:
     command: /bin/bash -c "chmod 400 /etc/mongo-keyfile && chown 0:0 /etc/mongo-keyfile && mongod --replSet rs0 --auth --bind_ip_all --keyFile /etc/mongo-keyfile --port 27018"
 
   mongodb3:
-    image: mongo
     container_name: mongodb3
+    image: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: "root"
@@ -47,7 +47,3 @@ services:
       - C:/Users/raill/Downloads/tmp/mongodb/mongodb3/data/db:/data/db
       - ./conf/mongo-keyfile:/etc/mongo-keyfile
     command: /bin/bash -c "chmod 400 /etc/mongo-keyfile && chown 0:0 /etc/mongo-keyfile && mongod --replSet rs0 --auth --bind_ip_all --keyFile /etc/mongo-keyfile --port 27019"
-
-networks:
-  default:
-    name: mongoCluster

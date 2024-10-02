@@ -1,9 +1,10 @@
 services:
-  db:
+  mysql:
+    container_name: mysql
     image: mysql:latest
     restart: always
     ports:
-      - "3306:3306"
+      - 3306:3306
     environment:
       # 초기 생성 데이터베이스
       MYSQL_DATABASE: first_schema
