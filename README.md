@@ -274,8 +274,11 @@ external_files/docker 에서 kafka, mongodb, mysql, redis 를 실행시켜 주�
 
 ## 주의사항
 - 본 프로젝트는 Stateless 를 지향합니다.<br>
-  전역 변수이며, 런타임에 수정이 필요한 변수를 사용시에는 주의해야하며,
-  변수 수정시 Kafka 를 사용하여 Produce 하고, 이를 Consume 해서 변수에 할당하도록 처리하세요.
+  이유는, AWS AutoScaling 같은 Scale Out 기법을 사용하여 성능 향상을 할 때,<br>
+  서버의 메모리에 저장된 현재의 상태 변수는 새로운 인스턴스에는 적용되지 않기 때문입니다.<br>
+  꼭 전역 변수이자 런타임에 수정이 필요한 변수(= 상태변수)를 사용해야만 한다면,<br>
+  공유 메모리라 할 수 있는 Redis 를 사용하거나,<br>
+  변수 수정시 Kafka 를 사용하여 Produce 하고, 이를 Consume 하는 방식을 사용하세요.
 - 본 프로젝트에서 주의해야 하는 전역변수는 아래와 같습니다.<br><br>
 
   TestWebSocketHandler 의 webSocketSessionHashMap<br>
