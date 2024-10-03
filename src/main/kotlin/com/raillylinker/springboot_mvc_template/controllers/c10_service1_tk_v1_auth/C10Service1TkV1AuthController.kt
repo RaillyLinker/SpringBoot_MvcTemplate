@@ -317,7 +317,7 @@ class C10Service1TkV1AuthController(
         @JsonProperty("loggedInOutput")
         val loggedInOutput: LoggedInOutput?,
 
-        @Schema(description = "계정 잠김 정보 리스트 (이 변수가 Null 이 아니라면 loggedInOutput 이 Null 입니다.)", required = false)
+        @Schema(description = "계정 잠김 정보 리스트 (이 변수가 Null 이 아니라면 loggedInOutput 이 Null 입니다. 최신순 정렬)", required = false)
         @JsonProperty("lockedOutputList")
         val lockedOutputList: List<LockedOutput>?
     ) {
