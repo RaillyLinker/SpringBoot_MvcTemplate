@@ -176,11 +176,16 @@ class C10Service1TkV1AuthService(
                     }
                 }
 
-                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
-                    "${tokenType}_${accessToken}",
-                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
-                    accessTokenExpireRemainSeconds!! * 1000
-                )
+                // 강제 만료 정보에 입력하기
+                try {
+                    redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                        "${tokenType}_${accessToken}",
+                        Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                        accessTokenExpireRemainSeconds!! * 1000
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
 
         }
@@ -821,11 +826,15 @@ class C10Service1TkV1AuthService(
                 }
             }
 
-            redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
-                "${tokenType1}_${accessToken}",
-                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
-                accessTokenExpireRemainSeconds!! * 1000
-            )
+            try {
+                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                    "${tokenType1}_${accessToken}",
+                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    accessTokenExpireRemainSeconds!! * 1000
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -1054,11 +1063,15 @@ class C10Service1TkV1AuthService(
                             }
                         }
 
-                        redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
-                            "${tokenType1}_${accessToken1}",
-                            Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
-                            accessTokenExpireRemainSeconds!! * 1000
-                        )
+                        try {
+                            redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                                "${tokenType1}_${accessToken1}",
+                                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                                accessTokenExpireRemainSeconds!! * 1000
+                            )
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
 
                         // 멤버의 권한 리스트를 조회 후 반환
                         val memberRoleList =
@@ -1177,11 +1190,15 @@ class C10Service1TkV1AuthService(
                 }
             }
 
-            redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
-                "${tokenType}_${accessToken}",
-                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
-                accessTokenExpireRemainSeconds!! * 1000
-            )
+            try {
+                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                    "${tokenType}_${accessToken}",
+                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    accessTokenExpireRemainSeconds!! * 1000
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -2484,11 +2501,15 @@ class C10Service1TkV1AuthService(
                 }
             }
 
-            redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
-                "${tokenType}_${accessToken}",
-                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
-                accessTokenExpireRemainSeconds!! * 1000
-            )
+            try {
+                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                    "${tokenType}_${accessToken}",
+                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    accessTokenExpireRemainSeconds!! * 1000
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -2681,11 +2702,15 @@ class C10Service1TkV1AuthService(
                     }
                 }
 
-                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
-                    "${tokenType}_${accessToken}",
-                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
-                    accessTokenExpireRemainSeconds!! * 1000
-                )
+                try {
+                    redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                        "${tokenType}_${accessToken}",
+                        Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                        accessTokenExpireRemainSeconds!! * 1000
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -2899,11 +2924,15 @@ class C10Service1TkV1AuthService(
                     }
                 }
 
-                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
-                    "${tokenType}_${accessToken}",
-                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
-                    accessTokenExpireRemainSeconds!! * 1000
-                )
+                try {
+                    redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                        "${tokenType}_${accessToken}",
+                        Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                        accessTokenExpireRemainSeconds!! * 1000
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
 
             httpServletResponse.status = HttpStatus.OK.value()
@@ -3819,11 +3848,15 @@ class C10Service1TkV1AuthService(
                 }
             }
 
-            redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
-                "${tokenType}_${accessToken}",
-                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
-                accessTokenExpireRemainSeconds!! * 1000
-            )
+            try {
+                redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
+                    "${tokenType}_${accessToken}",
+                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    accessTokenExpireRemainSeconds!! * 1000
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         // 회원탈퇴 처리
