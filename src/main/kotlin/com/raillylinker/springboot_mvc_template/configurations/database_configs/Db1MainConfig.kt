@@ -1,6 +1,7 @@
 package com.raillylinker.springboot_mvc_template.configurations.database_configs
 
 import com.raillylinker.springboot_mvc_template.data_sources.memory_const_object.ProjectConst
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
@@ -39,6 +40,9 @@ class Db1MainConfig(
             "${DATABASE_DIRECTORY_NAME}_PlatformTransactionManager"
     }
 
+    @Value("\${datasource.${DATABASE_CONFIG_NAME}.database-platform}")
+    private lateinit var databasePlatform: String
+
     @Bean("${DATABASE_DIRECTORY_NAME}_LocalContainerEntityManagerFactoryBean")
     fun customEntityManagerFactory(): LocalContainerEntityManagerFactoryBean {
         val em = LocalContainerEntityManagerFactoryBean()
@@ -47,8 +51,19 @@ class Db1MainConfig(
         val vendorAdapter = HibernateJpaVendorAdapter()
         em.jpaVendorAdapter = vendorAdapter
         val properties = HashMap<String, Any?>()
-        properties["hibernate.hbm2ddl.auto"] = environment.getProperty("spring.jpa.hibernate.ddl-auto")
-        properties["hibernate.dialect"] = environment.getProperty("spring.jpa.database-platform")
+//        ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+//        ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+//        데이터베이스 초기화 전략
+//        none - 엔티티가 변경되더라도 데이터베이스를 변경하지 않는다.
+//        update - 엔티티의 변경된 부분만 적용한다.
+//        validate - 변경사항이 있는지 검사만 한다.
+//        create - 스프링부트 서버가 시작될때 모두 drop 하고 다시 생성한다.
+//        create-drop - create 와 동일하다. 하지만 종료시에도 모두 drop 한다.
+//        개발 환경에서는 보통 update 모드를 사용하고 운영환경에서는 none 또는 validate 모드를 사용
+        properties["hibernate.hbm2ddl.auto"] = "validate"
+//        ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+//        ********* 주의 : ddl-auto 설정을 바꿀 때는 극도로 주의할 것!!!!!! *********
+        properties["hibernate.dialect"] = databasePlatform
         em.setJpaPropertyMap(properties)
         return em
     }
