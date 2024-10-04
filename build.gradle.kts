@@ -99,7 +99,7 @@ dependencies {
     // (Spring Actuator)
     // : 서버 모니터링 정보
     implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.0")
-    runtimeOnly ("io.micrometer:micrometer-registry-prometheus:1.13.0")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus:1.13.0")
 
     // (ORM 관련 라이브러리)
     // WebSocket STOMP Controller 에서 입력값 매핑시 사용됨
@@ -118,7 +118,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.3.0")
 
     // (LogStash)
-    implementation("net.logstash.logback:logstash-logback-encoder:7.4")
+//    implementation("net.logstash.logback:logstash-logback-encoder:7.4")
 }
 
 tasks.withType<KotlinCompile> {
