@@ -41,6 +41,13 @@
             </layout>
         </appender>
 
+        <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <!-- 로그 스태시 주소 -->
+            <destination>localhost:5000</destination>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            </encoder>
+        </appender>
+
         <!-- appender 별 세팅 -->
         <!-- 로그 전역 세팅 -->
         <!-- 로그 레벨 -->
@@ -56,6 +63,7 @@
         <root level="INFO">
             <appender-ref ref="FILE"/>
             <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="LOGSTASH"/>
         </root>
     </springProfile>
 
@@ -89,6 +97,13 @@
             </rollingPolicy>
         </appender>
 
+        <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <!-- 로그 스태시 주소 -->
+            <destination>localhost:5000</destination>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            </encoder>
+        </appender>
+
         <!-- appender 별 세팅 -->
         <!-- 로그 전역 세팅 -->
         <!-- 로그 레벨 -->
@@ -103,6 +118,7 @@
         -->
         <root level="INFO">
             <appender-ref ref="FILE"/>
+            <appender-ref ref="LOGSTASH"/>
         </root>
     </springProfile>
 
@@ -136,6 +152,13 @@
             </rollingPolicy>
         </appender>
 
+        <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <!-- 로그 스태시 주소 -->
+            <destination>localhost:5000</destination>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            </encoder>
+        </appender>
+
         <!-- appender 별 세팅 -->
         <!-- 로그 전역 세팅 -->
         <!-- 로그 레벨 -->
@@ -150,6 +173,7 @@
         -->
         <root level="INFO">
             <appender-ref ref="FILE"/>
+            <appender-ref ref="LOGSTASH"/>
         </root>
     </springProfile>
 

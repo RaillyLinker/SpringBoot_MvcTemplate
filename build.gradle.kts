@@ -116,6 +116,9 @@ dependencies {
 
     // (MongoDB)
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.3.0")
+
+    // (LogStash)
+    implementation("net.logstash.logback:logstash-logback-encoder:7.4")
 }
 
 tasks.withType<KotlinCompile> {
