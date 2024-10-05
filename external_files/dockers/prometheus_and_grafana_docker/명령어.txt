@@ -50,3 +50,20 @@
 
     Grafana 대시보드 설정 화면에서 Find and import dashboards for... 아래의 입력창에 붙여넣어 Load 를 누르면 대시보드 설정 창이 나오고,
     가장 아래 드롭다운 버튼에서 Prometheus 를 선택한 후 Import 를 누르면 됩니다.
+
+- Loki 설정을 해겠습니다.
+    Datasource 에서 Add Data source 를 누르고, Loki 를 선택합니다.
+
+    이번에는
+
+    http://loki:3100
+
+    위와 같이 loki 주소를 입력하고 Save & test 버튼을 눌러 이상이 없으면 됩니다.
+
+    Loki 데이터 소스의 데이터를 확인할 대시보드를 작성하려면,
+
+    building a dashboard 링크를 누르거나,
+    Dashboards 탭에 이동하여, Create Dashboard 버튼 -> Add visualization 을 누릅니다.
+
+    Loki 를 선택하고,
+    쿼리 설정 부분에서 Label filters 에서 선택하면 됩니다.(잘 설정되었다면 클릭하면 선택 메뉴가 나타납니다.)
