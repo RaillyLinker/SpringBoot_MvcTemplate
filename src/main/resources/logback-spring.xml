@@ -15,14 +15,11 @@
                 </pattern>
             </encoder>
 
-            <!-- 파일 경로 설정 -->
-            <file>${LOGS_PATH}/currentLog_local.log</file>
-
             <!-- Rolling 정책 : 로그 보관 정책 -->
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- 로그 백업 파일 경로 설정 -->
                 <!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 -->
-                <fileNamePattern>${LOGS_PATH}/%d{yyyy_MM_dd}/oldLog_local_%i.log</fileNamePattern>
+                <fileNamePattern>${LOGS_PATH}/local_%d{yyyy_MM_dd}(%i).log</fileNamePattern>
                 <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                     <!-- 파일당 최고 용량 KB, MB, GB -->
                     <!-- 아래 용량을 넘으면 파일 분할-->
@@ -79,14 +76,11 @@
                 </pattern>
             </encoder>
 
-            <!-- 파일 경로 설정 -->
-            <file>${LOGS_PATH}/currentLog_dev.log</file>
-
             <!-- Rolling 정책 : 로그 보관 정책 -->
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- 로그 백업 파일 경로 설정 -->
                 <!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 -->
-                <fileNamePattern>${LOGS_PATH}/%d{yyyy_MM_dd}/oldLog_dev_%i.log</fileNamePattern>
+                <fileNamePattern>${LOGS_PATH}/dev_%d{yyyy_MM_dd}(%i).log</fileNamePattern>
                 <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                     <!-- 파일당 최고 용량 KB, MB, GB -->
                     <!-- 아래 용량을 넘으면 파일 분할-->
@@ -134,14 +128,11 @@
                 </pattern>
             </encoder>
 
-            <!-- 파일 경로 설정 -->
-            <file>${LOGS_PATH}/currentLog_prod.log</file>
-
             <!-- Rolling 정책 : 로그 보관 정책 -->
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- 로그 백업 파일 경로 설정 -->
                 <!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 -->
-                <fileNamePattern>${LOGS_PATH}/%d{yyyy_MM_dd}/oldLog_prod_%i.log</fileNamePattern>
+                <fileNamePattern>${LOGS_PATH}/prod_%d{yyyy_MM_dd}(%i).log</fileNamePattern>
                 <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                     <!-- 파일당 최고 용량 KB, MB, GB -->
                     <!-- 아래 용량을 넘으면 파일 분할-->
