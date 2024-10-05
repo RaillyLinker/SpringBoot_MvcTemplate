@@ -5,6 +5,7 @@ services:
     restart: always
     volumes:
       - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml
+      - C:/Users/raill/Downloads/tmp/prometheus:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
@@ -26,8 +27,9 @@ services:
     image: grafana/loki:latest
     ports:
       - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/loki-config.yaml
     volumes:
+      - ./conf/loki-config.yaml:/etc/loki/loki-config.yaml
       - C:/Users/raill/Downloads/tmp/loki/data:/loki
 
   promtail:
