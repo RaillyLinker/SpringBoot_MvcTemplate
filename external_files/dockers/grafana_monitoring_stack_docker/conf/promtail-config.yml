@@ -1,0 +1,34 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  # 동기화 작업을 이루기 위해 promtail이 읽은 마지막 로그 정보를 저장하는 곳
+  filename: /tmp/positions.yaml
+
+clients:
+  # push할 Loki의 주소
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: spring-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          __path__: /logs/*.log
+
+    pipeline_stages:
+      - regex:
+          # 로그의 날짜, 레벨, 메시지 패턴을 추출
+          expression: '\[%23d{(?P<time>[^]]+)}] \[(?P<level>[A-Z]+) *] \[(?P<message>.*)]'
+
+      - timestamp:
+          # 추출된 time 필드를 timestamp로 설정
+          source: time
+          format: 2006_01_02T15_04_05_000_MST
+
+      - labels:
+          # 추출된 level 값을 라벨로 추가
+          level: "{{ level }}"
