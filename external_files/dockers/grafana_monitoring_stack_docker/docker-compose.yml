@@ -25,6 +25,7 @@ services:
   loki:
     container_name: loki
     image: grafana/loki:latest
+    restart: always
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/loki-config.yaml
@@ -35,6 +36,7 @@ services:
   promtail:
     container_name: promtail
     image: grafana/promtail:latest
+    restart: always
     volumes:
       - C:/dev/springboot/SpringBoot_MvcTemplate/by_product_files/logs:/logs
       - ./conf/promtail-config.yml:/etc/promtail/config.yml
