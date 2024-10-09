@@ -78,7 +78,25 @@ class C9Service1TkV1MapCoordinateCalculationService(
     ): C9Service1TkV1MapCoordinateCalculationController.Api1GetDistanceMeterBetweenTwoCoordinateOutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
         return C9Service1TkV1MapCoordinateCalculationController.Api1GetDistanceMeterBetweenTwoCoordinateOutputVo(
-            MapCoordinateUtil.getDistanceMeterBetweenTwoLatLngCoordinate(
+            MapCoordinateUtil.getDistanceMeterBetweenTwoLatLngCoordinateHarversine(
+                Pair(latitude1, longitude1),
+                Pair(latitude2, longitude2)
+            )
+        )
+    }
+
+
+    ////
+    fun api1Dot1GetDistanceMeterBetweenTwoCoordinateVincenty(
+        httpServletResponse: HttpServletResponse,
+        latitude1: Double,
+        longitude1: Double,
+        latitude2: Double,
+        longitude2: Double
+    ): C9Service1TkV1MapCoordinateCalculationController.Api1Dot1GetDistanceMeterBetweenTwoCoordinateVincentyOutputVo? {
+        httpServletResponse.status = HttpStatus.OK.value()
+        return C9Service1TkV1MapCoordinateCalculationController.Api1Dot1GetDistanceMeterBetweenTwoCoordinateVincentyOutputVo(
+            MapCoordinateUtil.getDistanceMeterBetweenTwoLatLngCoordinateVincenty(
                 Pair(latitude1, longitude1),
                 Pair(latitude2, longitude2)
             )

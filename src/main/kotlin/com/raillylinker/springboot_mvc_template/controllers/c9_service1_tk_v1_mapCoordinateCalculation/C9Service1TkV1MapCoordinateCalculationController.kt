@@ -52,8 +52,8 @@ class C9Service1TkV1MapCoordinateCalculationController(
 
     ////
     @Operation(
-        summary = "N1 : 두 좌표 사이의 거리를 반환",
-        description = "함수를 사용하여 두 좌표 사이의 거리를 meter 단위로 반환하는 API\n\n"
+        summary = "N1 : 두 좌표 사이의 거리를 반환(하버사인 공식)",
+        description = "하버사인 공식을 사용하여 두 좌표 사이의 거리를 meter 단위로 반환하는 API\n\n"
     )
     @ApiResponses(
         value = [
@@ -64,7 +64,7 @@ class C9Service1TkV1MapCoordinateCalculationController(
         ]
     )
     @GetMapping(
-        path = ["/distance-meter-between-two-coordinate"],
+        path = ["/distance-meter-between-two-coordinate-harversine"],
         consumes = [MediaType.ALL_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
@@ -95,6 +95,57 @@ class C9Service1TkV1MapCoordinateCalculationController(
     }
 
     data class Api1GetDistanceMeterBetweenTwoCoordinateOutputVo(
+        @Schema(description = "좌표간 거리 (Meter)", required = true, example = "325.42")
+        @JsonProperty("distanceMeter")
+        val distanceMeter: Double
+    )
+
+
+    ////
+    @Operation(
+        summary = "N1.1 : 두 좌표 사이의 거리를 반환(Vincenty 공식)",
+        description = "Vincenty 공식을 사용하여 두 좌표 사이의 거리를 meter 단위로 반환하는 API\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/distance-meter-between-two-coordinate-vincenty"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api1Dot1GetDistanceMeterBetweenTwoCoordinateVincenty(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "latitude1", description = "위도1", example = "37.675683")
+        @RequestParam("latitude1")
+        latitude1: Double,
+        @Parameter(name = "longitude1", description = "경도1", example = "126.761259")
+        @RequestParam("longitude1")
+        longitude1: Double,
+        @Parameter(name = "latitude2", description = "위도2", example = "37.676563")
+        @RequestParam("latitude2")
+        latitude2: Double,
+        @Parameter(name = "longitude2", description = "경도2", example = "126.764777")
+        @RequestParam("longitude2")
+        longitude2: Double
+    ): Api1Dot1GetDistanceMeterBetweenTwoCoordinateVincentyOutputVo? {
+        return service.api1Dot1GetDistanceMeterBetweenTwoCoordinateVincenty(
+            httpServletResponse,
+            latitude1,
+            longitude1,
+            latitude2,
+            longitude2
+        )
+    }
+
+    data class Api1Dot1GetDistanceMeterBetweenTwoCoordinateVincentyOutputVo(
         @Schema(description = "좌표간 거리 (Meter)", required = true, example = "325.42")
         @JsonProperty("distanceMeter")
         val distanceMeter: Double
