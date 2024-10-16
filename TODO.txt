@@ -1,2 +1,0 @@
-[TODO]
-- README.md 설명 추가
