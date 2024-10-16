@@ -1,0 +1,17 @@
+# (실행 환경 공통 설정)
+# : 개발 환경에 상관 없이 공통으로 적용되는 설정
+
+spring:
+  config:
+    activate: # 프로필명 설정
+      on-profile: dpd-actuator
+
+# actuator 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # open 할 actuator 경로 설정 (SecurityConfig 에선 actuator/** 허용, ActuatorEndpointFilter 에선 actuator/** IP 제한 설정)
+  endpoint:
+    health:
+      show-details: always # actuator/health 에 디테일 정보 반환

@@ -1,4 +1,4 @@
-package raillylinker.module_api_sample.filters
+package raillylinker.module_dpd_actuator.filters
 
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain

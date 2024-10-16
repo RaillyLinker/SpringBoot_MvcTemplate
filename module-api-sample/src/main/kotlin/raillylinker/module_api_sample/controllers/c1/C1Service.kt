@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
+import raillylinker.module_dpd_actuator.custom_components.ActuatorWhiteList
 import raillylinker.module_idp_redis.data_sources.shared_memory_redis.redis1_main.Redis1_RuntimeConfigIpList
 
 @Service
@@ -14,7 +15,9 @@ class C1Service(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
-    private val redis1RuntimeConfigIpList: Redis1_RuntimeConfigIpList
+    private val redis1RuntimeConfigIpList: Redis1_RuntimeConfigIpList,
+
+    private val actuatorWhiteList: ActuatorWhiteList
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -34,30 +37,53 @@ class C1Service(
 
     ////
     fun api2SelectAllProjectRuntimeConfigsRedisKeyValue(httpServletResponse: HttpServletResponse): C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo? {
+        val testEntityListVoList =
+            ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo>()
+
+        // actuator 저장 정보 가져오기
+        val actuatorWhiteList = actuatorWhiteList.getActuatorWhiteList()
+
+        val actuatorIpDescVoList =
+            ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo>()
+        for (actuatorWhite in actuatorWhiteList) {
+            actuatorIpDescVoList.add(
+                C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo(
+                    actuatorWhite.ip,
+                    actuatorWhite.desc
+                )
+            )
+        }
+
+        testEntityListVoList.add(
+            C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo(
+                Redis1_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name,
+                actuatorIpDescVoList
+            )
+        )
+
         // 전체 조회 테스트
         val keyValueList = redis1RuntimeConfigIpList.findAllKeyValues()
 
-        val testEntityListVoList =
-            ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo>()
         for (keyValue in keyValueList) {
-            val ipDescVoList =
-                ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo>()
-            for (ipInfo in keyValue.value.ipInfoList) {
-                ipDescVoList.add(
-                    C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo(
-                        ipInfo.ip,
-                        ipInfo.desc
+            if (keyValue.key == Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name) {
+                val ipDescVoList =
+                    ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo>()
+                for (ipInfo in keyValue.value.ipInfoList) {
+                    ipDescVoList.add(
+                        C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo(
+                            ipInfo.ip,
+                            ipInfo.desc
+                        )
+                    )
+                }
+
+                testEntityListVoList.add(
+                    C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo(
+                        keyValue.key,
+                        ipDescVoList
                     )
                 )
             }
-
-            testEntityListVoList.add(
-                C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo(
-                    keyValue.key,
-                    ipDescVoList,
-                    keyValue.expireTimeMs
-                )
-            )
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -72,24 +98,18 @@ class C1Service(
         httpServletResponse: HttpServletResponse,
         inputVo: C1Controller.Api3InsertProjectRuntimeConfigActuatorAllowIpListInputVo
     ) {
-        val ipDescVoList: MutableList<Redis1_RuntimeConfigIpList.ValueVo.IpDescVo> = mutableListOf()
+        val actuatorAllowIpVoList: MutableList<ActuatorWhiteList.ActuatorAllowIpVo> = mutableListOf()
 
         for (ipDescInfo in inputVo.ipInfoList) {
-            ipDescVoList.add(
-                Redis1_RuntimeConfigIpList.ValueVo.IpDescVo(
+            actuatorAllowIpVoList.add(
+                ActuatorWhiteList.ActuatorAllowIpVo(
                     ipDescInfo.ip,
                     ipDescInfo.desc
                 )
             )
         }
 
-        redis1RuntimeConfigIpList.saveKeyValue(
-            Redis1_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name,
-            Redis1_RuntimeConfigIpList.ValueVo(
-                ipDescVoList
-            ),
-            null
-        )
+        actuatorWhiteList.setActuatorWhiteList(actuatorAllowIpVoList)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }

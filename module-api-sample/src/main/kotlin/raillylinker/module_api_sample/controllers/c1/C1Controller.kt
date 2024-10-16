@@ -88,10 +88,7 @@ class C1Controller(
             val key: String,
             @Schema(description = "설정 IP 정보 리스트", required = true)
             @JsonProperty("ipInfoList")
-            var ipInfoList: List<IpDescVo>,
-            @Schema(description = "데이터 만료시간(밀리 초, -1 이라면 무한정)", required = true, example = "12000")
-            @JsonProperty("expirationMs")
-            val expirationMs: Long
+            var ipInfoList: List<IpDescVo>
         ) {
             data class IpDescVo(
                 // 설정 ip

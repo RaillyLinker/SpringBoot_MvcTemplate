@@ -1,0 +1,7 @@
+# (실행 환경 dev 설정)
+# : 개발 환경 개발자들을 위한 환경 설정
+
+spring:
+  config:
+    activate: # 프로필명 설정
+      on-profile: dpd-actuator-dev

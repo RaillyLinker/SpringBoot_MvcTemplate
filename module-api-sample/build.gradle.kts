@@ -32,6 +32,7 @@ dependencies {
     implementation(project(":module-dpd-socket-stomp"))
     implementation(project(":module-dpd-kafka"))
     implementation(project(":module-dpd-scheduler"))
+    implementation(project(":module-dpd-actuator"))
 
     // (기본)
     implementation("org.springframework.boot:spring-boot-starter:3.3.4")
@@ -68,11 +69,6 @@ dependencies {
 
     // (JSOUP - HTML 태그 조작)
     implementation("org.jsoup:jsoup:1.18.1")
-
-    // (Spring Actuator)
-    // : 서버 모니터링 정보
-    implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.4")
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus:1.13.6")
 }
 
 kotlin {

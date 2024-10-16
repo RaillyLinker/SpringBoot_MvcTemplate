@@ -30,7 +30,8 @@ import java.util.*
         "raillylinker.module_dpd_sockjs",
         "raillylinker.module_dpd_socket_stomp",
         "raillylinker.module_dpd_kafka",
-        "raillylinker.module_dpd_scheduler"
+        "raillylinker.module_dpd_scheduler",
+        "raillylinker.module_dpd_actuator"
     ]
 )
 @SpringBootApplication
