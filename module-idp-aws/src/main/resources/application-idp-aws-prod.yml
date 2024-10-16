@@ -4,4 +4,4 @@
 spring:
   config:
     activate: # 프로필명 설정
-      on-profile: idp-common-prod
+      on-profile: idp-aws-prod

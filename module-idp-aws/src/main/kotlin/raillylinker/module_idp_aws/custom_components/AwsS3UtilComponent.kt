@@ -1,4 +1,4 @@
-package raillylinker.module_idp_common.custom_component
+package raillylinker.module_idp_aws.custom_components
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.DeleteObjectRequest

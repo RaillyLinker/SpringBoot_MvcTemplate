@@ -19,10 +19,13 @@ import java.util.*
     basePackages =
     [
         "raillylinker.module_api_sample",
+
         "raillylinker.module_idp_common",
         "raillylinker.module_idp_jpa",
         "raillylinker.module_idp_redis",
         "raillylinker.module_idp_mongodb",
+        "raillylinker.module_idp_aws",
+
         "raillylinker.module_dpd_common",
         "raillylinker.module_dpd_sockjs",
         "raillylinker.module_dpd_socket_stomp",

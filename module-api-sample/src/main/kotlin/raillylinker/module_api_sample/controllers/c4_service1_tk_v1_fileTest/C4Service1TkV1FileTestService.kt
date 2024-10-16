@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
-import raillylinker.module_idp_common.custom_component.AwsS3UtilComponent
+import raillylinker.module_idp_aws.custom_components.AwsS3UtilComponent
 import raillylinker.module_idp_common.custom_objects.CustomUtil
 import java.io.File
 import java.io.FileOutputStream

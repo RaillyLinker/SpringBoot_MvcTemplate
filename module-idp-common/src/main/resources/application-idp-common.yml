@@ -6,16 +6,6 @@ spring:
     activate: # 프로필명 설정
       on-profile: idp-common
 
-cloud:
-  aws:
-    credentials:
-      access-key: InputYourAccessKey
-      secret-key: InputYourSecretKey
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-
 custom-config: # 프로젝트 내에서 사용하는 커스텀 설정
   smtp: # SMTP 설정
     host: smtp.gmail.com # SMTP 호스트

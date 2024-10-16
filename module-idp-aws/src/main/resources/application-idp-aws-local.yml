@@ -4,4 +4,4 @@
 spring:
   config:
     activate: # 프로필명 설정
-      on-profile: idp-common-local
+      on-profile: idp-aws-local
