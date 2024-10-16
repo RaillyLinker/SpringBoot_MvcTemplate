@@ -132,6 +132,7 @@ logback 을 통한 로그 형식 설정<br>
 application.yml 멀티 프로필(모듈 포함) 기능<br>
 Request,Response 자동 로깅 기능<br>
 Springboot Actuator 설정 및 접속 ip 화이트리스트 방식 적용<br>
+SpringSecurity JWT 인증/인가 구현(토큰 블랙리스트 방식)
 
 ### 그외
 SSE, 지도 좌표계 좌표 계산, 이메일 전송, SMS, Kakao Talk 전송, 비디오/오디오 스트리밍, 암복호화 등의 기능 구현
