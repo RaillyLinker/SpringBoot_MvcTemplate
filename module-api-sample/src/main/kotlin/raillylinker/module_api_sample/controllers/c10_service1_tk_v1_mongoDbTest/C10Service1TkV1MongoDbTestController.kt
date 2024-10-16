@@ -1,4 +1,4 @@
-package raillylinker.module_api_sample.controllers.c11_service1_tk_v1_mongoDbTest
+package raillylinker.module_api_sample.controllers.c10_service1_tk_v1_mongoDbTest
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.Operation
@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.*
     명령어.txt 에 적힌 명령어를 입력하여 Mongodb 를 실행시킬 수 있습니다.
     !!!
  */
-@Tag(name = "/service1/tk/v1/mongodb-test APIs", description = "C11 : MongoDB 에 대한 테스트 API 컨트롤러")
+@Tag(name = "/service1/tk/v1/mongodb-test APIs", description = "C10 : MongoDB 에 대한 테스트 API 컨트롤러")
 @Controller
 @RequestMapping("/service1/tk/v1/mongodb-test")
-class C11Service1TkV1MongoDbTestController(
-    private val service: C11Service1TkV1MongoDbTestService
+class C10Service1TkV1MongoDbTestController(
+    private val service: C10Service1TkV1MongoDbTestService
 ) {
     // <멤버 변수 공간>
 

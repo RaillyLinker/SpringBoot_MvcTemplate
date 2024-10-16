@@ -1,4 +1,4 @@
-package raillylinker.module_api_sample.controllers.c11_service1_tk_v1_mongoDbTest
+package raillylinker.module_api_sample.controllers.c10_service1_tk_v1_mongoDbTest
 
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
@@ -14,7 +14,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Service
-class C11Service1TkV1MongoDbTestService(
+class C10Service1TkV1MongoDbTestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
     private val mdb1TestRepository: Mdb1_Test_Repository
@@ -28,8 +28,8 @@ class C11Service1TkV1MongoDbTestService(
     @CustomMongoDbTransactional([Mdb1MainConfig.TRANSACTION_NAME]) // ReplicaSet 환경이 아니면 에러가 납니다.
     fun api1InsertDocumentTest(
         httpServletResponse: HttpServletResponse,
-        inputVo: C11Service1TkV1MongoDbTestController.Api1InsertDocumentTestInputVo
-    ): C11Service1TkV1MongoDbTestController.Api1InsertDocumentTestOutputVo? {
+        inputVo: C10Service1TkV1MongoDbTestController.Api1InsertDocumentTestInputVo
+    ): C10Service1TkV1MongoDbTestController.Api1InsertDocumentTestOutputVo? {
         val resultCollection = mdb1TestRepository.save(
             Mdb1_Test(
                 inputVo.content,
@@ -41,7 +41,7 @@ class C11Service1TkV1MongoDbTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C11Service1TkV1MongoDbTestController.Api1InsertDocumentTestOutputVo(
+        return C10Service1TkV1MongoDbTestController.Api1InsertDocumentTestOutputVo(
             resultCollection.uid!!.toString(),
             resultCollection.content,
             resultCollection.nullableValue,
@@ -78,15 +78,15 @@ class C11Service1TkV1MongoDbTestService(
     }
 
     ////
-    fun api4SelectAllDocumentsTest(httpServletResponse: HttpServletResponse): C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo? {
+    fun api4SelectAllDocumentsTest(httpServletResponse: HttpServletResponse): C10Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo? {
         val testCollectionList = mdb1TestRepository.findAll()
 
-        val resultVoList: ArrayList<C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo.TestEntityVo> =
+        val resultVoList: ArrayList<C10Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo.TestEntityVo> =
             arrayListOf()
 
         for (testCollection in testCollectionList) {
             resultVoList.add(
-                C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo.TestEntityVo(
+                C10Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo.TestEntityVo(
                     testCollection.uid!!.toString(),
                     testCollection.content,
                     testCollection.nullableValue,
@@ -101,7 +101,7 @@ class C11Service1TkV1MongoDbTestService(
 
         httpServletResponse.setHeader("api-result-code", "")
         httpServletResponse.status = HttpStatus.OK.value()
-        return C11Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo(
+        return C10Service1TkV1MongoDbTestController.Api4SelectAllDocumentsTestOutputVo(
             resultVoList
         )
     }
