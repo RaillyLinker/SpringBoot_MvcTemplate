@@ -96,6 +96,7 @@ api 컨트롤러는 인터페이스를 설계하는 역할을 맡은 controller 
 외례키, 유니크 등의 제약 조건 처리<br>
 확장성 있는 회원 정보 구조<br>
 검색, 페이징, 좌표계산 등의 쿼리문 수록<br>
+JpaRepository, Native Query, QueryDSL 사용<br>
 
 ### mongoDB
 다중 데이터베이스 접속 구조의 설정 방식 구현<br>
