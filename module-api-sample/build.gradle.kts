@@ -28,6 +28,7 @@ dependencies {
     implementation(project(":module-dpd-sockjs"))
     implementation(project(":module-dpd-socket-stomp"))
     implementation(project(":module-dpd-kafka"))
+    implementation(project(":module-dpd-scheduler"))
 
     // (기본)
     implementation("org.springframework.boot:spring-boot-starter:3.3.4")
