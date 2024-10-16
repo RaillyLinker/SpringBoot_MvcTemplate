@@ -64,6 +64,18 @@ dependencies {
 
     // (JSOUP - HTML 태그 조작)
     implementation("org.jsoup:jsoup:1.17.2")
+
+    // (Spring Actuator)
+    // : 서버 모니터링 정보
+    implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.0")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus:1.13.0")
+
+    // (AWS)
+    implementation("io.awspring.cloud:spring-cloud-starter-aws:2.4.4")
+
+    // (Spring email)
+    // : 스프링 이메일 발송
+    implementation("org.springframework.boot:spring-boot-starter-mail:3.3.0")
 }
 
 kotlin {
