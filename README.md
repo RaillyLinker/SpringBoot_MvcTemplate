@@ -28,6 +28,9 @@ idp 모듈은 api, dpd 모듈에게 사용되고,<br>
 dpd 모듈은 api 모듈 혹은 동일한 dpd 모듈에게 사용되지만,<br>
 api 모듈은 그 누구에게도 사용될 수 없습니다.<br>
 <br>
+![화면 캡처 2024-10-17 085755](https://github.com/user-attachments/assets/adda2b5e-c631-4b5d-bf82-98e538d17698)
+
+<br>
 위와 같은 구분법으로 인하여, idp 모듈은 한번 만들어지면 다른 모듈의 변경에 신경을 쓰지 않아도 되고,
 종속성 모듈의 경우는 build.gradle 을 확인하여 명확한 모듈 종속성에 따라 처리할 수 있게 됩니다.
 
