@@ -43,7 +43,7 @@ dependencies {
 
     // (ThymeLeaf)
     // : 웹 뷰 라이브러리
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.3.0")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.3.4")
 
     // (GSON)
     // : Json - Object 라이브러리

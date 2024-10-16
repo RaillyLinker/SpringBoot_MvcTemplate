@@ -32,10 +32,10 @@ dependencies {
 
     // (JPA)
     // : DB ORM
-    api("org.springframework.boot:spring-boot-starter-data-jpa:3.3.0")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.17.1")
+    api("org.springframework.boot:spring-boot-starter-data-jpa:3.3.4")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.18.0")
     implementation("org.hibernate:hibernate-validator:8.0.1.Final")
-    implementation("com.mysql:mysql-connector-j:8.4.0") // MySQL
+    implementation("com.mysql:mysql-connector-j:9.0.0") // MySQL
 }
 
 kotlin {

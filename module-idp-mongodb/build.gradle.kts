@@ -27,7 +27,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.2")
 
     // (MongoDB)
-    api("org.springframework.boot:spring-boot-starter-data-mongodb:3.3.0")
+    api("org.springframework.boot:spring-boot-starter-data-mongodb:3.3.4")
 
     // (AOP)
     implementation("org.springframework.boot:spring-boot-starter-aop:3.3.4")

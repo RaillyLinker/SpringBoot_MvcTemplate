@@ -28,14 +28,18 @@ dependencies {
 
     // (Spring Starter Web)
     // : 스프링 부트 웹 개발
-    implementation("org.springframework.boot:spring-boot-starter-web:3.3.0")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.3.4")
 
     // (AOP)
     implementation("org.springframework.boot:spring-boot-starter-aop:3.3.4")
 
     // (ThymeLeaf)
     // : 웹 뷰 라이브러리
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.3.0")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.3.4")
+
+    // (OkHttp3)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }
 
 kotlin {

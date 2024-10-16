@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils
 import org.springframework.web.context.request.async.DeferredResult
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
+import raillylinker.module_idp_common.custom_classes.SseEmitterWrapper
 import java.io.File
 import java.io.FileInputStream
 import java.nio.file.Files
@@ -685,31 +686,31 @@ class C2Service1TkV1RequestTestService(
     }
 
 
-//    ////
-//    // api20 에서 발급한 Emitter 객체
-//    private val api20SseEmitterWrapperMbr = SseEmitterWrapper()
-//    fun api20SseTestSubscribe(httpServletResponse: HttpServletResponse, lastSseEventId: String?): SseEmitter? {
-//        // 수신 객체
-//        val sseEmitter = api20SseEmitterWrapperMbr.getSseEmitter(null, lastSseEventId)
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//        return sseEmitter
-//    }
-//
-//
-//    ////
-//    private var api21TriggerTestCountMbr = 0
-//    fun api21SseTestEventTrigger(httpServletResponse: HttpServletResponse) {
-//        // emitter 이벤트 전송
-//        val nowTriggerTestCount = ++api21TriggerTestCountMbr
-//
-//        api20SseEmitterWrapperMbr.broadcastEvent(
-//            "triggerTest",
-//            "trigger $nowTriggerTestCount"
-//        )
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//    }
+    ////
+    // api20 에서 발급한 Emitter 객체
+    private val api20SseEmitterWrapperMbr = SseEmitterWrapper()
+    fun api20SseTestSubscribe(httpServletResponse: HttpServletResponse, lastSseEventId: String?): SseEmitter? {
+        // 수신 객체
+        val sseEmitter = api20SseEmitterWrapperMbr.getSseEmitter(null, lastSseEventId)
+
+        httpServletResponse.status = HttpStatus.OK.value()
+        return sseEmitter
+    }
+
+
+    ////
+    private var api21TriggerTestCountMbr = 0
+    fun api21SseTestEventTrigger(httpServletResponse: HttpServletResponse) {
+        // emitter 이벤트 전송
+        val nowTriggerTestCount = ++api21TriggerTestCountMbr
+
+        api20SseEmitterWrapperMbr.broadcastEvent(
+            "triggerTest",
+            "trigger $nowTriggerTestCount"
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
 
 
     ////

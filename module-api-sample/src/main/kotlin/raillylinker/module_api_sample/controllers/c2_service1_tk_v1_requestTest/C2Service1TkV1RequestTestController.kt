@@ -1347,63 +1347,63 @@ class C2Service1TkV1RequestTestController(
     )
 
 
-//    ////
-//    @Operation(
-//        summary = "N20 : 클라이언트가 특정 SSE 이벤트를 구독",
-//        description = "구독 수신 중 연결이 끊어질 경우, 클라이언트가 헤더에 Last-Event-ID 라는 값을 넣어서 다시 요청함\n\n" +
-//                "!주의점! : 로깅 필터와 충돌되므로, 꼭 요청 헤더에는 Accept:text/event-stream 를 넣어서 요청을 해야함 (이것으로 SSE 요청임을 필터가 확인함)\n\n" +
-//                "테스트는, CMD 를 열고, \n\n" +
-//                "    >>> curl -N --http2 -H \"Accept:text/event-stream\" http://127.0.0.1:8080/service1/tk/v1/request-test/sse-test/subscribe\n\n" +
-//                "혹은, 프로젝트 파일 경로의 external_files/files_for_api_test/html_file_sample 안의 sse-test.html 파일을 사용하세요. (cors 설정 필요)\n\n"
-//    )
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(
-//                responseCode = "200",
-//                description = "정상 동작"
-//            )
-//        ]
-//    )
-//    @GetMapping(
-//        path = ["/sse-test/subscribe"],
-//        consumes = [MediaType.ALL_VALUE],
-//        produces = [MediaType.TEXT_EVENT_STREAM_VALUE]
-//    )
-//    @ResponseBody
-//    fun api20SseTestSubscribe(
-//        httpServletResponse: HttpServletResponse,
-//        @Parameter(name = "Last-Event-ID", description = "멤버가 수신한 마지막 event id")
-//        @RequestHeader(value = "Last-Event-ID")
-//        lastSseEventId: String?
-//    ): SseEmitter? {
-//        return service.api20SseTestSubscribe(httpServletResponse, lastSseEventId)
-//    }
-//
-//
-//    ////
-//    @Operation(
-//        summary = "N21 : SSE 이벤트 전송 트리거 테스트",
-//        description = "어떠한 사건이 일어나면 알림을 위하여 SSE 이벤트 전송을 한다고 가정\n\n"
-//    )
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(
-//                responseCode = "200",
-//                description = "정상 동작"
-//            )
-//        ]
-//    )
-//    @PostMapping(
-//        path = ["/sse-test/event-trigger"],
-//        consumes = [MediaType.ALL_VALUE],
-//        produces = [MediaType.ALL_VALUE]
-//    )
-//    @ResponseBody
-//    fun api21SseTestEventTrigger(
-//        httpServletResponse: HttpServletResponse
-//    ) {
-//        service.api21SseTestEventTrigger(httpServletResponse)
-//    }
+    ////
+    @Operation(
+        summary = "N20 : 클라이언트가 특정 SSE 이벤트를 구독",
+        description = "구독 수신 중 연결이 끊어질 경우, 클라이언트가 헤더에 Last-Event-ID 라는 값을 넣어서 다시 요청함\n\n" +
+                "!주의점! : 로깅 필터와 충돌되므로, 꼭 요청 헤더에는 Accept:text/event-stream 를 넣어서 요청을 해야함 (이것으로 SSE 요청임을 필터가 확인함)\n\n" +
+                "테스트는, CMD 를 열고, \n\n" +
+                "    >>> curl -N --http2 -H \"Accept:text/event-stream\" http://127.0.0.1:8080/service1/tk/v1/request-test/sse-test/subscribe\n\n" +
+                "혹은, 프로젝트 파일 경로의 external_files/files_for_api_test/html_file_sample 안의 sse-test.html 파일을 사용하세요. (cors 설정 필요)\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/sse-test/subscribe"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.TEXT_EVENT_STREAM_VALUE]
+    )
+    @ResponseBody
+    fun api20SseTestSubscribe(
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "Last-Event-ID", description = "멤버가 수신한 마지막 event id")
+        @RequestHeader(value = "Last-Event-ID")
+        lastSseEventId: String?
+    ): SseEmitter? {
+        return service.api20SseTestSubscribe(httpServletResponse, lastSseEventId)
+    }
+
+
+    ////
+    @Operation(
+        summary = "N21 : SSE 이벤트 전송 트리거 테스트",
+        description = "어떠한 사건이 일어나면 알림을 위하여 SSE 이벤트 전송을 한다고 가정\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/sse-test/event-trigger"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api21SseTestEventTrigger(
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api21SseTestEventTrigger(httpServletResponse)
+    }
 
 
     ////
