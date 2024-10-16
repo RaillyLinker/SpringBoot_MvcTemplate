@@ -49,9 +49,9 @@ class Redis1MainConfig {
         Java 11 또는 그 이상의 epoll을 사용하는 NIO Socket을 사용하는 경우 가능
         Java 10이나 이전 버전의 epoll을 사용하는 NIO Socket을 사용하는 경우 불가능
         kqueue는 불가능
-        ConnectionTimeout에 설정된 시간 값(connectTimeout(Duration.ofMillis(100L)))은 애플리케이션과 Redis 사이에 LettuceConnection을 생성하는 시간 초과 값입니다.
+        ConnectionTimeout에 설정된 시간 값(connectTimeout(Duration.ofMillis(1000L)))은 애플리케이션과 Redis 사이에 LettuceConnection을 생성하는 시간 초과 값입니다.
         일반적으로 Redis와 애플리케이션은 내부 네트워크를 사용하고 있으므로 커넥션을 생성하는 시간을 짧게 두어도 무방합니다.
-        예제에서는 100ms로 설정했습니다.
+        예제에서는 1000ms로 설정했습니다.
         connectionTimeout은 command timeout과 같이 반드시 설정해야 하는 값입니다.
 
         네트워크 또는 Redis에 문제가 발생하여 Redis 명령어를 빠르게 실행할 수 없다면 애플리케이션 처리량까지 느려질 수 있습니다.
@@ -60,7 +60,7 @@ class Redis1MainConfig {
         비즈니스 로직에 따라서 빠른 실패가 시스템 전체를 보호할 수 있습니다.
          */
         val socketOptions: SocketOptions = SocketOptions.builder()
-            .connectTimeout(Duration.ofMillis(100L))
+            .connectTimeout(Duration.ofMillis(1000L))
             .keepAlive(true)
             .build()
 
@@ -127,12 +127,12 @@ class Redis1MainConfig {
         // Lettuce Client 옵션
         /*
         Lettuce 라이브러리는 지연 연결을 사용하고 있으므로, Command Timeout 값이 Connection Timeout 값보다 커야 합니다.
-        예제에서는 Command Timeout을 150ms로 설정했으며,
-        앞서 설정한 SocketOptions의 Connection Timeout 값을 100ms로 설정했습니다.
+        예제에서는 Command Timeout을 1500ms로 설정했으며,
+        앞서 설정한 SocketOptions의 Connection Timeout 값을 1000ms로 설정했습니다.
          */
         val clientConfig = LettuceClientConfiguration
             .builder()
-            .commandTimeout(Duration.ofMillis(150L))
+            .commandTimeout(Duration.ofMillis(1500L))
             .clientOptions(clusterClientOptions)
             .build()
 

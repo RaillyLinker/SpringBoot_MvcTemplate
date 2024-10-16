@@ -62,28 +62,27 @@ class C1Service(
         )
 
         // 전체 조회 테스트
-        val keyValueList = redis1RuntimeConfigIpList.findAllKeyValues()
+        val loggingDenyInfo =
+            redis1RuntimeConfigIpList.findKeyValue(Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name)
 
-        for (keyValue in keyValueList) {
-            if (keyValue.key == Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name) {
-                val ipDescVoList =
-                    ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo>()
-                for (ipInfo in keyValue.value.ipInfoList) {
-                    ipDescVoList.add(
-                        C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo(
-                            ipInfo.ip,
-                            ipInfo.desc
-                        )
-                    )
-                }
-
-                testEntityListVoList.add(
-                    C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo(
-                        keyValue.key,
-                        ipDescVoList
+        if (loggingDenyInfo != null) {
+            val ipDescVoList =
+                ArrayList<C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo>()
+            for (ipInfo in loggingDenyInfo.value.ipInfoList) {
+                ipDescVoList.add(
+                    C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo.IpDescVo(
+                        ipInfo.ip,
+                        ipInfo.desc
                     )
                 )
             }
+
+            testEntityListVoList.add(
+                C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo(
+                    Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name,
+                    ipDescVoList
+                )
+            )
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
