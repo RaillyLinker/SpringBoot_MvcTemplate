@@ -27,6 +27,7 @@ dependencies {
     implementation(project(":module-idp-mongodb"))
     implementation(project(":module-dpd-sockjs"))
     implementation(project(":module-dpd-socket-stomp"))
+    implementation(project(":module-dpd-kafka"))
 
     // (기본)
     implementation("org.springframework.boot:spring-boot-starter:3.3.4")
@@ -54,6 +55,15 @@ dependencies {
     // (OkHttp3)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // (Kafka)
+    implementation("org.springframework.kafka:spring-kafka:3.2.0")
+
+    // (폰트 파일 내부 이름 가져오기용)
+    implementation("org.apache.pdfbox:pdfbox:3.0.2")
+
+    // (JSOUP - HTML 태그 조작)
+    implementation("org.jsoup:jsoup:1.17.2")
 }
 
 kotlin {
