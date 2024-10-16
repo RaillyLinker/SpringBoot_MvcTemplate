@@ -228,126 +228,126 @@ class C4Service1TkV1FileTestController(
 
 
     ////
-//    @Operation(
-//        summary = "N6 : AWS S3 로 파일 업로드",
-//        description = "multipart File 을 하나 업로드하여 AWS S3 에 저장\n\n"
-//    )
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(
-//                responseCode = "200",
-//                description = "정상 동작"
-//            )
-//        ]
-//    )
-//    @PostMapping(
-//        path = ["/upload-to-s3"],
-//        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
-//        produces = [MediaType.APPLICATION_JSON_VALUE]
-//    )
-//    @ResponseBody
-//    fun api6AwsS3UploadTest(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse,
-//        @ModelAttribute
-//        @RequestBody
-//        inputVo: Api6AwsS3UploadTestInputVo
-//    ): Api6AwsS3UploadTestOutputVo? {
-//        return service.api6AwsS3UploadTest(httpServletResponse, inputVo)
-//    }
-//
-//    data class Api6AwsS3UploadTestInputVo(
-//        @Schema(description = "업로드 파일", required = true)
-//        @JsonProperty("multipartFile")
-//        val multipartFile: MultipartFile
-//    )
-//
-//    data class Api6AwsS3UploadTestOutputVo(
-//        @Schema(
-//            description = "파일 다운로드 경로", required = true,
-//            example = "http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/file.txt"
-//        )
-//        @JsonProperty("fileDownloadFullUrl")
-//        val fileDownloadFullUrl: String
-//    )
-//
-//
-//    ////
-//    @Operation(
-//        summary = "N7 : AWS S3 파일의 내용을 String 으로 가져오기",
-//        description = "AWS S3 파일의 내용을 String 으로 가져옵니다.\n\n"
-//    )
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(
-//                responseCode = "200",
-//                description = "정상 동작"
-//            )
-//        ]
-//    )
-//    @GetMapping(
-//        path = ["/read-from-s3"],
-//        consumes = [MediaType.ALL_VALUE],
-//        produces = [MediaType.APPLICATION_JSON_VALUE]
-//    )
-//    @ResponseBody
-//    fun api7GetFileContentToStringTest(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse,
-//        @Parameter(
-//            name = "uploadFileName",
-//            description = "업로드한 파일 이름",
-//            example = "file.txt"
-//        )
-//        @RequestParam("uploadFileName")
-//        uploadFileName: String
-//    ): Api7GetFileContentToStringTestOutputVo? {
-//        return service.api7GetFileContentToStringTest(
-//            httpServletResponse,
-//            uploadFileName
-//        )
-//    }
-//
-//    data class Api7GetFileContentToStringTestOutputVo(
-//        @Schema(description = "읽은 파일 내용", required = true, example = "testString")
-//        @JsonProperty("fileContent")
-//        val v: String
-//    )
-//
-//
-//    ////
-//    @Operation(
-//        summary = "N8 : AWS S3 파일을 삭제하기",
-//        description = "AWS S3 파일을 삭제합니다.\n\n"
-//    )
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(
-//                responseCode = "200",
-//                description = "정상 동작"
-//            )
-//        ]
-//    )
-//    @DeleteMapping(
-//        path = ["/delete-from-s3"],
-//        consumes = [MediaType.ALL_VALUE],
-//        produces = [MediaType.APPLICATION_JSON_VALUE]
-//    )
-//    @ResponseBody
-//    fun api8DeleteAwsS3FileTest(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse,
-//        @Parameter(
-//            name = "deleteFileName",
-//            description = "삭제할 파일 이름",
-//            example = "file.txt"
-//        )
-//        @RequestParam("deleteFileName")
-//        deleteFileName: String
-//    ) {
-//        service.api8DeleteAwsS3FileTest(
-//            httpServletResponse,
-//            deleteFileName
-//        )
-//    }
+    @Operation(
+        summary = "N6 : AWS S3 로 파일 업로드",
+        description = "multipart File 을 하나 업로드하여 AWS S3 에 저장\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/upload-to-s3"],
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api6AwsS3UploadTest(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @ModelAttribute
+        @RequestBody
+        inputVo: Api6AwsS3UploadTestInputVo
+    ): Api6AwsS3UploadTestOutputVo? {
+        return service.api6AwsS3UploadTest(httpServletResponse, inputVo)
+    }
+
+    data class Api6AwsS3UploadTestInputVo(
+        @Schema(description = "업로드 파일", required = true)
+        @JsonProperty("multipartFile")
+        val multipartFile: MultipartFile
+    )
+
+    data class Api6AwsS3UploadTestOutputVo(
+        @Schema(
+            description = "파일 다운로드 경로", required = true,
+            example = "http://127.0.0.1:8080/service1/tk/v1/file-test/download-from-server/file.txt"
+        )
+        @JsonProperty("fileDownloadFullUrl")
+        val fileDownloadFullUrl: String
+    )
+
+
+    ////
+    @Operation(
+        summary = "N7 : AWS S3 파일의 내용을 String 으로 가져오기",
+        description = "AWS S3 파일의 내용을 String 으로 가져옵니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/read-from-s3"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api7GetFileContentToStringTest(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(
+            name = "uploadFileName",
+            description = "업로드한 파일 이름",
+            example = "file.txt"
+        )
+        @RequestParam("uploadFileName")
+        uploadFileName: String
+    ): Api7GetFileContentToStringTestOutputVo? {
+        return service.api7GetFileContentToStringTest(
+            httpServletResponse,
+            uploadFileName
+        )
+    }
+
+    data class Api7GetFileContentToStringTestOutputVo(
+        @Schema(description = "읽은 파일 내용", required = true, example = "testString")
+        @JsonProperty("fileContent")
+        val v: String
+    )
+
+
+    ////
+    @Operation(
+        summary = "N8 : AWS S3 파일을 삭제하기",
+        description = "AWS S3 파일을 삭제합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @DeleteMapping(
+        path = ["/delete-from-s3"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api8DeleteAwsS3FileTest(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(
+            name = "deleteFileName",
+            description = "삭제할 파일 이름",
+            example = "file.txt"
+        )
+        @RequestParam("deleteFileName")
+        deleteFileName: String
+    ) {
+        service.api8DeleteAwsS3FileTest(
+            httpServletResponse,
+            deleteFileName
+        )
+    }
 }

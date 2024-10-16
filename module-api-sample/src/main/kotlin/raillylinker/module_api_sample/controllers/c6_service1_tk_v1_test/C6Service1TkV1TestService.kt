@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.web.ServerProperties
+import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
@@ -19,6 +20,7 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import raillylinker.module_dpd_kafka.configurations.kafka_producer_configs.Kafka1MainProducerConfig
+import raillylinker.module_idp_common.custom_component.EmailSenderComponent
 import raillylinker.module_idp_common.custom_objects.CryptoUtil
 import raillylinker.module_idp_common.custom_objects.CustomUtil
 import raillylinker.module_idp_common.custom_objects.ExcelFileUtil
@@ -37,8 +39,8 @@ class C6Service1TkV1TestService(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
-//    // 이메일 발송 유틸
-//    private val emailSenderComponent: EmailSenderComponent,
+    // 이메일 발송 유틸
+    private val emailSenderComponent: EmailSenderComponent,
 //    // 네이버 메시지 발송 유틸
 //    private val naverSmsSenderComponent: NaverSmsSenderComponent,
     @Qualifier(Kafka1MainProducerConfig.PRODUCER_BEAN_NAME) private val kafka1MainProducerTemplate: KafkaTemplate<String, Any>,
@@ -52,51 +54,51 @@ class C6Service1TkV1TestService(
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
-//    fun api1SendEmailTest(
-//        httpServletResponse: HttpServletResponse,
-//        inputVo: C6Service1TkV1TestController.Api1SendEmailTestInputVo
-//    ) {
-//        emailSenderComponent.sendMessageMail(
-//            inputVo.senderName,
-//            inputVo.receiverEmailAddressList.toTypedArray(),
-//            inputVo.carbonCopyEmailAddressList?.toTypedArray(),
-//            inputVo.subject,
-//            inputVo.message,
-//            null,
-//            inputVo.multipartFileList
-//        )
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//    }
+    fun api1SendEmailTest(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api1SendEmailTestInputVo
+    ) {
+        emailSenderComponent.sendMessageMail(
+            inputVo.senderName,
+            inputVo.receiverEmailAddressList.toTypedArray(),
+            inputVo.carbonCopyEmailAddressList?.toTypedArray(),
+            inputVo.subject,
+            inputVo.message,
+            null,
+            inputVo.multipartFileList
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
 
 
     ////
-//    fun api2SendHtmlEmailTest(
-//        httpServletResponse: HttpServletResponse,
-//        inputVo: C6Service1TkV1TestController.Api2SendHtmlEmailTestInputVo
-//    ) {
-//        // CID 는 첨부파일을 보내는 것과 동일한 의미입니다.
-//        // 고로 전송시 서버 성능에 악영향을 끼칠 가능성이 크고, CID 처리도 번거로우므로, CDN 을 사용하고, CID 는 되도록 사용하지 마세요.
-//        emailSenderComponent.sendThymeLeafHtmlMail(
-//            inputVo.senderName,
-//            inputVo.receiverEmailAddressList.toTypedArray(),
-//            inputVo.carbonCopyEmailAddressList?.toTypedArray(),
-//            inputVo.subject,
-//            "for_c6_n2_send_html_email_test/html_email_sample",
-//            hashMapOf(
-//                Pair("message", inputVo.message)
-//            ),
-//            null,
-//            hashMapOf(
-//                "html_email_sample_css" to ClassPathResource("static/for_c6_n2_send_html_email_test/html_email_sample.css"),
-//                "image_sample" to ClassPathResource("static/for_c6_n2_send_html_email_test/image_sample.jpg")
-//            ),
-//            null,
-//            inputVo.multipartFileList
-//        )
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//    }
+    fun api2SendHtmlEmailTest(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api2SendHtmlEmailTestInputVo
+    ) {
+        // CID 는 첨부파일을 보내는 것과 동일한 의미입니다.
+        // 고로 전송시 서버 성능에 악영향을 끼칠 가능성이 크고, CID 처리도 번거로우므로, CDN 을 사용하고, CID 는 되도록 사용하지 마세요.
+        emailSenderComponent.sendThymeLeafHtmlMail(
+            inputVo.senderName,
+            inputVo.receiverEmailAddressList.toTypedArray(),
+            inputVo.carbonCopyEmailAddressList?.toTypedArray(),
+            inputVo.subject,
+            "for_c6_n2_send_html_email_test/html_email_sample",
+            hashMapOf(
+                Pair("message", inputVo.message)
+            ),
+            null,
+            hashMapOf(
+                "html_email_sample_css" to ClassPathResource("static/for_c6_n2_send_html_email_test/html_email_sample.css"),
+                "image_sample" to ClassPathResource("static/for_c6_n2_send_html_email_test/image_sample.jpg")
+            ),
+            null,
+            inputVo.multipartFileList
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
 
 
     ////

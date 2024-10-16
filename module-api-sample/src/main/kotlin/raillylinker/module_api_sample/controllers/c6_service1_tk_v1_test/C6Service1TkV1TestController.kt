@@ -28,105 +28,105 @@ class C6Service1TkV1TestController(
 
     // ---------------------------------------------------------------------------------------------
     // <매핑 함수 공간>
-//    @Operation(
-//        summary = "N1 : 이메일 발송 테스트",
-//        description = "이메일 발송 테스트\n\n"
-//    )
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(
-//                responseCode = "200",
-//                description = "정상 동작"
-//            )
-//        ]
-//    )
-//    @PostMapping(
-//        path = ["/send-email"],
-//        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
-//        produces = [MediaType.ALL_VALUE]
-//    )
-//    @ResponseBody
-//    fun api1SendEmailTest(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse,
-//        @ModelAttribute
-//        @RequestBody
-//        inputVo: Api1SendEmailTestInputVo
-//    ) {
-//        service.api1SendEmailTest(httpServletResponse, inputVo)
-//    }
-//
-//    data class Api1SendEmailTestInputVo(
-//        @Schema(description = "수신자 이메일 배열", required = true, example = "[\"test1@gmail.com\"]")
-//        @JsonProperty("receiverEmailAddressList")
-//        val receiverEmailAddressList: List<String>,
-//        @Schema(description = "참조자 이메일 배열", required = false, example = "[\"test2@gmail.com\"]")
-//        @JsonProperty("carbonCopyEmailAddressList")
-//        val carbonCopyEmailAddressList: List<String>?,
-//        @Schema(description = "발신자명", required = true, example = "Railly Linker")
-//        @JsonProperty("senderName")
-//        val senderName: String,
-//        @Schema(description = "제목", required = true, example = "테스트 이메일")
-//        @JsonProperty("subject")
-//        val subject: String,
-//        @Schema(description = "메세지", required = true, example = "테스트 이메일을 송신했습니다.")
-//        @JsonProperty("message")
-//        val message: String,
-//        @Schema(description = "첨부 파일 리스트", required = false)
-//        @JsonProperty("multipartFileList")
-//        val multipartFileList: List<MultipartFile>?
-//    )
-//
-//
-//    ////
-//    @Operation(
-//        summary = "N2 : HTML 이메일 발송 테스트",
-//        description = "HTML 로 이루어진 이메일 발송 테스트\n\n"
-//    )
-//    @ApiResponses(
-//        value = [
-//            ApiResponse(
-//                responseCode = "200",
-//                description = "정상 동작"
-//            )
-//        ]
-//    )
-//    @PostMapping(
-//        path = ["/send-html-email"],
-//        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
-//        produces = [MediaType.ALL_VALUE]
-//    )
-//    @ResponseBody
-//    fun api2SendHtmlEmailTest(
-//        @Parameter(hidden = true)
-//        httpServletResponse: HttpServletResponse,
-//        @ModelAttribute
-//        @RequestBody
-//        inputVo: Api2SendHtmlEmailTestInputVo
-//    ) {
-//        service.api2SendHtmlEmailTest(httpServletResponse, inputVo)
-//    }
-//
-//    data class Api2SendHtmlEmailTestInputVo(
-//        @Schema(description = "수신자 이메일 배열", required = true, example = "[\"test1@gmail.com\"]")
-//        @JsonProperty("receiverEmailAddressList")
-//        val receiverEmailAddressList: List<String>,
-//        @Schema(description = "참조자 이메일 배열", required = false, example = "[\"test2@gmail.com\"]")
-//        @JsonProperty("carbonCopyEmailAddressList")
-//        val carbonCopyEmailAddressList: List<String>?,
-//        @Schema(description = "발신자명", required = true, example = "Railly Linker")
-//        @JsonProperty("senderName")
-//        val senderName: String,
-//        @Schema(description = "제목", required = true, example = "테스트 이메일")
-//        @JsonProperty("subject")
-//        val subject: String,
-//        @Schema(description = "메세지", required = true, example = "테스트 이메일을 송신했습니다.")
-//        @JsonProperty("message")
-//        val message: String,
-//        @Schema(description = "첨부 파일 리스트", required = false)
-//        @JsonProperty("multipartFileList")
-//        val multipartFileList: List<MultipartFile>?
-//    )
+    @Operation(
+        summary = "N1 : 이메일 발송 테스트",
+        description = "이메일 발송 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/send-email"],
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api1SendEmailTest(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @ModelAttribute
+        @RequestBody
+        inputVo: Api1SendEmailTestInputVo
+    ) {
+        service.api1SendEmailTest(httpServletResponse, inputVo)
+    }
+
+    data class Api1SendEmailTestInputVo(
+        @Schema(description = "수신자 이메일 배열", required = true, example = "[\"test1@gmail.com\"]")
+        @JsonProperty("receiverEmailAddressList")
+        val receiverEmailAddressList: List<String>,
+        @Schema(description = "참조자 이메일 배열", required = false, example = "[\"test2@gmail.com\"]")
+        @JsonProperty("carbonCopyEmailAddressList")
+        val carbonCopyEmailAddressList: List<String>?,
+        @Schema(description = "발신자명", required = true, example = "Railly Linker")
+        @JsonProperty("senderName")
+        val senderName: String,
+        @Schema(description = "제목", required = true, example = "테스트 이메일")
+        @JsonProperty("subject")
+        val subject: String,
+        @Schema(description = "메세지", required = true, example = "테스트 이메일을 송신했습니다.")
+        @JsonProperty("message")
+        val message: String,
+        @Schema(description = "첨부 파일 리스트", required = false)
+        @JsonProperty("multipartFileList")
+        val multipartFileList: List<MultipartFile>?
+    )
+
+
+    ////
+    @Operation(
+        summary = "N2 : HTML 이메일 발송 테스트",
+        description = "HTML 로 이루어진 이메일 발송 테스트\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/send-html-email"],
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api2SendHtmlEmailTest(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @ModelAttribute
+        @RequestBody
+        inputVo: Api2SendHtmlEmailTestInputVo
+    ) {
+        service.api2SendHtmlEmailTest(httpServletResponse, inputVo)
+    }
+
+    data class Api2SendHtmlEmailTestInputVo(
+        @Schema(description = "수신자 이메일 배열", required = true, example = "[\"test1@gmail.com\"]")
+        @JsonProperty("receiverEmailAddressList")
+        val receiverEmailAddressList: List<String>,
+        @Schema(description = "참조자 이메일 배열", required = false, example = "[\"test2@gmail.com\"]")
+        @JsonProperty("carbonCopyEmailAddressList")
+        val carbonCopyEmailAddressList: List<String>?,
+        @Schema(description = "발신자명", required = true, example = "Railly Linker")
+        @JsonProperty("senderName")
+        val senderName: String,
+        @Schema(description = "제목", required = true, example = "테스트 이메일")
+        @JsonProperty("subject")
+        val subject: String,
+        @Schema(description = "메세지", required = true, example = "테스트 이메일을 송신했습니다.")
+        @JsonProperty("message")
+        val message: String,
+        @Schema(description = "첨부 파일 리스트", required = false)
+        @JsonProperty("multipartFileList")
+        val multipartFileList: List<MultipartFile>?
+    )
 
 
     ////

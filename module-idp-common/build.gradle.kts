@@ -50,6 +50,13 @@ dependencies {
     // (HTML 2 PDF)
     // : HTML -> PDF 변환 라이브러리
     implementation("org.xhtmlrenderer:flying-saucer-pdf:9.9.5")
+
+    // (AWS)
+    implementation("io.awspring.cloud:spring-cloud-starter-aws:2.4.4")
+
+    // (Spring email)
+    // : 스프링 이메일 발송
+    implementation("org.springframework.boot:spring-boot-starter-mail:3.3.4")
 }
 
 kotlin {

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
+import raillylinker.module_idp_common.custom_component.AwsS3UtilComponent
 import raillylinker.module_idp_common.custom_objects.CustomUtil
 import java.io.File
 import java.io.FileOutputStream
@@ -31,7 +32,7 @@ class C4Service1TkV1FileTestService(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     // (AWS S3 유틸 객체)
-//    private val awsS3UtilComponent: AwsS3UtilComponent
+    private val awsS3UtilComponent: AwsS3UtilComponent
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -130,10 +131,10 @@ class C4Service1TkV1FileTestService(
 
         // 파일 경로 리스트
         val filePathList = listOf(
-            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test/1.txt",
-            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test/2.xlsx",
-            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test/3.png",
-            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test/4.mp4"
+            "$projectRootAbsolutePathString/module-api-sample/src/main/resources/static/for_c4_n3_files_to_zip_test/1.txt",
+            "$projectRootAbsolutePathString/module-api-sample/src/main/resources/static/for_c4_n3_files_to_zip_test/2.xlsx",
+            "$projectRootAbsolutePathString/module-api-sample/src/main/resources/static/for_c4_n3_files_to_zip_test/3.png",
+            "$projectRootAbsolutePathString/module-api-sample/src/main/resources/static/for_c4_n3_files_to_zip_test/4.mp4"
         )
 
         // 파일 저장 디렉토리 경로
@@ -172,7 +173,7 @@ class C4Service1TkV1FileTestService(
         val projectRootAbsolutePathString: String = File("").absolutePath
 
         // 압축 대상 디렉토리
-        val sourceDir = File("$projectRootAbsolutePathString/src/main/resources/static/for_c4_n3_files_to_zip_test")
+        val sourceDir = File("$projectRootAbsolutePathString/module-api-sample/src/main/resources/static/for_c4_n3_files_to_zip_test")
 
         // 파일 저장 디렉토리 경로
         val saveDirectoryPathString = "./by_product_files/test"
@@ -204,7 +205,7 @@ class C4Service1TkV1FileTestService(
         // 프로젝트 루트 경로 (프로젝트 settings.gradle 이 있는 경로)
         val projectRootAbsolutePathString: String = File("").absolutePath
         val filePathString =
-            "$projectRootAbsolutePathString/src/main/resources/static/for_c4_n4_unzip_test/test.zip"
+            "$projectRootAbsolutePathString/module-api-sample/src/main/resources/static/for_c4_n4_unzip_test/test.zip"
 
         // 파일 저장 디렉토리 경로
         val saveDirectoryPathString = "./by_product_files/test"
@@ -253,83 +254,83 @@ class C4Service1TkV1FileTestService(
 
 
     ////
-//    fun api6AwsS3UploadTest(
-//        httpServletResponse: HttpServletResponse,
-//        inputVo: C4Service1TkV1FileTestController.Api6AwsS3UploadTestInputVo
-//    ): C4Service1TkV1FileTestController.Api6AwsS3UploadTestOutputVo? {
-//        // 원본 파일명(with suffix)
-//        val multiPartFileNameString = StringUtils.cleanPath(inputVo.multipartFile.originalFilename!!)
-//
-//        // 파일 확장자 구분 위치
-//        val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
-//
-//        // 확장자가 없는 파일명
-//        val fileNameWithOutExtension: String
-//        // 확장자
-//        val fileExtension: String
-//
-//        if (fileExtensionSplitIdx == -1) {
-//            fileNameWithOutExtension = multiPartFileNameString
-//            fileExtension = ""
-//        } else {
-//            fileNameWithOutExtension = multiPartFileNameString.substring(0, fileExtensionSplitIdx)
-//            fileExtension =
-//                multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
-//        }
-//
-//        val savedFileName = "${fileNameWithOutExtension}(${
-//            LocalDateTime.now().atZone(ZoneId.systemDefault())
-//                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
-//        }).$fileExtension"
-//
-//        val uploadedFileFullUrl: String = awsS3UtilComponent.upload(
-//            inputVo.multipartFile,
-//            savedFileName,
-//            if (activeProfile == "prod80") {
-//                "test-prod/test"
-//            } else {
-//                "test-dev/test"
-//            }
-//        )
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//
-//        return C4Service1TkV1FileTestController.Api6AwsS3UploadTestOutputVo(uploadedFileFullUrl)
-//    }
-//
-//
-//    ////
-//    fun api7GetFileContentToStringTest(
-//        httpServletResponse: HttpServletResponse,
-//        uploadFileName: String
-//    ): C4Service1TkV1FileTestController.Api7GetFileContentToStringTestOutputVo? {
-//        httpServletResponse.status = HttpStatus.OK.value()
-//
-//        return C4Service1TkV1FileTestController.Api7GetFileContentToStringTestOutputVo(
-//            awsS3UtilComponent.getTextFileString(
-//                if (activeProfile == "prod80") {
-//                    "petlogon-contract-prod/test"
-//                } else {
-//                    "petlogon-contract-dev/test"
-//                },
-//                uploadFileName
-//            )
-//        )
-//    }
-//
-//
-//    ////
-//    fun api8DeleteAwsS3FileTest(httpServletResponse: HttpServletResponse, deleteFileName: String) {
-//        // AWS 파일 삭제
-//        awsS3UtilComponent.delete(
-//            if (activeProfile == "prod80") {
-//                "petlogon-contract-prod/test"
-//            } else {
-//                "petlogon-contract-dev/test"
-//            },
-//            deleteFileName
-//        )
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//    }
+    fun api6AwsS3UploadTest(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C4Service1TkV1FileTestController.Api6AwsS3UploadTestInputVo
+    ): C4Service1TkV1FileTestController.Api6AwsS3UploadTestOutputVo? {
+        // 원본 파일명(with suffix)
+        val multiPartFileNameString = StringUtils.cleanPath(inputVo.multipartFile.originalFilename!!)
+
+        // 파일 확장자 구분 위치
+        val fileExtensionSplitIdx = multiPartFileNameString.lastIndexOf('.')
+
+        // 확장자가 없는 파일명
+        val fileNameWithOutExtension: String
+        // 확장자
+        val fileExtension: String
+
+        if (fileExtensionSplitIdx == -1) {
+            fileNameWithOutExtension = multiPartFileNameString
+            fileExtension = ""
+        } else {
+            fileNameWithOutExtension = multiPartFileNameString.substring(0, fileExtensionSplitIdx)
+            fileExtension =
+                multiPartFileNameString.substring(fileExtensionSplitIdx + 1, multiPartFileNameString.length)
+        }
+
+        val savedFileName = "${fileNameWithOutExtension}(${
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z"))
+        }).$fileExtension"
+
+        val uploadedFileFullUrl: String = awsS3UtilComponent.upload(
+            inputVo.multipartFile,
+            savedFileName,
+            if (activeProfile == "prod80") {
+                "test-prod/test"
+            } else {
+                "test-dev/test"
+            }
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+
+        return C4Service1TkV1FileTestController.Api6AwsS3UploadTestOutputVo(uploadedFileFullUrl)
+    }
+
+
+    ////
+    fun api7GetFileContentToStringTest(
+        httpServletResponse: HttpServletResponse,
+        uploadFileName: String
+    ): C4Service1TkV1FileTestController.Api7GetFileContentToStringTestOutputVo? {
+        httpServletResponse.status = HttpStatus.OK.value()
+
+        return C4Service1TkV1FileTestController.Api7GetFileContentToStringTestOutputVo(
+            awsS3UtilComponent.getTextFileString(
+                if (activeProfile == "prod80") {
+                    "petlogon-contract-prod/test"
+                } else {
+                    "petlogon-contract-dev/test"
+                },
+                uploadFileName
+            )
+        )
+    }
+
+
+    ////
+    fun api8DeleteAwsS3FileTest(httpServletResponse: HttpServletResponse, deleteFileName: String) {
+        // AWS 파일 삭제
+        awsS3UtilComponent.delete(
+            if (activeProfile == "prod80") {
+                "petlogon-contract-prod/test"
+            } else {
+                "petlogon-contract-dev/test"
+            },
+            deleteFileName
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
 }
