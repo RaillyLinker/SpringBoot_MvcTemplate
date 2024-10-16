@@ -43,13 +43,13 @@ dependencies {
 
     // (Excel File Read Write)
     // : 액셀 파일 입출력 라이브러리
-    implementation("org.apache.poi:poi:5.2.5")
-    implementation("org.apache.poi:poi-ooxml:5.2.5")
+    implementation("org.apache.poi:poi:5.3.0")
+    implementation("org.apache.poi:poi-ooxml:5.3.0")
     implementation("sax:sax:2.0.1")
 
     // (HTML 2 PDF)
     // : HTML -> PDF 변환 라이브러리
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:9.8.0")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:9.9.5")
 }
 
 kotlin {

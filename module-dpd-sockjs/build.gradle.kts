@@ -28,7 +28,7 @@ dependencies {
 
     // (WebSocket)
     // : 웹소켓
-    implementation("org.springframework.boot:spring-boot-starter-websocket:3.3.0")
+    implementation("org.springframework.boot:spring-boot-starter-websocket:3.3.4")
 
     // (GSON)
     // : Json - Object 라이브러리

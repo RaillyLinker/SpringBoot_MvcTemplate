@@ -27,7 +27,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.2")
 
     // (Kafka)
-    implementation("org.springframework.kafka:spring-kafka:3.2.0")
+    implementation("org.springframework.kafka:spring-kafka:3.2.4")
 }
 
 kotlin {

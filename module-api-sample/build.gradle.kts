@@ -57,25 +57,25 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // (Kafka)
-    implementation("org.springframework.kafka:spring-kafka:3.2.0")
+    implementation("org.springframework.kafka:spring-kafka:3.2.4")
 
     // (폰트 파일 내부 이름 가져오기용)
-    implementation("org.apache.pdfbox:pdfbox:3.0.2")
+    implementation("org.apache.pdfbox:pdfbox:3.0.3")
 
     // (JSOUP - HTML 태그 조작)
-    implementation("org.jsoup:jsoup:1.17.2")
+    implementation("org.jsoup:jsoup:1.18.1")
 
     // (Spring Actuator)
     // : 서버 모니터링 정보
-    implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.0")
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus:1.13.0")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.4")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus:1.13.6")
 
     // (AWS)
     implementation("io.awspring.cloud:spring-cloud-starter-aws:2.4.4")
 
     // (Spring email)
     // : 스프링 이메일 발송
-    implementation("org.springframework.boot:spring-boot-starter-mail:3.3.0")
+    implementation("org.springframework.boot:spring-boot-starter-mail:3.3.4")
 }
 
 kotlin {

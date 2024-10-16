@@ -28,7 +28,7 @@ dependencies {
 
     // (WebSocket)
     // : 웹소켓
-    implementation("org.springframework.boot:spring-boot-starter-websocket:3.3.0")
+    implementation("org.springframework.boot:spring-boot-starter-websocket:3.3.4")
 
     // (ORM 관련 라이브러리)
     // WebSocket STOMP Controller 에서 입력값 매핑시 사용됨
