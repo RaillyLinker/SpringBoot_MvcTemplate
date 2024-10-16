@@ -12,6 +12,7 @@ import raillylinker.module_idp_jpa.annotations.CustomTransactional
 import raillylinker.module_idp_jpa.configurations.database_configs.Db1MainConfig
 import raillylinker.module_idp_jpa.data_sources.database_jpa.db1_main.entities.*
 import raillylinker.module_idp_jpa.data_sources.database_jpa.db1_main.repositories.*
+import raillylinker.module_idp_jpa.data_sources.database_jpa.db1_main.repositories_dsl.Db1_Template_RepositoryDsl
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -27,7 +28,10 @@ class C7Service1TkV1DatabaseTestService(
     private val db1TemplateFkTestParentRepository: Db1_Template_FkTestParent_Repository,
     private val db1TemplateFkTestManyToOneChildRepository: Db1_Template_FkTestManyToOneChild_Repository,
     private val db1TemplateLogicalDeleteUniqueDataRepository: Db1_Template_LogicalDeleteUniqueData_Repository,
-    private val db1TemplateJustBooleanTestRepository: Db1_Template_JustBooleanTest_Repository
+    private val db1TemplateJustBooleanTestRepository: Db1_Template_JustBooleanTest_Repository,
+
+    // (Database Repository DSL)
+    private val db1TemplateRepositoryDsl : Db1_Template_RepositoryDsl
 ) {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)

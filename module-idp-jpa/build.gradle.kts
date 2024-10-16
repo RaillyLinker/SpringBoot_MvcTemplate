@@ -7,6 +7,9 @@ plugins {
     // 추가
     kotlin("plugin.allopen") version "2.0.21" // allOpen 에 지정한 어노테이션으로 만든 클래스에 open 키워드를 적용
     kotlin("plugin.noarg") version "2.0.21" // noArg 에 지정한 어노테이션으로 만든 클래스에 자동으로 no-arg 생성자를 생성
+
+    // QueryDSL Kapt
+    kotlin("kapt")
 }
 
 group = "raillylinker.module_idp_jpa"
@@ -36,7 +39,36 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.18.0")
     implementation("org.hibernate:hibernate-validator:8.0.1.Final")
     implementation("com.mysql:mysql-connector-j:9.0.0") // MySQL
+
+    // (QueryDSL)
+    implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
+    kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
+    kapt("jakarta.annotation:jakarta.annotation-api")
+    kapt("jakarta.persistence:jakarta.persistence-api")
 }
+
+// (Querydsl 설정부 추가 - start)
+val generated = file("src/main/generated")
+// querydsl QClass 파일 생성 위치를 지정
+tasks.withType<JavaCompile> {
+    options.generatedSourceOutputDirectory.set(generated)
+}
+// kotlin source set 에 querydsl QClass 위치 추가
+sourceSets {
+    main {
+        kotlin.srcDirs += generated
+    }
+}
+// gradle clean 시에 QClass 디렉토리 삭제
+tasks.named("clean") {
+    doLast {
+        generated.deleteRecursively()
+    }
+}
+kapt {
+    generateStubs = true
+}
+// (Querydsl 설정부 추가 - end)
 
 kotlin {
     compilerOptions {
