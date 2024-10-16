@@ -23,6 +23,7 @@ import java.util.*
         "raillylinker.module_idp_jpa",
         "raillylinker.module_idp_redis",
         "raillylinker.module_idp_mongodb",
+        "raillylinker.module_dpd_common",
         "raillylinker.module_dpd_sockjs",
         "raillylinker.module_dpd_socket_stomp",
         "raillylinker.module_dpd_kafka",

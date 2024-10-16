@@ -5,12 +5,15 @@ rootProject.name = "springboot_mvc_template"
 
 // (모듈 모음)
 include("module-api-sample")
+
+include("module-dpd-common")
+include("module-dpd-sockjs")
+include("module-dpd-socket-stomp")
+include("module-dpd-kafka")
+include("module-dpd-scheduler")
+
 include("module-idp-jpa")
 include("module-idp-common")
 include("module-idp-retrofit2")
 include("module-idp-redis")
 include("module-idp-mongodb")
-include("module-dpd-sockjs")
-include("module-dpd-socket-stomp")
-include("module-dpd-kafka")
-include("module-dpd-scheduler")

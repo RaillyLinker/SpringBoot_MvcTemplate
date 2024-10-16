@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
+import raillylinker.module_dpd_common.custom_component.NaverSmsSenderComponent
 import raillylinker.module_dpd_kafka.configurations.kafka_producer_configs.Kafka1MainProducerConfig
 import raillylinker.module_idp_common.custom_component.EmailSenderComponent
 import raillylinker.module_idp_common.custom_objects.CryptoUtil
@@ -41,8 +42,8 @@ class C6Service1TkV1TestService(
 
     // 이메일 발송 유틸
     private val emailSenderComponent: EmailSenderComponent,
-//    // 네이버 메시지 발송 유틸
-//    private val naverSmsSenderComponent: NaverSmsSenderComponent,
+    // 네이버 메시지 발송 유틸
+    private val naverSmsSenderComponent: NaverSmsSenderComponent,
     @Qualifier(Kafka1MainProducerConfig.PRODUCER_BEAN_NAME) private val kafka1MainProducerTemplate: KafkaTemplate<String, Any>,
 
     private var serverProperties: ServerProperties,
@@ -102,78 +103,78 @@ class C6Service1TkV1TestService(
 
 
     ////
-//    fun api3NaverSmsSample(
-//        httpServletResponse: HttpServletResponse,
-//        inputVo: C6Service1TkV1TestController.Api3NaverSmsSampleInputVo
-//    ) {
-//        val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
-//
-//        // 국가 코드 (ex : 82)
-//        val countryCode = phoneNumberSplit[0]
-//
-//        // 전화번호 (ex : "01000000000")
-//        val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
-//
-//        // SMS 전송
-//        val sendSmsResult = naverSmsSenderComponent.sendSms(
-//            NaverSmsSenderComponent.SendSmsInputVo(
-//                "SMS",
-//                countryCode,
-//                phoneNumber,
-//                inputVo.smsMessage
-//            )
-//        )
-//
-//        if (!sendSmsResult) {
-//            throw Exception()
-//        }
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//    }
+    fun api3NaverSmsSample(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api3NaverSmsSampleInputVo
+    ) {
+        val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
+
+        // 국가 코드 (ex : 82)
+        val countryCode = phoneNumberSplit[0]
+
+        // 전화번호 (ex : "01000000000")
+        val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
+
+        // SMS 전송
+        val sendSmsResult = naverSmsSenderComponent.sendSms(
+            NaverSmsSenderComponent.SendSmsInputVo(
+                "SMS",
+                countryCode,
+                phoneNumber,
+                inputVo.smsMessage
+            )
+        )
+
+        if (!sendSmsResult) {
+            throw Exception()
+        }
+
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
 
 
     ////
-//    fun api3Dot1NaverAlimTalkSample(
-//        httpServletResponse: HttpServletResponse,
-//        inputVo: C6Service1TkV1TestController.Api3Dot1NaverAlimTalkSampleInputVo
-//    ) {
-//        val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
-//
-//        // 국가 코드 (ex : 82)
-//        val countryCode = phoneNumberSplit[0]
-//
-//        // 전화번호 (ex : "01000000000")
-//        val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
-//
-//        // SMS 전송
-//        naverSmsSenderComponent.sendAlimTalk(
-//            NaverSmsSenderComponent.SendAlimTalkInputVo(
-//                inputVo.plusFriendId,
-//                inputVo.templateCode,
-//                arrayListOf(
-//                    NaverSmsSenderComponent.SendAlimTalkInputVo.MessageVo(
-//                        countryCode,
-//                        phoneNumber,
-//                        null,
-//                        inputVo.message,
-//                        null,
-//                        null,
-//                        null,
-//                        null,
-//                        true,
-//                        NaverSmsSenderComponent.SendAlimTalkInputVo.MessageVo.FailOverConfigVo(
-//                            null,
-//                            null,
-//                            null,
-//                            "카카오 실패시의 SMS 발송 메시지입니다."
-//                        )
-//                    )
-//                )
-//            )
-//        )
-//
-//        httpServletResponse.status = HttpStatus.OK.value()
-//    }
+    fun api3Dot1NaverAlimTalkSample(
+        httpServletResponse: HttpServletResponse,
+        inputVo: C6Service1TkV1TestController.Api3Dot1NaverAlimTalkSampleInputVo
+    ) {
+        val phoneNumberSplit = inputVo.phoneNumber.split(")") // ["82", "010-0000-0000"]
+
+        // 국가 코드 (ex : 82)
+        val countryCode = phoneNumberSplit[0]
+
+        // 전화번호 (ex : "01000000000")
+        val phoneNumber = (phoneNumberSplit[1].replace("-", "")).replace(" ", "")
+
+        // SMS 전송
+        naverSmsSenderComponent.sendAlimTalk(
+            NaverSmsSenderComponent.SendAlimTalkInputVo(
+                inputVo.plusFriendId,
+                inputVo.templateCode,
+                arrayListOf(
+                    NaverSmsSenderComponent.SendAlimTalkInputVo.MessageVo(
+                        countryCode,
+                        phoneNumber,
+                        null,
+                        inputVo.message,
+                        null,
+                        null,
+                        null,
+                        null,
+                        true,
+                        NaverSmsSenderComponent.SendAlimTalkInputVo.MessageVo.FailOverConfigVo(
+                            null,
+                            null,
+                            null,
+                            "카카오 실패시의 SMS 발송 메시지입니다."
+                        )
+                    )
+                )
+            )
+        )
+
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
 
 
     ////

@@ -25,6 +25,8 @@ dependencies {
     implementation(project(":module-idp-retrofit2"))
     implementation(project(":module-idp-redis"))
     implementation(project(":module-idp-mongodb"))
+    
+    implementation(project(":module-dpd-common"))
     implementation(project(":module-dpd-sockjs"))
     implementation(project(":module-dpd-socket-stomp"))
     implementation(project(":module-dpd-kafka"))
