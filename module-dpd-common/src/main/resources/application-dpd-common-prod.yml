@@ -1,0 +1,7 @@
+# (실행 환경 prod 설정)
+# : 배포 환경 엄중한 환경 설정
+
+spring:
+  config:
+    activate: # 프로필명 설정
+      on-profile: dpd-common-prod

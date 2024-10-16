@@ -21,6 +21,8 @@ spring:
         - idp-mongodb-local
         - idp-aws
         - idp-aws-local
+        - dpd-common
+        - dpd-common-local
         - dpd-kafka
         - dpd-kafka-local
         - dpd-actuator
@@ -38,10 +40,12 @@ spring:
         - idp-mongodb-dev
         - idp-aws
         - idp-aws-dev
+        - dpd-common
+        - dpd-common-dev
         - dpd-kafka
         - dpd-kafka-dev
         - dpd-actuator
-        - dpd-actuator-local
+        - dpd-actuator-dev
       prod80:
         - prod
         - port80
@@ -55,10 +59,12 @@ spring:
         - idp-mongodb-prod
         - idp-aws
         - idp-aws-prod
+        - dpd-common
+        - dpd-common-prod
         - dpd-kafka
         - dpd-kafka-prod
         - dpd-actuator
-        - dpd-actuator-local
+        - dpd-actuator-prod
     default: local8080 # jar 실행시 프로필 설정이 없을 때 적용할 프로필
     # IDE 실행 프로필 설정은, 실행 - 구성편집에서 VM 옵션 안에 -Dspring.profiles.active=dev8080 이렇게 설정 가능
     # prod 실행 포트를 나눠둔 이유는 배포 서버의 무중단 배포시 스위칭을 위한 것
@@ -76,33 +82,9 @@ springdoc: # swaggerdoc 설정
   cache:
     disabled: true
 
-cloud:
-  aws:
-    credentials:
-      access-key: InputYourAccessKey
-      secret-key: InputYourSecretKey
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-
 custom-config: # 프로젝트 내에서 사용하는 커스텀 설정
   # cors 허용 리스트 설정 (설정하지 않으면 모든 요청 허용)
   #  cors-allow-list: http://localhost:8081, http://127.0.0.1:8081, http://localhost:3000, http://127.0.0.1:3000
-
-  smtp: # SMTP 설정
-    host: smtp.gmail.com # SMTP 호스트
-    port: 587 # SMTP 포트
-    sender-name: InputYourEmailId@test.com # SMTP 계정 아이디
-    sender-password: InputYourSenderPassword # SMTP 계정 비밀번호
-    time-out-millis: 10000 # 타임아웃 밀리초
-
-  naverSms: # Naver SMS 설정
-    access-key: InputYourAccessKey
-    secret-key: InputYourSecretKey
-    service-id: ncp:sms:kr:test:test
-    phone-number: test
-    alim-talk-service-id: ncp:kkobizmsg:kr:test:test
 
   swagger: # Swagger 문서 설정
     document-version: 1.0.0
