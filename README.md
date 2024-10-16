@@ -72,3 +72,52 @@ Socket 과 동일한 이유로 dpd 모듈로 작성하였습니다.
 api 컨트롤러는 인터페이스를 설계하는 역할을 맡은 controller 파일과,<br>
 그 기능을 구현하는 역할을 맡은 service 파일의 쌍으로 구성됩니다.<br>
 또한, Swagger API 문서 라이브러리 규격에 맞추어 코딩이 진행되므로, controller 파일은 api 설명을 강제당하게 되어, 주석 사용 및 방식을 코딩 단계에서 통일 시킬 수 있게 하였습니다.
+
+## 기능 단위 설명
+본 프로젝트에서 구현한 대표적인 기능들은 아래와 같습니다.
+
+### jpa
+다중 데이터베이스 접속 구조의 JPA 설정 방식 구현<br>
+다중 데이터베이스 접숙 구조에서의 Transactional 어노테이션 구현<br>
+외례키, 유니크 등의 제약 조건 처리<br>
+확장성 있는 회원 정보 구조<br>
+검색, 페이징, 좌표계산 등의 쿼리문 수록<br>
+
+### mongoDB
+다중 데이터베이스 접속 구조의 설정 방식 구현<br>
+MongoDB Replicaset 사용 설정<br>
+다중 데이터베이스 접숙 구조에서의 Transactional 어노테이션 구현<br>
+MongoDB CRUD 구현
+
+### Redis
+다중 소스 접속 구조의 설정 방식 구현<br>
+Redis Cluster 사용 설정<br>
+Redis 보안 설정<br>
+Key-Value 기반의 사용성 개선 코드 래핑
+
+### AWS
+AWS S3 파일 조작 함수 구현
+
+### Socket
+Springboot 로 구현하는 SockJS 및 STOMP 기반 개발 방식 정리<br>
+클라이언트 메시지 수신시 정해진 메시지를 반환하는 테스트용 에코 시스템 구축<br>
+비동기 안정성 확보
+
+### Scheduler
+일정 시간마다 코드를 실행시키는 스케쥴링 기능 구현
+
+### kafka
+다중 소스 접속 구조의 설정 방식 구현<br>
+SASL 보안 설정 및 Kafka 클러스터 사용<br>
+Kafka Consumer, Producer 샘플 기능 구현
+
+### api
+기능 테스트용 Rest API 및 기본 홈 화면 Web 페이지 구현<br>
+Swagger 문서 사용 및 접속 가능<br>
+logback 을 통한 로그 형식 설정<br>
+application.yml 멀티 프로필(모듈 포함) 기능<br>
+Request,Response 자동 로깅 기능<br>
+Springboot Actuator 설정 및 접속 ip 화이트리스트 방식 적용<br>
+
+### 그외
+SSE, 지도 좌표계 좌표 계산, 이메일 전송, SMS, Kakao Talk 전송, 비디오/오디오 스트리밍, 암복호화 등의 기능 구현
