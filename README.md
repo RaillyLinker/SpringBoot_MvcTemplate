@@ -55,7 +55,8 @@ RDBMS 는 JPA 모듈에서 설정한 Entity 의 스키마, 테이블 구조를 �
 ![화면 캡처 2024-10-17 091333](https://github.com/user-attachments/assets/78fdda85-ea8a-4630-bc00-492d64ff92d5)
 
 <br>
-서버에서 제공해주는 Swagger 문서를 통하여 본 프로젝트에서 구현된 여러 기능들을 테스트 하실 수 있습니다.
+서버에서 제공해주는 Swagger 문서를 통하여 본 프로젝트에서 구현된 여러 기능들을 테스트 하실 수 있습니다.<br>
+(배포 설정인 prod80 프로필로 접속시 Swagger 페이지 접속 버튼이 사라지며, Swagger 주소 접근 역시 불가능해 집니다.)
 
 ## 모듈 단위 설명
 ### idp-common 모듈
