@@ -158,8 +158,7 @@ Swagger 문서 사용 및 접속 가능<br>
 logback 을 통한 로그 형식 설정<br>
 application.yml 멀티 프로필(모듈 포함) 기능<br>
 Request,Response 자동 로깅 기능<br>
-Springboot Actuator 설정 및 접속 ip 화이트리스트 방식 적용<br>
-SpringSecurity JWT 인증/인가 구현(토큰 블랙리스트 방식)
+Springboot Actuator 설정 및 접속 ip 화이트리스트 방식 적용
 
 ### 회원 기능
 회원을 구분짓는 가장 근본적인 정보는 데이터베이스 회원 테이블의 고유값으로 두었습니다.<br>
