@@ -132,47 +132,6 @@ class RepositoryNetworkRetrofit2 private constructor() {
 
             return instance!!
         }
-
-        // (baseUrl 에 접속하는 레트로핏 객체를 생성 반환하는 함수)
-        fun getRetrofitClient(
-            baseUrl: String,
-            connectTimeOutMilliSecond: Long,
-            readTimeOutMilliSecond: Long,
-            writeTimeOutMilliSecond: Long,
-            retryOnConnectionFailure: Boolean
-        ): Retrofit {
-            // 클라이언트 설정 객체
-            val okHttpClientBuilder = OkHttpClient.Builder()
-
-            okHttpClientBuilder.addInterceptor(
-                Interceptor { chain: Interceptor.Chain ->
-                    val originRequest = chain.request()
-                    val addedUrl: HttpUrl = originRequest.url.newBuilder()
-                        .build()
-                    val finalRequest: Request = originRequest.newBuilder()
-                        .url(addedUrl).method(originRequest.method, originRequest.body)
-                        .build()
-                    chain.proceed(finalRequest)
-                })
-
-            // 연결 설정
-            okHttpClientBuilder.connectTimeout(connectTimeOutMilliSecond, TimeUnit.MILLISECONDS)
-            okHttpClientBuilder.readTimeout(readTimeOutMilliSecond, TimeUnit.MILLISECONDS)
-            okHttpClientBuilder.writeTimeout(writeTimeOutMilliSecond, TimeUnit.MILLISECONDS)
-            okHttpClientBuilder.retryOnConnectionFailure(retryOnConnectionFailure)
-
-            // 로깅 인터셉터 설정
-            val logger: Logger = LoggerFactory.getLogger(this::class.java)
-            val interceptor = HttpLoggingInterceptor { message -> logger.debug("[Retrofit2 Log] : $message") }
-            val httpLoggingInterceptor = interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-            okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
-
-            // 위 설정에 따른 retrofit 객체 생성 및 반환
-            return Retrofit.Builder().baseUrl(baseUrl)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().serializeNulls().create()))
-                .client(okHttpClientBuilder.build()).build()
-        }
     }
 
 
@@ -182,6 +141,46 @@ class RepositoryNetworkRetrofit2 private constructor() {
 
     // ---------------------------------------------------------------------------------------------
     // <비공개 메소드 공간>
+    // (baseUrl 에 접속하는 레트로핏 객체를 생성 반환하는 함수)
+    private fun getRetrofitClient(
+        baseUrl: String,
+        connectTimeOutMilliSecond: Long,
+        readTimeOutMilliSecond: Long,
+        writeTimeOutMilliSecond: Long,
+        retryOnConnectionFailure: Boolean
+    ): Retrofit {
+        // 클라이언트 설정 객체
+        val okHttpClientBuilder = OkHttpClient.Builder()
+
+        okHttpClientBuilder.addInterceptor(
+            Interceptor { chain: Interceptor.Chain ->
+                val originRequest = chain.request()
+                val addedUrl: HttpUrl = originRequest.url.newBuilder()
+                    .build()
+                val finalRequest: Request = originRequest.newBuilder()
+                    .url(addedUrl).method(originRequest.method, originRequest.body)
+                    .build()
+                chain.proceed(finalRequest)
+            })
+
+        // 연결 설정
+        okHttpClientBuilder.connectTimeout(connectTimeOutMilliSecond, TimeUnit.MILLISECONDS)
+        okHttpClientBuilder.readTimeout(readTimeOutMilliSecond, TimeUnit.MILLISECONDS)
+        okHttpClientBuilder.writeTimeout(writeTimeOutMilliSecond, TimeUnit.MILLISECONDS)
+        okHttpClientBuilder.retryOnConnectionFailure(retryOnConnectionFailure)
+
+        // 로깅 인터셉터 설정
+        val logger: Logger = LoggerFactory.getLogger(this::class.java)
+        val interceptor = HttpLoggingInterceptor { message -> logger.debug("[Retrofit2 Log] : $message") }
+        val httpLoggingInterceptor = interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
+
+        // 위 설정에 따른 retrofit 객체 생성 및 반환
+        return Retrofit.Builder().baseUrl(baseUrl)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().serializeNulls().create()))
+            .client(okHttpClientBuilder.build()).build()
+    }
 
 
 }
