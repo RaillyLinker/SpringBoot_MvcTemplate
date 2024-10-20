@@ -1,4 +1,4 @@
-package com.raillylinker.module_idp_redis.redis_beans.redis1_main
+package com.raillylinker.module_idp_redis.redis_map_components.redis1_main
 
 import com.raillylinker.module_idp_redis.configurations.redis_configs.Redis1MainConfig
 import com.raillylinker.module_idp_redis.abstract_classes.BasicRedisMap

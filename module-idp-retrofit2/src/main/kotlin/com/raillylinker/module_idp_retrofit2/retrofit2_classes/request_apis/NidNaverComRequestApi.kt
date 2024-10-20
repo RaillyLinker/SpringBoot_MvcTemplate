@@ -1,4 +1,4 @@
-package com.raillylinker.module_idp_retrofit2.retrofit2_beans.request_apis
+package com.raillylinker.module_idp_retrofit2.retrofit2_classes.request_apis
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

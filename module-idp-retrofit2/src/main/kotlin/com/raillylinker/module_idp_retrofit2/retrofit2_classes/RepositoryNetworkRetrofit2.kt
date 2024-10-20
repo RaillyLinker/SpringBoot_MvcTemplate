@@ -1,7 +1,7 @@
-package com.raillylinker.module_idp_retrofit2.retrofit2_beans
+package com.raillylinker.module_idp_retrofit2.retrofit2_classes
 
 import com.google.gson.GsonBuilder
-import com.raillylinker.module_idp_retrofit2.retrofit2_beans.request_apis.*
+import com.raillylinker.module_idp_retrofit2.retrofit2_classes.request_apis.*
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

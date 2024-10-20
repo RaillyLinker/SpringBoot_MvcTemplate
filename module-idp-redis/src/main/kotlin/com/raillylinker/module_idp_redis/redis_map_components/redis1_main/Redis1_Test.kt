@@ -1,4 +1,4 @@
-package com.raillylinker.module_idp_redis.redis_beans.redis1_main
+package com.raillylinker.module_idp_redis.redis_map_components.redis1_main
 
 import com.raillylinker.module_idp_redis.configurations.redis_configs.Redis1MainConfig
 import com.raillylinker.module_idp_redis.abstract_classes.BasicRedisMap
@@ -7,20 +7,30 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 
 // [RedisMap 컴포넌트]
-// Service1 에 대한 JWT 만료 토큰 정보
-// 기존 발행 토큰을 재 심사 하기 위해 만료시키려면 이곳에 입력하세요.
-// 키로는 액세스 토큰만을 넣는 것이 아니라 토큰 타입을 합쳐서 "Bearer_tes123t4access16token3" 이런 값을 넣습니다.
 @Component
-class Redis1_Service1ForceExpireAuthorizationSet(
+class Redis1_Test(
     // !!!RedisConfig 종류 변경!!!
     @Qualifier(Redis1MainConfig.REDIS_TEMPLATE_NAME) val redisTemplate: RedisTemplate<String, String>
-) : BasicRedisMap<Redis1_Service1ForceExpireAuthorizationSet.ValueVo>(redisTemplate, MAP_NAME, ValueVo::class.java) {
+) : BasicRedisMap<Redis1_Test.ValueVo>(redisTemplate, MAP_NAME, ValueVo::class.java) {
     // <멤버 변수 공간>
     companion object {
         // !!!중복되지 않도록, 본 클래스명을 MAP_NAME 으로 설정하기!!!
-        const val MAP_NAME = "Redis1_Service1ForceExpireAuthorizationSet"
+        const val MAP_NAME = "Redis1_Test"
     }
 
     // !!!본 RedisMAP 의 Value 클래스 설정!!!
-    class ValueVo
+    class ValueVo(
+        // 기본 변수 타입 String 사용 예시
+        var content: String,
+        // Object 변수 타입 사용 예시
+        var innerVo: InnerVo,
+        // Object List 변수 타입 사용 예시
+        var innerVoList: List<InnerVo>
+    ) {
+        // 예시용 Object 데이터 클래스
+        data class InnerVo(
+            var testString: String,
+            var testBoolean: Boolean
+        )
+    }
 }
