@@ -5,7 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
 }
 
-group = "raillylinker.module_api_sample"
+group = "com.raillylinker.module_api_sample"
 version = "0.0.1-SNAPSHOT"
 
 java {
