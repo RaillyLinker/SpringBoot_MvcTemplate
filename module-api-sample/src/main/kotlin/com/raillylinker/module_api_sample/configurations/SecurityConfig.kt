@@ -25,8 +25,8 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
-import com.raillylinker.module_api_sample.custom_objects.JwtTokenUtil
-import raillylinker.module_idp_redis.data_sources.shared_memory_redis.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
+import com.raillylinker.module_api_sample.components.JwtTokenUtil
+import com.raillylinker.module_idp_redis.redis_beans.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
 
 // [서비스 보안 시큐리티 설정]
 @Configuration
@@ -375,7 +375,8 @@ class SecurityConfig {
     @Order(1)
     fun securityFilterChainService1Tk(
         http: HttpSecurity,
-        expireTokenRedis: Redis1_Service1ForceExpireAuthorizationSet
+        expireTokenRedis: Redis1_Service1ForceExpireAuthorizationSet,
+        jwtTokenUtil: JwtTokenUtil
     ): SecurityFilterChain {
         // !!!시큐리티 필터 추가시 수정!!!
         // 본 시큐리티 필터가 관리할 주소 체계
@@ -417,9 +418,10 @@ class SecurityConfig {
         // API 요청마다 헤더로 들어오는 인증 토큰 유효성을 검증
         securityMatcher.addFilterBefore(
             // !!!시큐리티 필터 추가시 수정!!!
-            com.raillylinker.module_api_sample.configurations.SecurityConfig.AuthTokenFilterService1Tk(
+            AuthTokenFilterService1Tk(
                 securityUrlList,
-                expireTokenRedis
+                expireTokenRedis,
+                jwtTokenUtil
             ),
             UsernamePasswordAuthenticationFilter::class.java
         )
@@ -464,7 +466,8 @@ class SecurityConfig {
     // 인증 토큰 검증 필터 - API 요청마다 검증 실행
     class AuthTokenFilterService1Tk(
         private val filterPatternList: List<String>,
-        private val expireTokenRedis: Redis1_Service1ForceExpireAuthorizationSet
+        private val expireTokenRedis: Redis1_Service1ForceExpireAuthorizationSet,
+        private val jwtTokenUtil: JwtTokenUtil
     ) : OncePerRequestFilter() {
         // <멤버 변수 공간>
         companion object {
@@ -562,24 +565,24 @@ class SecurityConfig {
                 "bearer" -> { // Bearer JWT 토큰 검증
                     // 토큰 문자열 해석 가능여부 확인
                     val accessTokenType: String? = try {
-                        JwtTokenUtil.getTokenType(accessToken)
+                        jwtTokenUtil.getTokenType(accessToken)
                     } catch (_: Exception) {
                         null
                     }
 
                     if (accessTokenType == null || // 해석 불가능한 JWT 토큰
                         accessTokenType.lowercase() != "jwt" || // 토큰 타입이 JWT 가 아님
-                        JwtTokenUtil.getTokenUsage(
+                        jwtTokenUtil.getTokenUsage(
                             accessToken,
-                            com.raillylinker.module_api_sample.configurations.SecurityConfig.AuthTokenFilterService1Tk.Companion.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                            com.raillylinker.module_api_sample.configurations.SecurityConfig.AuthTokenFilterService1Tk.Companion.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                            AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                            AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
                         ).lowercase() != "access" || // 토큰 용도가 다름
                         // 남은 시간이 최대 만료시간을 초과 (서버 기준이 변경되었을 때, 남은 시간이 더 많은 토큰을 견제하기 위한 처리)
-                        JwtTokenUtil.getRemainSeconds(accessToken) > com.raillylinker.module_api_sample.configurations.SecurityConfig.AuthTokenFilterService1Tk.Companion.AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
-                        JwtTokenUtil.getIssuer(accessToken) != com.raillylinker.module_api_sample.configurations.SecurityConfig.AuthTokenFilterService1Tk.Companion.AUTH_JWT_ISSUER || // 발행인 불일치
-                        !JwtTokenUtil.validateSignature(
+                        jwtTokenUtil.getRemainSeconds(accessToken) > AUTH_JWT_ACCESS_TOKEN_EXPIRATION_TIME_SEC ||
+                        jwtTokenUtil.getIssuer(accessToken) != AUTH_JWT_ISSUER || // 발행인 불일치
+                        !jwtTokenUtil.validateSignature(
                             accessToken,
-                            com.raillylinker.module_api_sample.configurations.SecurityConfig.AuthTokenFilterService1Tk.Companion.AUTH_JWT_SECRET_KEY_STRING
+                            AUTH_JWT_SECRET_KEY_STRING
                         ) // 시크릿 검증이 무효 = 위변조 된 토큰
                     ) {
                         // 다음 필터 실행
@@ -588,7 +591,7 @@ class SecurityConfig {
                     }
 
                     // 토큰 만료 검증
-                    val jwtRemainSeconds = JwtTokenUtil.getRemainSeconds(accessToken)
+                    val jwtRemainSeconds = jwtTokenUtil.getRemainSeconds(accessToken)
                     if (jwtRemainSeconds <= 0L) {
                         // 다음 필터 실행
                         filterChain.doFilter(request, response)
@@ -597,10 +600,10 @@ class SecurityConfig {
 
                     // 회원 권한
                     val authorities: ArrayList<GrantedAuthority> = ArrayList()
-                    for (memberRole in JwtTokenUtil.getRoleList(
+                    for (memberRole in jwtTokenUtil.getRoleList(
                         accessToken,
-                        com.raillylinker.module_api_sample.configurations.SecurityConfig.AuthTokenFilterService1Tk.Companion.AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
-                        com.raillylinker.module_api_sample.configurations.SecurityConfig.AuthTokenFilterService1Tk.Companion.AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
+                        AUTH_JWT_CLAIMS_AES256_INITIALIZATION_VECTOR,
+                        AUTH_JWT_CLAIMS_AES256_ENCRYPTION_KEY
                     )) {
                         authorities.add(
                             SimpleGrantedAuthority(memberRole)

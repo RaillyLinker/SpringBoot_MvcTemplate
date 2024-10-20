@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.data.mongodb.config.EnableMongoAuditing
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
-import com.raillylinker.module_api_sample.data_sources.memory_const_object.ProjectConst
+import com.raillylinker.module_api_sample.const_classes.ProjectConst
 import java.util.*
 
 @EnableScheduling // 스케쥴러 사용 설정
@@ -20,18 +20,18 @@ import java.util.*
     [
         "com.raillylinker.module_api_sample",
 
-        "raillylinker.module_idp_common",
-        "raillylinker.module_idp_jpa",
-        "raillylinker.module_idp_redis",
-        "raillylinker.module_idp_mongodb",
-        "raillylinker.module_idp_aws",
+        "com.raillylinker.module_idp_common",
+        "com.raillylinker.module_idp_jpa",
+        "com.raillylinker.module_idp_redis",
+        "com.raillylinker.module_idp_mongodb",
+        "com.raillylinker.module_idp_aws",
 
-        "raillylinker.module_dpd_common",
-        "raillylinker.module_dpd_sockjs",
-        "raillylinker.module_dpd_socket_stomp",
-        "raillylinker.module_dpd_kafka",
-        "raillylinker.module_dpd_scheduler",
-        "raillylinker.module_dpd_actuator"
+        "com.raillylinker.module_dpd_common",
+        "com.raillylinker.module_dpd_sockjs",
+        "com.raillylinker.module_dpd_socket_stomp",
+        "com.raillylinker.module_dpd_kafka",
+        "com.raillylinker.module_dpd_scheduler",
+        "com.raillylinker.module_dpd_actuator"
     ]
 )
 @SpringBootApplication

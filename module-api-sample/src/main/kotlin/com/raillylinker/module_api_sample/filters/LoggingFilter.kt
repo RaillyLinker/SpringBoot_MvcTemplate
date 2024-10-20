@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
-import raillylinker.module_idp_redis.data_sources.shared_memory_redis.redis1_main.Redis1_RuntimeConfigIpList
+import com.raillylinker.module_idp_redis.redis_beans.redis1_main.Redis1_RuntimeConfigIpList
 import java.io.UnsupportedEncodingException
 import java.time.Duration
 import java.time.LocalDateTime

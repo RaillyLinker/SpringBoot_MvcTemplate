@@ -5,7 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
 }
 
-group = "raillylinker.module_dpd_socket_stomp"
+group = "com.raillylinker.module_dpd_socket_stomp"
 version = "0.0.1-SNAPSHOT"
 
 java {

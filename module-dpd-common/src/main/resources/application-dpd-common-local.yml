@@ -5,3 +5,11 @@ spring:
   config:
     activate: # 프로필명 설정
       on-profile: dpd-common-local
+
+custom-config: # 프로젝트 내에서 사용하는 커스텀 설정
+  naverSms: # Naver SMS 설정
+    access-key: InputYourAccessKey
+    secret-key: InputYourSecretKey
+    service-id: ncp:sms:kr:test:test
+    phone-number: test
+    alim-talk-service-id: ncp:kkobizmsg:kr:test:test

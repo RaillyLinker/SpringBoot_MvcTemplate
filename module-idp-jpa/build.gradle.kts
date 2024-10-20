@@ -12,7 +12,7 @@ plugins {
     kotlin("kapt")
 }
 
-group = "raillylinker.module_idp_jpa"
+group = "com.raillylinker.module_idp_jpa"
 version = "0.0.1-SNAPSHOT"
 
 java {
