@@ -9,18 +9,22 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 
 interface C2Service1TkV1RequestTestService {
     // <공개 메소드 공간>
+    // (기본 요청 테스트 API)
     fun api1BasicRequestTest(httpServletResponse: HttpServletResponse): String?
 
 
     ////
+    // (요청 Redirect 테스트)
     fun api2RedirectTest(httpServletResponse: HttpServletResponse): ModelAndView?
 
 
     ////
+    // (요청 Forward 테스트)
     fun api3ForwardTest(httpServletResponse: HttpServletResponse): ModelAndView?
 
 
     ////
+    // (Get 요청 테스트 (Query Parameter))
     fun api4GetRequestTest(
         httpServletResponse: HttpServletResponse,
         queryParamString: String,
