@@ -2,6 +2,7 @@ package com.raillylinker.module_api_sample.services.impls
 
 import com.raillylinker.module_api_sample.controllers.C7Service1TkV1DatabaseTestController
 import com.raillylinker.module_api_sample.services.C7Service1TkV1DatabaseTestService
+import com.raillylinker.module_idp_jpa.annotations.CustomTransactional
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -419,7 +420,7 @@ class C7Service1TkV1DatabaseTestServiceImpl(
 
 
     ////
-    @com.raillylinker.module_idp_jpa.annotations.CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
     override fun api12TransactionTest(
         httpServletResponse: HttpServletResponse
     ) {
@@ -446,6 +447,25 @@ class C7Service1TkV1DatabaseTestServiceImpl(
         )
 
         throw Exception("No Transaction Exception Test!")
+    }
+
+    @CustomTransactional([Db1MainConfig.TRANSACTION_NAME])
+    override fun api13Dot1TryCatchNonTransactionTest(httpServletResponse: HttpServletResponse) {
+        // @CustomTransactional 이 붙어있고, Exception 이 발생해도, 함수 내에서 try catch 로 처리하여 함수 외부로는 전파되지 않기에,
+        // 트랜젝션 롤백이 발생하지 않습니다.
+        try {
+            db1TemplateTestsRepository.save(
+                Db1_Template_TestData(
+                    "error test",
+                    (0..99999999).random(),
+                    LocalDateTime.now()
+                )
+            )
+
+            throw Exception("Transaction Rollback Test!")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 

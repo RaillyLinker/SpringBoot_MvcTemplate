@@ -855,6 +855,33 @@ class C7Service1TkV1DatabaseTestController(
 
     ////
     @Operation(
+        summary = "N13.1 : 트랜젝션 비동작 테스트(try-catch)",
+        description = "에러 발생문이 try-catch 문 안에 있을 때, DB 정보 입력 후 Exception 이 발생 해도 트랜젝션이 동작하지 않는지에 대한 테스트 API\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @PostMapping(
+        path = ["/try-catch-no-transaction-exception-sample"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api13Dot1TryCatchNonTransactionTest(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ) {
+        service.api13Dot1TryCatchNonTransactionTest(httpServletResponse)
+    }
+
+
+    ////
+    @Operation(
         summary = "N14 : DB Rows 조회 테스트 (중복 없는 네이티브 쿼리 페이징)",
         description = "테스트 테이블의 Rows 를 네이티브 쿼리로 중복없이 페이징하여 반환합니다.\n\n" +
                 "num 을 기준으로 근사치 정렬도 수행합니다.\n\n"

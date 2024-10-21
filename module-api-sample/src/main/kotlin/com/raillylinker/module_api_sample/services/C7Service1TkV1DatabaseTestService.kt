@@ -92,6 +92,10 @@ interface C7Service1TkV1DatabaseTestService {
 
 
     ////
+    fun api13Dot1TryCatchNonTransactionTest(httpServletResponse: HttpServletResponse)
+
+
+    ////
     fun api14SelectRowsNoDuplicatePagingSample(
         httpServletResponse: HttpServletResponse,
         lastItemUid: Long?,
