@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.web.servlet.ModelAndView
 
 interface C1Service {
-    // <공개 메소드 공간>
     // (루트 홈페이지 반환 함수)
     fun api1GetRoot(
         httpServletResponse: HttpServletResponse

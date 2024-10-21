@@ -4,7 +4,6 @@ import com.raillylinker.module_api_sample.controllers.C10Service1TkV1MongoDbTest
 import jakarta.servlet.http.HttpServletResponse
 
 interface C10Service1TkV1MongoDbTestService {
-    // <공개 메소드 공간>
     fun api1InsertDocumentTest(
         httpServletResponse: HttpServletResponse,
         inputVo: C10Service1TkV1MongoDbTestController.Api1InsertDocumentTestInputVo

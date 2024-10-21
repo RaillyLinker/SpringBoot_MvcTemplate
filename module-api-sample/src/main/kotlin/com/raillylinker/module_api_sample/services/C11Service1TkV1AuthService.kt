@@ -6,15 +6,16 @@ import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 
 interface C11Service1TkV1AuthService {
-    // <공개 메소드 공간>
     fun api1NoLoggedInAccessTest(httpServletResponse: HttpServletResponse): String?
 
 
     ////
     fun api2LoggedInAccessTest(httpServletResponse: HttpServletResponse, authorization: String): String?
 
+
     ////
     fun api3AdminAccessTest(httpServletResponse: HttpServletResponse, authorization: String): String?
+
 
     ////
     fun api4DeveloperAccessTest(httpServletResponse: HttpServletResponse, authorization: String): String?

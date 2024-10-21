@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse
     비동기 실행을 고려하여 Semaphore 등으로 락을 건 후, 기존 데이터를 백업한 후, 에러가 일어나면 복원하는 방식을 사용하면 됩니다.
  */
 interface C8Service1TkV1RedisTestService {
-    // <공개 메소드 공간>
     fun api1InsertRedisKeyValueTest(
         httpServletResponse: HttpServletResponse,
         inputVo: C8Service1TkV1RedisTestController.Api1InsertRedisKeyValueTestInputVo

@@ -4,7 +4,7 @@ import com.raillylinker.module_api_sample.controllers.C7Service1TkV1DatabaseTest
 import jakarta.servlet.http.HttpServletResponse
 
 interface C7Service1TkV1DatabaseTestService {
-    // <공개 메소드 공간>
+    // (DB Row 입력 테스트 API)
     fun api1InsertDataSample(
         httpServletResponse: HttpServletResponse,
         inputVo: C7Service1TkV1DatabaseTestController.Api1InsertDataSampleInputVo
@@ -12,10 +12,12 @@ interface C7Service1TkV1DatabaseTestService {
 
 
     ////
+    // (DB Rows 삭제 테스트 API)
     fun api2DeleteRowsSample(httpServletResponse: HttpServletResponse, deleteLogically: Boolean)
 
 
     ////
+    // (DB Row 삭제 테스트)
     fun api3DeleteRowSample(httpServletResponse: HttpServletResponse, index: Long, deleteLogically: Boolean)
 
 

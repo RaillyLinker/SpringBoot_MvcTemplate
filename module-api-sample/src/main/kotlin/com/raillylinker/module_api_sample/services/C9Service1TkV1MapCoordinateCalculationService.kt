@@ -4,7 +4,6 @@ import com.raillylinker.module_api_sample.controllers.C9Service1TkV1MapCoordinat
 import jakarta.servlet.http.HttpServletResponse
 
 interface C9Service1TkV1MapCoordinateCalculationService {
-    // <공개 메소드 공간>
     fun api0InsertDefaultCoordinateDataToDatabase(httpServletResponse: HttpServletResponse)
 
 
