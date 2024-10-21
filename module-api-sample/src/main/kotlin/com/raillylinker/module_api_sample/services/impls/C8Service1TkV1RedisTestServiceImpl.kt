@@ -2,13 +2,14 @@ package com.raillylinker.module_api_sample.services.impls
 
 import com.raillylinker.module_api_sample.controllers.C8Service1TkV1RedisTestController
 import com.raillylinker.module_api_sample.services.C8Service1TkV1RedisTestService
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Lock_Test
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Test
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Map_Test
 
 /*
     Redis 는 주로 캐싱에 사용됩니다.
@@ -24,7 +25,8 @@ class C8Service1TkV1RedisTestServiceImpl(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
-    private val redis1Test: Redis1_Test
+    private val redis1Test: Redis1_Map_Test,
+    private val redis1LockTest: Redis1_Lock_Test
 ) : C8Service1TkV1RedisTestService {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -38,12 +40,12 @@ class C8Service1TkV1RedisTestServiceImpl(
     ) {
         redis1Test.saveKeyValue(
             inputVo.key,
-            Redis1_Test.ValueVo(
+            Redis1_Map_Test.ValueVo(
                 inputVo.content,
-                Redis1_Test.ValueVo.InnerVo("testObject", true),
+                Redis1_Map_Test.ValueVo.InnerVo("testObject", true),
                 arrayListOf(
-                    Redis1_Test.ValueVo.InnerVo("testObject1", false),
-                    Redis1_Test.ValueVo.InnerVo("testObject2", true)
+                    Redis1_Map_Test.ValueVo.InnerVo("testObject1", false),
+                    Redis1_Map_Test.ValueVo.InnerVo("testObject2", true)
                 )
             ),
             inputVo.expirationMs
@@ -69,7 +71,7 @@ class C8Service1TkV1RedisTestServiceImpl(
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api2SelectRedisValueSampleOutputVo(
-            Redis1_Test.MAP_NAME,
+            Redis1_Map_Test.MAP_NAME,
             keyValue.key,
             keyValue.value.content,
             keyValue.expireTimeMs
@@ -96,7 +98,7 @@ class C8Service1TkV1RedisTestServiceImpl(
 
         httpServletResponse.status = HttpStatus.OK.value()
         return C8Service1TkV1RedisTestController.Api3SelectAllRedisKeyValueSampleOutputVo(
-            Redis1_Test.MAP_NAME,
+            Redis1_Map_Test.MAP_NAME,
             testEntityListVoList
         )
     }
@@ -122,6 +124,27 @@ class C8Service1TkV1RedisTestServiceImpl(
     override fun api5DeleteAllRedisKeySample(httpServletResponse: HttpServletResponse) {
         redis1Test.deleteAllKeyValues()
 
+        httpServletResponse.status = HttpStatus.OK.value()
+    }
+
+
+    ////
+    override fun api6TryRedisLockSample(httpServletResponse: HttpServletResponse): C8Service1TkV1RedisTestController.Api6TryRedisLockSampleOutputVo? {
+        val lockKey = redis1LockTest.tryLock(10000)
+        if (lockKey == null) {
+            httpServletResponse.status = HttpStatus.NO_CONTENT.value()
+            httpServletResponse.setHeader("api-result-code", "1")
+            return null
+        } else {
+            httpServletResponse.status = HttpStatus.OK.value()
+            return C8Service1TkV1RedisTestController.Api6TryRedisLockSampleOutputVo(lockKey)
+        }
+    }
+
+
+    ////
+    override fun api7UnLockRedisLockSample(httpServletResponse: HttpServletResponse, lockKey: String) {
+        redis1LockTest.unlock(lockKey)
         httpServletResponse.status = HttpStatus.OK.value()
     }
 }

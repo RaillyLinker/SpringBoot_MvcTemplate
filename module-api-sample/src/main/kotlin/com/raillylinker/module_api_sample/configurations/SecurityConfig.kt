@@ -26,7 +26,7 @@ import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
 import com.raillylinker.module_api_sample.components.JwtTokenUtil
-import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Map_Service1ForceExpireAuthorizationSet
 
 // [서비스 보안 시큐리티 설정]
 @Configuration
@@ -375,7 +375,7 @@ class SecurityConfig {
     @Order(1)
     fun securityFilterChainService1Tk(
         http: HttpSecurity,
-        expireTokenRedis: Redis1_Service1ForceExpireAuthorizationSet,
+        expireTokenRedis: Redis1_Map_Service1ForceExpireAuthorizationSet,
         jwtTokenUtil: JwtTokenUtil
     ): SecurityFilterChain {
         // !!!시큐리티 필터 추가시 수정!!!
@@ -466,7 +466,7 @@ class SecurityConfig {
     // 인증 토큰 검증 필터 - API 요청마다 검증 실행
     class AuthTokenFilterService1Tk(
         private val filterPatternList: List<String>,
-        private val expireTokenRedis: Redis1_Service1ForceExpireAuthorizationSet,
+        private val expireTokenRedis: Redis1_Map_Service1ForceExpireAuthorizationSet,
         private val jwtTokenUtil: JwtTokenUtil
     ) : OncePerRequestFilter() {
         // <멤버 변수 공간>

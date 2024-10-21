@@ -255,4 +255,81 @@ class C8Service1TkV1RedisTestController(
     ) {
         return service.api5DeleteAllRedisKeySample(httpServletResponse)
     }
+
+
+    ////
+    @Operation(
+        summary = "N6 : Redis Lock 테스트",
+        description = "Redis Lock 을 요청합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            ),
+            ApiResponse(
+                responseCode = "204",
+                content = [Content()],
+                description = "Response Body 가 없습니다.\n\n" +
+                        "Response Headers 를 확인하세요.",
+                headers = [
+                    Header(
+                        name = "api-result-code",
+                        description = "(Response Code 반환 원인) - Required\n\n" +
+                                "1 : Redis Lock 상태\n\n",
+                        schema = Schema(type = "string")
+                    )
+                ]
+            )
+        ]
+    )
+    @GetMapping(
+        path = ["/try-redis-lock"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun api6TryRedisLockSample(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse
+    ): Api6TryRedisLockSampleOutputVo? {
+        return service.api6TryRedisLockSample(httpServletResponse)
+    }
+
+    data class Api6TryRedisLockSampleOutputVo(
+        @Schema(description = "Lock Key", required = true, example = "redisLockKey")
+        @JsonProperty("lockKey")
+        val lockKey: String
+    )
+
+
+    ////
+    @Operation(
+        summary = "N7 : Redis unLock 테스트",
+        description = "Redis unLock 을 요청합니다.\n\n"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "정상 동작"
+            )
+        ]
+    )
+    @DeleteMapping(
+        path = ["/unlock-redis-lock"],
+        consumes = [MediaType.ALL_VALUE],
+        produces = [MediaType.ALL_VALUE]
+    )
+    @ResponseBody
+    fun api7UnLockRedisLockSample(
+        @Parameter(hidden = true)
+        httpServletResponse: HttpServletResponse,
+        @Parameter(name = "lockKey", description = "unLock 할 lockKey", example = "lockKey")
+        @RequestParam("lockKey")
+        lockKey: String
+    ) {
+        service.api7UnLockRedisLockSample(httpServletResponse, lockKey)
+    }
 }

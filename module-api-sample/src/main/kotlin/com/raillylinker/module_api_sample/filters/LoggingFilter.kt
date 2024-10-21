@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
-import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_RuntimeConfigIpList
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Map_RuntimeConfigIpList
 import java.io.UnsupportedEncodingException
 import java.time.Duration
 import java.time.LocalDateTime
@@ -26,7 +26,7 @@ import java.time.LocalDateTime
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class LoggingFilter(
     // (Redis Repository)
-    private val redis1RuntimeConfigIpList: Redis1_RuntimeConfigIpList
+    private val redis1RuntimeConfigIpList: Redis1_Map_RuntimeConfigIpList
 ) : OncePerRequestFilter() {
     // <멤버 변수 공간>
     private val classLogger = LoggerFactory.getLogger(this::class.java)
@@ -55,7 +55,7 @@ class LoggingFilter(
         val clientAddressIp = request.remoteAddr
 
         val loggingDenyIpInfo = try {
-            redis1RuntimeConfigIpList.findKeyValue(Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name)
+            redis1RuntimeConfigIpList.findKeyValue(Redis1_Map_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name)
         } catch (e: Exception) {
             e.printStackTrace()
             null

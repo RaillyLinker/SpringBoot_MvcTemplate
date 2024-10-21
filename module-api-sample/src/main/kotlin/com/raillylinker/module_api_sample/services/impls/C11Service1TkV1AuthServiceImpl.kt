@@ -23,7 +23,7 @@ import com.raillylinker.module_idp_jpa.configurations.database_configs.Db1MainCo
 import com.raillylinker.module_idp_jpa.jpa_beans.db1_main.entities.*
 import com.raillylinker.module_idp_jpa.jpa_beans.db1_main.repositories.*
 import com.raillylinker.module_idp_retrofit2.retrofit2_classes.RepositoryNetworkRetrofit2
-import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Map_Service1ForceExpireAuthorizationSet
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -47,7 +47,7 @@ class C11Service1TkV1AuthServiceImpl(
     private val appleOAuthHelperUtil: AppleOAuthHelperUtil,
 
     // (Redis Repository)
-    private val redis1Service1ForceExpireAuthorizationSet: Redis1_Service1ForceExpireAuthorizationSet,
+    private val redis1Service1ForceExpireAuthorizationSet: Redis1_Map_Service1ForceExpireAuthorizationSet,
 
     // (Database Repository)
     private val db1NativeRepository: Db1_Native_Repository,
@@ -182,7 +182,7 @@ class C11Service1TkV1AuthServiceImpl(
                 try {
                     redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
                         "${tokenType}_${accessToken}",
-                        Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                        Redis1_Map_Service1ForceExpireAuthorizationSet.ValueVo(),
                         accessTokenExpireRemainSeconds!! * 1000
                     )
                 } catch (e: Exception) {
@@ -831,7 +831,7 @@ class C11Service1TkV1AuthServiceImpl(
             try {
                 redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
                     "${tokenType1}_${accessToken}",
-                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    Redis1_Map_Service1ForceExpireAuthorizationSet.ValueVo(),
                     accessTokenExpireRemainSeconds!! * 1000
                 )
             } catch (e: Exception) {
@@ -1068,7 +1068,7 @@ class C11Service1TkV1AuthServiceImpl(
                         try {
                             redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
                                 "${tokenType1}_${accessToken1}",
-                                Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                                Redis1_Map_Service1ForceExpireAuthorizationSet.ValueVo(),
                                 accessTokenExpireRemainSeconds!! * 1000
                             )
                         } catch (e: Exception) {
@@ -1195,7 +1195,7 @@ class C11Service1TkV1AuthServiceImpl(
             try {
                 redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
                     "${tokenType}_${accessToken}",
-                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    Redis1_Map_Service1ForceExpireAuthorizationSet.ValueVo(),
                     accessTokenExpireRemainSeconds!! * 1000
                 )
             } catch (e: Exception) {
@@ -2506,7 +2506,7 @@ class C11Service1TkV1AuthServiceImpl(
             try {
                 redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
                     "${tokenType}_${accessToken}",
-                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    Redis1_Map_Service1ForceExpireAuthorizationSet.ValueVo(),
                     accessTokenExpireRemainSeconds!! * 1000
                 )
             } catch (e: Exception) {
@@ -2707,7 +2707,7 @@ class C11Service1TkV1AuthServiceImpl(
                 try {
                     redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
                         "${tokenType}_${accessToken}",
-                        Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                        Redis1_Map_Service1ForceExpireAuthorizationSet.ValueVo(),
                         accessTokenExpireRemainSeconds!! * 1000
                     )
                 } catch (e: Exception) {
@@ -2929,7 +2929,7 @@ class C11Service1TkV1AuthServiceImpl(
                 try {
                     redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
                         "${tokenType}_${accessToken}",
-                        Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                        Redis1_Map_Service1ForceExpireAuthorizationSet.ValueVo(),
                         accessTokenExpireRemainSeconds!! * 1000
                     )
                 } catch (e: Exception) {
@@ -3853,7 +3853,7 @@ class C11Service1TkV1AuthServiceImpl(
             try {
                 redis1Service1ForceExpireAuthorizationSet.saveKeyValue(
                     "${tokenType}_${accessToken}",
-                    Redis1_Service1ForceExpireAuthorizationSet.ValueVo(),
+                    Redis1_Map_Service1ForceExpireAuthorizationSet.ValueVo(),
                     accessTokenExpireRemainSeconds!! * 1000
                 )
             } catch (e: Exception) {

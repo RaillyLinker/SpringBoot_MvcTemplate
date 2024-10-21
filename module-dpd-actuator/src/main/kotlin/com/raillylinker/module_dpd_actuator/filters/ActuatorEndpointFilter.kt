@@ -10,7 +10,7 @@ import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
-import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_RuntimeConfigIpList
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Map_RuntimeConfigIpList
 
 // [민감한 정보를 지닌 actuator 접근 제한 필터]
 // /actuator 로 시작되는 경로에 대한 모든 요청은,
@@ -20,7 +20,7 @@ import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class ActuatorEndpointFilter(
     // (Redis Repository)
-    private val redis1RuntimeConfigIpList: Redis1_RuntimeConfigIpList
+    private val redis1RuntimeConfigIpList: Redis1_Map_RuntimeConfigIpList
 ) : Filter {
     override fun doFilter(
         request: ServletRequest, response: ServletResponse, chain: FilterChain
@@ -32,7 +32,7 @@ class ActuatorEndpointFilter(
         val clientAddressIp = httpServletRequest.remoteAddr
 
         val actuatorAllowIpInfo = try {
-            redis1RuntimeConfigIpList.findKeyValue(Redis1_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name)
+            redis1RuntimeConfigIpList.findKeyValue(Redis1_Map_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name)
         } catch (e: Exception) {
             e.printStackTrace()
             null

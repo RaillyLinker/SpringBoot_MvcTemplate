@@ -2,15 +2,15 @@ package com.raillylinker.module_dpd_actuator.components.impls
 
 import com.raillylinker.module_dpd_actuator.components.ActuatorWhiteList
 import org.springframework.stereotype.Component
-import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_RuntimeConfigIpList
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Map_RuntimeConfigIpList
 
 @Component
 class ActuatorWhiteListImpl(
-    private val redis1RuntimeConfigIpList: Redis1_RuntimeConfigIpList
+    private val redis1RuntimeConfigIpList: Redis1_Map_RuntimeConfigIpList
 ) : ActuatorWhiteList {
     override fun getActuatorWhiteList(): List<ActuatorWhiteList.ActuatorAllowIpVo> {
         val keyValue =
-            redis1RuntimeConfigIpList.findKeyValue(Redis1_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name)
+            redis1RuntimeConfigIpList.findKeyValue(Redis1_Map_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name)
 
         val actuatorAllowIpList: MutableList<ActuatorWhiteList.ActuatorAllowIpVo> = mutableListOf()
         if (keyValue != null) {
@@ -28,11 +28,11 @@ class ActuatorWhiteListImpl(
     }
 
     override fun setActuatorWhiteList(actuatorAllowIpVoList: List<ActuatorWhiteList.ActuatorAllowIpVo>) {
-        val ipDescVoList: MutableList<Redis1_RuntimeConfigIpList.ValueVo.IpDescVo> = mutableListOf()
+        val ipDescVoList: MutableList<Redis1_Map_RuntimeConfigIpList.ValueVo.IpDescVo> = mutableListOf()
 
         for (ipDescInfo in actuatorAllowIpVoList) {
             ipDescVoList.add(
-                Redis1_RuntimeConfigIpList.ValueVo.IpDescVo(
+                Redis1_Map_RuntimeConfigIpList.ValueVo.IpDescVo(
                     ipDescInfo.ip,
                     ipDescInfo.desc
                 )
@@ -40,8 +40,8 @@ class ActuatorWhiteListImpl(
         }
 
         redis1RuntimeConfigIpList.saveKeyValue(
-            Redis1_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name,
-            Redis1_RuntimeConfigIpList.ValueVo(
+            Redis1_Map_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name,
+            Redis1_Map_RuntimeConfigIpList.ValueVo(
                 ipDescVoList
             ),
             null

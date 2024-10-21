@@ -10,14 +10,14 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import com.raillylinker.module_dpd_actuator.components.ActuatorWhiteList
-import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_RuntimeConfigIpList
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Map_RuntimeConfigIpList
 
 @Service
 class C1ServiceImpl(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
-    private val redis1RuntimeConfigIpList: Redis1_RuntimeConfigIpList,
+    private val redis1RuntimeConfigIpList: Redis1_Map_RuntimeConfigIpList,
 
     private val actuatorWhiteList: ActuatorWhiteList
 ) : C1Service {
@@ -58,14 +58,14 @@ class C1ServiceImpl(
 
         testEntityListVoList.add(
             C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo(
-                Redis1_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name,
+                Redis1_Map_RuntimeConfigIpList.KeyEnum.ACTUATOR_ALLOW_IP_LIST.name,
                 actuatorIpDescVoList
             )
         )
 
         // 전체 조회 테스트
         val loggingDenyInfo =
-            redis1RuntimeConfigIpList.findKeyValue(Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name)
+            redis1RuntimeConfigIpList.findKeyValue(Redis1_Map_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name)
 
         if (loggingDenyInfo != null) {
             val ipDescVoList =
@@ -81,7 +81,7 @@ class C1ServiceImpl(
 
             testEntityListVoList.add(
                 C1Controller.Api2SelectAllProjectRuntimeConfigsRedisKeyValueOutputVo.KeyValueVo(
-                    Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name,
+                    Redis1_Map_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name,
                     ipDescVoList
                 )
             )
@@ -121,11 +121,11 @@ class C1ServiceImpl(
         httpServletResponse: HttpServletResponse,
         inputVo: C1Controller.Api4InsertProjectRuntimeConfigLoggingDenyIpListInputVo
     ) {
-        val ipDescVoList: MutableList<Redis1_RuntimeConfigIpList.ValueVo.IpDescVo> = mutableListOf()
+        val ipDescVoList: MutableList<Redis1_Map_RuntimeConfigIpList.ValueVo.IpDescVo> = mutableListOf()
 
         for (ipDescInfo in inputVo.ipInfoList) {
             ipDescVoList.add(
-                Redis1_RuntimeConfigIpList.ValueVo.IpDescVo(
+                Redis1_Map_RuntimeConfigIpList.ValueVo.IpDescVo(
                     ipDescInfo.ip,
                     ipDescInfo.desc
                 )
@@ -133,8 +133,8 @@ class C1ServiceImpl(
         }
 
         redis1RuntimeConfigIpList.saveKeyValue(
-            Redis1_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name,
-            Redis1_RuntimeConfigIpList.ValueVo(
+            Redis1_Map_RuntimeConfigIpList.KeyEnum.LOGGING_DENY_IP_LIST.name,
+            Redis1_Map_RuntimeConfigIpList.ValueVo(
                 ipDescVoList
             ),
             null

@@ -36,4 +36,12 @@ interface C8Service1TkV1RedisTestService {
 
     ////
     fun api5DeleteAllRedisKeySample(httpServletResponse: HttpServletResponse)
+
+
+    ////
+    fun api6TryRedisLockSample(httpServletResponse: HttpServletResponse): C8Service1TkV1RedisTestController.Api6TryRedisLockSampleOutputVo?
+
+
+    ////
+    fun api7UnLockRedisLockSample(httpServletResponse: HttpServletResponse, lockKey: String)
 }
