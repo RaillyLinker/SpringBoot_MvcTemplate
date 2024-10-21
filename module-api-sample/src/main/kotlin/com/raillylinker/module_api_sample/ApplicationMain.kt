@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
 import com.raillylinker.module_api_sample.const_objects.ProjectConst
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 import java.util.*
 
 @EnableScheduling // 스케쥴러 사용 설정
@@ -34,7 +35,10 @@ import java.util.*
         "com.raillylinker.module_dpd_actuator"
     ]
 )
-@SpringBootApplication
+@SpringBootApplication(
+    // Using generated security password 워닝을 피하기 위해 SpringSecurity 비밀번호 자동 생성 비활성화
+    exclude = [UserDetailsServiceAutoConfiguration::class]
+)
 class ApplicationMain {
     @Bean
     fun init() = CommandLineRunner {
