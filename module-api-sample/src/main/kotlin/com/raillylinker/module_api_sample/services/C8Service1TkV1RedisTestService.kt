@@ -36,18 +36,4 @@ interface C8Service1TkV1RedisTestService {
 
     ////
     fun api5DeleteAllRedisKeySample(httpServletResponse: HttpServletResponse)
-
-
-    ////
-    fun api6RedisTransactionTest(
-        httpServletResponse: HttpServletResponse,
-        inputVo: C8Service1TkV1RedisTestController.Api6RedisTransactionTestInputVo
-    )
-
-
-    ////
-    fun api7RedisNonTransactionTest(
-        httpServletResponse: HttpServletResponse,
-        inputVo: C8Service1TkV1RedisTestController.Api7RedisNonTransactionTestInputVo
-    )
 }
