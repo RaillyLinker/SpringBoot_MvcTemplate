@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.ModelAndView
 import com.raillylinker.module_dpd_actuator.components.ActuatorWhiteList
-import com.raillylinker.module_idp_redis.redis_beans.redis1_main.Redis1_RuntimeConfigIpList
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_RuntimeConfigIpList
 
 @Service
 class C1ServiceImpl(

@@ -4,9 +4,9 @@ import com.raillylinker.module_api_sample.components.AppleOAuthHelperUtil
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import org.springframework.boot.json.BasicJsonParser
-import com.raillylinker.module_idp_common.custom_objects.CryptoUtil
-import com.raillylinker.module_idp_retrofit2.retrofit2_beans.RepositoryNetworkRetrofit2
-import com.raillylinker.module_idp_retrofit2.retrofit2_beans.request_apis.AppleIdAppleComRequestApi
+import com.raillylinker.module_idp_common.components.CryptoUtil
+import com.raillylinker.module_idp_retrofit2.retrofit2_classes.RepositoryNetworkRetrofit2
+import com.raillylinker.module_idp_retrofit2.retrofit2_classes.request_apis.AppleIdAppleComRequestApi
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 import java.security.KeyFactory
@@ -15,7 +15,7 @@ import java.util.*
 
 // [Apple OAuth2 검증 관련 유틸]
 @Component
-class AppleOAuthHelperUtilImpl : AppleOAuthHelperUtil {
+class AppleOAuthHelperUtilImpl(private val cryptoUtil: CryptoUtil) : AppleOAuthHelperUtil {
     // Retrofit2 요청 객체
     private val networkRetrofit2 = RepositoryNetworkRetrofit2.getInstance()
 
@@ -32,7 +32,7 @@ class AppleOAuthHelperUtilImpl : AppleOAuthHelperUtil {
             val testEntityVoList = response.body()!!.keys
 
             // idToken 헤더의 암호화 알고리즘 정보 가져오기
-            val header = CryptoUtil.base64Decode(idToken.split(".")[0])
+            val header = cryptoUtil.base64Decode(idToken.split(".")[0])
             val headerMap = BasicJsonParser().parseMap(header)
 
             val idTokenKid = headerMap["kid"].toString()

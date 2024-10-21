@@ -26,7 +26,7 @@ import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
 import com.raillylinker.module_api_sample.components.JwtTokenUtil
-import com.raillylinker.module_idp_redis.redis_beans.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
 
 // [서비스 보안 시큐리티 설정]
 @Configuration

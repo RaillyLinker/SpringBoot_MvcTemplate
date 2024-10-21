@@ -15,8 +15,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
-import com.raillylinker.module_idp_common.custom_objects.GifUtil
-import com.raillylinker.module_idp_common.custom_objects.ImageProcessUtil
+import com.raillylinker.module_idp_common.components.GifUtil
+import com.raillylinker.module_idp_common.components.ImageProcessUtil
 import java.awt.Color
 import java.awt.Font
 import java.awt.image.BufferedImage
@@ -33,7 +33,9 @@ import javax.imageio.ImageIO
 @Service
 class C5Service1TkV1MediaResourceProcessServiceImpl(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
-    @Value("\${spring.profiles.active:default}") private var activeProfile: String
+    @Value("\${spring.profiles.active:default}") private var activeProfile: String,
+
+    private val imageProcessUtil: ImageProcessUtil
 ):C5Service1TkV1MediaResourceProcessService {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -80,7 +82,7 @@ class C5Service1TkV1MediaResourceProcessServiceImpl(
         }).${inputVo.imageType.typeStr}"
 
         // 이미지 리사이징
-        val resizedImage = ImageProcessUtil.resizeImage(
+        val resizedImage = imageProcessUtil.resizeImage(
             inputVo.multipartImageFile.bytes,
             inputVo.resizingWidth,
             inputVo.resizingHeight,
@@ -108,7 +110,7 @@ class C5Service1TkV1MediaResourceProcessServiceImpl(
             Paths.get("$projectRootAbsolutePathString/module-api-sample/src/main/resources/static/for_c5_n2_split_animated_gif/test.gif")
 
         Files.newInputStream(gifFilePathObject).use { fileInputStream ->
-            val frameSplit = ImageProcessUtil.gifToImageList(fileInputStream)
+            val frameSplit = imageProcessUtil.gifToImageList(fileInputStream)
 
             // 요청 시간을 문자열로
             val timeString = LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -178,7 +180,7 @@ class C5Service1TkV1MediaResourceProcessServiceImpl(
         }
 
         fileTargetPath.toFile().outputStream().use { fileOutputStream ->
-            ImageProcessUtil.imageListToGif(
+            imageProcessUtil.imageListToGif(
                 gifFrameList,
                 fileOutputStream
             )
@@ -215,7 +217,7 @@ class C5Service1TkV1MediaResourceProcessServiceImpl(
         // 리사이징
         val resizedImageByteArray: ByteArray
         inputVo.multipartImageFile.inputStream.use { fileInputStream ->
-            resizedImageByteArray = ImageProcessUtil.resizeGifImage(
+            resizedImageByteArray = imageProcessUtil.resizeGifImage(
                 fileInputStream,
                 inputVo.resizingWidth,
                 inputVo.resizingHeight
@@ -245,7 +247,7 @@ class C5Service1TkV1MediaResourceProcessServiceImpl(
         inputVo: C5Service1TkV1MediaResourceProcessController.Api5CreateSignatureInputVo
     ) {
         // 서명 이미지 생성 및 저장
-        val signBufferedImage = ImageProcessUtil.createSignatureImage(
+        val signBufferedImage = imageProcessUtil.createSignatureImage(
             inputVo.signatureText,
             400,
             100,

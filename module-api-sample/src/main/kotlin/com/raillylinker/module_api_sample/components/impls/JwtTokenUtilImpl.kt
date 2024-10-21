@@ -6,7 +6,7 @@ import com.raillylinker.module_api_sample.components.JwtTokenUtil
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.json.BasicJsonParser
-import com.raillylinker.module_idp_common.custom_objects.CryptoUtil
+import com.raillylinker.module_idp_common.components.CryptoUtil
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.time.Instant
@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 
 // [JWT 토큰 유틸]
 @Component
-class JwtTokenUtilImpl : JwtTokenUtil {
+class JwtTokenUtilImpl(private val cryptoUtil: CryptoUtil) : JwtTokenUtil {
     // <공개 메소드 공간>
     // (액세스 토큰 발행)
     // memberRoleList : 멤버 권한 리스트 (ex : ["ROLE_ADMIN", "ROLE_DEVELOPER"])
@@ -74,7 +74,7 @@ class JwtTokenUtilImpl : JwtTokenUtil {
         val signature = tokenSplit[2]
 
         // base64 로 인코딩된 header 와 payload 를 . 로 묶은 후 이를 시크릿으로 HmacSha256 해싱을 적용하여 signature 를 생성
-        val newSig = CryptoUtil.hmacSha256("$header.$payload", jwtSecretKeyString)
+        val newSig = cryptoUtil.hmacSha256("$header.$payload", jwtSecretKeyString)
 
         // 위 방식으로 생성된 signature 가 token 으로 전달된 signature 와 동일하다면 위/변조되지 않은 토큰으로 판단 가능
         // = 발행시 사용한 시크릿과 검증시 사용된 시크릿이 동일
@@ -88,7 +88,7 @@ class JwtTokenUtilImpl : JwtTokenUtil {
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String
     ): Long {
-        return CryptoUtil.decryptAES256(
+        return cryptoUtil.decryptAES256(
             parseJwtForPayload(token)["mu"].toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -102,7 +102,7 @@ class JwtTokenUtilImpl : JwtTokenUtil {
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String
     ): String {
-        return CryptoUtil.decryptAES256(
+        return cryptoUtil.decryptAES256(
             parseJwtForPayload(token)["tu"].toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -116,7 +116,7 @@ class JwtTokenUtilImpl : JwtTokenUtil {
         jwtClaimsAes256InitializationVector: String,
         jwtClaimsAes256EncryptionKey: String
     ): List<String> {
-        val rl = CryptoUtil.decryptAES256(
+        val rl = cryptoUtil.decryptAES256(
             parseJwtForPayload(token)["rl"].toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -176,7 +176,7 @@ class JwtTokenUtilImpl : JwtTokenUtil {
         val claimsMap = mutableMapOf<String, Any>()
 
         // member uid
-        claimsMap["mu"] = CryptoUtil.encryptAES256(
+        claimsMap["mu"] = cryptoUtil.encryptAES256(
             memberUid.toString(),
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -185,7 +185,7 @@ class JwtTokenUtilImpl : JwtTokenUtil {
 
         // 멤버 권한 리스트
         if (roleList != null) {
-            claimsMap["rl"] = CryptoUtil.encryptAES256(
+            claimsMap["rl"] = cryptoUtil.encryptAES256(
                 Gson().toJson(roleList),
                 "AES/CBC/PKCS5Padding",
                 jwtClaimsAes256InitializationVector,
@@ -194,7 +194,7 @@ class JwtTokenUtilImpl : JwtTokenUtil {
         }
 
         // token usage
-        claimsMap["tu"] = CryptoUtil.encryptAES256(
+        claimsMap["tu"] = cryptoUtil.encryptAES256(
             tokenUsage,
             "AES/CBC/PKCS5Padding",
             jwtClaimsAes256InitializationVector,
@@ -221,12 +221,12 @@ class JwtTokenUtilImpl : JwtTokenUtil {
 
     // (base64 로 인코딩된 Header, Payload 를 base64 로 디코딩)
     private fun parseJwtForHeader(jwt: String): Map<String, Any> {
-        val header = CryptoUtil.base64Decode(jwt.split(".")[0])
+        val header = cryptoUtil.base64Decode(jwt.split(".")[0])
         return BasicJsonParser().parseMap(header)
     }
 
     private fun parseJwtForPayload(jwt: String): Map<String, Any> {
-        val payload = CryptoUtil.base64Decode(jwt.split(".")[1])
+        val payload = cryptoUtil.base64Decode(jwt.split(".")[1])
         return BasicJsonParser().parseMap(payload)
     }
 }

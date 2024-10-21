@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils
 import org.springframework.web.context.request.async.DeferredResult
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
-import com.raillylinker.module_idp_common.custom_classes.SseEmitterWrapper
+import com.raillylinker.module_idp_common.classes.SseEmitterWrapper
 import java.io.File
 import java.io.FileInputStream
 import java.nio.file.Files

@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import com.raillylinker.module_idp_common.custom_objects.ImageProcessUtil
+import com.raillylinker.module_idp_common.components.ImageProcessUtil
 
 @Tag(name = "/service1/tk/v1/media-resource-process APIs", description = "C5 : 미디어 리소스(이미지, 비디오, 오디오 등...) 처리 API 컨트롤러")
 @Controller

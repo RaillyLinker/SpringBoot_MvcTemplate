@@ -1,5 +1,7 @@
-package com.raillylinker.module_idp_common.custom_objects
+package com.raillylinker.module_idp_common.components.impls
 
+import com.raillylinker.module_idp_common.components.GifUtil
+import org.springframework.stereotype.Component
 import java.awt.AlphaComposite
 import java.awt.Color
 import java.awt.Dimension
@@ -13,18 +15,19 @@ import java.util.*
 import kotlin.math.roundToInt
 
 // [Gif 관련 유틸 오브젝트]
-object GifUtil {
+@Component
+class GifUtilImpl : GifUtil {
     // <멤버 변수 공간>
 
 
     // ---------------------------------------------------------------------------------------------
     // <공개 메소드 공간>
     // (Gif input 을 프레임 리스트로 분리)
-    fun decodeGif(inputStream: InputStream): ArrayList<GifFrame> {
+    override fun decodeGif(inputStream: InputStream): ArrayList<GifUtil.GifFrame> {
         var frameCount = 0
         val frameWidth: Int
         val frameHeight: Int
-        val frames = ArrayList<GifFrame>()
+        val frames = ArrayList<GifUtil.GifFrame>()
         val maxStackSize = 4096
         val bufferedInputStream: BufferedInputStream?
         var gct: IntArray? = null
@@ -554,7 +557,7 @@ object GifUtil {
                                     }
                                 }
                             }
-                            frames.add(GifFrame(image, delay))
+                            frames.add(GifUtil.GifFrame(image, delay))
                             if (transparency) {
                                 act!![transIndex] = save
                             }
@@ -788,8 +791,8 @@ object GifUtil {
     }
 
     // (Frame 리스트를 Gif Output 으로 합치기)
-    fun encodeGif(
-        gifFrameList: ArrayList<GifFrame>,
+    override fun encodeGif(
+        gifFrameList: ArrayList<GifUtil.GifFrame>,
         outputStream: OutputStream,
         repeatCount: Int,
         applyDither: Boolean
@@ -2787,11 +2790,6 @@ object GifUtil {
 
     // ---------------------------------------------------------------------------------------------
     // <중첩 클래스 공간>
-    data class GifFrame(
-        val frameBufferedImage: BufferedImage,
-        val frameDelay: Int
-    )
-
     private data class RgbBox(
         var r0: Int = 0,
         var r1: Int = 0,

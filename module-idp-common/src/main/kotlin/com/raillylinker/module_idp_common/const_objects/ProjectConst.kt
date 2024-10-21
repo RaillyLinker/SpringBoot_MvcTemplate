@@ -1,4 +1,4 @@
-package com.raillylinker.module_idp_common.const_classes
+package com.raillylinker.module_idp_common.const_objects
 
 // [프로젝트 전역 상수 모음]
 // 아래 변수들은 절대 런타임에 변경되어서는 안됩니다.

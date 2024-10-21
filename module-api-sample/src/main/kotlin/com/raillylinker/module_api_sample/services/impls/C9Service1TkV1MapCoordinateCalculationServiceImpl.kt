@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import com.raillylinker.module_idp_common.custom_objects.MapCoordinateUtil
+import com.raillylinker.module_idp_common.components.MapCoordinateUtil
 import com.raillylinker.module_idp_jpa.configurations.database_configs.Db1MainConfig
 import com.raillylinker.module_idp_jpa.jpa_beans.db1_main.entities.Db1_Template_TestMap
 import com.raillylinker.module_idp_jpa.jpa_beans.db1_main.repositories.Db1_Native_Repository
@@ -18,6 +18,8 @@ import com.raillylinker.module_idp_jpa.jpa_beans.db1_main.repositories.Db1_Templ
 class C9Service1TkV1MapCoordinateCalculationServiceImpl(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
+
+    private val mapCoordinateUtil: MapCoordinateUtil,
 
     // (Database Repository)
     private val db1TemplateTestMapRepository: Db1_Template_TestMap_Repository,
@@ -79,7 +81,7 @@ class C9Service1TkV1MapCoordinateCalculationServiceImpl(
     ): C9Service1TkV1MapCoordinateCalculationController.Api1GetDistanceMeterBetweenTwoCoordinateOutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
         return C9Service1TkV1MapCoordinateCalculationController.Api1GetDistanceMeterBetweenTwoCoordinateOutputVo(
-            MapCoordinateUtil.getDistanceMeterBetweenTwoLatLngCoordinateHarversine(
+            mapCoordinateUtil.getDistanceMeterBetweenTwoLatLngCoordinateHarversine(
                 Pair(latitude1, longitude1),
                 Pair(latitude2, longitude2)
             )
@@ -97,7 +99,7 @@ class C9Service1TkV1MapCoordinateCalculationServiceImpl(
     ): C9Service1TkV1MapCoordinateCalculationController.Api1Dot1GetDistanceMeterBetweenTwoCoordinateVincentyOutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
         return C9Service1TkV1MapCoordinateCalculationController.Api1Dot1GetDistanceMeterBetweenTwoCoordinateVincentyOutputVo(
-            MapCoordinateUtil.getDistanceMeterBetweenTwoLatLngCoordinateVincenty(
+            mapCoordinateUtil.getDistanceMeterBetweenTwoLatLngCoordinateVincenty(
                 Pair(latitude1, longitude1),
                 Pair(latitude2, longitude2)
             )
@@ -118,7 +120,7 @@ class C9Service1TkV1MapCoordinateCalculationServiceImpl(
             )
         }
 
-        val centerCoordinate = MapCoordinateUtil.getCenterLatLngCoordinate(
+        val centerCoordinate = mapCoordinateUtil.getCenterLatLngCoordinate(
             latLngCoordinate
         )
 
@@ -160,7 +162,7 @@ class C9Service1TkV1MapCoordinateCalculationServiceImpl(
             )
         }
 
-        val centerCoordinate = MapCoordinateUtil.getCenterLatLngCoordinate(
+        val centerCoordinate = mapCoordinateUtil.getCenterLatLngCoordinate(
             latLngCoordinate
         )
 

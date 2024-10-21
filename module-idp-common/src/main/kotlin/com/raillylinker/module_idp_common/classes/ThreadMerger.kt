@@ -1,4 +1,4 @@
-package com.raillylinker.module_idp_common.custom_classes
+package com.raillylinker.module_idp_common.classes
 
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

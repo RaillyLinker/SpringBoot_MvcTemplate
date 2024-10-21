@@ -18,12 +18,12 @@ import com.raillylinker.module_api_sample.components.AppleOAuthHelperUtil
 import com.raillylinker.module_api_sample.components.JwtTokenUtil
 import com.raillylinker.module_api_sample.services.C11Service1TkV1AuthService
 import com.raillylinker.module_dpd_common.components.NaverSmsSenderComponent
-import com.raillylinker.module_idp_common.components.EmailSenderComponent
+import com.raillylinker.module_idp_common.components.EmailSender
 import com.raillylinker.module_idp_jpa.configurations.database_configs.Db1MainConfig
 import com.raillylinker.module_idp_jpa.jpa_beans.db1_main.entities.*
 import com.raillylinker.module_idp_jpa.jpa_beans.db1_main.repositories.*
-import com.raillylinker.module_idp_retrofit2.retrofit2_beans.RepositoryNetworkRetrofit2
-import com.raillylinker.module_idp_redis.redis_beans.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
+import com.raillylinker.module_idp_retrofit2.retrofit2_classes.RepositoryNetworkRetrofit2
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Service1ForceExpireAuthorizationSet
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -41,7 +41,7 @@ class C11Service1TkV1AuthServiceImpl(
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
     private val passwordEncoder: PasswordEncoder,
-    private val emailSenderComponent: EmailSenderComponent,
+    private val emailSender: EmailSender,
     private val naverSmsSenderComponent: NaverSmsSenderComponent,
     private val jwtTokenUtil: JwtTokenUtil,
     private val appleOAuthHelperUtil: AppleOAuthHelperUtil,
@@ -1515,7 +1515,7 @@ class C11Service1TkV1AuthServiceImpl(
                 )
             )
 
-        emailSenderComponent.sendThymeLeafHtmlMail(
+        emailSender.sendThymeLeafHtmlMail(
             "Springboot Mvc Project Template",
             arrayOf(inputVo.email),
             null,
@@ -2544,7 +2544,7 @@ class C11Service1TkV1AuthServiceImpl(
                 )
             )
 
-        emailSenderComponent.sendThymeLeafHtmlMail(
+        emailSender.sendThymeLeafHtmlMail(
             "Springboot Mvc Project Template",
             arrayOf(inputVo.email),
             null,
@@ -2659,7 +2659,7 @@ class C11Service1TkV1AuthServiceImpl(
             db1RaillyLinkerCompanyService1MemberDataRepository.save(memberEmail.service1MemberData)
 
             // 생성된 비번 이메일 전송
-            emailSenderComponent.sendThymeLeafHtmlMail(
+            emailSender.sendThymeLeafHtmlMail(
                 "Springboot Mvc Project Template",
                 arrayOf(inputVo.email),
                 null,
@@ -3078,7 +3078,7 @@ class C11Service1TkV1AuthServiceImpl(
             )
         )
 
-        emailSenderComponent.sendThymeLeafHtmlMail(
+        emailSender.sendThymeLeafHtmlMail(
             "Springboot Mvc Project Template",
             arrayOf(inputVo.email),
             null,

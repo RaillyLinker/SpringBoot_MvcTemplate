@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import com.raillylinker.module_idp_redis.redis_beans.redis1_main.Redis1_Test
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_Test
 
 /*
     Redis 는 주로 캐싱에 사용됩니다.

@@ -1,5 +1,7 @@
-package com.raillylinker.module_idp_common.custom_objects
+package com.raillylinker.module_idp_common.components.impls
 
+import com.raillylinker.module_idp_common.components.CustomUtil
+import org.springframework.stereotype.Component
 import org.thymeleaf.context.Context
 import org.thymeleaf.spring6.SpringTemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
@@ -14,9 +16,10 @@ import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
 // [커스텀 유틸 함수 모음]
-object CustomUtil {
+@Component
+class CustomUtilImpl : CustomUtil {
     // (디렉토리 내 파일들을 ZipOutputStream 으로 추가)
-    fun compressDirectoryToZip(directory: File, path: String, zipOutputStream: ZipOutputStream) {
+    override fun compressDirectoryToZip(directory: File, path: String, zipOutputStream: ZipOutputStream) {
         for (file in directory.listFiles() ?: emptyArray()) {
             if (file.isDirectory) {
                 compressDirectoryToZip(file, "$path/${file.name}", zipOutputStream)
@@ -27,7 +30,7 @@ object CustomUtil {
     }
 
     // (파일들을 ZipOutputStream 으로 추가)
-    fun addToZip(file: File, fileName: String, zipOutputStream: ZipOutputStream) {
+    override fun addToZip(file: File, fileName: String, zipOutputStream: ZipOutputStream) {
         FileInputStream(file).use { fileInputStream ->
             val zipEntry = ZipEntry(fileName)
             zipOutputStream.putNextEntry(zipEntry)
@@ -41,7 +44,7 @@ object CustomUtil {
     }
 
     // (zip 파일을 압축 풀기)
-    fun unzipFile(zipFilePath: String, destDirectory: Path) {
+    override fun unzipFile(zipFilePath: String, destDirectory: Path) {
         FileInputStream(zipFilePath).use { fileInputStream ->
             ZipInputStream(fileInputStream).use { zipInputStream ->
                 var entry: ZipEntry? = zipInputStream.nextEntry
@@ -67,7 +70,7 @@ object CustomUtil {
     }
 
     // (랜덤 영문 대소문자 + 숫자 문자열 생성)
-    fun getRandomString(length: Int): String {
+    override fun getRandomString(length: Int): String {
         val charset = ('a'..'z') + ('A'..'Z') + ('0'..'9')
         return (1..length)
             .map { charset.random() }
@@ -75,7 +78,7 @@ object CustomUtil {
     }
 
     // (이메일 적합성 검증)
-    fun isValidEmail(email: String): Boolean {
+    override fun isValidEmail(email: String): Boolean {
         var err = false
         if (Pattern.compile("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$").matcher(email).matches()) {
             err = true
@@ -84,7 +87,7 @@ object CustomUtil {
     }
 
     // (ThymeLeaf 엔진으로 랜더링 한 HTML String 을 반환)
-    fun parseHtmlFileToHtmlString(justHtmlFileNameWithOutSuffix: String, variableDataMap: Map<String, Any?>): String {
+    override fun parseHtmlFileToHtmlString(justHtmlFileNameWithOutSuffix: String, variableDataMap: Map<String, Any?>): String {
         // 타임리프 resolver 설정
         val templateResolver = ClassLoaderTemplateResolver()
         templateResolver.prefix = "templates/" // static/templates 경로 아래에 있는 파일을 읽는다
@@ -104,7 +107,7 @@ object CustomUtil {
     }
 
     // (byteArray 를 Hex String 으로 반환)
-    fun bytesToHex(bytes: ByteArray): String {
+    override fun bytesToHex(bytes: ByteArray): String {
         val builder = StringBuilder()
         for (b in bytes) {
             builder.append(String.format("%02x", b))
@@ -113,12 +116,12 @@ object CustomUtil {
     }
 
     // (degree 를 radian 으로)
-    fun deg2rad(deg: Double): Double {
+    override fun deg2rad(deg: Double): Double {
         return deg * Math.PI / 180.0
     }
 
     // (radian 을 degree 로)
-    fun rad2deg(rad: Double): Double {
+    override fun rad2deg(rad: Double): Double {
         return rad * 180 / Math.PI
     }
 

@@ -1,5 +1,6 @@
-package com.raillylinker.module_idp_common.components
+package com.raillylinker.module_idp_common.components.impls
 
+import com.raillylinker.module_idp_common.components.EmailSender
 import jakarta.mail.internet.InternetAddress
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
@@ -7,17 +8,18 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import com.raillylinker.module_idp_common.custom_objects.CustomUtil
+import com.raillylinker.module_idp_common.components.CustomUtil
 import java.io.File
 
 // [Spring Email 유틸]
 @Component
-class EmailSenderComponent(
+class EmailSenderImpl(
+    private val customUtil: CustomUtil,
     private val javaMailSender: JavaMailSender,
     @Value("\${custom-config.smtp.sender-name}")
     var mailSenderName: String
-) {
-    fun sendMessageMail(
+) : EmailSender {
+    override fun sendMessageMail(
         senderName: String, // 이메일에 표시될 발송자 이름 (발송 이메일 주소는 application.yml 에 저장)
         receiverEmailAddressArray: Array<String>, // 수신자 이메일 배열
         carbonCopyEmailAddressArray: Array<String>?, // 참조자 이메일 배열
@@ -54,7 +56,7 @@ class EmailSenderComponent(
     }
 
     // (ThymeLeaf 로 랜더링 한 HTML 이메일 발송)
-    fun sendThymeLeafHtmlMail(
+    override fun sendThymeLeafHtmlMail(
         senderName: String, // 이메일에 표시될 발송자 이름 (발송 이메일 주소는 application.yml 에 저장)
         receiverEmailAddressArray: Array<String>, // 수신자 이메일 배열
         carbonCopyEmailAddressArray: Array<String>?, // 참조자 이메일 배열
@@ -85,7 +87,7 @@ class EmailSenderComponent(
 
         // 타임리프 HTML 랜더링
         val htmlString: String =
-            CustomUtil.parseHtmlFileToHtmlString(
+            customUtil.parseHtmlFileToHtmlString(
                 thymeLeafTemplateName,
                 thymeLeafDataVariables ?: mapOf()
             )

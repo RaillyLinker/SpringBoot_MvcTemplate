@@ -4,8 +4,8 @@ import com.raillylinker.module_dpd_common.components.NaverSmsSenderComponent
 import org.apache.commons.codec.binary.Base64
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import com.raillylinker.module_idp_retrofit2.retrofit2_beans.RepositoryNetworkRetrofit2
-import com.raillylinker.module_idp_retrofit2.retrofit2_beans.request_apis.SensApigwNtrussComRequestApi
+import com.raillylinker.module_idp_retrofit2.retrofit2_classes.RepositoryNetworkRetrofit2
+import com.raillylinker.module_idp_retrofit2.retrofit2_classes.request_apis.SensApigwNtrussComRequestApi
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 

@@ -23,11 +23,11 @@ import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import com.raillylinker.module_dpd_common.components.NaverSmsSenderComponent
 import com.raillylinker.module_dpd_kafka.configurations.kafka_producer_configs.Kafka1MainProducerConfig
-import com.raillylinker.module_idp_common.components.EmailSenderComponent
-import com.raillylinker.module_idp_common.custom_objects.CryptoUtil
-import com.raillylinker.module_idp_common.custom_objects.CustomUtil
-import com.raillylinker.module_idp_common.custom_objects.ExcelFileUtil
-import com.raillylinker.module_idp_common.custom_objects.PdfGenerator
+import com.raillylinker.module_idp_common.components.EmailSender
+import com.raillylinker.module_idp_common.components.CryptoUtil
+import com.raillylinker.module_idp_common.components.CustomUtil
+import com.raillylinker.module_idp_common.components.ExcelFileUtil
+import com.raillylinker.module_idp_common.components.PdfGenerator
 import java.io.*
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -42,15 +42,24 @@ class C6Service1TkV1TestServiceImpl(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
 
+    private val excelFileUtil: ExcelFileUtil,
+
+    private val customUtil: CustomUtil,
+
+    // 암복호화 유틸
+    private val cryptoUtil: CryptoUtil,
+
+    private val pdfGenerator: PdfGenerator,
+
     // 이메일 발송 유틸
-    private val emailSenderComponent: EmailSenderComponent,
+    private val emailSender: EmailSender,
     // 네이버 메시지 발송 유틸
     private val naverSmsSenderComponent: NaverSmsSenderComponent,
     @Qualifier(Kafka1MainProducerConfig.PRODUCER_BEAN_NAME) private val kafka1MainProducerTemplate: KafkaTemplate<String, Any>,
 
     private var serverProperties: ServerProperties,
     private val resourceLoader: ResourceLoader
-):C6Service1TkV1TestService {
+) : C6Service1TkV1TestService {
     // <멤버 변수 공간>
     private val classLogger: Logger = LoggerFactory.getLogger(this::class.java)
 
@@ -61,7 +70,7 @@ class C6Service1TkV1TestServiceImpl(
         httpServletResponse: HttpServletResponse,
         inputVo: C6Service1TkV1TestController.Api1SendEmailTestInputVo
     ) {
-        emailSenderComponent.sendMessageMail(
+        emailSender.sendMessageMail(
             inputVo.senderName,
             inputVo.receiverEmailAddressList.toTypedArray(),
             inputVo.carbonCopyEmailAddressList?.toTypedArray(),
@@ -82,7 +91,7 @@ class C6Service1TkV1TestServiceImpl(
     ) {
         // CID 는 첨부파일을 보내는 것과 동일한 의미입니다.
         // 고로 전송시 서버 성능에 악영향을 끼칠 가능성이 크고, CID 처리도 번거로우므로, CDN 을 사용하고, CID 는 되도록 사용하지 마세요.
-        emailSenderComponent.sendThymeLeafHtmlMail(
+        emailSender.sendThymeLeafHtmlMail(
             inputVo.senderName,
             inputVo.receiverEmailAddressList.toTypedArray(),
             inputVo.carbonCopyEmailAddressList?.toTypedArray(),
@@ -186,7 +195,7 @@ class C6Service1TkV1TestServiceImpl(
     ): C6Service1TkV1TestController.Api4ReadExcelFileSampleOutputVo? {
         val excelData: List<List<String>>?
         inputVo.excelFile.inputStream.use { fileInputStream ->
-            excelData = ExcelFileUtil.readExcel(
+            excelData = excelFileUtil.readExcel(
                 fileInputStream,
                 inputVo.sheetIdx,
                 inputVo.rowRangeStartIdx,
@@ -234,7 +243,7 @@ class C6Service1TkV1TestServiceImpl(
         )
 
         file.outputStream().use { fileOutputStream ->
-            ExcelFileUtil.writeExcel(fileOutputStream, inputExcelSheetDataMap)
+            excelFileUtil.writeExcel(fileOutputStream, inputExcelSheetDataMap)
         }
 
         httpServletResponse.status = HttpStatus.OK.value()
@@ -247,7 +256,7 @@ class C6Service1TkV1TestServiceImpl(
     ): ResponseEntity<Resource>? {
         // thymeLeaf 엔진으로 파싱한 HTML String 가져오기
         // 여기서 가져온 HTML 내에 기입된 static resources 의 경로는 절대경로가 아님
-        val htmlString = CustomUtil.parseHtmlFileToHtmlString(
+        val htmlString = customUtil.parseHtmlFileToHtmlString(
             "for_c6_n6_html_to_pdf_sample/html_to_pdf_sample", // thymeLeaf Html 이름 (ModelAndView 의 사용과 동일)
             // thymeLeaf 에 전해줄 데이터 Map
             mapOf(
@@ -268,7 +277,7 @@ class C6Service1TkV1TestServiceImpl(
         savedImgFilePathMap["html_to_pdf_sample.jpg"] =
             resourceLoader.getResource("classpath:static/for_c6_n6_html_to_pdf_sample/html_to_pdf_sample.jpg").file.absolutePath
 
-        val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
+        val pdfByteArray = pdfGenerator.createPdfByteArrayFromHtmlString(
             htmlString,
             savedFontFileNameMap,
             savedImgFilePathMap
@@ -383,7 +392,7 @@ class C6Service1TkV1TestServiceImpl(
                 }
             }
 
-            val pdfByteArray = PdfGenerator.createPdfByteArrayFromHtmlString(
+            val pdfByteArray = pdfGenerator.createPdfByteArrayFromHtmlString(
                 String(inputVo.htmlFile.bytes, Charsets.UTF_8),
                 savedFontFileNameMap,
                 savedImgFilePathMap
@@ -531,7 +540,7 @@ class C6Service1TkV1TestServiceImpl(
     ): C6Service1TkV1TestController.Api10Aes256EncryptTestOutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api10Aes256EncryptTestOutputVo(
-            CryptoUtil.encryptAES256(
+            cryptoUtil.encryptAES256(
                 plainText,
                 alg.alg,
                 initializationVector,
@@ -551,7 +560,7 @@ class C6Service1TkV1TestServiceImpl(
     ): C6Service1TkV1TestController.Api11Aes256DecryptTestOutputVo? {
         httpServletResponse.status = HttpStatus.OK.value()
         return C6Service1TkV1TestController.Api11Aes256DecryptTestOutputVo(
-            CryptoUtil.decryptAES256(
+            cryptoUtil.decryptAES256(
                 encryptedText,
                 alg.alg,
                 initializationVector,

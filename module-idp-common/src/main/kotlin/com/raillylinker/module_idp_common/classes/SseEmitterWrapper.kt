@@ -1,4 +1,4 @@
-package com.raillylinker.module_idp_common.custom_classes
+package com.raillylinker.module_idp_common.classes
 
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import java.util.concurrent.ConcurrentHashMap

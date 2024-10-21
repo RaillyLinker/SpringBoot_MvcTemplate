@@ -1,5 +1,8 @@
-package com.raillylinker.module_idp_common.custom_objects
+package com.raillylinker.module_idp_common.components.impls
 
+import com.raillylinker.module_idp_common.components.CryptoUtil
+import com.raillylinker.module_idp_common.components.CustomUtil
+import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.util.*
@@ -9,10 +12,11 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 // [암호화, 복호화 관련 유틸]
-object CryptoUtil {
+@Component
+class CryptoUtilImpl(private val customUtil: CustomUtil) : CryptoUtil {
     // [암호화 / 복호화]
     // (AES256 암호화)
-    fun encryptAES256(
+    override fun encryptAES256(
         text: String, // 암호화하려는 평문
         alg: String, // 암호화 알고리즘 (ex : "AES/CBC/PKCS5Padding")
         initializationVector: String, // 초기화 벡터 16byte = 16char
@@ -35,7 +39,7 @@ object CryptoUtil {
     }
 
     // (AES256 복호화)
-    fun decryptAES256(
+    override fun decryptAES256(
         cipherText: String, // 복호화하려는 암호문
         alg: String, // 암호화 알고리즘 (ex : "AES/CBC/PKCS5Padding")
         initializationVector: String, // 초기화 벡터 16byte = 16char
@@ -62,12 +66,12 @@ object CryptoUtil {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // [인코딩 / 디코딩]
     // (Base64 인코딩)
-    fun base64Encode(str: String): String {
+    override fun base64Encode(str: String): String {
         return Base64.getEncoder().encodeToString(str.toByteArray(StandardCharsets.UTF_8))
     }
 
     // (Base64 디코딩)
-    fun base64Decode(str: String): String {
+    override fun base64Decode(str: String): String {
         return String(Base64.getDecoder().decode(str))
     }
 
@@ -75,14 +79,14 @@ object CryptoUtil {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // [해싱]
     // (SHA256 해싱)
-    fun hashSHA256(str: String): String {
+    override fun hashSHA256(str: String): String {
         val messageDigest = MessageDigest.getInstance("SHA-256")
         messageDigest.update(str.toByteArray(StandardCharsets.UTF_8))
-        return CustomUtil.bytesToHex(messageDigest.digest())
+        return customUtil.bytesToHex(messageDigest.digest())
     }
 
     // (HmacSHA256)
-    fun hmacSha256(data: String, secret: String): String {
+    override fun hmacSha256(data: String, secret: String): String {
         val sha256Hmac = Mac.getInstance("HmacSHA256")
         sha256Hmac.init(SecretKeySpec(secret.toByteArray(StandardCharsets.UTF_8), "HmacSHA256"))
         return Base64.getUrlEncoder().withoutPadding()

@@ -5,11 +5,3 @@ spring:
   config:
     activate: # 프로필명 설정
       on-profile: idp-common
-
-custom-config: # 프로젝트 내에서 사용하는 커스텀 설정
-  smtp: # SMTP 설정
-    host: smtp.gmail.com # SMTP 호스트
-    port: 587 # SMTP 포트
-    sender-name: InputYourEmailId@test.com # SMTP 계정 아이디
-    sender-password: InputYourSenderPassword # SMTP 계정 비밀번호
-    time-out-millis: 10000 # 타임아웃 밀리초

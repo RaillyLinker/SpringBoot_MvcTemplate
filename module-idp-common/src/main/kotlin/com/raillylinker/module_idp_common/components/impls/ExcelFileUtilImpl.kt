@@ -1,5 +1,6 @@
-package com.raillylinker.module_idp_common.custom_objects
+package com.raillylinker.module_idp_common.components.impls
 
+import com.raillylinker.module_idp_common.components.ExcelFileUtil
 import org.apache.poi.openxml4j.opc.OPCPackage
 import org.apache.poi.ss.util.CellReference
 import org.apache.poi.xssf.binary.XSSFBSheetHandler
@@ -8,6 +9,7 @@ import org.apache.poi.xssf.eventusermodel.XSSFReader
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler
 import org.apache.poi.xssf.usermodel.XSSFComment
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.springframework.stereotype.Component
 import org.xml.sax.ContentHandler
 import org.xml.sax.InputSource
 import java.io.FileOutputStream
@@ -15,7 +17,8 @@ import java.io.InputStream
 import javax.xml.parsers.SAXParserFactory
 
 // [Excel 파일 처리 유틸]
-object ExcelFileUtil {
+@Component
+class ExcelFileUtilImpl : ExcelFileUtil {
     // <멤버 변수 공간>
 
 
@@ -24,7 +27,7 @@ object ExcelFileUtil {
     // (액셀 파일을 읽어서 데이터 반환)
     // 파일 내 모든 시트, 모든 행열 데이터 반환
     // 반환값 : [시트번호][행번호][컬럼번호] == 셀값
-    fun readExcel(
+    override fun readExcel(
         excelFile: InputStream
     ): Map<String, List<List<String>>> {
         val resultObject: HashMap<String, List<List<String>>> = hashMapOf()
@@ -58,7 +61,7 @@ object ExcelFileUtil {
 
     // 시트, 행열 제한
     // 반환값 : [행번호][컬럼번호] == 셀값, 없는 시트번호라면 null 반환
-    fun readExcel(
+    override fun readExcel(
         excelFile: InputStream,
         sheetIdx: Int, // 가져올 시트 인덱스 (0부터 시작)
         rowRangeStartIdx: Int, // 가져올 행 범위 시작 인덱스 (0부터 시작)
@@ -79,7 +82,12 @@ object ExcelFileUtil {
                 sheets.next().use { sheet ->
                     if (sheetIdx == currentSheetIdx++) {
                         val sheetHandler =
-                            ExcelSheetHandler(rowRangeStartIdx, rowRangeEndIdx, columnRangeIdxList, minColumnLength)
+                            ExcelSheetHandler(
+                                rowRangeStartIdx,
+                                rowRangeEndIdx,
+                                columnRangeIdxList,
+                                minColumnLength
+                            )
                         val inputSource = InputSource(sheet)
                         val handle: ContentHandler = XSSFSheetXMLHandler(styles, strings, sheetHandler, false)
                         val saxParserFactory = SAXParserFactory.newInstance()
@@ -100,7 +108,7 @@ object ExcelFileUtil {
 
     // (액셀 파일생성)
     // inputExcelSheetDataMap : [시트이름][행번호][컬럼번호] == 셀값
-    fun writeExcel(
+    override fun writeExcel(
         fileOutputStream: FileOutputStream,
         inputExcelSheetDataMap: Map<String, List<List<String>>>
     ) {

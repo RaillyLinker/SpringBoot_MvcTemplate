@@ -1,7 +1,9 @@
-package com.raillylinker.module_idp_common.custom_objects
+package com.raillylinker.module_idp_common.components.impls
 
 import com.lowagie.text.Image
+import com.raillylinker.module_idp_common.components.PdfGenerator
 import org.springframework.core.io.ClassPathResource
+import org.springframework.stereotype.Component
 import org.w3c.dom.Element
 import org.xhtmlrenderer.extend.ReplacedElement
 import org.xhtmlrenderer.extend.ReplacedElementFactory
@@ -20,9 +22,10 @@ import java.nio.file.Path
 // [HTML String 을 기반으로 PDF 파일을 생성하는 유틸]
 // https://flyingsaucerproject.github.io/flyingsaucer/r8/guide/users-guide-R8.html
 // PDF 로 변환할 HTML 작성시 XHTML 1.0(strict), CSS 2.1 (@page 의 size 는 가능) 를 엄격히 지켜야 합니다.
-object PdfGenerator {
+@Component
+class PdfGeneratorImpl : PdfGenerator {
     // (HTML String 을 PDF 로 변환)
-    fun createPdfByteArrayFromHtmlString(
+    override fun createPdfByteArrayFromHtmlString(
         htmlString: String, // PDF 로 변환할 HTML String (ex : <!DOCTYPE html> <html> ....)
         // 폰트 파일 맵 (키 : html 의 @font-face src 에 입력한 파일명, 값 : html 의 @font-face src 에 url('주소') 이런 형식으로 치환될 값)
         /*

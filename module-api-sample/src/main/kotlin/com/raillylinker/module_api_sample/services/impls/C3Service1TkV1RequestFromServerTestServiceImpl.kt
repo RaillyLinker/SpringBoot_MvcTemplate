@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import com.raillylinker.module_idp_retrofit2.retrofit2_beans.RepositoryNetworkRetrofit2
-import com.raillylinker.module_idp_retrofit2.retrofit2_beans.request_apis.LocalHostRequestApi
+import com.raillylinker.module_idp_retrofit2.retrofit2_classes.RepositoryNetworkRetrofit2
+import com.raillylinker.module_idp_retrofit2.retrofit2_classes.request_apis.LocalHostRequestApi
 import java.io.File
 import java.net.SocketTimeoutException
 import java.nio.file.Paths

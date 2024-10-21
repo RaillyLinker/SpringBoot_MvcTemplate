@@ -2,7 +2,7 @@ package com.raillylinker.module_dpd_actuator.components.impls
 
 import com.raillylinker.module_dpd_actuator.components.ActuatorWhiteList
 import org.springframework.stereotype.Component
-import com.raillylinker.module_idp_redis.redis_beans.redis1_main.Redis1_RuntimeConfigIpList
+import com.raillylinker.module_idp_redis.redis_map_components.redis1_main.Redis1_RuntimeConfigIpList
 
 @Component
 class ActuatorWhiteListImpl(

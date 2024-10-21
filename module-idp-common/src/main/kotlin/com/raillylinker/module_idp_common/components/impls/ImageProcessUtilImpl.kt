@@ -1,5 +1,8 @@
-package com.raillylinker.module_idp_common.custom_objects
+package com.raillylinker.module_idp_common.components.impls
 
+import com.raillylinker.module_idp_common.components.GifUtil
+import com.raillylinker.module_idp_common.components.ImageProcessUtil
+import org.springframework.stereotype.Component
 import java.awt.Color
 import java.awt.Font
 import java.awt.Image
@@ -10,13 +13,14 @@ import java.nio.file.Files
 import javax.imageio.ImageIO
 
 // [이미지 처리 유틸]
-object ImageProcessUtil {
+@Component
+class ImageProcessUtilImpl(private val gifUtil: GifUtil) : ImageProcessUtil {
     // (움직이지 않는 정적 이미지 리사이징 및 리포멧 함수)
-    fun resizeImage(
+    override fun resizeImage(
         imageBytes: ByteArray,
         resizeWidth: Int,
         resizeHeight: Int,
-        imageTypeEnum: ResizeImageTypeEnum
+        imageTypeEnum: ImageProcessUtil.ResizeImageTypeEnum
     ): ByteArray {
         val imageType = imageTypeEnum.typeStr
         val bufferedResizedImage = BufferedImage(resizeWidth, resizeHeight, BufferedImage.TYPE_INT_RGB)
@@ -37,25 +41,18 @@ object ImageProcessUtil {
         return resultByteArray
     }
 
-    enum class ResizeImageTypeEnum(val typeStr: String) {
-        JPG("jpg"),
-        PNG("png"),
-        BMP("bmp"),
-        GIF("gif")
-    }
-
     // (Gif 를 이미지 리스트로 분리)
-    fun gifToImageList(inputStream: InputStream): ArrayList<GifUtil.GifFrame> {
-        return GifUtil.decodeGif(inputStream)
+    override fun gifToImageList(inputStream: InputStream): ArrayList<GifUtil.GifFrame> {
+        return gifUtil.decodeGif(inputStream)
     }
 
     // (이미지 리스트를 Gif 로 병합)
-    fun imageListToGif(gifFrameList: ArrayList<GifUtil.GifFrame>, outputStream: OutputStream) {
-        GifUtil.encodeGif(gifFrameList, outputStream, 2, false)
+    override fun imageListToGif(gifFrameList: ArrayList<GifUtil.GifFrame>, outputStream: OutputStream) {
+        gifUtil.encodeGif(gifFrameList, outputStream, 2, false)
     }
 
-    fun resizeGifImage(inputStream: InputStream, newWidth: Int, newHeight: Int): ByteArray {
-        val frameList = GifUtil.decodeGif(inputStream)
+    override fun resizeGifImage(inputStream: InputStream, newWidth: Int, newHeight: Int): ByteArray {
+        val frameList = gifUtil.decodeGif(inputStream)
 
         val resizedFrameList = ArrayList<GifUtil.GifFrame>()
         for (frame in frameList) {
@@ -82,7 +79,7 @@ object ImageProcessUtil {
 
         try {
             FileOutputStream(tempFile).use { fileOutputStream ->
-                GifUtil.encodeGif(resizedFrameList, fileOutputStream, 2, false)
+                gifUtil.encodeGif(resizedFrameList, fileOutputStream, 2, false)
             }
             return Files.readAllBytes(tempFile.toPath())
         } finally {
@@ -92,7 +89,7 @@ object ImageProcessUtil {
     }
 
     // (문자열을 투명 배경 서명 이미지로 변경하는 함수)
-    fun createSignatureImage(
+    override fun createSignatureImage(
         // 서명화할 텍스트
         text: String,
         // 사인 이미지 사이즈

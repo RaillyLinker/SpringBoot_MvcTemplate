@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
-import com.raillylinker.module_idp_common.custom_objects.CustomUtil
+import com.raillylinker.module_idp_common.components.CustomUtil
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
@@ -32,6 +32,8 @@ import java.util.zip.ZipOutputStream
 class C4Service1TkV1FileTestServiceImpl(
     // (프로젝트 실행시 사용 설정한 프로필명 (ex : dev8080, prod80, local8080, 설정 안하면 default 반환))
     @Value("\${spring.profiles.active:default}") private var activeProfile: String,
+
+    private val customUtil: CustomUtil,
 
     // (AWS S3 유틸 객체)
     private val awsS3UtilComponent: AwsS3UtilComponent
@@ -159,7 +161,7 @@ class C4Service1TkV1FileTestServiceImpl(
                 for (filePath in filePathList) {
                     val file = File(filePath)
                     if (file.exists()) {
-                        CustomUtil.addToZip(file, file.name, zipOutputStream)
+                        customUtil.addToZip(file, file.name, zipOutputStream)
                     }
                 }
             }
@@ -194,7 +196,7 @@ class C4Service1TkV1FileTestServiceImpl(
         // 압축 파일 생성
         FileOutputStream(fileTargetPath.toFile()).use { fileOutputStream ->
             ZipOutputStream(fileOutputStream).use { zipOutputStream ->
-                CustomUtil.compressDirectoryToZip(sourceDir, sourceDir.name, zipOutputStream)
+                customUtil.compressDirectoryToZip(sourceDir, sourceDir.name, zipOutputStream)
             }
         }
 
@@ -224,7 +226,7 @@ class C4Service1TkV1FileTestServiceImpl(
 
         val fileTargetPath = saveDirectoryPath.resolve(saveFileName).normalize()
 
-        CustomUtil.unzipFile(filePathString, fileTargetPath)
+        customUtil.unzipFile(filePathString, fileTargetPath)
 
         httpServletResponse.status = HttpStatus.OK.value()
     }
