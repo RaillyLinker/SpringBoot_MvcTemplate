@@ -1,7 +1,7 @@
 package com.raillylinker.module_api_sample.controllers
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.raillylinker.module_api_sample.const_classes.ProjectConst
+import com.raillylinker.module_api_sample.const_objects.ProjectConst
 import com.raillylinker.module_api_sample.services.C7Service1TkV1DatabaseTestService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.data.mongodb.config.EnableMongoAuditing
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
-import com.raillylinker.module_api_sample.const_classes.ProjectConst
+import com.raillylinker.module_api_sample.const_objects.ProjectConst
 import java.util.*
 
 @EnableScheduling // 스케쥴러 사용 설정
