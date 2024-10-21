@@ -130,7 +130,7 @@ class C8Service1TkV1RedisTestServiceImpl(
 
     ////
     override fun api6TryRedisLockSample(httpServletResponse: HttpServletResponse): C8Service1TkV1RedisTestController.Api6TryRedisLockSampleOutputVo? {
-        val lockKey = redis1LockTest.tryLock(10000)
+        val lockKey = redis1LockTest.tryLock(100000)
         if (lockKey == null) {
             httpServletResponse.status = HttpStatus.NO_CONTENT.value()
             httpServletResponse.setHeader("api-result-code", "1")
